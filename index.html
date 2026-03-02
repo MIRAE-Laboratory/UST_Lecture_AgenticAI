@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UST :: 2026-1 :: Mandatory General Course</title>
+  <link rel="stylesheet" href="slides-common.css">
+  <style>
+    @keyframes shake {
+      0% {
+        transform: translate(1px, 1px) rotate(0deg);
+      }
+
+      10% {
+        transform: translate(-1px, -2px) rotate(-1deg);
+      }
+
+      20% {
+        transform: translate(-3px, 0px) rotate(1deg);
+      }
+
+      30% {
+        transform: translate(3px, 2px) rotate(0deg);
+      }
+
+      40% {
+        transform: translate(1px, -1px) rotate(1deg);
+      }
+
+      50% {
+        transform: translate(-1px, 2px) rotate(-1deg);
+      }
+
+      60% {
+        transform: translate(-3px, 1px) rotate(0deg);
+      }
+
+      70% {
+        transform: translate(3px, 1px) rotate(-1deg);
+      }
+
+      80% {
+        transform: translate(-1px, -1px) rotate(1deg);
+      }
+
+      90% {
+        transform: translate(1px, 2px) rotate(0deg);
+      }
+
+      100% {
+        transform: translate(1px, -2px) rotate(-1deg);
+      }
+    }
+
+    .shake-animation {
+      animation: shake 0.4s;
+    }
+
+    .open-soon-msg {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+      white-space: nowrap;
+    }
+
+    .show-soon {
+      opacity: 1;
+    }
+
+    /* Darker initial border, slightly deeper shadow */
+    .week-card {
+      position: relative;
+      background: #fdfdfc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06) !important;
+      border: 1px solid #aaa !important;
+      /* Darker initial border */
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+      transform: scale(1) translateY(0);
+    }
+
+    .week-card.locked {
+      cursor: pointer;
+    }
+
+    /* Grow up and neon glow effect on hover */
+    .week-card:hover {
+      transform: scale(1.02) translateY(-2px) !important;
+      /* Grow and lift */
+    }
+
+    /* Different backgrounds and neon glow per phase */
+    .phase-1 {
+      background-color: #f7fbff;
+      border-top: 4px solid #90caf9 !important;
+    }
+
+    .phase-1:hover {
+      border-color: #1565c0 !important;
+      box-shadow: 0 0 25px rgba(21, 101, 192, 0.4), inset 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .phase-2 {
+      background-color: #fffaf5;
+      border-top: 4px solid #ffcc80 !important;
+    }
+
+    .phase-2:hover {
+      border-color: #e65100 !important;
+      box-shadow: 0 0 25px rgba(230, 81, 0, 0.4), inset 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .phase-3 {
+      background-color: #f9fbf9;
+      border-top: 4px solid #a5d6a7 !important;
+    }
+
+    .phase-3:hover {
+      border-color: #1b5e20 !important;
+      box-shadow: 0 0 25px rgba(27, 94, 32, 0.4), inset 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .phase-4 {
+      background-color: #faf5fa;
+      border-top: 4px solid #ce93d8 !important;
+    }
+
+    .phase-4:hover {
+      border-color: #6a1b9a !important;
+      box-shadow: 0 0 25px rgba(106, 27, 154, 0.4), inset 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .card-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .card-list li {
+      margin-bottom: 8px;
+      padding-left: 14px;
+      text-indent: -14px;
+    }
+
+    .lbl-lec {
+      color: #d81b60;
+      font-weight: bold;
+    }
+
+    .lbl-pra {
+      color: #1565c0;
+      font-weight: bold;
+    }
+
+    .lbl-dis {
+      color: #e65100;
+      font-weight: bold;
+    }
+
+    .clamp-title {
+      height: 48px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .quote-box {
+      position: relative;
+      background: #fbfbfc;
+      border: 1px solid #c6c6c6;
+      border-left: 4px solid #000000;
+      padding: 24px 32px 20px 48px;
+      margin: 10px auto 30px auto;
+      max-width: 760px;
+      border-radius: 6px;
+      color: #333;
+      font-size: 1.05rem;
+      font-style: italic;
+      line-height: 1.6;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+      text-align: left;
+    }
+
+    .quote-box::before {
+      content: "\201C";
+      font-family: Georgia, serif;
+      font-size: 5rem;
+      color: rgba(0, 0, 0, 0.15);
+      position: absolute;
+      top: 0px;
+      left: 10px;
+      line-height: 1;
+    }
+
+    .quote-text {
+      position: relative;
+      z-index: 1;
+      display: block;
+      color: #444;
+    }
+
+    .quote-author {
+      display: block;
+      margin-top: 12px;
+      font-size: 0.9rem;
+      font-style: normal;
+      color: #777;
+      font-weight: 600;
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body class="landing-body">
+
+  <header class="landing-header">
+    <span class="section-label" style="background:#333; font-size:0.8rem; padding:6px 16px;">UST :: 2026-1 :: Mandatory
+      General Course</span>
+    <h1 style="margin-top:16px;">Agentic AI as R&D Collaborators</h1>
+    <p style="font-size: 1.25rem; font-weight: 600; color: #e65100; margin-bottom: 8px;">From Consumers of AI Tools to
+      Research Directors</p>
+    <p style="font-size: 1.05rem; color: #555; margin-bottom: 30px; font-style:italic;">
+      Prof. Hogeon Seo ::
+      <a href="mailto:hogeony@ust.ac.kr" style="color:#0288d1; text-decoration:none;">hogeony@ust.ac.kr</a>
+    </p>
+
+    <!-- Motivational Quote Container -->
+    <div id="quote-container" class="quote-box">
+    </div>
+  </header>
+
+  <section class="week-grid">
+
+    <div
+      style="grid-column: 1 / -1; margin-top: 10px; margin-bottom: 10px; border-bottom: 2px solid #90caf9; padding-bottom: 8px;">
+      <h2
+        style="color: #1565c0; text-align: center; font-size: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase;">
+        Phase 1: Onboarding & Literacy</h2>
+    </div>
+
+    <a class="week-card phase-1" href="week1-slides.html" style="text-decoration:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#e3f2fd; color:#1565c0;">WEEK 1</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#1565c0; text-transform:uppercase;">Phase 1</span>
+      </div>
+      <h3 class="clamp-title">Orientation: Agentic AI as R&D Collaborators</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Course Overview: Shift to "Directing Agents"</li>
+        <li><span class="lbl-pra">Prac:</span> Environment Setup: AI Studio, Antigravity</li>
+        <li><span class="lbl-dis">Dis:</span> Is AI a research assistant or a crutch?</li>
+      </ul>
+      <div>
+        <span class="tag pink">Paradigm Shift</span>
+        <span class="tag blue">Environment Setup</span>
+      </div>
+    </a>
+
+    <div class="week-card locked phase-1" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#e3f2fd; color:#1565c0;">WEEK 2</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#1565c0; text-transform:uppercase;">Phase 1</span>
+      </div>
+      <h3 class="clamp-title">Understanding Large Language Models</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> The Brain of the Agent: Capabilities & Security</li>
+        <li><span class="lbl-pra">Prac:</span> API Connection & Setting up Ollama</li>
+        <li><span class="lbl-dis">Dis:</span> The "Stochastic Parrot" Problem</li>
+      </ul>
+      <div>
+        <span class="tag green">Ollama</span>
+        <span class="tag orange">API</span>
+      </div>
+    </div>
+
+    <div class="week-card locked phase-1" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#e3f2fd; color:#1565c0;">WEEK 3</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#1565c0; text-transform:uppercase;">Phase 1</span>
+      </div>
+      <h3 class="clamp-title">Structured Directing via Prompt Engineering</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> The Art of Instruction: System Prompts</li>
+        <li><span class="lbl-pra">Prac:</span> CLI Agent: Building a command-line interface agent</li>
+        <li><span class="lbl-dis">Dis:</span> Managing Expectations of AI capabilities</li>
+      </ul>
+      <div>
+        <span class="tag purple">System Prompts</span>
+        <span class="tag pink">Persona</span>
+      </div>
+    </div>
+
+    <div class="week-card locked phase-1" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#e3f2fd; color:#1565c0;">WEEK 4</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#1565c0; text-transform:uppercase;">Phase 1</span>
+      </div>
+      <h3 class="clamp-title">AI Orchestration based on Tools</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Giving Hands to AI: Understanding Function Calling</li>
+        <li><span class="lbl-pra">Prac:</span> Custom Tools: Connecting Python functions</li>
+        <li><span class="lbl-dis">Dis:</span> The Director's Role: Human's contribution</li>
+      </ul>
+      <div>
+        <span class="tag blue">Function Calling</span>
+        <span class="tag green">Tools</span>
+      </div>
+    </div>
+
+    <div
+      style="grid-column: 1 / -1; margin-top: 40px; margin-bottom: 10px; border-bottom: 2px solid #ffcc80; padding-bottom: 8px;">
+      <h2
+        style="color: #e65100; text-align: center; font-size: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase;">
+        Phase 2: Workflow Automation & Design</h2>
+    </div>
+
+    <div class="week-card locked phase-2" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#fff8e1; color:#e65100;">WEEK 5</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#e65100; text-transform:uppercase;">Phase 2</span>
+      </div>
+      <h3 class="clamp-title">Human-AI Agent Interaction Design</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> UX for Research: How to design interfaces</li>
+        <li><span class="lbl-pra">Prac:</span> Web UI: Deployable agent app using Streamlit</li>
+        <li><span class="lbl-dis">Dis:</span> Core Competency: The "irreplaceable" skill.</li>
+      </ul>
+      <div>
+        <span class="tag orange">Web UI</span>
+        <span class="tag purple">Streamlit</span>
+      </div>
+    </div>
+
+    <div class="week-card locked phase-2" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#fff8e1; color:#e65100;">WEEK 6</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#e65100; text-transform:uppercase;">Phase 2</span>
+      </div>
+      <h3 class="clamp-title">Automation of Data Input</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Automating literature review & data collection</li>
+        <li><span class="lbl-pra">Prac:</span> Auto-Scraper: Extract meta-data without reading</li>
+        <li><span class="lbl-dis">Dis:</span> The Risk of "Not Reading": Maintaining deep insight</li>
+      </ul>
+      <div>
+        <span class="tag pink">Scraper</span>
+        <span class="tag blue">Metadata</span>
+      </div>
+    </div>
+
+    <div class="week-card locked phase-2" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#fff8e1; color:#e65100;">WEEK 7</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#e65100; text-transform:uppercase;">Phase 2</span>
+      </div>
+      <h3 class="clamp-title">Automation of Data Output & Discovery</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Drafting reports and visualizing results</li>
+        <li><span class="lbl-pra">Prac:</span> Auto-Drafting: Converting raw CSV data</li>
+        <li><span class="lbl-dis">Dis:</span> Authorship & Ethics: Flawed hypotheses responsibility?</li>
+      </ul>
+      <div>
+        <span class="tag green">Auto-Drafting</span>
+        <span class="tag orange">Visualization</span>
+      </div>
+    </div>
+
+    <div class="week-card locked phase-2" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#fff8e1; color:#e65100;">WEEK 8</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#e65100; text-transform:uppercase;">Mid-term</span>
+      </div>
+      <h3 class="clamp-title">Mid-term Evaluation: Proposal</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Proposal of Agentic AI System</li>
+        <li><span class="lbl-pra">Prac:</span> Video Pitch (3 to 5-minute pre-recorded video)</li>
+        <li><span class="lbl-dis">Dis:</span> Peer-Review: Assessing feasibility of colleagues</li>
+      </ul>
+      <div>
+        <span class="tag purple">Mid-term</span>
+        <span class="tag pink">Proposal</span>
+      </div>
+    </div>
+
+    <div
+      style="grid-column: 1 / -1; margin-top: 40px; margin-bottom: 10px; border-bottom: 2px solid #a5d6a7; padding-bottom: 8px;">
+      <h2
+        style="color: #1b5e20; text-align: center; font-size: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase;">
+        Phase 3: Management & Reliability</h2>
+    </div>
+
+    <div class="week-card locked phase-3" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#e8f5e9; color:#1b5e20;">WEEK 9</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#1b5e20; text-transform:uppercase;">Phase 3</span>
+      </div>
+      <h3 class="clamp-title">Design of Task and Workflow</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Algorithmic Thinking: Designing robust workflows</li>
+        <li><span class="lbl-pra">Prac:</span> Flow Architecture: Multi-step research logic</li>
+        <li><span class="lbl-dis">Dis:</span> Ambiguity vs. Clarity: Why agents fail at vague tasks</li>
+      </ul>
+      <div>
+        <span class="tag blue">LangGraph</span>
+        <span class="tag green">Workflow</span>
+      </div>
+    </div>
+
+    <div class="week-card locked phase-3" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#e8f5e9; color:#1b5e20;">WEEK 10</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#1b5e20; text-transform:uppercase;">Phase 3</span>
+      </div>
+      <h3 class="clamp-title">Evaluation of Output from Agent</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Quality Control: Metrics for AI performance</li>
+        <li><span class="lbl-pra">Prac:</span> Evaluation System: Designing rubrics</li>
+        <li><span class="lbl-dis">Dis:</span> The Consensus Dilemma: AI vs Human experts?</li>
+      </ul>
+      <div>
+        <span class="tag orange">Metrics</span>
+        <span class="tag pink">Evaluation</span>
+      </div>
+    </div>
+
+    <div class="week-card locked phase-3" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#e8f5e9; color:#1b5e20;">WEEK 11</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#1b5e20; text-transform:uppercase;">Phase 3</span>
+      </div>
+      <h3 class="clamp-title">Self-feedback Loop Agent System</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Metacognition: Making agents fix their errors</li>
+        <li><span class="lbl-pra">Prac:</span> Self-Correction Pipeline: "Reflection" node</li>
+        <li><span class="lbl-dis">Dis:</span> Nurturing AI: Mentorship for AI systems?</li>
+      </ul>
+      <div>
+        <span class="tag purple">Reflection</span>
+        <span class="tag blue">Self-Correction</span>
+      </div>
+    </div>
+
+    <div class="week-card locked phase-3" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#e8f5e9; color:#1b5e20;">WEEK 12</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#1b5e20; text-transform:uppercase;">Phase 3</span>
+      </div>
+      <h3 class="clamp-title">Memory and Retrieval-Augmented Gen</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Long-term Context: Vector databases</li>
+        <li><span class="lbl-pra">Prac:</span> RAG Pipeline: Remembering past papers</li>
+        <li><span class="lbl-dis">Dis:</span> Selective Memory: Remembering failed experiments?</li>
+      </ul>
+      <div>
+        <span class="tag green">Vector DB</span>
+        <span class="tag orange">RAG</span>
+      </div>
+    </div>
+
+    <div
+      style="grid-column: 1 / -1; margin-top: 40px; margin-bottom: 10px; border-bottom: 2px solid #ce93d8; padding-bottom: 8px;">
+      <h2
+        style="color: #6a1b9a; text-align: center; font-size: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase;">
+        Phase 4: Collaboration & Future</h2>
+    </div>
+
+    <div class="week-card locked phase-4" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#f3e5f5; color:#6a1b9a;">WEEK 13</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#6a1b9a; text-transform:uppercase;">Phase 4</span>
+      </div>
+      <h3 class="clamp-title">Multi-agent System</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Team Dynamics: Orchestrating multiple roles</li>
+        <li><span class="lbl-pra">Prac:</span> Role-Playing Simulation: 2-agent debate</li>
+        <li><span class="lbl-dis">Dis:</span> Leadership: Managing a digital workforce</li>
+      </ul>
+      <div>
+        <span class="tag pink">Dynamics</span>
+        <span class="tag purple">Role-Playing</span>
+      </div>
+    </div>
+
+    <div class="week-card locked phase-4" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#f3e5f5; color:#6a1b9a;">WEEK 14</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#6a1b9a; text-transform:uppercase;">Phase 4</span>
+      </div>
+      <h3 class="clamp-title">Human in the Loop (HITL)</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Safety & Audit: Designing "Stop" buttons</li>
+        <li><span class="lbl-pra">Prac:</span> Audit Interface: Human approval step</li>
+        <li><span class="lbl-dis">Dis:</span> The Gatekeeper: Filtering biased agents</li>
+      </ul>
+      <div>
+        <span class="tag blue">Safety</span>
+        <span class="tag green">HITL</span>
+      </div>
+    </div>
+
+    <div class="week-card locked phase-4" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#f3e5f5; color:#6a1b9a;">WEEK 15</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#6a1b9a; text-transform:uppercase;">Phase 4</span>
+      </div>
+      <h3 class="clamp-title">Standardization & Expansion</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Connectivity: Model Context Protocol (MCP)</li>
+        <li><span class="lbl-pra">Prac:</span> Interoperability: Connecting external agents</li>
+        <li><span class="lbl-dis">Dis:</span> Sustainability: Ethical research ecosystem</li>
+      </ul>
+      <div>
+        <span class="tag orange">MCP</span>
+        <span class="tag pink">Interoperability</span>
+      </div>
+    </div>
+
+    <div class="week-card locked phase-4" onclick="showOpenSoon(this)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="week-num" style="margin:0; background:#f3e5f5; color:#6a1b9a;">WEEK 16</span>
+        <span style="font-size:0.75rem; font-weight:700; color:#6a1b9a; text-transform:uppercase;">Final</span>
+      </div>
+      <h3 class="clamp-title">Final Showcase: Demo Day</h3>
+      <ul class="card-list">
+        <li><span class="lbl-lec">Lec:</span> Live Demonstration: Agentic AI System</li>
+        <li><span class="lbl-pra">Prac:</span> The Director's Report: Reflection</li>
+        <li><span class="lbl-dis">Dis:</span> Peer-Review: Assessing AI completeness</li>
+      </ul>
+      <div>
+        <span class="tag purple">Demo</span>
+        <span class="tag blue">Report</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Colored Stats Row for Grading & Structure (Moved to bottom) -->
+  <div class="stats-row" style="margin-top: 20px; margin-bottom: 20px;">
+    <div class="stat-item">
+      <div class="stat-value" style="color: #424242;">16</div>
+      <div class="stat-label">Weeks</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" style="color: #0d47a1;">4</div>
+      <div class="stat-label">Phases</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" style="color: #e65100;">30%</div>
+      <div class="stat-label">Discussion</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" style="color: #6a1b9a;">30%</div>
+      <div class="stat-label">Proposal</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" style="color: #1b5e20;">30%</div>
+      <div class="stat-label">Demo Day</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" style="color: #d81b60;">10%</div>
+      <div class="stat-label">Attendance</div>
+    </div>
+  </div>
+
+  <footer class="landing-footer">
+    Agentic AI as R&D Collaborators &copy; 2026 UST
+  </footer>
+
+  <script>
+    const quotes = [
+      'AI will not replace researchers. Researchers using AI will replace those who don\'t. - Tom Gruber (Co-founder of Siri, Humanistic AI Advocate)',
+      'The future of science belongs to those who can direct its tools, not just build them. - Norbert Wiener (Founder of Cybernetics)',
+      'Don\'t ask what the AI can do for you. Ask what you can direct the AI to do. - John F. Kennedy (35th U.S. President, adapted from inaugural address)',
+      'A tool amplifies your strength; an agent amplifies your intellect. - Stuart Russell (UC Berkeley Professor, Co-author of Artificial Intelligence: A Modern Approach)',
+      'The limiting factor is no longer computation, but human imagination. - Demis Hassabis (CEO and Co-founder of DeepMind)',
+      'If you want to go fast, go alone. If you want to go far, go with your agents. - African Proverb (Traditional wisdom, adapted for AI context)',
+      'Agentic AI won’t think for you — it will think with you. - Sam Altman (CEO of OpenAI)',
+      'Your value as a researcher is not in how much data you have, but in how wisely you orchestrate it. - Hogeon Seo (AI Researcher, KAERI & UST Professor)',
+      'The next generation of discovery belongs to those who can collaborate with intelligence, not just create it. - Fei-Fei Li (Stanford Professor, Co-Director of the Human-Centered AI Institute)',
+      'In the age of agentic intelligence, curiosity is still the most powerful algorithm. - Yann LeCun (Chief AI Scientist at Meta, Turing Award Laureate)'
+    ];
+
+    function setRandomQuote() {
+      const container = document.getElementById('quote-container');
+      if (container) {
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        const parts = randomQuote.split(' - ');
+
+        if (parts.length === 2) {
+          container.innerHTML = `<span class="quote-text" style="font-weight: bold; font-style: normal;">${parts[0]}</span><span class="quote-author" style="display: block; font-style: italic; margin-top: 8px;">- ${parts[1]}</span>`;
+        } else {
+          container.innerHTML = `<span class="quote-text" style="font-weight: bold; font-style: normal;">${randomQuote}</span>`;
+        }
+
+        // simple fade in
+        setTimeout(() => { container.style.opacity = '1'; }, 100);
+      }
+    }
+
+    // Set the quote when the page loads
+    window.addEventListener('DOMContentLoaded', setRandomQuote);
+
+    function showOpenSoon(el) {
+      if (el.classList.contains('shake-animation')) {
+        return; // Prevent multiple clicks from breaking animation
+      }
+
+      el.classList.add('shake-animation');
+
+      let msg = el.querySelector('.open-soon-msg');
+      if (!msg) {
+        msg = document.createElement('div');
+        msg.className = 'open-soon-msg';
+        msg.innerText = 'Open Soon...🤫';
+        el.appendChild(msg);
+      }
+
+      void msg.offsetWidth;
+      msg.classList.add('show-soon');
+
+      setTimeout(() => {
+        el.classList.remove('shake-animation');
+        msg.classList.remove('show-soon');
+      }, 500);
+    }
+  </script>
+</body>
+
+</html>
