@@ -627,7 +627,6 @@ body {
 .landing-header p {
   font-size: 1.05rem;
   color: var(--text-secondary);
-  max-width: 520px;
   margin: 0 auto;
   font-weight: 400;
 }

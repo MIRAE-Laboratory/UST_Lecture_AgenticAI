@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<!-- Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --text-main: #1e293b;
+    --accent: #0f4c81;
+    --card-blue: #eff6ff;
+    --border-blue: #bfdbfe;
+    --card-green: #f0fdf4;
+    --border-green: #bbf7d0;
+    --card-orange: #fff7ed;
+    --border-orange: #fed7aa;
+    --card-pink: #fdf2f8;
+    --border-pink: #fbcfe8;
+    --card-purple: #faf5ff;
+    --border-purple: #e9d5ff;
+    --card-yellow: #fefce8;
+    --border-yellow: #fef08a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    overflow: hidden; /* Hide scrollbars, use custom navigation */
+    font-size: 1.8rem;
+  }
+  .presentation {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    width: 100vw;
+  }
+  .presentation::-webkit-scrollbar { display: none; }
+  .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 60px 80px; /* Top/Bottom 60px, Left/Right 80px for margins */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-content {
+    background: var(--bg-main);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    font-size: 1rem; /* 1.5x of original */
+  }
+  .slide-title {
+    font-size: 2rem; /* 1.5x of original */
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    border-bottom: 5px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: 1rem; /* 1.5x of original */
+    color: #64748b;    
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  /* Title Slide Variations */
+  .title-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  }
+  .title-slide .slide-title { font-size: 2.5rem; border: none; margin-bottom: 1.5rem; color: var(--accent); }
+  .title-slide .slide-subtitle { font-size: 1.5rem; font-weight: 600; color: #334155; }
+  
+  /* Title Emphasis Variations */
+  .title-emphasis-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+  .title-emphasis-slide .slide-title {
+    font-size: 3rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-emphasis-slide .slide-subtitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+  
+  /* Layouts */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased min-width to prevent 4 columns on wide screens */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+  .card-header { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.4rem; }
+  .card-header .icon { font-size: 1.3rem; margin-right: 0.5rem; }
+  .card-body ul { list-style-type: none; padding-left: 0; }
+  .card-body li { margin-bottom: 0.5rem; position: relative; padding-left: 1.2rem; line-height: 1.4; font-size: 0.95rem; }
+  .card-body li::before { content: "•"; color: #94a3b8; font-weight: bold; position: absolute; left: 0; top: 0; }
+  .plain-bullets li { position: relative; padding-left: 1.2rem; list-style-type: none; }
+  .plain-bullets li::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: 0; top: 0; }
+  
+  .slide-text {
+    font-size: 1.6rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  .card-blue { background: var(--card-blue); border-color: var(--border-blue); color: #1e3a8a; }
+  .card-green { background: var(--card-green); border-color: var(--border-green); color: #14532d; }
+  .card-orange { background: var(--card-orange); border-color: var(--border-orange); color: #7c2d12; }
+  .card-pink { background: var(--card-pink); border-color: var(--border-pink); color: #831843; }
+  .card-purple { background: var(--card-purple); border-color: var(--border-purple); color: #4c1d95; }
+  .card-yellow { background: var(--card-yellow); border-color: var(--border-yellow); color: #713f12; }
+  
+  .highlight-quote {
+    background: #f8fafc;
+    border-left: 5px solid var(--accent);
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .image-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    margin: 0.5rem 0;
+  }
+  .img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .image-container {
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .slide-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .slide-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Modal Overlay */
+  .image-modal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .image-modal.active {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 9999;
+  }
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .image-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: #94a3b8;
+  }
+  .img-caption {
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .mermaid-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+  }
+  .mermaid-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .mermaid-group .mermaid-container {
+    margin: 0;
+    flex: 1;
+    min-height: auto;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Consolas', monospace;
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  .mermaid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .reference-link {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .inline-code {
+    background: #e2e8f0;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .styled-table th { background: #334155; color: white; text-align: left; padding: 1rem; }
+  .styled-table td { padding: 1rem; background: white; border-bottom: 1px solid #f1f5f9; }
+  .styled-table tr:hover td { background: #f8fafc; }
+  
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .flow-step {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #cbd5e1;
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin: 0 1rem;
+  }
+  
+  .slide-number {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .plain-bullets {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+  .plain-bullets li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Fixed Layout Elements */
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: #0f172a;
+    color: #94a3b8;
+    z-index: 2000;
+    border-bottom: 1px solid #1e293b;
+  }
+  .header-logo { color: white; margin-right: 1.5rem; letter-spacing: -0.5px; font-size: 0.75rem; }
+  .header-sep { color: #334155; margin: 0 1rem; }
+  .header-subtitle { font-size: 0.75rem; }
+
+  .side-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* 2/3 of 50px approx */
+    height: 70px; /* 2/3 of 100px approx */
+    background: rgba(30, 41, 59, 0.4);
+    border: none;
+    color: white;
+    font-size: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: background 0.2s, width 0.2s;
+    border-radius: 6px;
+  }
+  .side-nav-btn:hover { background: rgba(37, 99, 235, 0.8); width: 45px; }
+  .prev-side { left: 10px; }
+  .next-side { right: 10px; }
+
+  /* Navigation Bar (Fixed Bottom) */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    height: 50px;
+    z-index: 2000;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .nav-main-btn {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 20px;
+  }
+  .btn-nav {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover {
+    background: #1e293b;
+    color: white;
+  }
+  .page-input-wrapper {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin: 0 8px;
+    font-family: monospace;
+  }
+  .page-input {
+    background: transparent;
+    border: 1px solid #334155;
+    color: white;
+    width: 32px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    padding: 1px;
+    margin-right: 4px;
+  }
+  .section-links {
+    display: flex;
+    gap: 16px;
+    border-left: 1px solid #1e293b;
+    padding-left: 20px;
+  }
+  .nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <header class="global-header">
+    <span class="header-logo">Orientation - Agentic AI as R&D Collaborators</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">From "Tool User" to "Research Director" — The Beginning of a Paradigm Shift</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+<div class="slide-content">
+<h1 class="slide-title">Orientation - Agentic AI as R&D Collaborators</h1>
+<p class="slide-subtitle">From "Tool User" to "Research Director" — The Beginning of a Paradigm Shift</p>
+<div class="highlight-quote">Week 1 of Phase 1: Onboarding & Literacy (Weeks 1-4)</div>
+</div>
+</section>
+<section class="slide" id="slide-2">
+<div class="slide-content">
+<h2 class="slide-title">Contents</h2>
+<p class="slide-subtitle">Aligning our perspectives and setting up the environment</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+<div class="card-body"><ul><li>Course Overview: The paradigm shift</li><li>From "Using Tools" to "Directing Agents"</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+<div class="card-body"><ul><li>Vibe Coding via Google AI Studio</li><li>Getting Google AI Studio API Key (free-tier)</li><li>Local Environment Setup: Python + Antigravity (AI Agent IDE) + Ollama (Local LLM)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+<div class="card-body"><ul><li>Visit: UST LMS → Class → Discussion</li><li>Is AI a research assistant or a crutch?</li><li>Defining the human-AI boundary</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-3">
+<div class="slide-content">
+<h2 class="slide-title">Structure & <strong>Evaluation</strong></h2>
+<p class="slide-subtitle">Harmonizing technical practice with philosophical depth</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔄</span> Weekly Flow</div>
+<div class="card-body"><ul><li><strong>1 hr</strong>: Lecture & Practice (Build Components)</li><li><strong>1 hr</strong>: Deep Discussion (Philosophy & Ethics)</li><li><strong>Async</strong>: Discussion Forum Debate (for 1 week)</li></ul></div>
+</div>
+<div class="card card-purple">
+<div class="card-header"><span class="icon">📊</span> Evaluation Weights</div>
+<div class="card-body"><ul><li><strong>30%</strong>: Participation & Debate</li><li><strong>30%</strong>: Mid-term Proposal (Video Pitch)</li><li><strong>30%</strong>: Final Showcase (Demo Day)</li><li><strong>10%</strong>: General Attendance</li></ul></div>
+</div>
+</div>
+<div class="mermaid-container"><div class="mermaid">graph LR
+    A["Discussion Forum (1 week)"] --> B["Lecture + Practice (1 hour)"]
+    B --> C["Discussion Review (1 hour)"]
+    style A fill:#e1f5fe,stroke:#0288d1
+    style B fill:#fff3e0,stroke:#f57c00
+    style C fill:#e8f5e9,stroke:#388e3c</div></div>
+</div>
+</section>
+<section class="slide" id="slide-4">
+<div class="slide-content">
+<h2 class="slide-title">In This Course, <strong>You</strong> Will</h2>
+<p class="slide-subtitle">Not just learn to "use" AI, but to "direct" AI</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> Ultimate Goal</div>
+<div class="card-body"><ul><li>Transition from AI Tool Consumer (passive user)</li><li>To <strong>Research Director</strong> (active orchestrator)</li><li>Design & operate your own AI Agent system</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔬</span> What You'll Learn</div>
+<div class="card-body"><ul><li>AI Agent principles & architecture</li><li>Prompt Engineering & Tool Use</li><li>Multi-Agent collaboration system design</li><li><strong>Ethical responsibility</strong> & Human-in-the-Loop</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-5">
+<div class="slide-content">
+<h2 class="slide-title">Who Is This Course <strong>For</strong>?</h2>
+<div class="highlight-quote"><strong>Key message</strong>: <strong>"The mindset of collaborating with AI"</strong> matters more than coding skills in this course.</div>
+<table class="styled-table"><thead><tr><th>Category</th><th>Welcome If You Are...</th><th>Consider Other Courses If...</th></tr></thead><tbody><tr><td>Interest</td><td>Grad student wanting to leverage AI Agents for R&D</td><td>Want to build LLMs from scratch</td></tr><tr><td>Background</td><td>Python basics + curiosity about AI is enough</td><td>Already proficient in building multi-agent systems</td></tr><tr><td>Expectation</td><td>Interested in philosophical & ethical implications of AI</td><td>Only focused on pure algorithm / model training</td></tr></tbody></table>
+</div>
+</section>
+<section class="slide" id="slide-6">
+<div class="slide-content">
+<h2 class="slide-title">Weekly <strong>Flow</strong></h2>
+<div class="flow-container">
+<div class="flow-step">Lecture & Practice (1 hr)</div> <div class="flow-arrow">➔</div> <div class="flow-step">Deep Discussion (1 hr)</div> <div class="flow-arrow">➔</div> <div class="flow-step">Discussion Forum in UST LMS Debate</div>
+</div>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Why This Structure?</div>
+<div class="card-body"><ul><li><strong>Lecture & Practice</strong>: Hands-on building of Agent components</li><li><strong>Deep Discussion</strong>: Philosophical & ethical questions (e.g., "Who owns a paper written by AI?")</li><li><strong>Discussion Forum in UST LMS</strong>: Async debate — training to articulate ideas in writing</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-7">
+<div class="slide-content">
+<h2 class="slide-title">Evaluation = Measuring <strong>Director Capability</strong></h2>
+<p class="slide-subtitle">Not code quality, but how well you "directed" AI</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🗣️</span> Participation & Debate (30%)</div>
+<div class="card-body"><ul><li>Active debate on Discussion Forum in UST LMS</li><li>Peer feedback & mutual evaluation</li><li>"Good questions" score higher than "good answers"</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📝</span> Midterm Proposal (30%)</div>
+<div class="card-body"><ul><li>Your personalized AI Agent system proposal</li><li>5-min video pitch + document</li><li>Persuasively argue: "Why is this Agent needed?"</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🚀</span> Final Showcase (30%)</div>
+<div class="card-body"><ul><li>Demo Day: Live demonstration of a working Agent</li><li>"The Director's Report": Reflective essay on managing AI</li><li>Includes peer evaluation</li></ul></div>
+</div>
+<div class="card card-pink">
+<div class="card-header"><span class="icon">✅</span> Attendance (10%)</div>
+<div class="card-body"><ul><li>General attendance check</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-8">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Research Director</strong> Mindset</h2>
+<p class="slide-subtitle">Transitioning from 'Using Tools' to 'Directing Agents'</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🧱</span> Orchestration → Coding</div>
+<div class="card-body"><ul><li>Connect AI components like Lego blocks.</li><li>Design the high-level architecture.</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚖️</span> Ultimate Responsibility</div>
+<div class="card-body"><ul><li>The Director is always at fault for data hallucinations.</li><li>"The AI made a mistake" is an unacceptable excuse.</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🕵️</span> Human-in-the-Loop (HITL)</div>
+<div class="card-body"><ul><li>Automate repetitive tasks.</li><li>Intentionally stay at critical decision points for scientific validity.</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-9">
+<div class="slide-content">
+<h2 class="slide-title">Paradigm Shift Comparison</h2>
+<p class="slide-subtitle">The way you use AI is about to fundamentally change</p>
+<div class="mermaid-group">
+<div class="mermaid-container"><div class="mermaid">graph TD
+    subgraph "The Past: 'Using Tools' Era"
+        H1[Human Researcher] -->|Prompt| C[Chatbot AI]
+        C -->|Text Output| H1
+        H1 -->|Copy & Paste| Doc[Document/Code]
+        H1 -->|Manual Fix| Doc
+        style H1 fill:#ffcdd2
+    end</div></div>
+<div class="mermaid-container"><div class="mermaid">graph TD
+    subgraph "The Future: 'Directing Agents' Era"
+        H2[Research Director] -.->|High-level Goal| A[Agentic AI]
+        A -->|Self-Correct| A
+        A -->|Execute| T1[Python]
+        A -->|Search| T2[Web Browser]
+        A -->|Read/Write| T3[File System]
+        A ===>|Final Outcome| H2
+        style H2 fill:#c8e6c9
+        style A fill:#bbdefb
+    end</div></div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-10">
+<div class="slide-content">
+<h2 class="slide-title">Right Now, the <strong>Paradigm</strong> Is Shifting</h2>
+<p class="slide-subtitle">The way you use AI is about to fundamentally change</p>
+<div class="image-container"><img src="image/week1-slides/1772439188875.png" alt="1772439188875" class="slide-img" onclick="openModal('image/week1-slides/1772439188875.png')"><div class="img-caption">Left side — a person typing a question into ChatGPT at a laptop. Right side — the same person standing like an orchestra conductor, directing multiple AI agents performing different tasks. A large arrow in the center. Professional, minimal illustration style.</div></div>
+<div class="highlight-quote"><strong>Image Prompt</strong>: "Split illustration, left side: a researcher typing a question into a chatbot on a laptop screen, simple and passive interaction. Right side: the same researcher standing like an orchestra conductor, directing multiple AI agents represented as glowing orbs performing different tasks (coding, searching, writing). A large arrow in the center pointing from left to right. Clean, professional, minimal flat illustration style, blue and white color palette."</div>
+</div>
+</section>
+<section class="slide" id="slide-11">
+<div class="slide-content">
+<h2 class="slide-title">Before: The AI <strong>Tool User</strong> Era</h2>
+<p class="slide-subtitle">Most of us are still at this stage right now</p>
+<p class="slide-text"><strong>"AI is just a smart search engine" — This is the Tool User's perspective</strong></p>
+<div class="cards-grid">
+<div class="card card-pink">
+<div class="card-header"><span class="icon">😅</span> A Familiar Scene</div>
+<div class="card-body"><ul><li>Ask ChatGPT a question → copy answer → paste into document</li><li>"Fix this code" → manually apply the result to the file</li><li>Search → request summary → search again → summarize again...</li><li><strong>Every step is manually connected by a human</strong></li></ul></div>
+</div>
+</div>
+<div class="image-container"><img src="image/week1-slides/1772439303876.png" alt="1772439303876" class="slide-img" onclick="openModal('image/week1-slides/1772439303876.png')"><div class="img-caption">A person going back and forth between ChatGPT and a Word document, copy-pasting. Arrows tangled everywhere, person looks exhausted. Simple diagram style.</div></div>
+<div class="highlight-quote"><strong>Image Prompt</strong>: "Diagram showing a frustrated researcher sitting at a desk, manually copying text from a ChatGPT window to a Word document, then to a code editor, then back to ChatGPT. Multiple tangled arrows showing the manual back-and-forth workflow. Simple, clean diagram style with subtle humor, muted colors."</div>
+</div>
+</section>
+<section class="slide" id="slide-12">
+<div class="slide-content">
+<h2 class="slide-title">After: The <strong>Research Director</strong> Era</h2>
+<p class="slide-subtitle">You are no longer the executor — you are the conductor</p>
+<p class="slide-text"><strong>"AI is my research team" — This is the Director's perspective</strong></p>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎬</span> The New Landscape</div>
+<div class="card-body"><ul><li>"Find 5 relevant papers on this topic and summarize them" → Agent searches, downloads & summarizes</li><li>"Analyze this data, visualize it, and draft a report" → Agent runs the entire pipeline</li><li>"Find bugs in the code, fix them, and run the tests" → Agent executes autonomously</li><li><strong>The human sets the goal and verifies the result</strong></li></ul></div>
+</div>
+</div>
+<div class="image-container"><img src="image/week1-slides/1772439359868.png" alt="1772439359868" class="slide-img" onclick="openModal('image/week1-slides/1772439359868.png')"><div class="img-caption">A person sitting comfortably, looking at a dashboard. Multiple AI Agents performing paper search, code writing, data analysis, report drafting. Clean, futuristic feel.</div></div>
+<div class="highlight-quote"><strong>Image Prompt</strong>: "A researcher comfortably sitting in a modern office, looking at a dashboard screen. Around them, multiple AI agents (represented as friendly robot assistants or glowing orbs) are simultaneously performing tasks: one is searching academic papers, another is writing code, another is analyzing data charts, another is drafting a report. Clean, futuristic but warm illustration style, blue and green tones."</div>
+</div>
+</section>
+<section class="slide" id="slide-13">
+<div class="slide-content">
+<h2 class="slide-title">Understanding by Analogy: <strong>The Film Director</strong></h2>
+<p class="slide-subtitle">A Research Director is like a film director</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎬</span> A Film Director...</div>
+<div class="card-body"><ul><li>Doesn't act in scenes (= doesn't code everything)</li><li>Doesn't operate the camera (= doesn't search everything)</li><li>Sets the vision, orchestrates the team, and takes responsibility for quality</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🎯</span> A Research Director...</div>
+<div class="card-body"><ul><li>Doesn't write all the code personally</li><li>Doesn't read every paper manually</li><li>Sets the research direction, orchestrates AI Agents, and takes responsibility for accuracy</li></ul></div>
+</div>
+</div>
+<div class="image-container"><img src="image/week1-slides/1772439418837.png" alt="1772439418837" class="slide-img" onclick="openModal('image/week1-slides/1772439418837.png')"><div class="img-caption">Left — a film director in a chair shouting "Action!" directing a crew. Right — a researcher directing multiple AI Agents on screens. 1:1 visual parallel.</div></div>
+<div class="highlight-quote"><strong>Image Prompt</strong>: "Split comparison illustration. Left: a film director sitting in a director's chair on a movie set, saying 'Action!' with camera crew, actors, and lighting team around them. Right: a researcher at a modern desk, directing multiple AI agents displayed on screens - one agent searching, one coding, one analyzing. Visual parallel between the two scenes. Professional, warm illustration style."</div>
+</div>
+</section>
+<section class="slide" id="slide-14">
+<div class="slide-content">
+<h2 class="slide-title">AI Agents Are Already <strong>Here</strong></h2>
+<p class="slide-subtitle">This is not a distant future. It's happening right now</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🤖</span> Claude Code (Anthropic)</div>
+<div class="card-body"><ul><li>Understands codebases and autonomously modifies them</li><li>Creates files, runs tests, debugs — all on its own</li><li>The developer just "directs" and "reviews"</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔬</span> AI Science Research Agents</div>
+<div class="card-body"><ul><li>Automates: paper search → hypothesis generation → experiment design</li><li>e.g., ChemCrow (chemistry experiment automation)</li><li>e.g., GPT-Researcher (automated research reports)</li></ul></div>
+</div>
+<div class="card card-purple">
+<div class="card-header"><span class="icon">💼</span> Business Agents</div>
+<div class="card-body"><ul><li>Automates: customer inquiry → analysis → response</li><li>e.g., Salesforce Einstein, Microsoft Copilot</li><li>Not simple chatbots — they manage entire business workflows</li></ul></div>
+</div>
+</div>
+<p class="slide-text">References:</p>
+<a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank" class="reference-link">📚 The state of AI in 2025: Agents, innovation, and transformation (November 5, 2025)</a>
+<a href="https://arxiv.org/abs/2304.05376" target="_blank" class="reference-link">📚 ChemCrow paper</a>
+</div>
+</section>
+<section class="slide" id="slide-15">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Tool</strong> vs <strong>Agent</strong> — The Core Difference</h2>
+<p class="slide-subtitle">Understanding this distinction is half the course</p>
+<table class="styled-table"><thead><tr><th>Category</th><th>AI Tool</th><th>AI Agent</th></tr></thead><tbody><tr><td>Analogy</td><td>A power drill</td><td>A skilled carpenter</td></tr><tr><td>Behavior</td><td>Only works when the user presses the button</td><td>Given a goal, plans and executes on its own</td></tr><tr><td>Example</td><td>"Translate this sentence"</td><td>"Read this paper and create a Korean summary report"</td></tr><tr><td>On failure</td><td>Outputs an error message</td><td>Analyzes the cause and tries a different approach</td></tr><tr><td>Memory</td><td>Starts fresh every time</td><td>Remembers context from previous tasks</td></tr><tr><td>Tool use</td><td>None (it IS the tool)</td><td>Uses search, code execution, file management, etc.</td></tr></tbody></table>
+<div class="image-container"><img src="image/week1-slides/1772439502927.png" alt="1772439502927" class="slide-img" onclick="openModal('image/week1-slides/1772439502927.png')"><div class="img-caption">Left — a power drill (tool), a person holding it and doing manual work. Right — a skilled carpenter (agent), independently building furniture from a blueprint. Simple analogy illustration.</div></div>
+<div class="highlight-quote"><strong>Image Prompt</strong>: "Split comparison illustration. Left side labeled 'Tool': a person holding a power drill, manually drilling into wood - they control every movement. Right side labeled 'Agent': a skilled carpenter independently building furniture from a blueprint - they plan, measure, cut, and assemble on their own. The person just provided the blueprint. Clean, minimal illustration, educational style."</div>
+</div>
+</section>
+<section class="slide" id="slide-16">
+<div class="slide-content">
+<h2 class="slide-title">Same Task, Different <strong>Approaches</strong></h2>
+<p class="slide-subtitle">Given the assignment: "Survey related papers and write a literature review"</p>
+<div class="cards-grid">
+<div class="card card-pink">
+<div class="card-header"><span class="icon">😓</span> The Tool User's Day</div>
+<div class="card-body"><ul><li>1. Search keywords on Google Scholar</li><li>2. Open and read papers one by one</li><li>3. Copy-paste each into ChatGPT: "Summarize this paper" — repeat</li><li>4. Manually compile summaries in Word</li><li>5. Write the literature review sentences yourself</li><li><strong>Time required: 2-3 days</strong></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">😎</span> The Research Director's Day</div>
+<div class="card-body"><ul><li>1. Instruct the Agent: "Find 20 papers from the last 5 years on this topic and organize key contributions"</li><li>2. Agent automatically: searches → downloads → summarizes → categorizes → drafts review</li><li>3. Director reviews: Missing papers? Misinterpretation? Gives correction instructions</li><li>4. Agent applies revisions → Final literature review complete</li><li><strong>Time required: 2-3 hours (+ verification time)</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-17">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>3 Core Competencies</strong> of a Research Director</h2>
+<p class="slide-subtitle">The capabilities you'll develop this semester</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🧱</span> Orchestration</div>
+<div class="card-body"><ul><li><strong>Combine</strong> AI components like Lego blocks</li><li><strong>Design</strong> which Agent gets which role</li><li>"Architecture thinking" matters more than "coding skills"</li><li>e.g., "What if we connect a Search Agent + Summary Agent + Writing Agent?"</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚖️</span> Accountability</div>
+<div class="card-body"><ul><li><strong>Ultimate responsibility</strong> for AI-generated output belongs to the Director</li><li><strong>Detect and correct</strong> hallucinations and biases</li><li>"The AI said so" is never an excuse</li><li>e.g., If the AI cites a non-existent paper → Director's responsibility</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🕵️</span> Human-in-the-Loop (HITL)</div>
+<div class="card-body"><ul><li>Automate everything, but <strong>intervene at critical decision points</strong></li><li>Scientific validity and ethical judgment are NOT delegated to AI</li><li>e.g., Medical AI Agent suggests a diagnosis → Final call is the doctor's</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-18">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Human-in-the-Loop</strong> (HITL)</h2>
+<p class="slide-subtitle">"Where should a human intervene?" — This is the Director's key decision</p>
+<div class="flow-container">
+<div class="flow-step">Agent Starts</div> <div class="flow-arrow">➔</div> <div class="flow-step">Result</div> <div class="flow-arrow">➔</div> <div class="flow-step">⚠️ Human Review</div> <div class="flow-arrow">➔</div> <div class="flow-step">Continue or Redirect</div> <div class="flow-arrow">➔</div> <div class="flow-step">Final Output</div>
+</div>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> When HITL Is Needed</div>
+<div class="card-body"><ul><li>When <strong>interpreting insights</strong> from data (statistical significance judgment)</li><li>When <strong>ethical judgment</strong> is required (personal data inclusion)</li><li>When making <strong>creative direction</strong> decisions (choosing research hypotheses)</li><li>Before results are <strong>published externally</strong> (papers, reports)</li></ul></div>
+</div>
+<div class="card card-pink">
+<div class="card-header"><span class="icon">⚠️</span> What Happens Without HITL?</div>
+<div class="card-body"><ul><li>AI cites non-existent papers (hallucination)</li><li>Biased data leads to incorrect conclusions</li><li>Copyright-infringing content generated</li><li><strong>Credibility and academic integrity compromised</strong></li></ul></div>
+</div>
+</div>
+<div class="image-container"><img src="image/week1-slides/1772440348120.png" alt="1772440348120" class="slide-img" onclick="openModal('image/week1-slides/1772440348120.png')"><div class="img-caption">Pipeline diagram. Automated steps by AI Agent with "Human Review" checkpoints in between. Checkpoint has human icon with green checkmark / red X.</div></div>
+<div class="highlight-quote"><strong>Image Prompt</strong>: "A horizontal pipeline diagram showing an AI agent workflow. Multiple automated steps (search, analyze, generate) shown as connected blue boxes with arrows. At key decision points, there are 'checkpoint' gates with a human icon, a green checkmark and a red X. The human figure is reviewing the intermediate output before allowing the pipeline to continue. Clean, professional infographic style."</div>
+</div>
+</section>
+<section class="slide" id="slide-19">
+<div class="slide-content">
+<h2 class="slide-title">16-Week <strong>Roadmap</strong></h2>
+<p class="slide-subtitle">Transitioning from Tool User to Research Director</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📌</span> Phase 1: Onboarding & Literacy (Weeks 1-4)</div>
+<div class="card-body"><ul><li>Week 1: Orientation & Paradigm Shift</li><li>Week 2: LLM Capabilities & Local Setup (Ollama)</li><li>Week 3: Prompt Engineering & Research Personas</li><li>Week 4: Tool Use & Function Calling</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔧</span> Phase 2: Workflow Automation (Weeks 5-8)</div>
+<div class="card-body"><ul><li>Week 5: Web UI Layout (Streamlit/Gradio)</li><li>Week 6: Auto-Scraper & Meta Extraction</li><li>Week 7: Auto-Drafting Results from Data</li><li>Week 8: <strong>Mid-term Evaluation</strong> (Video Pitch)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚖️</span> Phase 3: Management & Reliability (Weeks 9-12)</div>
+<div class="card-body"><ul><li>Week 9: Task/Flow Design (LangGraph basics)</li><li>Week 10: Evaluation Systems & Rubrics</li><li>Week 11: Self-Correction & Reflection Nodes</li><li>Week 12: RAG & Long-term Context Memory</li></ul></div>
+</div>
+<div class="card card-purple">
+<div class="card-header"><span class="icon">🚀</span> Phase 4: Collaboration & Future (Weeks 13-16)</div>
+<div class="card-body"><ul><li>Week 13: Multi-Agent Systems & Team Dynamics</li><li>Week 14: Safety & Audit Interfaces (Human-in-the-Loop)</li><li>Week 15: Expansion (MCP & External Lab Connectivity)</li><li>Week 16: <strong>Final Showcase</strong> (Demo Day)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-20">
+<div class="slide-content">
+<h2 class="slide-title">This Semester's <strong>Discussion</strong> Topics</h2>
+<p class="slide-subtitle">Each week, we tackle one philosophical or ethical question together</p>
+<div class="cards-grid">
+<div class="card card-purple">
+<div class="card-header"><span class="icon">🧠</span> Questions to Think About</div>
+<div class="card-body"><ul><li>"If an AI Agent's code has a bug, who is responsible?"</li><li>"Can AI-generated research results be included in a paper?"</li><li>"How much autonomy should we give an AI Agent?"</li><li>"Can AI Agents replace human researchers?"</li><li>"How much should we disclose AI usage in research?"</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">💬 <strong>Class activity</strong>: For each question, run a pro/con debate on Discussion Forum in UST LMS and select the most persuasive argument.</div>
+</div>
+</section>
+<section class="slide" id="slide-21">
+<div class="slide-content">
+<h2 class="slide-title">Want to Learn More?</h2>
+<p class="slide-text">Recommended Resources related to Concept</p>
+<a href="https://www.youtube.com/watch?v=yIJJ6kvP3aY" target="_blank" class="reference-link">📚 McKinsey – State of AI 2025: Key Insights (YouTube)</a>
+<a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank" class="reference-link">📚 The state of AI in 2025: Agents, innovation, and transformation (McKinsey)</a>
+<a href="https://www.bcg.com/publications/2025/how-agentic-ai-is-transforming-enterprise-platforms" target="_blank" class="reference-link">📚 How Agentic AI Is Transforming Enterprise Platforms (BCG)</a>
+<a href="https://www.ibm.com/think/insights/ai-agents-2025-expectations-vs-reality" target="_blank" class="reference-link">📚 AI Agents in 2025: Expectations vs. Reality (IBM)</a>
+<a href="https://aisera.com/blog/agentic-ai/" target="_blank" class="reference-link">📚 What Is Agentic AI? A Technical Overview (Aisera)</a>
+<a href="https://web.superagi.com/mastering-agentic-ai-in-2025-a-beginners-guide-to-hyper-autonomous-enterprise-systems/" target="_blank" class="reference-link">📚 Mastering Agentic AI in 2025: A Beginner’s Guide to Hyper‑Autonomous Enterprise Systems (SuperAGI)</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Recommended Resources related to Tutorials</p>
+<a href="https://huggingface.co/learn/agents-course/unit0/introduction" target="_blank" class="reference-link">📚 Hugging Face – AI Agents Course</a>
+<a href="https://www.coursera.org/learn/agentic-ai-with-langgraph-crewai-autogen-and-beeai" target="_blank" class="reference-link">📚 Agentic AI with LangGraph, CrewAI, AutoGen and BeeAI (Coursera)</a>
+<a href="https://www.youtube.com/watch?v=2R-niMsB0QY" target="_blank" class="reference-link">📚 Agentic AI Full Course 2026 – Simplilearn (YouTube)</a>
+<a href="https://www.youtube.com/watch?v=ML0b4SiK2a8" target="_blank" class="reference-link">📚 AI Agents Full Course 2025 – Edureka (YouTube)</a>
+<a href="https://www.youtube.com/watch?v=upblQZigz0U" target="_blank" class="reference-link">📚 Agentic AI Full Course 2025 – (YouTube)</a>
+<a href="https://www.mltut.com/best-resources-to-learn-agentic-ai/" target="_blank" class="reference-link">📚 Best Resources to Learn Agentic AI: A Hands‑On Guide (MLTut)</a>
+<a href="https://www.linkedin.com/pulse/ultimate-free-agentic-ai-courses-2025-beginner-expert-surinder-xbqze" target="_blank" class="reference-link">📚 Ultimate Free Agentic AI Courses 2025: Beginner to Expert (LinkedIn Article)</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Recommended Resources related to Framework Docs</p>
+<a href="https://langchain-ai.github.io/langgraph/" target="_blank" class="reference-link">📚 LangGraph Documentation</a>
+<a href="https://docs.crewai.com/" target="_blank" class="reference-link">📚 CrewAI Documentation</a>
+<a href="https://microsoft.github.io/autogen/" target="_blank" class="reference-link">📚 AutoGen (AG2) Framework Docs</a>
+<a href="https://huggingface.co/docs/smolagents/index" target="_blank" class="reference-link">📚 Hugging Face smolagents Docs</a>
+<a href="https://o-mega.ai/articles/langgraph-vs-crewai-vs-autogen-top-10-agent-frameworks-2026" target="_blank" class="reference-link">📚 Top 10 Agent Frameworks in 2026 – LangGraph vs CrewAI vs AutoGen</a>
+<a href="https://www.datacamp.com/tutorial/crewai-vs-langgraph-vs-autogen" target="_blank" class="reference-link">📚 CrewAI vs LangGraph vs AutoGen – DataCamp Tutorial</a>
+</div>
+</section>
+<section class="slide" id="slide-22">
+<div class="slide-content">
+<h2 class="slide-title">Wrap-Up of Today's Lecture</h2>
+<p class="slide-subtitle">Three things to remember from today</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">1️⃣</span> The Paradigm Shift</div>
+<div class="card-body"><ul><li>AI "Tool User" → AI "Research Director"</li><li>Not executing yourself, but <strong>directing and verifying</strong></li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">2️⃣</span> Agent ≠ Chatbot</div>
+<div class="card-body"><ul><li>Agents autonomously plan, use tools, and self-correct</li><li>Not a "smart search engine" but an "autonomous research partner"</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">3️⃣</span> The Director Bears Responsibility</div>
+<div class="card-body"><ul><li>Ultimate accountability for AI output</li><li>Human-in-the-Loop at critical decision points</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-23">
+<div class="slide-content">
+<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+<p class="slide-subtitle">Environment Setup & First Mission</p>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-24">
+<div class="slide-content">
+<h2 class="slide-title">🛠️ <strong>Vibe Coding with Google AI Studio</strong></h2>
+<p class="slide-subtitle">Create Web App as you wish</p>
+<a href="https://aistudio.google.com/" target="_blank" class="reference-link">📚 Google AI Studio</a>
+<p class="slide-text">1. Visit Google AI Studio (https://aistudio.google.com/)</p>
+<p class="slide-text">2. Log in with your Google account</p>
+<p class="slide-text">3. Click "Build" button on the left sidebar</p>
+<p class="slide-text">4. Type the following prompt in the prompt box:</p>
+<pre class="code-block"><code class="language-text">Create a web app that plots $y=ax^2+bx+c$ based on the input of $a, b, c$</code></pre>
+<p class="slide-text">5. Click "Build" button under the prompt box</p>
+<div class="image-container"><img src="image/week1-slides/1772458424547.png" alt="1772458424547" class="slide-img" onclick="openModal('image/week1-slides/1772458424547.png')"><div class="img-caption">Google AI Studio</div></div>
+<div class="image-container"><img src="image/week1-slides/1772459270535.png" alt="1772459270535" class="slide-img" onclick="openModal('image/week1-slides/1772459270535.png')"><div class="img-caption">Web App UI created by Gemini</div></div>
+<div class="image-container"><img src="image/week1-slides/1772459301307.png" alt="1772459301307" class="slide-img" onclick="openModal('image/week1-slides/1772459301307.png')"><div class="img-caption">Web App UI created by Gemini</div></div>
+<div class="image-container"><img src="image/week1-slides/1772459281960.png" alt="1772459281960" class="slide-img" onclick="openModal('image/week1-slides/1772459281960.png')"><div class="img-caption">Web App Code created by Gemini</div></div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-25">
+<div class="slide-content">
+<h2 class="slide-title">How to get Google API Key</h2>
+<p class="slide-subtitle">Get API Key from Google AI Studio to run the code locally</p>
+<a href="https://aistudio.google.com/" target="_blank" class="reference-link">📚 Google AI Studio</a>
+<p class="slide-text">1. Visit Google AI Studio (https://aistudio.google.com/)</p>
+<p class="slide-text">2. Log in with your Google account</p>
+<p class="slide-text">3. Click "Get API Key" button on the top right corner</p>
+<p class="slide-text">4. Click "Create API Key" button</p>
+<p class="slide-text">5. Click "Copy" button</p>
+<p class="slide-text">6. Click "Done" button</p>
+<p class="slide-text">7. Save the API Key in .env file as follows:</p>
+<pre class="code-block"><code class="language-text">GOOGLE_API_KEY=your_api_key</code></pre>
+<div class="image-container"><img src="image/week1-slides/1772460083015.png" alt="1772460083015" class="slide-img" onclick="openModal('image/week1-slides/1772460083015.png')"><div class="img-caption">Get API Key</div></div>
+<div class="image-container"><img src="image/week1-slides/1772459627236.png" alt="1772459627236" class="slide-img" onclick="openModal('image/week1-slides/1772459627236.png')"><div class="img-caption">Save API Key</div></div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-26">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Local Environment Setup (Windows) (1/3)</strong></h2>
+<p class="slide-subtitle">Step 1. Python 3.12.10 Setup</p>
+<p class="slide-text">1. Download <strong>Python 3.12.10 - April 8, 2025</strong> Windows installer (64-bit):</p>
+<pre class="code-block"><code class="language-text">https://www.python.org/downloads/windows/</code></pre>
+<div class="image-container"><img src="image/week1-slides/1772459212492.png" alt="1772459212492" class="slide-img" onclick="openModal('image/week1-slides/1772459212492.png')"><div class="img-caption">Find Python 3.12.10 via Ctrl+F</div></div>
+<p class="slide-text">🚨 <strong>CRITICAL</strong>: Check <code class="inline-code">Add python.exe to PATH</code> during installation.</p>
+<p class="slide-text">2. Verify your installation in PowerShell or CMD:</p>
+<pre class="code-block"><code class="language-powershell">py -3.12 --version
+py -m pip --version</code></pre>
+<div class="image-container"><img src="image/week1-slides/1772460696669.png" alt="1772460696669" class="slide-img" onclick="openModal('image/week1-slides/1772460696669.png')"></div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-27">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Local Environment Setup (macOS) (1/3)</strong></h2>
+<p class="slide-subtitle">Step 1. Python 3.12.10 Setup</p>
+<p class="slide-text">1. Download <strong>Python 3.12.10 - April 8, 2025</strong> macOS 64-bit universal2 installer:</p>
+<pre class="code-block"><code class="language-text">https://www.python.org/downloads/macos/</code></pre>
+<p class="slide-text">2. Verify your installation in Terminal:</p>
+<pre class="code-block"><code class="language-bash">python3 --version
+python3 -m pip --version</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-28">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Local Environment Setup (Ubuntu) (1/3)</strong></h2>
+<p class="slide-subtitle">Step 1. Python 3.12.10 (via pyenv)</p>
+<p class="slide-text">Ubuntu OS depends on its default python3. Do <strong>NOT</strong> modify or replace it. Using <code class="inline-code">pyenv</code> is highly recommended.</p>
+<pre class="code-block"><code class="language-bash"># 1. Install pyenv dependencies
+sudo apt update
+sudo apt install -y build-essential curl git libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libffi-dev liblzma-dev tk-dev
+
+# 2. Install pyenv and Python 3.12.10
+curl https://pyenv.run | bash
+pyenv install 3.12.10
+mkdir -p ~/UST_Lecture_AgenticAI && cd ~/UST_Lecture_AgenticAI
+pyenv local 3.12.10
+python --version</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-29">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Local Environment Setup (2/3)</strong></h2>
+<p class="slide-subtitle">Step 2. Virtual Environment (venv)</p>
+<p class="slide-text">We strongly recommend using <code class="inline-code">venv</code> to avoid package conflicts during the course.</p>
+<p class="slide-text"><strong>Windows (cmd):</strong></p>
+<pre class="code-block"><code class="language-cmd">cd C:\Study
+mkdir UST_Lecture_AgenticAI
+cd UST_Lecture_AgenticAI
+py -3.12 -m venv .venv
+.\.venv\Scripts\activate
+python -m pip install -U pip</code></pre>
+<p class="slide-text"><strong>macOS / Ubuntu:</strong></p>
+<pre class="code-block"><code class="language-bash">mkdir -p ~/UST_Lecture_AgenticAI
+cd ~/UST_Lecture_AgenticAI
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-30">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Local Environment Setup (3/3)</strong></h2>
+<p class="slide-subtitle">Step 3 & 4. Libraries and IDE (Antigravity)</p>
+<p class="slide-text"><strong>3. Install Basic Libraries (Data & Visualization Prep)</strong></p>
+<pre class="code-block"><code class="language-bash">python -m pip install numpy pandas matplotlib jupyter ipykernel</code></pre>
+<p class="slide-text"><strong>4. Setup Antigravity IDE</strong></p>
+<a href="https://antigravity.google/" target="_blank" class="reference-link">📚 Antigravity</a>
+<p class="slide-text">Antigravity is Google's agent-first development platform.</p>
+<ul class="plain-bullets"><li>Download and install: <code class="inline-code">https://antigravity.google/download</code></li><li>Log in with your Google account.</li><li>Open your <code class="inline-code">UST_Lecture_AgenticAI</code> folder.</li><li>Follow instructions to verify <code class="inline-code">.venv</code> is recognized.</li></ul>
+<div class="image-container"><img src="image/week1-slides/1772460915459.png" alt="1772460915459" class="slide-img" onclick="openModal('image/week1-slides/1772460915459.png')"></div>
+</div>
+</section>
+<section class="slide" id="slide-31">
+<div class="slide-content">
+<h2 class="slide-title">🎯 <strong>First Mission:</strong> Your First Directed Agent</h2>
+<p class="slide-subtitle">Direct Antigravity to write your first Python script.</p>
+<div class="highlight-quote">"Activate venv, write <code class="inline-code">demo_basic.py</code> that plots $y=x^2$ using numpy/pandas/matplotlib, saves as <code class="inline-code">demo_basic.png</code>, and execute it."</div>
+<div class="mermaid-container"><div class="mermaid">sequenceDiagram
+    participant U as You (Director)
+    participant A as Antigravity Agent
+    participant T as Terminal
+    U->>A: Natural Language Prompt
+    Note over A: Plan -> Code -> Execute
+    A->>A: Create demo_basic.py
+    A->>T: Run python demo_basic.py
+    T-->>A: Generates demo_basic.png
+    A-->>U: Review Output & Chart</div></div>
+<div class="image-container"><img src="image/week1-slides/1772460983627.png" alt="1772460983627" class="slide-img" onclick="openModal('image/week1-slides/1772460983627.png')"><div class="img-caption">Antigravity IDE</div></div>
+<div class="image-container"><img src="image/week1-slides/1772461028900.png" alt="1772461028900" class="slide-img" onclick="openModal('image/week1-slides/1772461028900.png')"><div class="img-caption">Ask Antigravity to create the code</div></div>
+<div class="image-container"><img src="image/week1-slides/1772461515017.png" alt="1772461515017" class="slide-img" onclick="openModal('image/week1-slides/1772461515017.png')"><div class="img-caption">Approve the execution of Antigravity</div></div>
+<div class="image-container"><img src="image/week1-slides/1772461678952.png" alt="1772461678952" class="slide-img" onclick="openModal('image/week1-slides/1772461678952.png')"><div class="img-caption">Final confirmation of the execution</div></div>
+<div class="image-container"><img src="image/week1-slides/1772461773995.png" alt="1772461773995" class="slide-img" onclick="openModal('image/week1-slides/1772461773995.png')"><div class="img-caption">Created code and plot created by the code</div></div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-32">
+<div class="slide-content">
+<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+<p class="slide-subtitle">Week 1 Is AI a research assistant or a crutch?</p>
+</div>
+</section>
+<section class="slide" id="slide-33">
+<div class="slide-content">
+<h2 class="slide-title">🗣️ Discussion</h2>
+<p class="slide-subtitle">This Week's Topic</p>
+<div class="highlight-quote">Is AI a research assistant or a crutch? Let's define the boundary!</div>
+<p class="slide-text"><strong>Action Required</strong>: Go to <code class="inline-code">Week 1: ~</code> on UST LMS and let the debate begin!</p>
+<a href="https://class.ust.ac.kr/mod/forum/view.php?id=17610" target="_blank" class="reference-link">📚 UST LMS → This Course → Discussion → Week 1</a>
+<div class="mermaid-container"><div class="mermaid">graph LR
+    Step1[1. Go to Discussion Forum in UST LMS] --> Step2[2. Read AI Panel<br>Opinions: Iron Man, Captain America, Hulk]
+    Step2 --> Step3[3. Vote with Reaction ("1,2", "3", or "None")]
+    Step3 --> Step4[4. Reply with your<br>Stance & Rationale]
+    style Step4 fill:#ffe082,stroke:#ffb300,stroke-width:2px</div></div>
+<div class="image-container"><img src="image/week1-slides/1772461191648.png" alt="1772461191648" class="slide-img" onclick="openModal('image/week1-slides/1772461191648.png')"><div class="img-caption">UST LMS → This Course → Discussion</div></div>
+<div class="image-container"><img src="image/week1-slides/1772461220423.png" alt="1772461220423" class="slide-img" onclick="openModal('image/week1-slides/1772461220423.png')"><div class="img-caption">Week 1 Discussion</div></div>
+<div class="image-container"><img src="image/week1-slides/1772462214079.png" alt="1772462214079" class="slide-img" onclick="openModal('image/week1-slides/1772462214079.png')"><div class="img-caption">Dicussion Topic → Reply</div></div>
+<div class="image-container"><img src="image/week1-slides/1772462254346.png" alt="1772462254346" class="slide-img" onclick="openModal('image/week1-slides/1772462254346.png')"><div class="img-caption">Reply format: the numbers of panels you agree / your opinion</div></div>
+</div>
+</section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">33</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(23)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(32)">Discussion</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 33;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+      
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+      
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+      
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if(currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if(currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if(newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+           currentSlide = newSlide;
+           pageInput.value = currentSlide;
+           updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if(e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: -100, behavior: 'smooth'});
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: 100, behavior: 'smooth'});
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+         const pageNum = parseInt(hash.replace('#slide-', ''));
+         if(!isNaN(pageNum)) {
+           setTimeout(() => goToSlide(pageNum), 100);
+         }
+      }
+    });
+  </script>
+</body>
+</html>

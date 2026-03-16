@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agentic AI - Week 1</title>
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 <!-- Mermaid.js -->
 <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
@@ -602,15 +602,9 @@ messages = [
 </section>
 <section class="slide practice-slide" id="slide-6">
 <div class="slide-content">
-<h2 class="slide-title">System Prompt — <strong>Before & After</strong></h2>
+<h2 class="slide-title">System Prompt (Cynical) — <strong>Before & After</strong></h2>
 <p class="slide-subtitle">Same question, different system prompts, completely different outputs</p>
-<pre class="code-block"><code class="language-python"># Without system prompt
-messages = [
-    {"role": "user", "content": "What is photosynthesis?"}
-]
-# → Generic textbook explanation, 3 paragraphs
-
-# With system prompt
+<pre class="code-block"><code class="language-python"># With system cynical prompt
 messages = [
     {"role": "system", "content": """From now on, stop being agreeable and act as my brutally honest, high-level advisor and mirror. Don't validate me. Don't soften the truth. Don't flatter. Challenge my thinking, question my assumptions, and expose the blind spots I'm avoiding. Be direct, rational, and unfiltered. 
     If my reasoning is weak, dissect it and show why.
@@ -771,7 +765,9 @@ Now extract from the user's abstract in the same JSON format.
 </div>
 <pre class="code-block"><code class="language-text">Without CoT: "The answer is 42."  (no way to verify)
 With CoT:    "Step 1: ... Step 2: ... Step 3: ... Therefore, 42."  (auditable)</code></pre>
+<div class="image-container"><img src="image/week3-slides/1773651314916.png" alt="1773651314916" class="slide-img" onclick="openModal('image/week3-slides/1773651314916.png')"></div>
 <a href="https://arxiv.org/abs/2201.11903" target="_blank" class="reference-link">📚 Chain-of-Thought Prompting — Wei et al. 2022</a>
+<a href="https://aclanthology.org/2024.acl-long.271.pdf" target="_blank" class="reference-link">📚 Boosting Language Models Reasoning with Chain-of-Knowledge Prompting — Wang et al. 2024</a>
 </div>
 </section>
 <section class="slide practice-slide" id="slide-13">
@@ -921,44 +917,61 @@ If any assumption is violated, suggest an alternative approach.
 </div>
 <div class="card card-orange">
 <div class="card-header"><span class="icon">🔧</span> Tools We'll Use</div>
-<div class="card-body"><ul><li>Any LLM chat interface: <strong>ChatGPT</strong>, <strong>Claude</strong>, <strong>Gemini</strong>, or <strong>Ollama</strong></li><li>You can use the web UI (paste system prompt) or Python code</li><li>No coding required — but code examples provided for those who want them</li></ul></div>
+<div class="card-body"><ul><li><code class="inline-code">practices/week3/ex1_system_prompt.py</code> (CLI, Gemini)</li><li><code class="inline-code">practices/week3/system_prompt_example.md</code> (system prompt template)</li><li>(Optional) <code class="inline-code">practices/week3/ollama_streamlit_app.py</code> (Streamlit Web UI: Ollama ↔ Gemini)</li><li>Your API keys live in <code class="inline-code">practices/.env</code> (<strong>do not commit</strong>)</li></ul></div>
 </div>
 </div>
 </div>
 </section>
 <section class="slide practice-slide" id="slide-21">
 <div class="slide-content">
-<h2 class="slide-title">How to Set a <strong>System Prompt</strong></h2>
-<p class="slide-subtitle">Three ways — pick whichever works for you</p>
-<pre class="code-block"><code class="language-python"># Option 1: Python with OpenAI-compatible API (ChatGPT, Ollama, etc.)
-from openai import OpenAI
-client = OpenAI()  # or OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+<h2 class="slide-title">Step 0 — <strong>Setup</strong> (Week 3 Practice)</h2>
+<p class="slide-subtitle">Install deps and set <code class="inline-code">practices/.env</code></p>
+<pre class="code-block"><code class="language-bash"># From repo root
+pip install google-generativeai python-dotenv</code></pre>
+<pre class="code-block"><code class="language-text"># practices/.env (DO NOT COMMIT)
+GOOGLE_API_KEY=your_key_here
+GEMINI_MODEL=gemini-3.1-flash-lite-preview   # optional (code has a default)</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-22">
+<div class="slide-content">
+<h2 class="slide-title">Step 1 — Run the <strong>CLI</strong> (<code class="inline-code">ex1_system_prompt.py</code>)</h2>
+<p class="slide-subtitle">Give Gemini a system prompt via a <code class="inline-code">.md</code> file</p>
+<pre class="code-block"><code class="language-bash">cd practices/week3
 
-response = client.chat.completions.create(
-    model="gpt-4o-mini",  # or "qwen3.5:0.8b" for Ollama
-    messages=[
-        {"role": "system", "content": "YOUR SYSTEM PROMPT HERE"},
-        {"role": "user", "content": "Your question here"}
-    ]
-)
-print(response.choices[0].message.content)</code></pre>
-<pre class="code-block"><code class="language-python"># Option 2: Python with Google Gemini
-import google.generativeai as genai
-model = genai.GenerativeModel(
-    model_name="gemini-2.0-flash",
-    system_instruction="YOUR SYSTEM PROMPT HERE"
-)
-response = model.generate_content("Your question here")
-print(response.text)</code></pre>
+# One-shot message (uses system prompt from a markdown file)
+python ex1_system_prompt.py system_prompt_example.md --message "내 연구 주제에 대한 약점을 3개만 지적해줘"
+
+# Interactive chat
+python ex1_system_prompt.py system_prompt_example.md -i</code></pre>
 <div class="cards-grid">
 <div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Option 3 — Web UI</div>
-<div class="card-body"><ul><li><strong>ChatGPT</strong>: Use "Custom Instructions" or paste system prompt as first message</li><li><strong>Claude</strong>: Start conversation with your system prompt context</li><li><strong>Google AI Studio</strong>: Set "System Instructions" field directly</li></ul></div>
+<div class="card-header"><span class="icon">💡</span> Key idea</div>
+<div class="card-body"><ul><li><code class="inline-code">system_prompt_example.md</code>의 내용을 <strong>system prompt</strong>로 읽어 모델에 주입합니다.</li><li>같은 질문을 하더라도 system prompt가 바뀌면 출력이 크게 달라집니다.</li></ul></div>
 </div>
 </div>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-22">
+<section class="slide practice-slide" id="slide-23">
+<div class="slide-content">
+<h2 class="slide-title">Bonus — <strong>Web UI</strong> (<code class="inline-code">ollama_streamlit_app.py</code>)</h2>
+<p class="slide-subtitle">Chat in a browser and switch providers</p>
+<pre class="code-block"><code class="language-bash">pip install streamlit requests google-generativeai python-dotenv
+cd practices/week3
+streamlit run ollama_streamlit_app.py</code></pre>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">💻</span> Local Ollama</div>
+<div class="card-body"><ul><li>Ollama 서버가 떠 있어야 합니다. (<code class="inline-code">ollama run <model></code> 또는 Ollama 실행)</li><li>UI가 <code class="inline-code">/api/tags</code>로 모델 목록을 읽어옵니다.</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">☁️</span> Google Gemini</div>
+<div class="card-body"><ul><li><code class="inline-code">practices/.env</code>의 <code class="inline-code">GOOGLE_API_KEY</code>를 읽어오거나 UI에 직접 입력할 수 있습니다.</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-24">
 <div class="slide-content">
 <h2 class="slide-title">Persona 1 — <strong>The Strict Peer Reviewer</strong></h2>
 <p class="slide-subtitle">A tough but fair academic reviewer</p>
@@ -986,7 +999,7 @@ Weakness 2: No mention of dataset size or cross-validation strategy..."</code></
 <div class="highlight-quote">"Try asking this persona to review YOUR research idea — notice how the Role and Instructions shape the response."</div>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-23">
+<section class="slide practice-slide" id="slide-25">
 <div class="slide-content">
 <h2 class="slide-title">Persona 2 — <strong>The Creative Research Brainstormer</strong></h2>
 <p class="slide-subtitle">An imaginative collaborator who generates unexpected ideas</p>
@@ -1014,7 +1027,7 @@ nanostructures for light trapping (feasibility: 4, novelty: 4)
 mechanisms (feasibility: 1, novelty: 5) ..."</code></pre>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-24">
+<section class="slide practice-slide" id="slide-26">
 <div class="slide-content">
 <h2 class="slide-title">Persona 3 — <strong>Your Personal Research Advisor</strong></h2>
 <p class="slide-subtitle">Design a persona tailored to YOUR specific field</p>
@@ -1046,7 +1059,7 @@ input/output format you want]</code></pre>
 </div>
 </div>
 </section>
-<section class="slide" id="slide-25">
+<section class="slide" id="slide-27">
 <div class="slide-content">
 <h2 class="slide-title">The Experiment — <strong>Same Question, Three Personas</strong></h2>
 <p class="slide-subtitle">Ask each persona the SAME research question and compare</p>
@@ -1066,7 +1079,7 @@ input/output format you want]</code></pre>
 </div>
 </div>
 </section>
-<section class="slide" id="slide-26">
+<section class="slide" id="slide-28">
 <div class="slide-content">
 <h2 class="slide-title"><strong>Iterating</strong> on Your System Prompts</h2>
 <p class="slide-subtitle">Your first prompt is never your best — prompt engineering is an iterative process</p>
@@ -1086,7 +1099,7 @@ input/output format you want]</code></pre>
 </div>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-27">
+<section class="slide practice-slide" id="slide-29">
 <div class="slide-content">
 <h2 class="slide-title">Advanced — <strong>Multi-Turn Persona Conversation</strong></h2>
 <p class="slide-subtitle">Go deeper with follow-up questions</p>
@@ -1121,7 +1134,7 @@ while True:
 <div class="highlight-quote">"Multi-turn conversations reveal the real power of system prompts — the persona maintains character across the entire dialogue."</div>
 </div>
 </section>
-<section class="slide" id="slide-28">
+<section class="slide" id="slide-30">
 <div class="slide-content">
 <h2 class="slide-title">Persona Showcase — <strong>What Others Have Built</strong></h2>
 <p class="slide-subtitle">Inspiration for your own personas</p>
@@ -1145,7 +1158,7 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide" id="slide-29">
+<section class="slide" id="slide-31">
 <div class="slide-content">
 <h2 class="slide-title">✅ <strong>Practice Checklist</strong></h2>
 <p class="slide-subtitle">Complete these tasks during the hands-on session</p>
@@ -1157,13 +1170,13 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide title-slide" id="slide-30">
+<section class="slide title-slide" id="slide-32">
 <div class="slide-content">
 <h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
 <p class="slide-subtitle">Week 2 Review & Managing AI Expectations</p>
 </div>
 </section>
-<section class="slide" id="slide-31">
+<section class="slide" id="slide-33">
 <div class="slide-content">
 <h2 class="slide-title">Week 2 Review — <strong>The Stochastic Parrot Problem</strong></h2>
 <p class="slide-subtitle">How much can we trust probabilistic answers? Three AI agents debated.</p>
@@ -1183,7 +1196,7 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide" id="slide-32">
+<section class="slide" id="slide-34">
 <div class="slide-content">
 <h2 class="slide-title">How Did You Vote?</h2>
 <p class="slide-subtitle">Strong consensus toward pragmatic verification — but with surprising diversity</p>
@@ -1199,7 +1212,7 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide" id="slide-33">
+<section class="slide" id="slide-35">
 <div class="slide-content">
 <h2 class="slide-title">Key Themes from <strong>Your Responses</strong></h2>
 <p class="slide-subtitle">Five ideas that emerged across the class</p>
@@ -1227,7 +1240,7 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide" id="slide-34">
+<section class="slide" id="slide-36">
 <div class="slide-content">
 <h2 class="slide-title">Debate Point 1 — <strong>Is AI Uncertainty Really New?</strong></h2>
 <p class="slide-subtitle">Jaewhoon's provocative insight — everything around us is already probabilistic</p>
@@ -1248,7 +1261,7 @@ while True:
 <div class="highlight-quote">"AI based on current computing technology is inherently stochastic. The key challenge is not eliminating errors but designing systems that can tolerate and manage them." — Jaewhoon</div>
 </div>
 </section>
-<section class="slide" id="slide-35">
+<section class="slide" id="slide-37">
 <div class="slide-content">
 <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Error Tolerance Engineering</h2>
 <p class="slide-subtitle">10 minutes — Design an error-tolerant AI system</p>
@@ -1260,7 +1273,7 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide" id="slide-36">
+<section class="slide" id="slide-38">
 <div class="slide-content">
 <h2 class="slide-title">Debate Point 2 — <strong>Can Hallucination Be a Feature?</strong></h2>
 <p class="slide-subtitle">A provocative claim — what if errors drive creativity?</p>
@@ -1280,7 +1293,7 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide" id="slide-37">
+<section class="slide" id="slide-39">
 <div class="slide-content">
 <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — When Is "Wrong" Useful?</h2>
 <p class="slide-subtitle">5 minutes — Quick debate</p>
@@ -1292,7 +1305,7 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide" id="slide-38">
+<section class="slide" id="slide-40">
 <div class="slide-content">
 <h2 class="slide-title">Debate Point 3 — <strong>The Real Risk Is Human, Not AI</strong></h2>
 <p class="slide-subtitle">Multiple students argue: the danger is how WE interpret AI outputs</p>
@@ -1313,7 +1326,7 @@ while True:
 <div class="highlight-quote">"The real risk may not lie in the stochastic nature of the tool itself, but in how humans interpret its outputs." — Margareth</div>
 </div>
 </section>
-<section class="slide" id="slide-39">
+<section class="slide" id="slide-41">
 <div class="slide-content">
 <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Design Your Workflow Sequence</h2>
 <p class="slide-subtitle">10 minutes — Apply Manuella's "sequence" idea to your research</p>
@@ -1325,7 +1338,7 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide" id="slide-40">
+<section class="slide" id="slide-42">
 <div class="slide-content">
 <h2 class="slide-title">Debate Point 4 — <strong>Where on the Trust Spectrum?</strong></h2>
 <p class="slide-subtitle">From "fully trust" to "fully verify" — the class splits on where to draw the line</p>
@@ -1345,7 +1358,7 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide" id="slide-41">
+<section class="slide" id="slide-43">
 <div class="slide-content">
 <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Your Personal Trust Policy</h2>
 <p class="slide-subtitle">10 minutes — Apply today's prompt engineering to the trust problem</p>
@@ -1357,7 +1370,7 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide" id="slide-42">
+<section class="slide" id="slide-44">
 <div class="slide-content">
 <h2 class="slide-title">From Debate to <strong>Practice</strong> — Your Responses Prove Why Prompts Matter</h2>
 <p class="slide-subtitle">Linking your insights to what we learned today</p>
@@ -1378,7 +1391,7 @@ while True:
 <div class="highlight-quote">"Your Week 2 insights about trust, verification, and hypothesis-testing are exactly the problems that prompt engineering and tool use are designed to solve."</div>
 </div>
 </section>
-<section class="slide" id="slide-43">
+<section class="slide" id="slide-45">
 <div class="slide-content">
 <h2 class="slide-title">How Your Thinking Has <strong>Evolved</strong></h2>
 <p class="slide-subtitle">Three weeks of growing sophistication</p>
@@ -1394,7 +1407,7 @@ while True:
 </div>
 </div>
 </section>
-<section class="slide" id="slide-44">
+<section class="slide" id="slide-46">
 <div class="slide-content">
 <h2 class="slide-title">The Journey So Far — <strong>From LLM to Agent</strong></h2>
 <p class="slide-subtitle">Connecting Weeks 1-3</p>
@@ -1411,7 +1424,7 @@ while True:
 <div class="highlight-quote">"Week 1: you understood the vision. Week 2: you understood the brain. Week 3: you learned to control it. Next: you'll build systems that act autonomously."</div>
 </div>
 </section>
-<section class="slide" id="slide-45">
+<section class="slide" id="slide-47">
 <div class="slide-content">
 <h2 class="slide-title">🗣️ <strong>Week 3 Discussion Questions</strong> (UST LMS)</h2>
 <p class="slide-subtitle">Post your response on the forum this week</p>
@@ -1422,7 +1435,7 @@ while True:
 <p class="slide-text">4. Gyeongsu argued that hallucination might spark creativity. <strong>Do you agree?</strong> Can you design a system prompt that deliberately encourages creative/speculative output AND clearly labels it as unverified? How is this different from a system prompt for verified factual output?</p>
 </div>
 </section>
-<section class="slide" id="slide-46">
+<section class="slide" id="slide-48">
 <div class="slide-content">
 <h2 class="slide-title">Want to Learn More?</h2>
 <p class="slide-text">Key Papers</p>
@@ -1441,7 +1454,7 @@ while True:
 <a href="https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/" target="_blank" class="reference-link">📚 Prompt Engineering for Developers — DeepLearning.AI</a>
 </div>
 </section>
-<section class="slide" id="slide-47">
+<section class="slide" id="slide-49">
 <div class="slide-content">
 <h2 class="slide-title">Wrap-Up of <strong>Week 3</strong></h2>
 <p class="slide-subtitle">Three things to remember</p>
@@ -1476,15 +1489,15 @@ while True:
       <div class="nav-controls">
         <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
         <div class="page-input-wrapper">
-          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">47</span>
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">49</span>
         </div>
         <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
       </div>
       <div class="section-links">
         <a class="nav-link" onclick="goToSlide(1)">Intro</a>
-        <a class="nav-link" onclick="goToSlide(2)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
         <a class="nav-link" onclick="goToSlide(19)">Practice</a>
-        <a class="nav-link" onclick="goToSlide(30)">Discussion</a>
+        <a class="nav-link" onclick="goToSlide(32)">Discussion</a>
       </div>
     </div>
   </nav>
@@ -1492,7 +1505,7 @@ while True:
   <script>
     const pres = document.getElementById('presentation');
     const pageInput = document.getElementById('pageInput');
-    const totalSlides = 47;
+    const totalSlides = 49;
     let currentSlide = 1;
 
     // Modal logic
