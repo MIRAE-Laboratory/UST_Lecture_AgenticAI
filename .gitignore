@@ -2,3 +2,4 @@
 *.py
 *.env
 .claude/
+keep/
