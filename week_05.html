@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- Mermaid.js -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  </script>
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --text-main: #1e293b;
+      --accent: #0f4c81;
+      --card-blue: #eff6ff;
+      --border-blue: #bfdbfe;
+      --card-green: #f0fdf4;
+      --border-green: #bbf7d0;
+      --card-orange: #fff7ed;
+      --border-orange: #fed7aa;
+      --card-pink: #fdf2f8;
+      --border-pink: #fbcfe8;
+      --card-purple: #faf5ff;
+      --border-purple: #e9d5ff;
+      --card-yellow: #fefce8;
+      --border-yellow: #fef08a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body,
+    html {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: var(--text-main);
+      overflow: hidden;
+      /* Hide scrollbars, use custom navigation */
+      font-size: 1.8rem;
+    }
+
+    .presentation {
+      display: flex;
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .presentation::-webkit-scrollbar {
+      display: none;
+    }
+
+    .slide {
+      scroll-snap-align: start;
+      flex: 0 0 100vw;
+      height: 100vh;
+      padding: 60px 80px;
+      /* Top/Bottom 60px, Left/Right 80px for margins */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .slide-content {
+      background: var(--bg-main);
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+      padding: 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      font-size: 1rem;
+      /* 1.5x of original */
+    }
+
+    .slide-title {
+      font-size: 2rem;
+      /* 1.5x of original */
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+      border-bottom: 5px solid var(--accent);
+      padding-bottom: 0.5rem;
+      display: inline-block;
+      line-height: 1.2;
+    }
+
+    .slide-subtitle {
+      font-size: 1rem;
+      /* 1.5x of original */
+      color: #64748b;
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+    }
+
+    /* Title Slide Variations */
+    .title-slide .slide-content {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, #ffffff, #f1f5f9);
+    }
+
+    .title-slide .slide-title {
+      font-size: 2.5rem;
+      border: none;
+      margin-bottom: 1.5rem;
+      color: var(--accent);
+    }
+
+    .title-slide .slide-subtitle {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    /* Title Emphasis Variations */
+    .title-emphasis-slide .slide-content {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f8fafc;
+    }
+
+    .title-emphasis-slide .slide-title {
+      font-size: 3rem;
+      border: none;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .title-emphasis-slide .slide-subtitle {
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #cbd5e1;
+    }
+
+    /* Layouts */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      /* Increased min-width to prevent 4 columns on wide screens */
+      gap: 1.5rem;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .card {
+      border-radius: 12px;
+      padding: 1.25rem;
+      border: 1px solid #e2e8f0;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .card-header {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding-bottom: 0.4rem;
+    }
+
+    .card-header .icon {
+      font-size: 1.3rem;
+      margin-right: 0.5rem;
+    }
+
+    .card-body ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .card-body li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.2rem;
+      line-height: 1.4;
+      font-size: 0.95rem;
+    }
+
+    .card-body li::before {
+      content: "•";
+      color: #94a3b8;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .plain-bullets li {
+      position: relative;
+      padding-left: 1.2rem;
+      list-style-type: none;
+    }
+
+    .plain-bullets li::before {
+      content: "•";
+      color: var(--accent);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .slide-text {
+      font-size: 1.6rem;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .card-blue {
+      background: var(--card-blue);
+      border-color: var(--border-blue);
+      color: #1e3a8a;
+    }
+
+    .card-green {
+      background: var(--card-green);
+      border-color: var(--border-green);
+      color: #14532d;
+    }
+
+    .card-orange {
+      background: var(--card-orange);
+      border-color: var(--border-orange);
+      color: #7c2d12;
+    }
+
+    .card-pink {
+      background: var(--card-pink);
+      border-color: var(--border-pink);
+      color: #831843;
+    }
+
+    .card-purple {
+      background: var(--card-purple);
+      border-color: var(--border-purple);
+      color: #4c1d95;
+    }
+
+    .card-yellow {
+      background: var(--card-yellow);
+      border-color: var(--border-yellow);
+      color: #713f12;
+    }
+
+    .highlight-quote {
+      background: #f8fafc;
+      border-left: 5px solid var(--accent);
+      padding: 1.5rem;
+      font-size: 1rem;
+      font-style: italic;
+      margin: 0.5rem 0;
+      border-radius: 0 8px 8px 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .image-placeholder {
+      background: #f1f5f9;
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      color: #64748b;
+      margin: 0.5rem 0;
+    }
+
+    .img-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.5;
+    }
+
+    .image-container {
+      margin: 0.5rem 0;
+      text-align: center;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .slide-img {
+      max-width: 100%;
+      max-height: 50vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+
+    .slide-img:hover {
+      transform: scale(1.02);
+    }
+
+    /* Modal Overlay */
+    .image-modal {
+      display: flex;
+      visibility: hidden;
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9000;
+      background-color: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(5px);
+      justify-content: center;
+      align-items: center;
+      cursor: zoom-out;
+      opacity: 0;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .image-modal.active {
+      visibility: visible;
+      pointer-events: auto;
+      opacity: 1;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      max-width: 95vw;
+      max-height: 95vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .image-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10000;
+      line-height: 1;
+    }
+
+    .close-modal:hover {
+      color: #94a3b8;
+    }
+
+    .img-caption {
+      font-size: 0.95rem;
+      color: #475569;
+      font-style: italic;
+      max-width: 80%;
+      line-height: 1.5;
+    }
+
+    .mermaid-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      margin: 1rem auto;
+    }
+
+    .mermaid-container {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      margin: 0.5rem auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .mermaid-group .mermaid-container {
+      margin: 0;
+      flex: 1;
+      min-height: auto;
+    }
+
+    .code-block {
+      background: #1e293b;
+      color: #f8fafc;
+      padding: 0.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Consolas', monospace;
+      margin: 0.5rem 0;
+      white-space: pre-wrap;
+      line-height: 1.4;
+    }
+
+    .mermaid {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .mermaid svg {
+      max-width: 100% !important;
+      height: auto !important;
+    }
+
+    .reference-link {
+      font-size: 0.9rem;
+      color: #475569;
+      background: #e2e8f0;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 1rem;
+      margin-right: 0.5rem;
+    }
+
+    .inline-code {
+      background: #e2e8f0;
+      color: #dc2626;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.9em;
+    }
+
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .styled-table th {
+      background: #334155;
+      color: white;
+      text-align: left;
+      padding: 1rem;
+    }
+
+    .styled-table td {
+      padding: 1rem;
+      background: white;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .styled-table tr:hover td {
+      background: #f8fafc;
+    }
+
+    .flow-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .flow-step {
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      color: #0f172a;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      border: 1px solid #cbd5e1;
+    }
+
+    .flow-arrow {
+      font-size: 1.5rem;
+      color: #94a3b8;
+      margin: 0 1rem;
+    }
+
+    .slide-number {
+      position: absolute;
+      bottom: 2rem;
+      right: 2.5rem;
+      font-size: 0.9rem;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .plain-bullets {
+      margin: 1rem 0;
+      padding-left: 2rem;
+    }
+
+    .plain-bullets li {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+
+    /* Fixed Layout Elements */
+    .global-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      background: #0f172a;
+      color: #94a3b8;
+      z-index: 2000;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .header-logo {
+      color: white;
+      margin-right: 1.5rem;
+      letter-spacing: -0.5px;
+      font-size: 0.75rem;
+    }
+
+    .header-sep {
+      color: #334155;
+      margin: 0 1rem;
+    }
+
+    .header-subtitle {
+      font-size: 0.75rem;
+    }
+
+    .side-nav-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 35px;
+      /* 2/3 of 50px approx */
+      height: 70px;
+      /* 2/3 of 100px approx */
+      background: rgba(30, 41, 59, 0.4);
+      border: none;
+      color: white;
+      font-size: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      transition: background 0.2s, width 0.2s;
+      border-radius: 6px;
+    }
+
+    .side-nav-btn:hover {
+      background: rgba(37, 99, 235, 0.8);
+      width: 45px;
+    }
+
+    .prev-side {
+      left: 10px;
+    }
+
+    .next-side {
+      right: 10px;
+    }
+
+    /* Navigation Bar (Fixed Bottom) */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #0f172a;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 2rem;
+      height: 50px;
+      z-index: 2000;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .nav-main-btn {
+      background: #1e293b;
+      color: white;
+      border: 1px solid #334155;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.75rem;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 2px;
+      margin-right: 20px;
+    }
+
+    .btn-nav {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.75rem;
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: 3px;
+      transition: all 0.2s;
+    }
+
+    .btn-nav:hover {
+      background: #1e293b;
+      color: white;
+    }
+
+    .page-input-wrapper {
+      display: flex;
+      align-items: center;
+      color: #64748b;
+      font-size: 0.75rem;
+      margin: 0 8px;
+      font-family: monospace;
+    }
+
+    .page-input {
+      background: transparent;
+      border: 1px solid #334155;
+      color: white;
+      width: 32px;
+      text-align: center;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      padding: 1px;
+      margin-right: 4px;
+    }
+
+    .section-links {
+      display: flex;
+      gap: 16px;
+      border-left: 1px solid #1e293b;
+      padding-left: 20px;
+    }
+
+    .nav-link {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="global-header">
+    <span class="header-logo">Designing AI Agent Applications</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">From Idea to Specification — Building What Your Research Actually Needs</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+      <div class="slide-content">
+        <h1 class="slide-title">Designing AI Agent Applications</h1>
+        <p class="slide-subtitle">From Idea to Specification — Building What Your Research Actually Needs</p>
+        <div class="highlight-quote">Week 5 of Phase 2: Building Real Systems (Weeks 5-8)</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title">Contents</h2>
+        <p class="slide-subtitle">Lecture, Practice, and Discussion for Week 5</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>Specifying AI Applications — What to define before you code</li>
+                <li>The 5 questions every AI app must answer</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Build a Multi-PDF Research Assistant (Streamlit)</li>
+                <li>PDF upload, selective context, preset prompts, custom prompt save/load</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 4 Review & Midterm Project Briefing</li>
+                <li>Design YOUR app — specification due by midterm</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="slide-title">Phase 2 — From <strong>Literacy</strong> to <strong>Building</strong></h2>
+        <p class="slide-subtitle">You understand AI. Now what will you BUILD with it?</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📚</span> Phase 1 Recap (Weeks 1-4)</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 1: What is Agentic AI? (the Research Director metaphor)</li>
+                <li>Week 2: How LLMs work (capabilities, limits, hallucination)</li>
+                <li>Week 3: System prompts (RICE, personas, Chain-of-Thought)</li>
+                <li>Week 4: Function calling (tools, ReAct loop, agent architecture)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🏗️</span> Phase 2 Goal (Weeks 5-8)</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Design and build</strong> a working AI agent application</li>
+                <li>Not a demo — a tool you can <strong>actually use</strong> in your research</li>
+                <li>Midterm deliverable: <strong>specification document + working prototype + 5-min demo</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🎯</span> Today's Key Insight</div>
+            <div class="card-body">
+              <ul>
+                <li>The first building skill is NOT coding — it's <strong>specification</strong></li>
+                <li>What problem? For whom? What features? How does the human interact?</li>
+                <li>A clear spec makes coding 10x easier; a vague spec makes it impossible</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"An unspecified AI app is just a chatbot with a custom system prompt. Specification
+          is what turns it into a product."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title">5 Questions Every AI App <strong>Must Answer</strong></h2>
+        <p class="slide-subtitle">Before you write a single line of code</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> 1. Problem / Purpose</div>
+            <div class="card-body">
+              <ul>
+                <li>What problem does this app solve?</li>
+                <li>Who suffers without it? What is painful about the current workflow?</li>
+                <li>Be specific: "I spend 3 hours comparing papers manually" not "research is hard"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">👤</span> 2. Target Users</div>
+            <div class="card-body">
+              <ul>
+                <li>Who will actually use this? (you? your lab? external researchers?)</li>
+                <li>What is their technical skill level?</li>
+                <li>What context do they work in? (lab, office, field, mobile?)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔧</span> 3. Core Features</div>
+            <div class="card-body">
+              <ul>
+                <li>What does the app <strong>actually do</strong>? List 3-5 concrete functions</li>
+                <li>Each feature = a verb: "upload", "compare", "generate", "search", "summarize"</li>
+                <li>Prioritize: what is the <strong>MVP</strong> (minimum viable product)?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">🤝</span> 4. Human-AI Interaction Flow</div>
+            <div class="card-body">
+              <ul>
+                <li>When does the <strong>human</strong> act? When does the <strong>AI</strong> act?</li>
+                <li>What <strong>triggers</strong> the AI? (button click, text input, automatic?)</li>
+                <li>What requires <strong>human approval</strong> before the AI proceeds?</li>
+                <li>This is where Week 4's "Director's Role" discussion becomes concrete</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">📊</span> 5. Expected Outcomes</div>
+            <div class="card-body">
+              <ul>
+                <li>What does <strong>success</strong> look like? How do you measure it?</li>
+                <li>"Reduces paper comparison time from 3 hours to 15 minutes"</li>
+                <li>"Generates 5 novel research ideas per session, with 2+ being feasible"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title">The Specification Document <strong>Template</strong></h2>
+        <p class="slide-subtitle">This is exactly what you'll submit for midterm</p>
+        <pre class="code-block"><code class="language-markdown"># App Name: [Your App Name]
+
+## 1. Problem Statement
+What problem does this solve? Why does it matter?
+Who currently suffers from this problem, and how?
+
+## 2. Target Users
+Who will use this? What is their skill level?
+What is their context (research field, tools they already use)?
+
+## 3. Core Features
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| Feature 1 | What it does | Must-have |
+| Feature 2 | What it does | Must-have |
+| Feature 3 | What it does | Nice-to-have |
+
+## 4. Human-AI Interaction Flow
+[Diagram or step-by-step description]
+- Step 1: Human does X → Step 2: AI does Y → Step 3: Human reviews → ...
+
+## 5. Technical Approach
+- LLM: Gemini / Ollama / OpenAI
+- Framework: Streamlit / Gradio
+- Key libraries: [list]
+- Data: [what data does the app need?]
+
+## 6. Success Criteria
+How do you know the app works? What does "good" look like?</code></pre>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> This Template = Your Midterm Proposal</div>
+            <div class="card-body">
+              <ul>
+                <li>Fill it in for YOUR research project</li>
+                <li>Draft due Week 7, prototype due Week 8</li>
+                <li>Start thinking about it <strong>today</strong> during the discussion exercise</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title">Example Spec — <strong>Multi-PDF Research Assistant</strong></h2>
+        <p class="slide-subtitle">Let's walk through the 5 questions for a concrete example</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> 1. Problem</div>
+            <div class="card-body">
+              <ul>
+                <li>Researchers need to analyze and cross-reference <strong>multiple papers simultaneously</strong></li>
+                <li>Current tools handle one PDF at a time — switching between 5 papers is painful</li>
+                <li>Manual comparison takes hours; AI can help if given the right context</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">👤</span> 2. Users</div>
+            <div class="card-body">
+              <ul>
+                <li>Graduate students and researchers doing <strong>literature review</strong></li>
+                <li>Moderate tech literacy — comfortable with web apps, not command-line</li>
+                <li>Working with 2-20 PDF papers at a time</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔧</span> 3. Features</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Upload PDFs</strong> to the app (drag & drop)</li>
+                <li><strong>Select</strong> which PDFs to include in AI context (checkboxes)</li>
+                <li><strong>Chat</strong> with AI about the selected papers</li>
+                <li><strong>Preset prompt buttons</strong> (Compare, Summarize, Find Contradictions, etc.)</li>
+                <li><strong>Save/delete custom prompts</strong> for reuse</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">🤝</span> 4. Interaction Flow</div>
+            <div class="card-body">
+              <ul>
+                <li>Human uploads PDFs → human selects which to include → human picks preset or types custom prompt → AI
+                  analyzes selected PDFs → human reviews response → iterate</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">📊</span> 5. Success Criteria</div>
+            <div class="card-body">
+              <ul>
+                <li>Reduces paper comparison time from <strong>3 hours to 30 minutes</strong></li>
+                <li>AI responses cite <strong>specific papers</strong> in its answers</li>
+                <li>Saved presets eliminate repetitive typing</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title">Example — <strong>Interaction Flow Diagram</strong></h2>
+        <p class="slide-subtitle">How the human and AI collaborate</p>
+        <div class="mermaid-container">
+          <div class="mermaid">graph TD
+            A["📄 Upload PDFs"] --> B["☑️ Select PDFs<br>(checkboxes)"]
+            B --> C{"Choose Prompt"}
+            C -->|Preset| D["📌 Click Preset Button<br>(Compare / Summarize / ...)"]
+            C -->|Custom| E["✏️ Type Custom Prompt"]
+            D --> F["🤖 AI Analyzes<br>Selected PDFs"]
+            E --> F
+            F --> G["💬 AI Response<br>with Paper Citations"]
+            G --> H{"Satisfied?"}
+            H -->|"No"| C
+            H -->|"Yes"| I["💾 Save Prompt / Export"]
+            style A fill:#e1f5fe,stroke:#0288d1
+            style F fill:#fff3e0,stroke:#f57c00
+            style G fill:#e8f5e9,stroke:#388e3c
+            style I fill:#f3e5f5,stroke:#7b1fa2</div>
+        </div>
+        <div class="highlight-quote">"The diagram IS the spec. If you can draw the flow, you can build the app."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="slide-title">What Makes This <strong>More Than a Chatbot</strong>?</h2>
+        <p class="slide-subtitle">Connecting to everything you learned in Weeks 1-4</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📝</span> System Prompt (Week 3)</div>
+            <div class="card-body">
+              <ul>
+                <li>The app has a built-in system prompt for research paper analysis</li>
+                <li>It instructs the AI to cite papers, use academic language, admit uncertainty</li>
+                <li>This is RICE in action: Role (research assistant), Instructions (structured analysis), Context
+                  (paper content), Examples (implicit via presets)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔧</span> Tool Use (Week 4)</div>
+            <div class="card-body">
+              <ul>
+                <li>PDF text extraction is essentially a <strong>tool</strong> — the AI doesn't read PDFs, our code does
+                </li>
+                <li>The code extracts text → sends it as context → AI reasons about it</li>
+                <li>This is the same pattern as <code class="inline-code">calculate()</code> or <code
+                    class="inline-code">search_papers()</code> from Week 4</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🤝</span> Human-in-the-Loop (Week 4 Discussion)</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Human controls context</strong>: which PDFs are included (checkboxes)</li>
+                <li><strong>Human controls intent</strong>: which prompt to use (preset or custom)</li>
+                <li><strong>AI executes within scope</strong>: analyzes only what the human selected</li>
+                <li>This directly implements the boundary YOU defined in Week 4</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">📋</span> Preset Prompts = Reusable Tools</div>
+            <div class="card-body">
+              <ul>
+                <li>Each preset is a <strong>mini system prompt</strong> for a specific task</li>
+                <li>Save/load/delete means the user can <strong>customize their own toolbox</strong></li>
+                <li>This is prompt engineering (Week 3) packaged into a UI</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-9">
+      <div class="slide-content">
+        <h2 class="slide-title">Design Principles for <strong>AI-Powered Apps</strong></h2>
+        <p class="slide-subtitle">Practical guidelines — not UX theory</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎚️</span> Progressive Disclosure</div>
+            <div class="card-body">
+              <ul>
+                <li>Start simple: upload PDFs → chat</li>
+                <li>Advanced features (presets, custom saves) available but <strong>not required</strong></li>
+                <li>Don't overwhelm users with every option at once</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🛡️</span> Transparency</div>
+            <div class="card-body">
+              <ul>
+                <li>Show which PDFs are in context — <strong>the user must know what the AI "sees"</strong></li>
+                <li>Display the prompt being sent — no hidden behavior</li>
+                <li>If the AI doesn't know something, it should say so (system prompt enforces this)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔄</span> Iteration Over Perfection</div>
+            <div class="card-body">
+              <ul>
+                <li>Users will refine their questions — make it easy to <strong>re-ask and adjust</strong></li>
+                <li>Preset prompts reduce friction for <strong>repeated tasks</strong></li>
+                <li>Save/delete cycle means prompts <strong>evolve</strong> with the user's needs</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">⚡</span> AI Does Computation, Human Does Judgment</div>
+            <div class="card-body">
+              <ul>
+                <li>AI: extracts, compares, summarizes, generates ideas</li>
+                <li>Human: selects context, chooses what to ask, evaluates quality, makes decisions</li>
+                <li>This is the "Director" principle from Week 1 — now in a real app</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-10">
+      <div class="slide-content">
+        <h2 class="slide-title">Lecture Summary — Specification Before Code</h2>
+        <p class="slide-subtitle">Key takeaways</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📋</span> The 5 Questions</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Problem</strong> → why; <strong>Users</strong> → who; <strong>Features</strong> → what;
+                  <strong>Interaction Flow</strong> → how; <strong>Outcomes</strong> → success criteria</li>
+                <li>Answer these BEFORE writing code — the spec IS the design</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🏗️</span> The Example</div>
+            <div class="card-body">
+              <ul>
+                <li>Multi-PDF Research Assistant: upload → select → prompt → analyze → iterate</li>
+                <li>Maps directly to Weeks 3-4 concepts (system prompts, tools, human-in-the-loop)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🎯</span> Your Turn</div>
+            <div class="card-body">
+              <ul>
+                <li>Today's practice builds this example; your midterm builds YOUR version</li>
+                <li>Start thinking about what <strong>YOUR research</strong> needs</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-11">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+        <p class="slide-subtitle">Build a Multi-PDF Research Assistant — Streamlit Web App</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-12">
+      <div class="slide-content">
+        <h2 class="slide-title">What We'll <strong>Build</strong> Today</h2>
+        <p class="slide-subtitle">A real web app that implements the example specification</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> The Goal</div>
+            <div class="card-body">
+              <ul>
+                <li>A <strong>web app</strong> that lets you upload PDFs, select which to include, and chat with AI
+                  about them</li>
+                <li>Preset prompt buttons for common research tasks</li>
+                <li>Save and delete custom prompts for reuse</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🛠️</span> Tech Stack</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Streamlit</strong> — web framework (familiar from Week 3)</li>
+                <li><strong>PyPDF2</strong> — PDF text extraction</li>
+                <li><strong>OpenAI client</strong> — LLM calls (Gemini / Ollama / OpenAI — your choice, same as Week 4)
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📁</span> Project Structure</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">app.py</code> — Main Streamlit app (UI + chat logic)</li>
+                <li><code class="inline-code">pdf_utils.py</code> — PDF loading and text extraction</li>
+                <li><code class="inline-code">llm_client.py</code> — LLM client (reuses Week 4 pattern)</li>
+                <li><code class="inline-code">prompt_manager.py</code> — Preset and custom prompt management</li>
+                <li><code class="inline-code">presets.json</code> — Default preset prompts</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="flow-container">
+          <div class="flow-step">Upload PDFs</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Select Context</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Chat / Use Presets</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Save Custom Prompts</div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-13">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 0 — <strong>Setup</strong></h2>
+        <p class="slide-subtitle">Install dependencies and reuse your Week 4 API keys</p>
+        <pre class="code-block"><code class="language-bash"># Navigate to practice folder
+cd practices/week5
+
+# Install dependencies
+pip install streamlit PyPDF2 openai python-dotenv</code></pre>
+        <pre class="code-block"><code class="language-text"># .env file — reuse from Week 4 (same API keys!)
+
+# Option A: Google Gemini
+GOOGLE_API_KEY=your_gemini_key_here
+GEMINI_MODEL=gemini-2.0-flash
+
+# Option B: Ollama (local)
+OLLAMA_MODEL=qwen3:1.7b
+
+# Option C: OpenAI
+OPENAI_API_KEY=your_openai_key_here
+OPENAI_MODEL=gpt-4o-mini</code></pre>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Reuse Your Week 4 Setup</div>
+            <div class="card-body">
+              <ul>
+                <li>If you completed Week 4, you already have a <code class="inline-code">.env</code> file with API keys
+                </li>
+                <li>Copy it to <code class="inline-code">practices/week5/</code> or create a symlink</li>
+                <li>The LLM client code is the same pattern — just a new wrapper</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-14">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 1 — <strong>PDF Text Extraction</strong> (<code
+            class="inline-code">pdf_utils.py</code>)</h2>
+        <p class="slide-subtitle">Extract text from uploaded PDFs and combine selected ones</p>
+        <pre class="code-block"><code class="language-python"># pdf_utils.py
+from PyPDF2 import PdfReader
+
+MAX_CHARS_PER_PDF = 15000  # Truncate to fit context limits
+
+def extract_text_from_pdf(uploaded_file) -&gt; str:
+    """Extract text from a Streamlit UploadedFile (PDF)."""
+    reader = PdfReader(uploaded_file)
+    pages = []
+    for page in reader.pages:
+        text = page.extract_text()
+        if text:
+            pages.append(text)
+    full_text = "\n".join(pages)
+    if len(full_text) &gt; MAX_CHARS_PER_PDF:
+        full_text = full_text[:MAX_CHARS_PER_PDF] + "\n\n[... truncated ...]"
+    return full_text
+
+def get_combined_context(pdf_texts: dict, selected: list) -&gt; str:
+    """Combine text from selected PDFs into a single context string."""
+    parts = []
+    for name in selected:
+        if name in pdf_texts:
+            parts.append(f"### {name}\n{pdf_texts[name]}")
+    return "\n\n---\n\n".join(parts)</code></pre>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Why Truncation?</div>
+            <div class="card-body">
+              <ul>
+                <li>LLMs have <strong>context limits</strong> (Ollama: ~4K-8K tokens, Gemini: ~1M tokens)</li>
+                <li>15,000 chars per PDF ≈ 4,000 tokens — fits 3-4 papers in most models</li>
+                <li>This is a <strong>design decision</strong> from your spec → real-world constraint</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-15">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 2 — <strong>LLM Client</strong> (<code class="inline-code">llm_client.py</code>)
+        </h2>
+        <p class="slide-subtitle">Same multi-provider pattern from Week 4 + PDF context injection</p>
+        <pre class="code-block"><code class="language-python"># llm_client.py
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
+
+SYSTEM_PROMPT = """You are a research paper analysis assistant.
+You help researchers understand, compare, and synthesize academic papers.
+When answering, always reference which paper(s) your answer is based on.
+If the provided papers do not contain enough information, say so clearly.
+Be precise, use academic language, and structure your responses with headings."""
+
+def get_client(provider: str):
+    if provider == "Gemini":
+        return OpenAI(
+            api_key=os.getenv("GOOGLE_API_KEY"),
+            base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+        ), os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+    elif provider == "Ollama":
+        return OpenAI(base_url="http://localhost:11434/v1",
+                      api_key="ollama"), os.getenv("OLLAMA_MODEL", "qwen3:1.7b")
+    else:
+        return OpenAI(api_key=os.getenv("OPENAI_API_KEY")
+                      ), os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+
+def chat_with_pdfs(client, model, pdf_context, user_message, history):
+    """Send a message with PDF context injected into the system prompt."""
+    system_msg = SYSTEM_PROMPT
+    if pdf_context:
+        system_msg += f"\n\n# Selected Papers Content\n\n{pdf_context}"
+    messages = [{"role": "system", "content": system_msg}]
+    messages.extend(history)
+    messages.append({"role": "user", "content": user_message})
+    return client.chat.completions.create(model=model, messages=messages, stream=True)</code></pre>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Spec → Code Mapping</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>System prompt</strong> = the "Role" from your spec (research assistant)</li>
+                <li><strong>PDF context injection</strong> = the "selective context" feature from your spec</li>
+                <li><strong>Streaming</strong> = better UX — the user sees tokens appear in real-time</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-16">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 3 — <strong>Prompt Manager</strong> (<code
+            class="inline-code">prompt_manager.py</code>)</h2>
+        <p class="slide-subtitle">Load presets, save/delete custom prompts</p>
+        <pre class="code-block"><code class="language-python"># prompt_manager.py
+import json, os
+
+PRESETS_PATH = os.path.join(os.path.dirname(__file__), "presets.json")
+SAVED_PATH = os.path.join(os.path.dirname(__file__), "saved_prompts.json")
+
+def load_presets(path=PRESETS_PATH):
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def load_saved(path=SAVED_PATH):
+    if not os.path.exists(path):
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump([], f)
+        return []
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def save_prompt(name, template, path=SAVED_PATH):
+    prompts = load_saved(path)
+    prompts.append({"name": name, "template": template})
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(prompts, f, indent=2, ensure_ascii=False)
+
+def delete_prompt(name, path=SAVED_PATH):
+    prompts = load_saved(path)
+    prompts = [p for p in prompts if p["name"] != name]
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(prompts, f, indent=2, ensure_ascii=False)</code></pre>
+        <pre class="code-block"><code class="language-json">// presets.json — 5 default presets
+[
+  {"name": "Compare Papers", "template": "Compare the following papers..."},
+  {"name": "Find Contradictions", "template": "Identify contradicting claims..."},
+  {"name": "Generate Fusion Ideas", "template": "Propose 3-5 novel ideas..."},
+  {"name": "Summarize Each", "template": "Structured summary of each paper..."},
+  {"name": "Extract Methods", "template": "List research methods used..."}
+]</code></pre>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-17">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 4 — <strong>App Layout</strong> (<code class="inline-code">app.py</code> — Sidebar)
+        </h2>
+        <p class="slide-subtitle">Provider selection, PDF upload, and PDF selection checkboxes</p>
+        <pre class="code-block"><code class="language-python"># app.py (sidebar section)
+import streamlit as st
+from pdf_utils import extract_text_from_pdf, get_combined_context
+from llm_client import get_client, chat_with_pdfs
+from prompt_manager import load_presets, load_saved, save_prompt, delete_prompt
+
+st.set_page_config(page_title="Multi-PDF Research Assistant", page_icon="📚", layout="wide")
+
+# Session state
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+if "pdf_texts" not in st.session_state:
+    st.session_state.pdf_texts = {}
+if "selected_pdfs" not in st.session_state:
+    st.session_state.selected_pdfs = []
+
+# --- Sidebar ---
+st.sidebar.title("⚙️ Settings")
+provider = st.sidebar.radio("LLM Provider", ["Gemini", "Ollama", "OpenAI"])
+client, model = get_client(provider)
+
+st.sidebar.subheader("📄 Upload PDFs")
+uploaded = st.sidebar.file_uploader("PDFs", type="pdf", accept_multiple_files=True)
+if uploaded:
+    for f in uploaded:
+        if f.name not in st.session_state.pdf_texts:
+            st.session_state.pdf_texts[f.name] = extract_text_from_pdf(f)
+
+# Per-PDF checkboxes
+if st.session_state.pdf_texts:
+    st.sidebar.subheader("☑️ Select PDFs for Context")
+    selected = [n for n in st.session_state.pdf_texts
+                if st.sidebar.checkbox(n, value=True, key=f"pdf_{n}")]
+    st.session_state.selected_pdfs = selected</code></pre>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-18">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 5 — <strong>Preset Buttons + Save/Delete</strong> (<code
+            class="inline-code">app.py</code> — Main Area)</h2>
+        <p class="slide-subtitle">Click a preset → prompt auto-fills → AI runs immediately</p>
+        <pre class="code-block"><code class="language-python"># app.py (main area — preset buttons)
+st.title("📚 Multi-PDF Research Assistant")
+
+presets = load_presets()
+saved = load_saved()
+
+if st.session_state.pdf_texts:
+    st.subheader("⚡ Quick Prompts")
+
+    # Built-in presets
+    cols = st.columns(min(len(presets), 5))
+    for i, preset in enumerate(presets):
+        with cols[i % len(cols)]:
+            if st.button(f"📌 {preset['name']}", key=f"preset_{i}",
+                         use_container_width=True):
+                st.session_state.pending_prompt = preset["template"]
+                st.rerun()
+
+    # Saved custom prompts with delete button
+    if saved:
+        st.caption("Your saved prompts:")
+        for i, sp in enumerate(saved):
+            c1, c2 = st.columns([5, 1])
+            with c1:
+                if st.button(f"💾 {sp['name']}", key=f"saved_{i}"):
+                    st.session_state.pending_prompt = sp["template"]
+                    st.rerun()
+            with c2:
+                if st.button("✕", key=f"del_{i}"):
+                    delete_prompt(sp["name"])
+                    st.rerun()
+
+    # Save new custom prompt
+    with st.expander("➕ Save a New Custom Prompt"):
+        new_name = st.text_input("Prompt name")
+        new_template = st.text_area("Prompt template")
+        if st.button("💾 Save") and new_name and new_template:
+            save_prompt(new_name, new_template)
+            st.rerun()</code></pre>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-19">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 6 — <strong>Chat Interface</strong> (<code class="inline-code">app.py</code> —
+          Chat)</h2>
+        <p class="slide-subtitle">Message history + streaming LLM response with PDF context</p>
+        <pre class="code-block"><code class="language-python"># app.py (chat section)
+
+# Display chat history
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
+
+# Get prompt (from preset click or chat input)
+prompt = st.session_state.get("pending_prompt")
+st.session_state.pending_prompt = None
+if prompt is None:
+    prompt = st.chat_input("Ask about your PDFs...")
+
+if prompt and client:
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # Build PDF context from selected PDFs
+    pdf_context = get_combined_context(
+        st.session_state.pdf_texts, st.session_state.selected_pdfs)
+
+    # Build history for LLM
+    history = [{"role": m["role"], "content": m["content"]}
+               for m in st.session_state.messages[:-1]]
+
+    # Stream response
+    with st.chat_message("assistant"):
+        placeholder = st.empty()
+        full_response = ""
+        stream = chat_with_pdfs(client, model, pdf_context, prompt, history)
+        for chunk in stream:
+            if chunk.choices[0].delta.content:
+                full_response += chunk.choices[0].delta.content
+                placeholder.markdown(full_response + "▌")
+        placeholder.markdown(full_response)
+        st.session_state.messages.append(
+            {"role": "assistant", "content": full_response})</code></pre>
+      </div>
+    </section>
+    <section class="slide" id="slide-20">
+      <div class="slide-content">
+        <h2 class="slide-title">How It All Fits Together — <strong>Architecture</strong></h2>
+        <p class="slide-subtitle">From PDF upload to AI-powered analysis</p>
+        <div class="mermaid-container">
+          <div class="mermaid">sequenceDiagram
+            participant U as User (Browser)
+            participant S as app.py (Streamlit)
+            participant P as pdf_utils.py
+            participant PM as prompt_manager.py
+            participant L as Gemini / Ollama API
+
+            U->>S: Upload PDFs
+            S->>P: Extract text from each PDF
+            P-->>S: {filename: text}
+            U->>S: Select PDFs via checkboxes
+            U->>S: Click "Compare Papers" preset
+            S->>PM: Load preset template
+            PM-->>S: "Compare the following papers..."
+            S->>S: Build system_prompt + PDF context
+            S->>L: messages (system + context + prompt)
+            L-->>S: Streaming AI response
+            S->>U: Display response in chat</div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-21">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 7 — <strong>Run and Test</strong></h2>
+        <p class="slide-subtitle">Launch the app and verify each feature</p>
+        <pre class="code-block"><code class="language-bash"># From the practices/week5 directory
+cd practices/week5
+streamlit run app.py</code></pre>
+        <pre class="code-block"><code class="language-bash"># If the above command fails, try this:
+python -m streamlit run app.py</code></pre>
+        <pre class="code-block"><code class="language-text">  You can now view your Streamlit app in your browser.
+  Local URL: http://localhost:8501
+
+Expected UI:
+┌─────────────────────────────────────────────────────┐
+│ ⚙️ Settings (Sidebar)  │  📚 Multi-PDF Research    │
+│                         │     Assistant             │
+│ Provider: [Gemini ▼]    │                           │
+│                         │  ⚡ Quick Prompts          │
+│ 📄 Upload PDFs          │  [Compare] [Summarize]    │
+│ [Drop files here]       │  [Contradict] [Fuse]      │
+│                         │  [Methods]                │
+│ ☑️ Select PDFs          │                           │
+│ ☑ paper1.pdf            │  💬 Chat                   │
+│ ☑ paper2.pdf            │  You: Compare these papers │
+│ ☐ paper3.pdf            │  AI: Based on paper1 and  │
+│                         │      paper2, the key...   │
+│ [🗑️ Clear Chat]         │                           │
+│                         │  [Ask about your PDFs...] │
+└─────────────────────────────────────────────────────┘</code></pre>
+      </div>
+    </section>
+    <section class="slide" id="slide-22">
+      <div class="slide-content">
+        <h2 class="slide-title">✅ <strong>Practice Checklist</strong></h2>
+        <p class="slide-subtitle">Complete these tasks during the hands-on session</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📋</span> Checklist</div>
+            <div class="card-body">
+              <ul>
+                <li>[ ] Set up <code class="inline-code">.env</code> (reuse from Week 4 or create new)</li>
+                <li>[ ] Create all 5 files: <code class="inline-code">app.py</code>, <code
+                    class="inline-code">pdf_utils.py</code>, <code class="inline-code">llm_client.py</code>, <code
+                    class="inline-code">prompt_manager.py</code>, <code class="inline-code">presets.json</code></li>
+                <li>[ ] Run <code class="inline-code">streamlit run app.py</code> and verify the UI loads</li>
+                <li>[ ] Upload <strong>2+ PDF papers</strong> and verify text extraction works</li>
+                <li>[ ] <strong>Select/deselect</strong> PDFs and observe context changes in the caption</li>
+                <li>[ ] Test at least <strong>2 preset prompts</strong> (e.g., Compare, Summarize)</li>
+                <li>[ ] Type a <strong>custom prompt</strong> and test it</li>
+                <li>[ ] <strong>Save</strong> a custom prompt, reload the page, verify it persists</li>
+                <li>[ ] <strong>Delete</strong> a saved prompt</li>
+                <li>[ ] (Bonus) Try with <strong>both Gemini and Ollama</strong> — compare response quality</li>
+                <li>[ ] (Bonus) Add a <strong>new preset</strong> to <code class="inline-code">presets.json</code>
+                  relevant to your research</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-23">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+        <p class="slide-subtitle">Week 4 Review & Midterm Project Briefing</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-24">
+      <div class="slide-content">
+        <h2 class="slide-title">Week 4 Review — <strong>The Director's Role</strong></h2>
+        <p class="slide-subtitle">If AI uses the tools, what is the human's unique contribution?</p>
+        <div class="cards-grid">
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🦸</span> Iron Man — "Visionary Architect"</div>
+            <div class="card-body">
+              <ul>
+                <li>The human is no longer turning wrenches — we're <strong>drafting the master blueprint</strong></li>
+                <li>Let AI handle the "algorithmic grunt work" and tedious execution</li>
+                <li>"Stop crying over the loss of manual data entry and start figuring out what <strong>magnificent
+                    empire</strong> to build"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🛡️</span> Captain America — "Moral Compass"</div>
+            <div class="card-body">
+              <ul>
+                <li>The human's irreplaceable contribution is <strong>moral compass and strict accountability</strong>
+                </li>
+                <li>Surrendering tools to AI risks letting analytical skills and ethical vigilance
+                  <strong>atrophy</strong></li>
+                <li>"True integrity simply cannot be automated" — take the slower, harder path</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧪</span> Hulk — "Ethical Fail-Safe"</div>
+            <div class="card-body">
+              <ul>
+                <li>The human must be the <strong>critical fail-safe</strong> against unchecked AI power</li>
+                <li>Let algorithms do heavy lifting, but <strong>rigorously double-check every single output</strong>
+                </li>
+                <li>"If we just step back and let the system direct itself... the fallout could be devastating"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-25">
+      <div class="slide-content">
+        <h2 class="slide-title">How Did You Vote?</h2>
+        <p class="slide-subtitle">The most nuanced responses yet — almost everyone combined multiple perspectives</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📊</span> Voting Results</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Hulk dominated</strong> again: Waad, Rupam, Lin, Seher, Hyunwoo, Ly, Han, Manuella — human
+                  as fail-safe</li>
+                <li><strong>Iron Man + Hulk synthesis</strong> was the new trend: Tran, Irfan, Gyeongsu, Minh — automate
+                  execution, verify rigorously</li>
+                <li><strong>Iron Man + Captain America</strong> appeared: DongYun, Tan, Nazhiefah — shift to director,
+                  but keep integrity</li>
+                <li><strong>Margareth's unique view</strong>: "We are basically still the programmers, handling AI that
+                  handles the tools"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">💡</span> Week 4 vs Previous Weeks</div>
+            <div class="card-body">
+              <ul>
+                <li>The class has moved from "should we trust AI?" to <strong>"how do we architect human-AI
+                    systems?"</strong></li>
+                <li>Nearly every student now <strong>combines multiple perspectives</strong> — no one picks just one
+                </li>
+                <li>The debate has matured from philosophical to <strong>operational and design-oriented</strong></li>
+                <li>Perfect timing: today's lecture is about translating these principles into <strong>app
+                    specifications</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-26">
+      <div class="slide-content">
+        <h2 class="slide-title">Key Theme 1 — <strong>The Human as Architect AND Fail-Safe</strong></h2>
+        <p class="slide-subtitle">The strongest consensus — combining Iron Man's vision with Hulk's caution</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🏗️</span> The Architect Role</div>
+            <div class="card-body">
+              <ul>
+                <li>"Our primary role is shifting toward acting as the <strong>visionary architect</strong>" (Tran)</li>
+                <li>"Researchers must define the right problems, set constraints, and make <strong>final calls</strong>"
+                  (DongYun)</li>
+                <li>Define the "<strong>Right Problems</strong>" and provide the final validation (Minh)</li>
+                <li>"Only we know the exact thing we want AI to do, how we want it done, and whether the outcome is
+                  <strong>meaningful</strong>" (Margareth)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🛡️</span> The Fail-Safe Role</div>
+            <div class="card-body">
+              <ul>
+                <li>"Our unique contribution is to <strong>hold the leash</strong> and make the final decisions based on
+                  scrutiny" (Hyunwoo)</li>
+                <li>"If a human does not understand their specific area fully, AI can be guided into <strong>misleading
+                    steps</strong>" (Tran)</li>
+                <li>"Keeping AI in a boundary and keeping a <strong>logbook</strong> of its working" (Rupam)</li>
+                <li>Design a controlled workflow: AI handles exploration, humans define objectives and <strong>validate
+                    key stages</strong> (Irfan)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🎯</span> The Design Principle</div>
+            <div class="card-body">
+              <ul>
+                <li>Your midterm app should encode BOTH roles:</li>
+                <li><strong>Architect</strong>: the human defines what problem to solve, what data to use, what
+                  questions to ask</li>
+                <li><strong>Fail-safe</strong>: the human reviews AI outputs before they're used, with clear
+                  verification points</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"The true human role becomes not doing the work, but deciding what work is worth
+          doing in the first place." — Margareth</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-27">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Architect vs Fail-Safe in YOUR App</h2>
+        <p class="slide-subtitle">10 minutes — Apply this to your midterm project</p>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Discussion Prompt</div>
+            <div class="card-body">
+              <ul>
+                <li>Think about the AI app you want to build for midterm</li>
+                <li><strong>As Architect</strong>: What are the 3 most important decisions the human makes in your app?
+                  (problem framing, data selection, evaluation criteria)</li>
+                <li><strong>As Fail-Safe</strong>: What are the 3 most dangerous things the AI could get wrong? How does
+                  your UI let the human catch these errors?</li>
+                <li><strong>Design question</strong>: Can you design your interaction flow so the human plays BOTH roles
+                  naturally — without the verification feeling like extra work?</li>
+                <li>Connect to today's practice: in the Multi-PDF app, checkboxes = architect (choosing context),
+                  reading the response = fail-safe (verifying accuracy)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-28">
+      <div class="slide-content">
+        <h2 class="slide-title">Key Theme 2 — <strong>"AI Is Harder to Debug Than Code"</strong></h2>
+        <p class="slide-subtitle">Margareth's insight from hands-on tool-building experience</p>
+        <div class="cards-grid">
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🔧</span> The Unpredictability Problem (Margareth)</div>
+            <div class="card-body">
+              <ul>
+                <li>"As someone who has been trying to design and give tools to AI, I would say they are <strong>hard to
+                    predict</strong>"</li>
+                <li>"Sometimes it surprises you with how well they choose the right tool; sometimes they <strong>keep
+                    failing</strong> a task you think is very clear"</li>
+                <li>Normal programming: "program does exactly what you intend" (given correct syntax)</li>
+                <li>AI: "doing things with AI sometimes feels like you just want them to <strong>read your
+                    mind</strong>"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧪</span> The Implications for App Design</div>
+            <div class="card-body">
+              <ul>
+                <li>Traditional software: input → deterministic output → predictable UI</li>
+                <li>AI software: input → <strong>probabilistic</strong> output → UI must handle
+                  <strong>variability</strong></li>
+                <li>Your midterm app needs to handle: what happens when the AI gives a <strong>bad</strong> answer?</li>
+                <li>Do you retry? Show alternatives? Let the user edit? Ask for clarification?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💡</span> Han's Industry Perspective</div>
+            <div class="card-body">
+              <ul>
+                <li>Han connected the 3 agents to <strong>real companies</strong>: Iron Man = OpenAI, Captain America =
+                  Google (privacy concerns), Hulk = Anthropic/Claude (ethics first)</li>
+                <li>"Utilization of AI must be considered carefully" — even companies with the best AI struggle with
+                  boundaries</li>
+                <li>Economic pressures push toward less safety — another reason <strong>human oversight</strong> matters
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-29">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Designing for AI Unpredictability</h2>
+        <p class="slide-subtitle">5 minutes — How does your app handle bad AI output?</p>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Quick Exercise</div>
+            <div class="card-body">
+              <ul>
+                <li>Your AI app gives a <strong>wrong answer</strong>. The user can tell it's wrong.</li>
+                <li><strong>Design 3 recovery options</strong> your app could offer:</li>
+                <li>Option A: "Retry" button → same prompt, hope for different output?</li>
+                <li>Option B: "Adjust" → let the user edit the prompt and try again?</li>
+                <li>Option C: "Show reasoning" → Chain-of-Thought so the user can see WHERE it went wrong?</li>
+                <li>Option D: Something else? (Switch model? Change context? Fall back to manual?)</li>
+                <li>Which option(s) will your midterm app include? Why?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-30">
+      <div class="slide-content">
+        <h2 class="slide-title">Unexpected Insight — <strong>AI Should Free Us, Not Add More Work</strong></h2>
+        <p class="slide-subtitle">Nazhiefah's human-centered perspective</p>
+        <div class="cards-grid">
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">❤️</span> The Human Cost (Nazhiefah)</div>
+            <div class="card-body">
+              <ul>
+                <li>"Back then... we used to collect data by ourselves, search papers one by one... it sometimes leads
+                  to <strong>unbalance work and life, stress, and unwell condition</strong>"</li>
+                <li>"If AI can ease some work, it will be good for doing such thing rather than doing a core thing"</li>
+                <li><strong>BUT</strong>: "not because AI helps some work, we can add more work, no. <strong>Healthy and
+                    balance life are the important one</strong>"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> The Design Implication</div>
+            <div class="card-body">
+              <ul>
+                <li>Many AI tools are designed to increase <strong>productivity</strong> — do more, faster</li>
+                <li>But Nazhiefah's insight: AI should also increase <strong>quality of life</strong> — do the same,
+                  with less stress</li>
+                <li>Your midterm spec: is your app designed to make the human do MORE? Or do the <strong>same with less
+                    burden</strong>?</li>
+                <li>Success criteria should include not just efficiency but <strong>researcher wellbeing</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"We will be the architect itself, not just user. However, not because AI helps some
+          work, we can add more work. Healthy and balance life are the important one." — Nazhiefah</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-31">
+      <div class="slide-content">
+        <h2 class="slide-title">From 5 Weeks of Discussion → <strong>Your Project Spec</strong></h2>
+        <p class="slide-subtitle">Your insights become design requirements</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔗</span> Lecture → Practice → Your Turn</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Lecture</strong>: The 5 questions every AI app must answer</li>
+                <li><strong>Practice</strong>: Saw specification become a working Multi-PDF app</li>
+                <li><strong>Your turn</strong>: Apply the same process to YOUR research problem</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📐</span> Your Discussions → Your Design Requirements</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 1: "AI is an assistant" → your app should have <strong>clear human control points</strong></li>
+                <li>Week 2: "Treat AI output as hypothesis" → your app should make <strong>verification easy</strong>
+                </li>
+                <li>Week 3: "Define what AI should never do" → your spec should have a <strong>Red Zone</strong></li>
+                <li>Week 4: "Human = architect + fail-safe" → your interaction flow should <strong>encode both
+                    roles</strong></li>
+                <li>Week 4 bonus: "AI is hard to predict" → your app needs <strong>recovery options</strong> for bad
+                  outputs</li>
+                <li>Week 4 bonus: "Don't just add more work" → your success criteria should include <strong>reduced
+                    burden</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🎯</span> The Midterm Challenge</div>
+            <div class="card-body">
+              <ul>
+                <li>Design an AI agent app that embodies <strong>your own principles</strong> from 5 weeks of discussion
+                </li>
+                <li>Not just "what does it do" but "<strong>where does the human stay in control?</strong>"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-32">
+      <div class="slide-content">
+        <h2 class="slide-title">Midterm Project — <strong>Overview</strong></h2>
+        <p class="slide-subtitle">Your Phase 2 goal — design, build, and present an AI agent application</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📄</span> What</div>
+            <div class="card-body">
+              <ul>
+                <li>Design and build an <strong>AI agent application</strong> relevant to your research domain</li>
+                <li>Must solve a <strong>real problem</strong> you actually face in your work</li>
+                <li>Must include meaningful <strong>human-AI interaction</strong> (not just a chatbot)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📦</span> Deliverables</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Specification Document</strong> — the 5-question template, filled in for YOUR app</li>
+                <li><strong>Working Prototype</strong> — Streamlit or Gradio app, runnable code</li>
+                <li><strong>5-Minute Demo</strong> — live demonstration + explanation of design decisions</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📅</span> Timeline</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Week 7</strong>: Specification document draft due (submit on LMS)</li>
+                <li><strong>Week 8</strong>: Working prototype + live demo presentation</li>
+                <li>Start brainstorming <strong>today</strong> — the live exercise will help</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">📊</span> Evaluation Criteria</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Clarity of specification</strong> — are the 5 questions well-answered?</li>
+                <li><strong>Working prototype</strong> — does the app run and do what the spec says?</li>
+                <li><strong>Design quality</strong> — is the human-AI interaction well-designed?</li>
+                <li><strong>Relevance</strong> — does the app solve a real problem in your research?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-33">
+      <div class="slide-content">
+        <h2 class="slide-title">Project Inspiration — <strong>What Could You Build?</strong></h2>
+        <p class="slide-subtitle">Examples from different research domains</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📊</span> Lab Data Analyzer</div>
+            <div class="card-body">
+              <ul>
+                <li>Upload CSV experiment data → AI identifies trends, anomalies, correlations</li>
+                <li>Preset: "Compare control vs treatment groups", "Suggest next experiment"</li>
+                <li>Human: selects datasets, validates AI findings against domain knowledge</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📚</span> Literature Review Assistant</div>
+            <div class="card-body">
+              <ul>
+                <li>Like today's Multi-PDF app but with <strong>tagging, annotation, and comparison matrix</strong></li>
+                <li>Preset: "Find methodological gaps", "Generate related work paragraph"</li>
+                <li>Human: curates the paper collection, decides what to include in the review</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">💻</span> Code Review Agent</div>
+            <div class="card-body">
+              <ul>
+                <li>Upload Python scripts → AI reviews for bugs, style, efficiency</li>
+                <li>Preset: "Check for security vulnerabilities", "Suggest optimizations"</li>
+                <li>Human: decides which suggestions to accept, maintains code ownership</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">📝</span> Research Proposal Drafter</div>
+            <div class="card-body">
+              <ul>
+                <li>Input topic, field, target grant → AI generates structured proposal sections</li>
+                <li>Preset: "Write significance section", "Generate timeline", "Draft budget justification"</li>
+                <li>Human: provides core ideas, edits AI drafts, takes ownership of final proposal</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-34">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Live Exercise</strong> — Sketch Your Project Specification</h2>
+        <p class="slide-subtitle">15 minutes — Draft a 1-page spec for YOUR midterm project</p>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Instructions</div>
+            <div class="card-body">
+              <ul>
+                <li>Open a blank document (or paper) and answer the <strong>5 questions</strong>:</li>
+                <li><strong>1. Problem</strong>: What problem in YOUR research does this app solve?</li>
+                <li><strong>2. Users</strong>: Who will use it? (Just you? Your lab? Others?)</li>
+                <li><strong>3. Features</strong>: List 3-5 concrete features (verbs: upload, analyze, compare, generate,
+                  etc.)</li>
+                <li><strong>4. Interaction Flow</strong>: Draw a simple flow: Human does X → AI does Y → Human reviews →
+                  ...</li>
+                <li><strong>5. Success Criteria</strong>: How do you know the app works? What improves?</li>
+                <li><strong>Share</strong> with a partner and give each other feedback</li>
+                <li>This draft is the <strong>starting point</strong> for your midterm spec document</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-35">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Week 5 Discussion Questions</strong> (UST LMS)</h2>
+        <p class="slide-subtitle">Post your response on the forum this week</p>
+        <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+        <p class="slide-text">1. Write a <strong>complete specification</strong> for your midterm project using the
+          5-question template from today's lecture. What problem does your app solve? Who uses it? What are the 3-5 core
+          features? What is the human-AI interaction flow (include a diagram)? What does success look like?</p>
+        <p class="slide-text">2. Reflect on today's <strong>Multi-PDF Research Assistant</strong> practice. What design
+          decisions did you notice (e.g., why checkboxes for PDF selection? why preset prompts? why save/delete?)? How
+          would you <strong>modify the design</strong> for YOUR research domain?</p>
+        <p class="slide-text">3. Looking back at <strong>all 4 weeks of discussion</strong> (AI boundaries → stochastic
+          parrot → what AI should never do → human's role), how do your accumulated insights inform the
+          <strong>interaction flow</strong> of your midterm project? Where does your app let AI act autonomously, and
+          where does it require human judgment?</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-36">
+      <div class="slide-content">
+        <h2 class="slide-title">Want to Learn More?</h2>
+        <p class="slide-text">Streamlit & Web UI</p>
+        <a href="https://docs.streamlit.io/" target="_blank" class="reference-link">📚 Streamlit Documentation</a>
+        <a href="https://docs.streamlit.io/develop/api-reference/chat" target="_blank" class="reference-link">📚
+          Streamlit Chat Elements</a>
+        <a href="https://www.gradio.app/docs" target="_blank" class="reference-link">📚 Gradio — Alternative to
+          Streamlit</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">AI Application Design</p>
+        <a href="https://pair.withgoogle.com/guidebook" target="_blank" class="reference-link">📚 Google PAIR — People +
+          AI Guidebook</a>
+        <a href="https://www.microsoft.com/en-us/haxtoolkit/" target="_blank" class="reference-link">📚 Microsoft HAX
+          Toolkit — Human-AI Interaction</a>
+        <a href="https://www.nngroup.com/topic/artificial-intelligence/" target="_blank" class="reference-link">📚
+          Nielsen Norman Group — AI UX Guidelines</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">PDF Processing</p>
+        <a href="https://pypdf2.readthedocs.io/" target="_blank" class="reference-link">📚 PyPDF2 Documentation</a>
+        <a href="https://python.langchain.com/docs/integrations/document_loaders/" target="_blank"
+          class="reference-link">📚 LangChain Document Loaders</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-37">
+      <div class="slide-content">
+        <h2 class="slide-title">Wrap-Up of <strong>Week 5</strong></h2>
+        <p class="slide-subtitle">Three things to remember</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>5 questions</strong> every AI app must answer: Problem, Users, Features, Interaction Flow,
+                  Outcomes; specification before code; the spec IS the design document</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Built a <strong>Multi-PDF Research Assistant</strong> with Streamlit: PDF upload, selective context,
+                  preset prompts, custom prompt save/load/delete; same app demonstrates specification → implementation
+                  flow</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 4 review: class converged on "AI computes, human judges" + Margareth's anchoring bias insight;
+                  <strong>midterm announced</strong>: spec draft due Week 7, prototype + demo Week 8; start designing
+                  YOUR app NOW</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text"><strong>Next week:</strong> Advanced context management — <strong>RAG (Retrieval-Augmented
+            Generation)</strong>, vector databases, and making your agent smarter with external knowledge.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">37</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(11)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(23)">Discussion</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 37;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if (currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if (currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if (newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+          currentSlide = newSlide;
+          pageInput.value = currentSlide;
+          updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({ top: -100, behavior: 'smooth' });
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({ top: 100, behavior: 'smooth' });
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+        const pageNum = parseInt(hash.replace('#slide-', ''));
+        if (!isNaN(pageNum)) {
+          setTimeout(() => goToSlide(pageNum), 100);
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
