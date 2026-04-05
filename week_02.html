@@ -253,7 +253,8 @@
   }
   .mermaid-group {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 1rem;
     width: 100%;
     justify-content: center;
@@ -552,7 +553,7 @@
 <div class="card-body"><ul><li>Interprets natural language instructions (prompts)</li><li>Generates text, code, or reasoning steps</li><li>The component that "thinks" before tools act</li></ul></div>
 </div>
 </div>
-<div class="image-container"><img src="image/week2-slides/1773026188578.png" alt="1773026188578" class="slide-img" onclick="openModal('image/week2-slides/1773026188578.png')"></div>
+<div class="image-container"><img src="image/week_02/1773026188578.png" alt="1773026188578" class="slide-img" onclick="openModal('image/week_02/1773026188578.png')"></div>
 <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="reference-link">📚 Attention Is All You Need — Vaswani et al. 2017 (arXiv)</a>
 </div>
 </section>
@@ -579,7 +580,7 @@
     style A fill:#e1f5fe,stroke:#0288d1
     style D fill:#fff3e0,stroke:#f57c00
     style F fill:#e8f5e9,stroke:#388e3c</div></div>
-<div class="image-container"><img src="image/week2-slides/1773026292248.png" alt="1773026292248" class="slide-img" onclick="openModal('image/week2-slides/1773026292248.png')"></div>
+<div class="image-container"><img src="image/week_02/1773026292248.png" alt="1773026292248" class="slide-img" onclick="openModal('image/week_02/1773026292248.png')"></div>
 <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="reference-link">📚 Attention Is All You Need — Vaswani et al. 2017 (arXiv)</a>
 </div>
 </section>
@@ -815,7 +816,7 @@ print(f"Tokens: {[enc.decode([t]) for t in tokens]}")</code></pre>
 <pre class="code-block"><code class="language-text"># .env file (add to .gitignore!)
 GOOGLE_API_KEY=your_api_key_here
 GEMINI_MODEL=gemini-3.1-flash-lite-preview</code></pre>
-<div class="image-container"><img src="image/week2-slides/1773027763548.png" alt="1773027763548" class="slide-img" onclick="openModal('image/week2-slides/1773027763548.png')"><div class="img-caption"><code class="inline-code"></code>`bash</div></div>
+<div class="image-container"><img src="image/week_02/1773027763548.png" alt="1773027763548" class="slide-img" onclick="openModal('image/week_02/1773027763548.png')"><div class="img-caption"><code class="inline-code"></code>`bash</div></div>
 <p class="slide-text">pip install google-generativeai python-dotenv</p>
 <p class="slide-text"><code class="inline-code"></code>`</p>
 <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" class="reference-link">📚 Google Gemini Model Library</a>

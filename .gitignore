@@ -3,4 +3,5 @@
 *.env
 .claude/
 keep/
+practices/
 __pycache__/

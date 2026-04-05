@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<!-- Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --text-main: #1e293b;
+    --accent: #0f4c81;
+    --card-blue: #eff6ff;
+    --border-blue: #bfdbfe;
+    --card-green: #f0fdf4;
+    --border-green: #bbf7d0;
+    --card-orange: #fff7ed;
+    --border-orange: #fed7aa;
+    --card-pink: #fdf2f8;
+    --border-pink: #fbcfe8;
+    --card-purple: #faf5ff;
+    --border-purple: #e9d5ff;
+    --card-yellow: #fefce8;
+    --border-yellow: #fef08a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    overflow: hidden; /* Hide scrollbars, use custom navigation */
+    font-size: 1.8rem;
+  }
+  .presentation {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    width: 100vw;
+  }
+  .presentation::-webkit-scrollbar { display: none; }
+  .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 60px 80px; /* Top/Bottom 60px, Left/Right 80px for margins */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-content {
+    background: var(--bg-main);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    font-size: 1rem; /* 1.5x of original */
+  }
+  .slide-title {
+    font-size: 2rem; /* 1.5x of original */
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    border-bottom: 5px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: 1rem; /* 1.5x of original */
+    color: #64748b;    
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  /* Title Slide Variations */
+  .title-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  }
+  .title-slide .slide-title { font-size: 2.5rem; border: none; margin-bottom: 1.5rem; color: var(--accent); }
+  .title-slide .slide-subtitle { font-size: 1.5rem; font-weight: 600; color: #334155; }
+  
+  /* Title Emphasis Variations */
+  .title-emphasis-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+  .title-emphasis-slide .slide-title {
+    font-size: 3rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-emphasis-slide .slide-subtitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+  
+  /* Layouts */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased min-width to prevent 4 columns on wide screens */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+  .card-header { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.4rem; }
+  .card-header .icon { font-size: 1.3rem; margin-right: 0.5rem; }
+  .card-body ul { list-style-type: none; padding-left: 0; }
+  .card-body li { margin-bottom: 0.5rem; position: relative; padding-left: 1.2rem; line-height: 1.4; font-size: 0.95rem; }
+  .card-body li::before { content: "•"; color: #94a3b8; font-weight: bold; position: absolute; left: 0; top: 0; }
+  .plain-bullets li { position: relative; padding-left: 1.2rem; list-style-type: none; }
+  .plain-bullets li::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: 0; top: 0; }
+  
+  .slide-text {
+    font-size: 1.6rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  .card-blue { background: var(--card-blue); border-color: var(--border-blue); color: #1e3a8a; }
+  .card-green { background: var(--card-green); border-color: var(--border-green); color: #14532d; }
+  .card-orange { background: var(--card-orange); border-color: var(--border-orange); color: #7c2d12; }
+  .card-pink { background: var(--card-pink); border-color: var(--border-pink); color: #831843; }
+  .card-purple { background: var(--card-purple); border-color: var(--border-purple); color: #4c1d95; }
+  .card-yellow { background: var(--card-yellow); border-color: var(--border-yellow); color: #713f12; }
+  
+  .highlight-quote {
+    background: #f8fafc;
+    border-left: 5px solid var(--accent);
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .image-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    margin: 0.5rem 0;
+  }
+  .img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .image-container {
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .slide-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .slide-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Modal Overlay */
+  .image-modal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .image-modal.active {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 9999;
+  }
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .image-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: #94a3b8;
+  }
+  .img-caption {
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .mermaid-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+  }
+  .mermaid-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .mermaid-group .mermaid-container {
+    margin: 0;
+    flex: 1;
+    min-height: auto;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Consolas', monospace;
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  .mermaid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .reference-link {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .inline-code {
+    background: #e2e8f0;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .styled-table th { background: #334155; color: white; text-align: left; padding: 1rem; }
+  .styled-table td { padding: 1rem; background: white; border-bottom: 1px solid #f1f5f9; }
+  .styled-table tr:hover td { background: #f8fafc; }
+  
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .flow-step {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #cbd5e1;
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin: 0 1rem;
+  }
+  
+  .slide-number {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .plain-bullets {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+  .plain-bullets li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Fixed Layout Elements */
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: #0f172a;
+    color: #94a3b8;
+    z-index: 2000;
+    border-bottom: 1px solid #1e293b;
+  }
+  .header-logo { color: white; margin-right: 1.5rem; letter-spacing: -0.5px; font-size: 0.75rem; }
+  .header-sep { color: #334155; margin: 0 1rem; }
+  .header-subtitle { font-size: 0.75rem; }
+
+  .side-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* 2/3 of 50px approx */
+    height: 70px; /* 2/3 of 100px approx */
+    background: rgba(30, 41, 59, 0.4);
+    border: none;
+    color: white;
+    font-size: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: background 0.2s, width 0.2s;
+    border-radius: 6px;
+  }
+  .side-nav-btn:hover { background: rgba(37, 99, 235, 0.8); width: 45px; }
+  .prev-side { left: 10px; }
+  .next-side { right: 10px; }
+
+  /* Navigation Bar (Fixed Bottom) */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    height: 50px;
+    z-index: 2000;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .nav-main-btn {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 20px;
+  }
+  .btn-nav {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover {
+    background: #1e293b;
+    color: white;
+  }
+  .page-input-wrapper {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin: 0 8px;
+    font-family: monospace;
+  }
+  .page-input {
+    background: transparent;
+    border: 1px solid #334155;
+    color: white;
+    width: 32px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    padding: 1px;
+    margin-right: 4px;
+  }
+  .section-links {
+    display: flex;
+    gap: 16px;
+    border-left: 1px solid #1e293b;
+    padding-left: 20px;
+  }
+  .nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <header class="global-header">
+    <span class="header-logo">Automated Data Extraction from Research Papers</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">PDF → Markdown → Metadata → Charts → Insight</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+<div class="slide-content">
+<h1 class="slide-title">Automated Data Extraction from Research Papers</h1>
+<p class="slide-subtitle">PDF → Markdown → Metadata → Charts → Insight</p>
+<div class="highlight-quote">Week 6 of Phase 2: Building Real Systems (Weeks 5-8)</div>
+</div>
+</section>
+<section class="slide" id="slide-2">
+<div class="slide-content">
+<h2 class="slide-title">Contents</h2>
+<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 6</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+<div class="card-body"><ul><li>From PDF to Structured Data — Why and How</li><li>Metadata extraction, PDF vs Markdown, and analysis strategies</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+<div class="card-body"><ul><li>Build a PDF Data Extraction Pipeline (Streamlit)</li><li>PDF → MD conversion, metadata charts, ontology, Q&A</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+<div class="card-body"><ul><li>Week 5 Review & Midterm Progress Check</li><li>From raw data to actionable research insights</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-3">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Data Problem</strong> in Research</h2>
+<p class="slide-subtitle">You have PDFs. You need insights. The gap is enormous.</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📄</span> The Reality</div>
+<div class="card-body"><ul><li>Researchers accumulate <strong>hundreds of PDFs</strong> over a project</li><li>Each PDF contains valuable data: authors, methods, findings, keywords</li><li>But that data is <strong>trapped</strong> inside unstructured PDF format</li><li>Manually extracting and organizing this data takes <strong>weeks</strong></li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🤔</span> The Gap</div>
+<div class="card-body"><ul><li><strong>PDF</strong>: designed for humans to read on screen/paper — visual layout, fonts, columns</li><li><strong>Database</strong>: designed for machines to query — structured, searchable, computable</li><li>Getting from PDF to database requires <strong>extraction + structuring + validation</strong></li><li>This is exactly what LLMs are good at — understanding unstructured text</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> Today's Goal</div>
+<div class="card-body"><ul><li>Build a pipeline: PDF → <strong>Markdown</strong> (with metadata) → <strong>Charts</strong> → <strong>Q&A</strong></li><li>Week 5: you built a PDF viewer that chats about papers</li><li>Week 6: you build a pipeline that <strong>extracts structured data</strong> from papers</li><li>The difference: chat is ephemeral; extracted data is <strong>persistent and computable</strong></li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"The value of a paper collection is not in the PDFs — it's in the structured data you can extract from them."</div>
+</div>
+</section>
+<section class="slide" id="slide-4">
+<div class="slide-content">
+<h2 class="slide-title"><strong>PDF vs Markdown</strong> — Why Convert?</h2>
+<p class="slide-subtitle">Understanding the fundamental format difference</p>
+<table class="styled-table"><thead><tr><th>Aspect</th><th>PDF</th><th>Markdown</th></tr></thead><tbody><tr><td><strong>Purpose</strong></td><td>Visual presentation (print/screen)</td><td>Structured text (read/process)</td></tr><tr><td><strong>Structure</strong></td><td>Layout-based (coordinates, fonts)</td><td>Semantic (headings, lists, links)</td></tr><tr><td><strong>AI-ready</strong></td><td>Difficult (text extraction is lossy)</td><td>Easy (plain text with markup)</td></tr><tr><td><strong>Searchable</strong></td><td>Limited (no semantic structure)</td><td>Full text search + metadata</td></tr><tr><td><strong>Editable</strong></td><td>Requires special tools</td><td>Any text editor</td></tr><tr><td><strong>Metadata</strong></td><td>Embedded in binary format</td><td>YAML frontmatter (key-value)</td></tr><tr><td><strong>Version control</strong></td><td>Binary diff (useless)</td><td>Text diff (meaningful)</td></tr><tr><td><strong>LLM-friendly</strong></td><td>Must extract text first</td><td>Directly usable as context</td></tr></tbody></table>
+<div class="highlight-quote">"PDF is for humans to read. Markdown is AI-ready — both humans AND agents can read it. That's why we convert."</div>
+</div>
+</section>
+<section class="slide" id="slide-5">
+<div class="slide-content">
+<h2 class="slide-title">What Is <strong>Metadata</strong>?</h2>
+<p class="slide-subtitle">Data about data — the key to unlocking your paper collection</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📋</span> Definition</div>
+<div class="card-body"><ul><li><strong>Metadata</strong> = structured information <em>about</em> a document (not the content itself)</li><li>Title, authors, year, journal, keywords, DOI, methodology, findings</li><li>Think of it as the <strong>index card</strong> for each paper in your collection</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔑</span> Why It Matters</div>
+<div class="card-body"><ul><li>With metadata from 100 papers, you can instantly answer:</li><li>"How many papers use deep learning?" → keyword count</li><li>"What's the publication trend over 5 years?" → year distribution</li><li>"Who are the top authors in this field?" → author frequency</li><li>"Which methods are most common?" → methodology count</li><li>Without metadata, these questions require <strong>reading all 100 papers</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-6">
+<div class="slide-content">
+<h2 class="slide-title">Metadata in Markdown — <strong>YAML Frontmatter</strong></h2>
+<p class="slide-subtitle">Everything between <code class="inline-code">---</code> markers is structured metadata, everything below is the document body</p>
+<pre class="code-block"><code class="language-text">---
+title: "Deep Learning for Material Property Prediction"
+authors: ["Kim, J.", "Lee, S.", "Park, H."]
+year: 2024
+journal: "Nature Materials"
+keywords: ["deep learning", "materials science", "property prediction"]
+methodology: "Graph Neural Network"
+key_findings: "GNN outperforms CNN by 15% on crystal property prediction"
+---
+
+## Abstract
+This paper presents a novel approach to...</code></pre>
+<div class="highlight-quote">"YAML frontmatter turns a Markdown file into a mini-database record — AI-ready and human-readable at the same time."</div>
+</div>
+</section>
+<section class="slide" id="slide-7">
+<div class="slide-content">
+<h2 class="slide-title"><strong>LLM-Based</strong> Metadata Extraction</h2>
+<p class="slide-subtitle">Using AI to read papers and extract structured data</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🧠</span> The Approach</div>
+<div class="card-body"><ul><li>Feed raw PDF text to an LLM with a <strong>structured extraction prompt</strong></li><li>The LLM reads the paper and outputs <strong>JSON metadata</strong> + <strong>cleaned Markdown body</strong></li><li>This is a form of <strong>information extraction</strong> — one of AI's strongest capabilities</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📋</span> The Extraction Schema</div>
+<div class="card-body"><ul><li>You define <strong>what</strong> to extract — the LLM handles the <strong>how</strong></li><li>Default fields: title, authors, year, journal, keywords, abstract, methodology, findings</li><li>Custom fields: you can add anything! ("sample_size", "equipment_used", "funding_source")</li><li>The schema is your <strong>specification</strong> — same principle from Week 5</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚠️</span> Limitations</div>
+<div class="card-body"><ul><li>LLM extraction is <strong>approximate</strong> — always verify critical metadata</li><li>PDF text extraction is <strong>lossy</strong> — tables, figures, equations may be garbled</li><li>Multi-column layouts and scanned PDFs are problematic</li><li>Treat LLM-extracted metadata as <strong>draft</strong> requiring human validation (Week 2: hypothesis!)</li></ul></div>
+</div>
+</div>
+<div class="mermaid-container"><div class="mermaid">graph LR
+    A["📄 PDF File"] --> B["📝 Raw Text<br>(PyPDF2)"]
+    B --> C["🧠 LLM<br>(extraction prompt)"]
+    C --> D["📋 JSON Metadata"]
+    C --> E["📝 Clean Markdown"]
+    D --> F["💾 .md file<br>(YAML frontmatter)"]
+    E --> F
+    style C fill:#fff3e0,stroke:#f57c00
+    style F fill:#e8f5e9,stroke:#388e3c</div></div>
+</div>
+</section>
+<section class="slide" id="slide-8">
+<div class="slide-content">
+<h2 class="slide-title">The Full <strong>Extraction Pipeline</strong></h2>
+<p class="slide-subtitle">From folder of PDFs to structured database</p>
+<div class="mermaid-container"><div class="mermaid">graph LR
+    A["📁 PDFs"] --> B["🔄 Extract text<br>(PyPDF2)"]
+    B --> C["🧠 LLM +<br>schema"]
+    C --> D["📋 Parse<br>JSON + body"]
+    D --> E["💾 Save .md<br>(YAML frontmatter)"]
+    E --> F["📁 MD Folder"]
+    F --> G["📊 Charts"]
+    F --> H["🕸️ Ontology"]
+    F --> I["💬 Q&A"]
+    style A fill:#fce4ec,stroke:#c62828
+    style C fill:#fff3e0,stroke:#f57c00
+    style F fill:#e8f5e9,stroke:#388e3c
+    style G fill:#e1f5fe,stroke:#0288d1
+    style H fill:#f3e5f5,stroke:#7b1fa2
+    style I fill:#e1f5fe,stroke:#0288d1</div></div>
+<div class="highlight-quote">"The pipeline transforms a folder of unstructured PDFs into a queryable, visualizable research database."</div>
+</div>
+</section>
+<section class="slide" id="slide-9">
+<div class="slide-content">
+<h2 class="slide-title">What You Can <strong>Generate</strong> from Metadata</h2>
+<p class="slide-subtitle">The real power — turning data into research intelligence</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📅</span> Temporal Analysis</div>
+<div class="card-body"><ul><li><strong>Publication frequency by year</strong> → is the field growing or declining?</li><li><strong>Method evolution over time</strong> → which approaches are gaining traction?</li><li><strong>Trend prediction</strong> → based on current trajectory, what's next?</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">👤</span> Author & Source Analysis</div>
+<div class="card-body"><ul><li><strong>Author frequency</strong> → who are the key researchers?</li><li><strong>Journal distribution</strong> → where is the field being published?</li><li><strong>Collaboration networks</strong> → who works with whom?</li><li><strong>Citation patterns</strong> → which papers are most referenced?</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔑</span> Keyword & Topic Analysis</div>
+<div class="card-body"><ul><li><strong>Keyword frequency</strong> → what are the dominant topics?</li><li><strong>Keyword co-occurrence</strong> → which topics appear together?</li><li><strong>Topic correlation</strong> → how do subfields relate?</li><li><strong>Emerging keywords</strong> → new terms appearing in recent papers</li></ul></div>
+</div>
+<div class="card card-purple">
+<div class="card-header"><span class="icon">🕸️</span> Knowledge Ontology</div>
+<div class="card-body"><ul><li><strong>Field → Method → Finding</strong> hierarchy</li><li><strong>Research gap identification</strong> → what's NOT being studied?</li><li><strong>Cross-disciplinary connections</strong> → unexpected overlaps between fields</li><li><strong>Future direction synthesis</strong> → combining trends to predict opportunities</li></ul></div>
+</div>
+</div>
+<div class="image-container"><img src="image/week_06/1775383281803.png" alt="1775383281803" class="slide-img" onclick="openModal('image/week_06/1775383281803.png')"></div>
+</div>
+</section>
+<section class="slide" id="slide-10">
+<div class="slide-content">
+<h2 class="slide-title">Example — <strong>What the Output Looks Like</strong></h2>
+<p class="slide-subtitle">These are generated automatically from extracted metadata</p>
+<div class="mermaid-group">
+<div class="mermaid-container"><div class="mermaid">xychart-beta
+    title "Publication Year Distribution"
+    x-axis [2019, 2020, 2021, 2022, 2023, 2024]
+    y-axis "Papers" 0 --> 15
+    bar [3, 5, 7, 10, 12, 8]</div></div>
+<div class="mermaid-container"><div class="mermaid">pie title Methodology Distribution
+    "Deep Learning" : 12
+    "Statistical" : 8
+    "Simulation" : 6
+    "Experimental" : 5
+    "Survey" : 4</div></div>
+<div class="mermaid-container"><div class="mermaid">graph LR
+    Kim(("🔴 Kim, J.<br>5 papers")) --- Lee(("🟠 Lee, S.<br>4 papers"))
+    Kim --- Park(("🟡 Park, H.<br>3 papers"))
+    Kim --- Chen(("🔵 Chen, W.<br>2 papers"))
+    Lee --- Park
+    Lee --- Tanaka(("🟢 Tanaka, Y.<br>3 papers"))
+    Park --- Nguyen(("🟣 Nguyen, T.<br>2 papers"))
+    Chen --- Tanaka
+    style Kim fill:#ef4444,stroke:#b91c1c,color:#fff
+    style Lee fill:#f97316,stroke:#c2410c,color:#fff
+    style Park fill:#eab308,stroke:#a16207
+    style Tanaka fill:#22c55e,stroke:#15803d,color:#fff
+    style Chen fill:#3b82f6,stroke:#1d4ed8,color:#fff
+    style Nguyen fill:#a855f7,stroke:#7e22ce,color:#fff</div></div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-11">
+<div class="slide-content">
+<h2 class="slide-title">From Data to <strong>Insight</strong> — Analysis Strategy</h2>
+<p class="slide-subtitle">A 4-level framework for metadata-driven research intelligence</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📊</span> Level 1 — Descriptive (What?)</div>
+<div class="card-body"><ul><li>Count, frequency, distribution of basic metadata fields</li><li>"How many papers per year?", "What are the top 10 keywords?"</li><li>Charts: bar charts, histograms, word clouds</li><li><strong>Tool</strong>: simple counting and grouping</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔍</span> Level 2 — Comparative (How different?)</div>
+<div class="card-body"><ul><li>Cross-field comparisons, methodology vs outcome analysis</li><li>"Do DL papers cite more than traditional ML papers?"</li><li>"How do methods differ between journals?"</li><li><strong>Tool</strong>: pivot tables, grouped bar charts</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔗</span> Level 3 — Relational (How connected?)</div>
+<div class="card-body"><ul><li>Co-occurrence networks, citation graphs, topic correlation</li><li>"Which keywords always appear together?"</li><li>"Which authors bridge two research communities?"</li><li><strong>Tool</strong>: network graphs, ontology diagrams</li></ul></div>
+</div>
+<div class="card card-purple">
+<div class="card-header"><span class="icon">🔮</span> Level 4 — Predictive (What's next?)</div>
+<div class="card-body"><ul><li>Trend extrapolation, gap identification, opportunity mapping</li><li>"Based on 5 years of data, what will the hot topics be in 2027?"</li><li>"Where are the unexplored intersections between fields?"</li><li><strong>Tool</strong>: LLM-powered analysis + human judgment</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Levels 1-3 are computation (let AI do it). Level 4 is judgment (the human's role). This is Week 4's principle in action."</div>
+</div>
+</section>
+<section class="slide" id="slide-12">
+<div class="slide-content">
+<h2 class="slide-title">The Hidden Challenge — <strong>Data Normalization</strong></h2>
+<p class="slide-subtitle">LLMs extract text, but the same entity can appear in many forms</p>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The Problem — Author Names</div>
+<div class="card-body"><ul><li>"Kim, J." / "J. Kim" / "Joon Kim" / "KIM, JOON" → same person!</li><li>"Lee, S." — is it Sungmin Lee or Soyoung Lee?</li><li>Without normalization, your author network has <strong>duplicate nodes</strong></li><li>Same issue for: journal names, keywords, institutions</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> The Solution — Normalize After Extraction</div>
+<div class="card-body"><ul><li><strong>Case normalization</strong>: "KIM, SOYEON" → "Soyeon Kim"</li><li><strong>Name order</strong>: "Kim, Soyeon" → "Soyeon Kim" (unify to First Last)</li><li><strong>Punctuation cleanup</strong>: remove dots, hyphens→space, trim brackets</li><li><strong>Keyword unification</strong>: "deep learning" / "Deep Learning" / "DL" → "deep learning"</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">💻</span> In Code — <code class="inline-code">normalize_author()</code></div>
+<div class="card-body"><ul><li>Input: any author name format from the LLM</li><li>Output: consistent <strong>full name</strong> in Title Case</li><li>Applied <strong>before</strong> counting, charting, and network building</li><li>Same pattern works for keywords, journals, etc.</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Garbage in, garbage out — even if your LLM extraction is perfect, inconsistent names will ruin your analysis."</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-13">
+<div class="slide-content">
+<h2 class="slide-title">Customizing the <strong>Extraction Schema</strong></h2>
+<p class="slide-subtitle">The schema defines what data you get — tailor it to YOUR research</p>
+<pre class="code-block"><code class="language-text"># Default schema (works for most papers)
+- title: Paper title
+- authors: List of author names
+- year: Publication year
+- journal: Journal or conference name
+- keywords: Key phrases
+- abstract: The abstract
+- methodology: Primary research method
+- key_findings: 1-2 sentence summary
+
+# Example: Materials Science custom fields
+- material_system: Primary material studied
+- synthesis_method: How the material was made
+- characterization_tools: Equipment used (XRD, SEM, TEM, etc.)
+- performance_metric: Key performance number and unit
+
+# Example: Machine Learning custom fields
+- dataset: Dataset used for training/evaluation
+- model_architecture: Neural network architecture
+- baseline_comparison: What was compared against
+- accuracy_metric: Best reported accuracy/F1/BLEU score</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Design Your Own Schema</div>
+<div class="card-body"><ul><li>Think: what metadata would make YOUR literature review easier?</li><li>Add fields specific to your field — the LLM will try to extract them</li><li>More specific schema → more useful metadata → better analysis</li><li>This is <strong>prompt engineering</strong> (Week 3) applied to data extraction</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-14">
+<div class="slide-content">
+<h2 class="slide-title">Lecture Summary — From PDF to Insight</h2>
+<p class="slide-subtitle">Key takeaways</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📄</span> PDF → Markdown</div>
+<div class="card-body"><ul><li>PDFs trap data in visual format; Markdown makes it <strong>AI-ready</strong></li><li>YAML frontmatter stores <strong>structured metadata</strong> alongside the content</li><li>LLM extracts metadata from raw text — approximate but powerful</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📊</span> Metadata → Analysis</div>
+<div class="card-body"><ul><li>With structured metadata, you can count, compare, connect, and predict</li><li>4 levels: Descriptive → Comparative → Relational → Predictive</li><li>Levels 1-3 are computation; Level 4 is human judgment</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🎯</span> The Big Picture</div>
+<div class="card-body"><ul><li>Week 5: you built a PDF viewer (read and chat)</li><li>Week 6: you build a PDF pipeline (extract, structure, analyze)</li><li>The difference: <strong>persistent, queryable, computable data</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-15">
+<div class="slide-content">
+<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+<p class="slide-subtitle">Build a PDF Data Extraction Pipeline — Streamlit Web App</p>
+</div>
+</section>
+<section class="slide" id="slide-16">
+<div class="slide-content">
+<h2 class="slide-title">What We'll <strong>Build</strong> Today</h2>
+<p class="slide-subtitle">A 4-tab Streamlit app for end-to-end paper analysis</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Goal</div>
+<div class="card-body"><ul><li><strong>Tab 1 — Extract</strong>: Upload PDFs → LLM extracts metadata → saves as <code class="inline-code">.md</code> files</li><li><strong>Tab 2 — Metadata Table</strong>: View all extracted metadata as a table + download CSV</li><li><strong>Tab 3 — Charts & Ontology</strong>: Year/field/method distributions + keyword network</li><li><strong>Tab 4 — Q&A</strong>: Chat about your paper collection using extracted data</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🛠️</span> Tech Stack</div>
+<div class="card-body"><ul><li><strong>Streamlit</strong> — web framework (same as Week 5)</li><li><strong>PyPDF2</strong> — PDF text extraction</li><li><strong>Pandas</strong> — data tables and CSV export</li><li><strong>OpenAI client</strong> — LLM calls (Gemini / Ollama)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📁</span> Project Structure</div>
+<div class="card-body"><ul><li><code class="inline-code">app.py</code> — Main Streamlit app (4 tabs)</li><li><code class="inline-code">pdf_to_md.py</code> — PDF → Markdown converter with LLM extraction</li><li><code class="inline-code">llm_client.py</code> — LLM client (extraction + chat)</li><li><code class="inline-code">chart_generator.py</code> — Charts and ontology from metadata</li><li><code class="inline-code">pdfs/</code> — input folder (put your PDFs here)</li><li><code class="inline-code">md_output/</code> — output folder (generated .md files)</li></ul></div>
+</div>
+</div>
+<div class="flow-container">
+<div class="flow-step">Upload PDFs</div> <div class="flow-arrow">➔</div> <div class="flow-step">LLM Extracts</div> <div class="flow-arrow">➔</div> <div class="flow-step">Save .md</div> <div class="flow-arrow">➔</div> <div class="flow-step">Charts & Ontology</div> <div class="flow-arrow">➔</div> <div class="flow-step">Q&A</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-17">
+<div class="slide-content">
+<h2 class="slide-title">Step 0 — <strong>Setup</strong></h2>
+<p class="slide-subtitle">Install dependencies and prepare folders</p>
+<pre class="code-block"><code class="language-bash">cd practices/week_06
+pip install streamlit PyPDF2 openai python-dotenv pandas</code></pre>
+<pre class="code-block"><code class="language-text">practices/week_06/
+  app.py                # Main Streamlit app
+  pdf_to_md.py          # PDF → MD conversion
+  llm_client.py         # LLM client
+  chart_generator.py    # Visualization generators
+  pdfs/                 # Put your PDF files here
+  md_output/            # Generated .md files (auto-created)</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Reuse Your API Keys</div>
+<div class="card-body"><ul><li>Copy <code class="inline-code">.env</code> from Week 5 (or <code class="inline-code">practices/.env</code>)</li><li>Same Gemini / Ollama setup — no new configuration needed</li><li>Prepare <strong>3-5 PDF papers</strong> from your research for testing</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-18">
+<div class="slide-content">
+<h2 class="slide-title">Step 1 — <strong>PDF → Markdown Converter</strong> (<code class="inline-code">pdf_to_md.py</code>)</h2>
+<p class="slide-subtitle">Extract text, send to LLM, parse response, save as .md</p>
+<pre class="code-block"><code class="language-python"># pdf_to_md.py (key functions)
+from PyPDF2 import PdfReader
+import json, os
+
+def extract_pdf_text(pdf_path):
+    reader = PdfReader(pdf_path)
+    return "\n".join(p.extract_text() or "" for p in reader.pages)
+
+def build_extraction_prompt(raw_text, user_schema):
+    return f"""Extract metadata as JSON + body as Markdown.
+## Schema: {user_schema}
+## Output: ```json {{ ... }} ``` ---BODY--- (markdown body)
+## Paper Text: {raw_text[:30000]}"""
+
+def parse_llm_response(response_text):
+    metadata = {}
+    if "```json" in response_text:
+        json_str = response_text.split("```json")[1].split("```")[0]
+        metadata = json.loads(json_str)
+    body = response_text.split("---BODY---")[1] if "---BODY---" in response_text else ""
+    return metadata, body.strip()
+
+def save_markdown(output_dir, filename, metadata, body):
+    """Save as .md with YAML frontmatter (lists as indented items)."""
+    lines = ["---"]
+    for k, v in metadata.items():
+        if isinstance(v, list):
+            lines.append(f"{k}:")
+            for item in v: lines.append(f'  - "{item}"')
+        else:
+            lines.append(f'{k}: "{v}"')
+    lines.extend(["---", "", body])
+    md_path = os.path.join(output_dir, filename.replace(".pdf", ".md"))
+    with open(md_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
+    return md_path
+
+def load_all_metadata(md_dir):
+    """Load YAML frontmatter from all .md files (supports list fields)."""
+    all_meta = []
+    for fname in sorted(os.listdir(md_dir)):
+        if not fname.endswith(".md"): continue
+        with open(os.path.join(md_dir, fname), encoding="utf-8") as f:
+            content = f.read()
+        if not content.startswith("---"): continue
+        parts = content.split("---", 2)
+        meta, current_key, current_list = {"_filename": fname}, None, []
+        for line in parts[1].strip().split("\n"):
+            if line.startswith("  - "):          # list item
+                current_list.append(line.strip()[2:].strip('"'))
+            else:
+                if current_key and current_list:  # save previous list
+                    meta[current_key] = json.dumps(current_list)
+                    current_list = []
+                if ": " in line:
+                    k, v = line.split(": ", 1)
+                    v = v.strip().strip('"')
+                    if v in ("", "|"): current_key = k
+                    else: meta[k] = v; current_key = None
+                elif line.endswith(":"):          # key with list below
+                    current_key = line[:-1].strip()
+                else: current_key = None
+        if current_key and current_list:
+            meta[current_key] = json.dumps(current_list)
+        all_meta.append(meta)
+    return all_meta</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-19">
+<div class="slide-content">
+<h2 class="slide-title">Step 2 — <strong>LLM Client</strong> (<code class="inline-code">llm_client.py</code>)</h2>
+<p class="slide-subtitle">Two functions — one for extraction, one for Q&A chat</p>
+<pre class="code-block"><code class="language-python"># llm_client.py
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+def get_client(provider="Gemini"):
+    # Same as Week 5 — Gemini / Ollama / OpenAI
+    ...
+
+def extract_metadata(client, model, raw_text, prompt):
+    """One-shot extraction — no streaming needed."""
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "You are a precise metadata extractor."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=4096,
+    )
+    return response.choices[0].message.content
+
+def chat_with_data(client, model, context, user_message, history):
+    """Chat about extracted data — streaming."""
+    system_msg = f"""You are a research data analyst.
+    Use the paper metadata below to answer questions.
+    # Paper Data\n{context}"""
+    messages = [{"role": "system", "content": system_msg}]
+    messages.extend(history)
+    messages.append({"role": "user", "content": user_message})
+    return client.chat.completions.create(
+        model=model, messages=messages, stream=True)</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Two LLM Modes</div>
+<div class="card-body"><ul><li><strong>Extraction</strong> (Tab 1): single call, no streaming, structured output → <code class="inline-code">extract_metadata()</code></li><li><strong>Q&A</strong> (Tab 4): multi-turn chat, streaming, conversational → <code class="inline-code">chat_with_data()</code></li><li>Same LLM, different system prompts → different behavior (Week 3 principle!)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-20">
+<div class="slide-content">
+<h2 class="slide-title">Step 3 — <strong>Chart Generator</strong> (<code class="inline-code">chart_generator.py</code>)</h2>
+<p class="slide-subtitle">Turn metadata into visualizations</p>
+<pre class="code-block"><code class="language-python"># chart_generator.py
+from collections import Counter
+import json, re
+
+def normalize_author(name):
+    """Normalize author name — keep full name, clean formatting."""
+    name = name.strip().strip('"').replace(".", "").replace("-", " ")
+    name = re.sub(r"[\d()\[\]{}*]", "", name)
+    name = " ".join(name.split())
+    if "," in name:  # "Last, First" → "First Last"
+        parts = [p.strip() for p in name.split(",", 1)]
+        name = f"{parts[1]} {parts[0]}".strip()
+    return name.title()
+
+def normalize_authors_list(authors_raw):
+    """Parse and normalize author list from metadata."""
+    if isinstance(authors_raw, list): names = authors_raw
+    elif isinstance(authors_raw, str):
+        try: names = json.loads(authors_raw.replace("'", '"'))
+        except: names = [n.strip() for n in authors_raw.split(",")]
+    else: return []
+    return [normalize_author(n) for n in names if n.strip()]
+
+def author_cooccurrence(metadata_list):
+    """Build co-authorship edges + author counts."""
+    edges, author_count = Counter(), Counter()
+    for meta in metadata_list:
+        authors = normalize_authors_list(meta.get("authors", "[]"))
+        for a in authors: author_count[a] += 1
+        for i, a1 in enumerate(authors):
+            for a2 in authors[i+1:]:
+                edges[tuple(sorted([a1, a2]))] += 1
+    return {"edges": [{"source": s, "target": t, "weight": w}
+            for (s, t), w in edges.most_common(30)],
+            "counts": dict(author_count.most_common(20))}
+
+def count_by_field(metadata_list, field):
+    """Count occurrences of a metadata field."""
+    counter = Counter()
+    for meta in metadata_list:
+        counter[meta.get(field, "Unknown")] += 1
+    return dict(counter.most_common(20))
+
+def year_distribution(metadata_list):
+    """Count papers per year."""
+    counter = Counter()
+    for meta in metadata_list:
+        try: counter[int(meta.get("year", 0))] += 1
+        except: pass
+    return dict(sorted(counter.items()))
+
+def build_keyword_cooccurrence(metadata_list):
+    """Build keyword co-occurrence pairs."""
+    # ... (same pattern as author_cooccurrence)
+
+def generate_mermaid_ontology(metadata_list, center_topic="Research"):
+    """Generate Mermaid graph from fields, methods, keywords."""
+    # ... graph TD with CENTER → top fields/methods/keywords
+
+def generate_mermaid_author_network(metadata_list):
+    """Generate Mermaid graph showing author collaboration network."""
+    data = author_cooccurrence(metadata_list)
+    lines = ["graph LR"]
+    for i, (author, cnt) in enumerate(data["counts"].items()):
+        lines.append(f'    A{i}(("{author}&lt;br&gt;{cnt} papers"))')
+    for edge in data["edges"]:
+        # Connect co-authors with --- edges
+        ...
+    return "\n".join(lines)</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-21">
+<div class="slide-content">
+<h2 class="slide-title">Step 4 — <strong>Tab 1: Extract</strong> (<code class="inline-code">app.py</code>)</h2>
+<p class="slide-subtitle">Upload PDFs → LLM extracts metadata → saves as .md files</p>
+<pre class="code-block"><code class="language-python"># app.py — Tab 1 (Extract)
+with tab1:
+    st.header("PDF → Markdown Extraction")
+
+    pdf_files = os.listdir(PDF_DIR)  # List PDFs in folder
+    md_files = os.listdir(MD_DIR)    # List already-extracted MDs
+
+    # Show status per PDF
+    for pdf_name in pdf_files:
+        md_name = pdf_name.replace(".pdf", ".md")
+        status = "✅" if md_name in md_files else "⏳"
+        st.markdown(f"- `{pdf_name}` — {status}")
+
+    if st.button("🚀 Extract All Pending"):
+        progress = st.progress(0)
+        for i, pdf_name in enumerate(pending_pdfs):
+            progress.progress(i / len(pending_pdfs), f"Extracting: {pdf_name}")
+
+            raw_text = extract_pdf_text(os.path.join(PDF_DIR, pdf_name))
+            prompt = build_extraction_prompt(raw_text, user_schema)
+            response = extract_metadata(client, model, raw_text, prompt)
+            metadata, body = parse_llm_response(response)
+            save_markdown(MD_DIR, pdf_name, metadata, body)
+
+        st.rerun()</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Batch Processing</div>
+<div class="card-body"><ul><li>Unlike Week 5 (one PDF at a time in chat), Week 6 processes <strong>all PDFs in a pipeline</strong></li><li>Progress bar shows extraction status for each file</li><li>Results persist in <code class="inline-code">md_output/</code> — no re-extraction needed on reload</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-22">
+<div class="slide-content">
+<h2 class="slide-title">Step 5 — <strong>Tab 2: Table</strong> & <strong>Tab 3: Charts</strong></h2>
+<p class="slide-subtitle">View, export, and visualize extracted metadata</p>
+<pre class="code-block"><code class="language-python"># app.py — Tab 2 (Metadata Table)
+with tab2:
+    all_meta = load_all_metadata(MD_DIR)
+    df = pd.DataFrame(all_meta)
+    st.dataframe(df, use_container_width=True)
+    st.download_button("📥 Download CSV", df.to_csv(), "metadata.csv")
+
+# app.py — Tab 3 (Charts & Ontology)  — uses altair for horizontal bar charts
+import altair as alt
+with tab3:
+    # Year distribution (horizontal bar chart)
+    year_data = year_distribution(all_meta)
+    df = pd.DataFrame(year_data.items(), columns=["Year", "Count"])
+    df["Year"] = df["Year"].astype(str)
+    chart = alt.Chart(df).mark_bar().encode(
+        y=alt.Y("Year:N", sort="-x"), x="Count:Q")
+    st.altair_chart(chart, use_container_width=True)
+
+    # Author collaboration network (normalized full names)
+    author_mermaid = generate_mermaid_author_network(all_meta)
+    st.code(author_mermaid, language="mermaid")
+    author_data = author_cooccurrence(all_meta)
+    st.dataframe(pd.DataFrame(author_data["counts"].items(),
+                               columns=["Author", "Papers"]))
+
+    # Field / Methodology distribution (horizontal bar charts)
+    for field, label in [("research_field", "Field"), ("methodology", "Method")]:
+        data = count_by_field(all_meta, field)
+        df = pd.DataFrame(data.items(), columns=[label, "Count"])
+        chart = alt.Chart(df).mark_bar().encode(
+            y=alt.Y(f"{label}:N", sort="-x"), x="Count:Q")
+        st.altair_chart(chart, use_container_width=True)
+
+    # Knowledge ontology + Keyword co-occurrence (same as before)
+    st.code(generate_mermaid_ontology(all_meta), language="mermaid")
+    st.dataframe(pd.DataFrame(build_keyword_cooccurrence(all_meta)))</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-23">
+<div class="slide-content">
+<h2 class="slide-title">Step 6 — <strong>Tab 4: Q&A</strong> on Your Paper Collection</h2>
+<p class="slide-subtitle">Chat with AI about all your extracted papers</p>
+<pre class="code-block"><code class="language-python"># app.py — Tab 4 (Q&A)
+with tab4:
+    # Build context from all metadata
+    context = "\n\n".join(
+        f"### {m.get('title')}\n" +
+        "\n".join(f"- **{k}**: {v}" for k, v in m.items())
+        for m in all_meta
+    )
+
+    # Quick analysis buttons
+    quick_prompts = {
+        "📊 Trend Analysis": "Analyze temporal trends...",
+        "🔍 Common Themes": "What common themes...",
+        "⚡ Research Gaps": "Identify 3-5 gaps...",
+        "🔀 Cross-Pollination": "Find unexpected connections...",
+    }
+    for label, template in quick_prompts.items():
+        if st.button(label):
+            # Send template as prompt → stream response
+            ...
+
+    # Chat input (same streaming pattern as Week 5)
+    if prompt := st.chat_input("Ask about your papers..."):
+        stream = chat_with_data(client, model, context, prompt, history)
+        for chunk in stream:
+            ...  # stream to placeholder</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Metadata as Context</div>
+<div class="card-body"><ul><li>Week 5: injected <strong>full PDF text</strong> into system prompt (huge, limited to 2-3 papers)</li><li>Week 6: injects <strong>extracted metadata</strong> (compact, scales to 50+ papers)</li><li>Structured metadata = <strong>more papers in less tokens</strong> = better analysis</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-24">
+<div class="slide-content">
+<h2 class="slide-title">Full Pipeline — <strong>Architecture</strong></h2>
+<p class="slide-subtitle">From raw PDFs to interactive research intelligence</p>
+<div class="mermaid-container"><div class="mermaid">sequenceDiagram
+    participant U as User (Browser)
+    participant S as app.py
+    participant P as pdf_to_md.py
+    participant L as Gemini / Ollama
+    participant C as chart_generator.py
+
+    Note over U,C: Tab 1: Extract
+    U->>S: Upload PDFs / Click "Extract All"
+    loop For each PDF
+        S->>P: extract_pdf_text(pdf)
+        P-->>S: raw_text
+        S->>L: extraction prompt + raw_text
+        L-->>S: JSON metadata + MD body
+        S->>P: save_markdown(metadata, body)
+    end
+
+    Note over U,C: Tab 2: Table
+    U->>S: View Metadata Tab
+    S->>P: load_all_metadata(md_dir)
+    P-->>S: [{meta}, {meta}, ...]
+    S->>U: Display as DataFrame
+
+    Note over U,C: Tab 3: Charts
+    U->>S: View Charts Tab
+    S->>C: year_distribution(), count_by_field(), ...
+    C-->>S: chart data
+    S->>U: Render bar charts + ontology
+
+    Note over U,C: Tab 4: Q&A
+    U->>S: "What are the trends?"
+    S->>L: system_prompt + all_metadata + question
+    L-->>S: Streaming analysis
+    S->>U: Display response</div></div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-25">
+<div class="slide-content">
+<h2 class="slide-title">Step 7 — <strong>Run and Test</strong></h2>
+<p class="slide-subtitle">Launch the app and process your papers</p>
+<pre class="code-block"><code class="language-bash">cd practices/week_06
+streamlit run app.py</code></pre>
+<pre class="code-block"><code class="language-text">Expected UI (4 tabs):
+┌──────────────────────────────────────────────────────┐
+│ [1️⃣ Extract] [2️⃣ Metadata Table] [3️⃣ Charts] [4️⃣ Q&A] │
+│                                                      │
+│  Tab 1 — PDF → Markdown Extraction                   │
+│                                                      │
+│  📁 PDF Files:                                       │
+│  - paper1.pdf — ✅ Extracted                         │
+│  - paper2.pdf — ✅ Extracted                         │
+│  - paper3.pdf — ⏳ Pending                           │
+│                                                      │
+│  [🚀 Extract All Pending (1)]  [🔄 Re-extract All]   │
+│                                                      │
+│  Processing Log:                                     │
+│  ✅ paper1.pdf → paper1.md                           │
+│  ✅ paper2.pdf → paper2.md                           │
+└──────────────────────────────────────────────────────┘</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Testing Tips</div>
+<div class="card-body"><ul><li>Start with <strong>3-5 short papers</strong> (< 10 pages each) for faster extraction</li><li>Check <code class="inline-code">md_output/</code> folder to verify YAML frontmatter is correct</li><li>If metadata looks wrong, try <strong>editing the schema</strong> in the sidebar for clearer instructions</li><li>Gemini works best for extraction (large context window)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-26">
+<div class="slide-content">
+<h2 class="slide-title">Screen Shots of the App</h2>
+<p class="slide-subtitle">Views of the app and process your papers</p>
+<div class="image-container"><img src="image/week_06/1775385523130.png" alt="1775385523130" class="slide-img" onclick="openModal('image/week_06/1775385523130.png')"></div>
+<div class="image-container"><img src="image/week_06/1775385557608.png" alt="1775385557608" class="slide-img" onclick="openModal('image/week_06/1775385557608.png')"></div>
+<div class="image-container"><img src="image/week_06/1775385578870.png" alt="1775385578870" class="slide-img" onclick="openModal('image/week_06/1775385578870.png')"></div>
+<div class="image-container"><img src="image/week_06/1775385632352.png" alt="1775385632352" class="slide-img" onclick="openModal('image/week_06/1775385632352.png')"></div>
+<div class="image-container"><img src="image/week_06/1775385668525.png" alt="1775385668525" class="slide-img" onclick="openModal('image/week_06/1775385668525.png')"></div>
+<div class="image-container"><img src="image/week_06/1775385696929.png" alt="1775385696929" class="slide-img" onclick="openModal('image/week_06/1775385696929.png')"></div>
+</div>
+</section>
+<section class="slide" id="slide-27">
+<div class="slide-content">
+<h2 class="slide-title">✅ <strong>Practice Checklist</strong></h2>
+<p class="slide-subtitle">Complete these tasks during the hands-on session</p>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">📋</span> Checklist</div>
+<div class="card-body"><ul><li>[ ] Set up <code class="inline-code">.env</code> and prepare <strong>3-5 PDF papers</strong> in <code class="inline-code">pdfs/</code> folder</li><li>[ ] Create all 4 files: <code class="inline-code">app.py</code>, <code class="inline-code">pdf_to_md.py</code>, <code class="inline-code">llm_client.py</code>, <code class="inline-code">chart_generator.py</code></li><li>[ ] Run <code class="inline-code">streamlit run app.py</code> and verify the 4-tab UI loads</li><li>[ ] <strong>Tab 1</strong>: Extract all PDFs → verify <code class="inline-code">.md</code> files appear in <code class="inline-code">md_output/</code></li><li>[ ] Open a <code class="inline-code">.md</code> file and verify YAML frontmatter has correct metadata</li><li>[ ] <strong>Tab 2</strong>: View metadata table → download CSV</li><li>[ ] <strong>Tab 3</strong>: Check year/field/method charts → view ontology Mermaid code</li><li>[ ] <strong>Tab 4</strong>: Ask a question about your paper collection → verify AI references specific papers</li><li>[ ] (Bonus) <strong>Customize the schema</strong> for your research field and re-extract</li><li>[ ] (Bonus) Use a <strong>quick analysis</strong> button (Trend Analysis, Research Gaps)</li><li>[ ] (Bonus) Compare results between Gemini and Ollama</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-28">
+<div class="slide-content">
+<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+<p class="slide-subtitle">Core Competency & Midterm Progress</p>
+</div>
+</section>
+<section class="slide" id="slide-29">
+<div class="slide-content">
+<h2 class="slide-title">Core Competency — <strong>The "Irreplaceable" Researcher</strong></h2>
+<p class="slide-subtitle">"In an era where AI conducts experiments and writes papers, what is the irreplaceable skill of a researcher?"</p>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">🦾</span> Iron Man — Visionary Architect</div>
+<div class="card-body"><ul><li>"The irreplaceable core competency is acting as the <strong>visionary architect</strong> of the blueprint"</li><li>"Let the algorithms grind through the data swamps; human genius is strictly reserved for asking the <strong>universe-breaking questions</strong>"</li><li>Key idea: <strong>problem selection</strong> > problem solving</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🛡️</span> Captain America — Moral Integrity</div>
+<div class="card-body"><ul><li>"The irreplaceable core competency is the <strong>unwavering moral integrity</strong> and personal accountability required to seek the objective truth"</li><li>"Relying on AI as a crutch threatens to erode the <strong>fundamental critical thinking</strong> and honest hard work"</li><li>Key idea: <strong>ethical responsibility</strong> > speed</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🧪</span> Hulk — Skeptical Validator</div>
+<div class="card-body"><ul><li>"The irreplaceable core competency is <strong>rigorous, skeptical validation</strong> — acting as the ultimate fail-safe against unchecked automated systems"</li><li>"We <em>must</em> mandate exhaustive <strong>human oversight</strong> at every procedural juncture"</li><li>Key idea: <strong>verification</strong> > trust</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-30">
+<div class="slide-content">
+<h2 class="slide-title">Three Views, One Question — <strong>Where Do You Stand?</strong></h2>
+<p class="slide-subtitle">Each AI agent reflects a real debate in the research community</p>
+<div class="cards-grid">
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔥</span> The Tension</div>
+<div class="card-body"><ul><li>Iron Man says: <strong>aim the blast</strong> — your value is in choosing what to research</li><li>Captain America says: <strong>hold the line</strong> — your value is in doing it honestly</li><li>Hulk says: <strong>check the output</strong> — your value is in catching AI's mistakes</li><li>Are these complementary or contradictory?</li></ul></div>
+</div>
+<div class="card card-purple">
+<div class="card-header"><span class="icon">🔬</span> Connect to Your Experience</div>
+<div class="card-body"><ul><li>Which view best matches your <strong>daily research reality</strong>?</li><li>Has AI already changed what skills matter in YOUR field?</li><li>What skill do you use that you believe AI <strong>cannot</strong> learn?</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Your responses will be reviewed next week. Think about how this connects to the midterm app you're building — does YOUR app enhance an 'irreplaceable' skill?"</div>
+</div>
+</section>
+<section class="slide" id="slide-31">
+<div class="slide-content">
+<h2 class="slide-title">Midterm Progress Check</h2>
+<p class="slide-subtitle">Where should you be right now?</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">✅</span> Done by Now</div>
+<div class="card-body"><ul><li>Decided on your project topic and problem statement</li><li>Drafted the 5-question specification document</li><li>Identified which LLM provider and framework you'll use</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📝</span> This Week's Tasks</div>
+<div class="card-body"><ul><li><strong>Refine your spec</strong> based on feedback</li><li>Start building your <strong>prototype</strong> — even a skeleton UI is progress</li><li>Consider: can you use today's <strong>extraction pipeline</strong> pattern?</li></ul></div>
+</div>
+<div class="card card-purple">
+<div class="card-header"><span class="icon">📅</span> Upcoming Deadlines</div>
+<div class="card-body"><ul><li><strong>Week 7</strong>: Specification document due (submit on LMS)</li><li><strong>Week 8</strong>: Working prototype + 5-minute live demo</li><li><strong>Submit by April 17 (Fri) 24:00</strong> → email to hogeony@ust.ac.kr</li><li>Two weeks left — start coding NOW if you haven't already</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-32">
+<div class="slide-content">
+<h2 class="slide-title">🗣️ <strong>Week 6 Discussion Questions</strong> (UST LMS)</h2>
+<p class="slide-subtitle">Post your response on the forum this week</p>
+<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+<p class="slide-text">1. <strong>Core Competency</strong>: Read the three AI agent opinions above. Which perspective do you most agree with, and why? What would you <strong>add</strong> that none of the three agents mentioned? Think about your own research field — what specific skill makes you irreplaceable?</p>
+<p class="slide-text">2. Today you learned to extract <strong>structured metadata</strong> from PDFs using LLM. <strong>Design a custom extraction schema</strong> for your specific research field: what 5-8 metadata fields would be most valuable for analyzing papers in YOUR domain? Why these fields?</p>
+<p class="slide-text">3. <strong>Midterm progress update</strong>: Share your current specification status. What's your app's name, core problem, and 3 main features? What's your biggest design challenge so far?</p>
+</div>
+</section>
+<section class="slide" id="slide-33">
+<div class="slide-content">
+<h2 class="slide-title">Want to Learn More?</h2>
+<p class="slide-text">Data Extraction & Processing</p>
+<a href="https://pypdf2.readthedocs.io/" target="_blank" class="reference-link">📚 PyPDF2 Documentation</a>
+<a href="https://github.com/VikParuchuri/marker" target="_blank" class="reference-link">📚 Marker — Best PDF to Markdown Converter</a>
+<a href="https://python.langchain.com/docs/integrations/document_loaders/" target="_blank" class="reference-link">📚 LangChain Document Loaders</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Metadata & Knowledge Graphs</p>
+<a href="https://www.semanticscholar.org/product/api" target="_blank" class="reference-link">📚 Semantic Scholar API</a>
+<a href="https://openalex.org/" target="_blank" class="reference-link">📚 OpenAlex — Open Research Knowledge Graph</a>
+<a href="https://jekyllrb.com/docs/front-matter/" target="_blank" class="reference-link">📚 YAML Frontmatter Specification</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Visualization</p>
+<a href="https://mermaid.js.org/" target="_blank" class="reference-link">📚 Mermaid.js Documentation</a>
+<a href="https://docs.streamlit.io/develop/api-reference/charts" target="_blank" class="reference-link">📚 Streamlit Charts API</a>
+<a href="https://plotly.com/python/" target="_blank" class="reference-link">📚 Plotly for Python</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Anthropic Free Online Courses (Recommended)</p>
+<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api) — API 활용 실습</div>
+<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol) — MCP 서버/클라이언트 구축</div>
+<div class="highlight-quote">🎓 [Introduction to Agent Skills](https://anthropic.skilljar.com/introduction-to-agent-skills) — 재사용 가능한 에이전트 스킬 생성</div>
+<div class="highlight-quote">🎓 [Claude Code in Action](https://anthropic.skilljar.com/claude-code-in-action) — Claude Code 개발 워크플로 통합</div>
+<div class="highlight-quote">🎓 [AI Fluency: Framework & Foundations](https://anthropic.skilljar.com/ai-fluency-framework-foundations) — AI 리터러시 기초</div>
+</div>
+</section>
+<section class="slide" id="slide-34">
+<div class="slide-content">
+<h2 class="slide-title">Wrap-Up of <strong>Week 6</strong></h2>
+<p class="slide-subtitle">Three things to remember</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> Lecture</div>
+<div class="card-body"><ul><li>PDF traps data in visual format; <strong>Markdown + YAML frontmatter</strong> makes it AI-ready; LLM extracts metadata from raw text; 4-level analysis framework (describe → compare → connect → predict)</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> Practice</div>
+<div class="card-body"><ul><li>Built a <strong>4-tab extraction pipeline</strong>: PDF→MD extraction, metadata table, charts/ontology, and Q&A; metadata scales to 50+ papers where full-text chat cannot</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+<div class="card-body"><ul><li>Core Competency debate: Iron Man (vision) vs Captain America (integrity) vs Hulk (validation) — what is the irreplaceable researcher skill? Midterm due <strong>April 17 24:00</strong> via email</li></ul></div>
+</div>
+</div>
+<p class="slide-text"><strong>Next week:</strong> Specification document due — finalize your project design and prepare for prototyping in Week 8.</p>
+</div>
+</section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">34</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(15)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(28)">Discussion</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 34;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+      
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+      
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+      
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if(currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if(currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if(newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+           currentSlide = newSlide;
+           pageInput.value = currentSlide;
+           updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if(e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: -100, behavior: 'smooth'});
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: 100, behavior: 'smooth'});
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+         const pageNum = parseInt(hash.replace('#slide-', ''));
+         if(!isNaN(pageNum)) {
+           setTimeout(() => goToSlide(pageNum), 100);
+         }
+      }
+    });
+  </script>
+</body>
+</html>

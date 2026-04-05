@@ -253,7 +253,8 @@
   }
   .mermaid-group {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 1rem;
     width: 100%;
     justify-content: center;
@@ -672,7 +673,7 @@
 <div class="slide-content">
 <h2 class="slide-title">Right Now, the <strong>Paradigm</strong> Is Shifting</h2>
 <p class="slide-subtitle">The way you use AI is about to fundamentally change</p>
-<div class="image-container"><img src="image/week1-slides/1772439188875.png" alt="1772439188875" class="slide-img" onclick="openModal('image/week1-slides/1772439188875.png')"><div class="img-caption">Left side — a person typing a question into ChatGPT at a laptop. Right side — the same person standing like an orchestra conductor, directing multiple AI agents performing different tasks. A large arrow in the center. Professional, minimal illustration style.</div></div>
+<div class="image-container"><img src="image/week_01/1772439188875.png" alt="1772439188875" class="slide-img" onclick="openModal('image/week_01/1772439188875.png')"><div class="img-caption">Left side — a person typing a question into ChatGPT at a laptop. Right side — the same person standing like an orchestra conductor, directing multiple AI agents performing different tasks. A large arrow in the center. Professional, minimal illustration style.</div></div>
 <div class="highlight-quote"><strong>Image Prompt</strong>: "Split illustration, left side: a researcher typing a question into a chatbot on a laptop screen, simple and passive interaction. Right side: the same researcher standing like an orchestra conductor, directing multiple AI agents represented as glowing orbs performing different tasks (coding, searching, writing). A large arrow in the center pointing from left to right. Clean, professional, minimal flat illustration style, blue and white color palette."</div>
 </div>
 </section>
@@ -687,7 +688,7 @@
 <div class="card-body"><ul><li>Ask ChatGPT a question → copy answer → paste into document</li><li>"Fix this code" → manually apply the result to the file</li><li>Search → request summary → search again → summarize again...</li><li><strong>Every step is manually connected by a human</strong></li></ul></div>
 </div>
 </div>
-<div class="image-container"><img src="image/week1-slides/1772439303876.png" alt="1772439303876" class="slide-img" onclick="openModal('image/week1-slides/1772439303876.png')"><div class="img-caption">A person going back and forth between ChatGPT and a Word document, copy-pasting. Arrows tangled everywhere, person looks exhausted. Simple diagram style.</div></div>
+<div class="image-container"><img src="image/week_01/1772439303876.png" alt="1772439303876" class="slide-img" onclick="openModal('image/week_01/1772439303876.png')"><div class="img-caption">A person going back and forth between ChatGPT and a Word document, copy-pasting. Arrows tangled everywhere, person looks exhausted. Simple diagram style.</div></div>
 <div class="highlight-quote"><strong>Image Prompt</strong>: "Diagram showing a frustrated researcher sitting at a desk, manually copying text from a ChatGPT window to a Word document, then to a code editor, then back to ChatGPT. Multiple tangled arrows showing the manual back-and-forth workflow. Simple, clean diagram style with subtle humor, muted colors."</div>
 </div>
 </section>
@@ -702,7 +703,7 @@
 <div class="card-body"><ul><li>"Find 5 relevant papers on this topic and summarize them" → Agent searches, downloads & summarizes</li><li>"Analyze this data, visualize it, and draft a report" → Agent runs the entire pipeline</li><li>"Find bugs in the code, fix them, and run the tests" → Agent executes autonomously</li><li><strong>The human sets the goal and verifies the result</strong></li></ul></div>
 </div>
 </div>
-<div class="image-container"><img src="image/week1-slides/1772439359868.png" alt="1772439359868" class="slide-img" onclick="openModal('image/week1-slides/1772439359868.png')"><div class="img-caption">A person sitting comfortably, looking at a dashboard. Multiple AI Agents performing paper search, code writing, data analysis, report drafting. Clean, futuristic feel.</div></div>
+<div class="image-container"><img src="image/week_01/1772439359868.png" alt="1772439359868" class="slide-img" onclick="openModal('image/week_01/1772439359868.png')"><div class="img-caption">A person sitting comfortably, looking at a dashboard. Multiple AI Agents performing paper search, code writing, data analysis, report drafting. Clean, futuristic feel.</div></div>
 <div class="highlight-quote"><strong>Image Prompt</strong>: "A researcher comfortably sitting in a modern office, looking at a dashboard screen. Around them, multiple AI agents (represented as friendly robot assistants or glowing orbs) are simultaneously performing tasks: one is searching academic papers, another is writing code, another is analyzing data charts, another is drafting a report. Clean, futuristic but warm illustration style, blue and green tones."</div>
 </div>
 </section>
@@ -720,7 +721,7 @@
 <div class="card-body"><ul><li>Doesn't write all the code personally</li><li>Doesn't read every paper manually</li><li>Sets the research direction, orchestrates AI Agents, and takes responsibility for accuracy</li></ul></div>
 </div>
 </div>
-<div class="image-container"><img src="image/week1-slides/1772439418837.png" alt="1772439418837" class="slide-img" onclick="openModal('image/week1-slides/1772439418837.png')"><div class="img-caption">Left — a film director in a chair shouting "Action!" directing a crew. Right — a researcher directing multiple AI Agents on screens. 1:1 visual parallel.</div></div>
+<div class="image-container"><img src="image/week_01/1772439418837.png" alt="1772439418837" class="slide-img" onclick="openModal('image/week_01/1772439418837.png')"><div class="img-caption">Left — a film director in a chair shouting "Action!" directing a crew. Right — a researcher directing multiple AI Agents on screens. 1:1 visual parallel.</div></div>
 <div class="highlight-quote"><strong>Image Prompt</strong>: "Split comparison illustration. Left: a film director sitting in a director's chair on a movie set, saying 'Action!' with camera crew, actors, and lighting team around them. Right: a researcher at a modern desk, directing multiple AI agents displayed on screens - one agent searching, one coding, one analyzing. Visual parallel between the two scenes. Professional, warm illustration style."</div>
 </div>
 </section>
@@ -752,7 +753,7 @@
 <h2 class="slide-title"><strong>Tool</strong> vs <strong>Agent</strong> — The Core Difference</h2>
 <p class="slide-subtitle">Understanding this distinction is half the course</p>
 <table class="styled-table"><thead><tr><th>Category</th><th>AI Tool</th><th>AI Agent</th></tr></thead><tbody><tr><td>Analogy</td><td>A power drill</td><td>A skilled carpenter</td></tr><tr><td>Behavior</td><td>Only works when the user presses the button</td><td>Given a goal, plans and executes on its own</td></tr><tr><td>Example</td><td>"Translate this sentence"</td><td>"Read this paper and create a Korean summary report"</td></tr><tr><td>On failure</td><td>Outputs an error message</td><td>Analyzes the cause and tries a different approach</td></tr><tr><td>Memory</td><td>Starts fresh every time</td><td>Remembers context from previous tasks</td></tr><tr><td>Tool use</td><td>None (it IS the tool)</td><td>Uses search, code execution, file management, etc.</td></tr></tbody></table>
-<div class="image-container"><img src="image/week1-slides/1772439502927.png" alt="1772439502927" class="slide-img" onclick="openModal('image/week1-slides/1772439502927.png')"><div class="img-caption">Left — a power drill (tool), a person holding it and doing manual work. Right — a skilled carpenter (agent), independently building furniture from a blueprint. Simple analogy illustration.</div></div>
+<div class="image-container"><img src="image/week_01/1772439502927.png" alt="1772439502927" class="slide-img" onclick="openModal('image/week_01/1772439502927.png')"><div class="img-caption">Left — a power drill (tool), a person holding it and doing manual work. Right — a skilled carpenter (agent), independently building furniture from a blueprint. Simple analogy illustration.</div></div>
 <div class="highlight-quote"><strong>Image Prompt</strong>: "Split comparison illustration. Left side labeled 'Tool': a person holding a power drill, manually drilling into wood - they control every movement. Right side labeled 'Agent': a skilled carpenter independently building furniture from a blueprint - they plan, measure, cut, and assemble on their own. The person just provided the blueprint. Clean, minimal illustration, educational style."</div>
 </div>
 </section>
@@ -809,7 +810,7 @@
 <div class="card-body"><ul><li>AI cites non-existent papers (hallucination)</li><li>Biased data leads to incorrect conclusions</li><li>Copyright-infringing content generated</li><li><strong>Credibility and academic integrity compromised</strong></li></ul></div>
 </div>
 </div>
-<div class="image-container"><img src="image/week1-slides/1772440348120.png" alt="1772440348120" class="slide-img" onclick="openModal('image/week1-slides/1772440348120.png')"><div class="img-caption">Pipeline diagram. Automated steps by AI Agent with "Human Review" checkpoints in between. Checkpoint has human icon with green checkmark / red X.</div></div>
+<div class="image-container"><img src="image/week_01/1772440348120.png" alt="1772440348120" class="slide-img" onclick="openModal('image/week_01/1772440348120.png')"><div class="img-caption">Pipeline diagram. Automated steps by AI Agent with "Human Review" checkpoints in between. Checkpoint has human icon with green checkmark / red X.</div></div>
 <div class="highlight-quote"><strong>Image Prompt</strong>: "A horizontal pipeline diagram showing an AI agent workflow. Multiple automated steps (search, analyze, generate) shown as connected blue boxes with arrows. At key decision points, there are 'checkpoint' gates with a human icon, a green checkmark and a red X. The human figure is reviewing the intermediate output before allowing the pipeline to continue. Clean, professional infographic style."</div>
 </div>
 </section>
@@ -916,10 +917,10 @@
 <p class="slide-text">4. Type the following prompt in the prompt box:</p>
 <pre class="code-block"><code class="language-text">Create a web app that plots $y=ax^2+bx+c$ based on the input of $a, b, c$</code></pre>
 <p class="slide-text">5. Click "Build" button under the prompt box</p>
-<div class="image-container"><img src="image/week1-slides/1772458424547.png" alt="1772458424547" class="slide-img" onclick="openModal('image/week1-slides/1772458424547.png')"><div class="img-caption">Google AI Studio</div></div>
-<div class="image-container"><img src="image/week1-slides/1772459270535.png" alt="1772459270535" class="slide-img" onclick="openModal('image/week1-slides/1772459270535.png')"><div class="img-caption">Web App UI created by Gemini</div></div>
-<div class="image-container"><img src="image/week1-slides/1772459301307.png" alt="1772459301307" class="slide-img" onclick="openModal('image/week1-slides/1772459301307.png')"><div class="img-caption">Web App UI created by Gemini</div></div>
-<div class="image-container"><img src="image/week1-slides/1772459281960.png" alt="1772459281960" class="slide-img" onclick="openModal('image/week1-slides/1772459281960.png')"><div class="img-caption">Web App Code created by Gemini</div></div>
+<div class="image-container"><img src="image/week_01/1772458424547.png" alt="1772458424547" class="slide-img" onclick="openModal('image/week_01/1772458424547.png')"><div class="img-caption">Google AI Studio</div></div>
+<div class="image-container"><img src="image/week_01/1772459270535.png" alt="1772459270535" class="slide-img" onclick="openModal('image/week_01/1772459270535.png')"><div class="img-caption">Web App UI created by Gemini</div></div>
+<div class="image-container"><img src="image/week_01/1772459301307.png" alt="1772459301307" class="slide-img" onclick="openModal('image/week_01/1772459301307.png')"><div class="img-caption">Web App UI created by Gemini</div></div>
+<div class="image-container"><img src="image/week_01/1772459281960.png" alt="1772459281960" class="slide-img" onclick="openModal('image/week_01/1772459281960.png')"><div class="img-caption">Web App Code created by Gemini</div></div>
 </div>
 </section>
 <section class="slide practice-slide" id="slide-25">
@@ -935,8 +936,8 @@
 <p class="slide-text">6. Click "Done" button</p>
 <p class="slide-text">7. Save the API Key in .env file as follows:</p>
 <pre class="code-block"><code class="language-text">GOOGLE_API_KEY=your_api_key</code></pre>
-<div class="image-container"><img src="image/week1-slides/1772460083015.png" alt="1772460083015" class="slide-img" onclick="openModal('image/week1-slides/1772460083015.png')"><div class="img-caption">Get API Key</div></div>
-<div class="image-container"><img src="image/week1-slides/1772459627236.png" alt="1772459627236" class="slide-img" onclick="openModal('image/week1-slides/1772459627236.png')"><div class="img-caption">Save API Key</div></div>
+<div class="image-container"><img src="image/week_01/1772460083015.png" alt="1772460083015" class="slide-img" onclick="openModal('image/week_01/1772460083015.png')"><div class="img-caption">Get API Key</div></div>
+<div class="image-container"><img src="image/week_01/1772459627236.png" alt="1772459627236" class="slide-img" onclick="openModal('image/week_01/1772459627236.png')"><div class="img-caption">Save API Key</div></div>
 </div>
 </section>
 <section class="slide practice-slide" id="slide-26">
@@ -945,12 +946,12 @@
 <p class="slide-subtitle">Step 1. Python 3.12.10 Setup</p>
 <p class="slide-text">1. Download <strong>Python 3.12.10 - April 8, 2025</strong> Windows installer (64-bit):</p>
 <pre class="code-block"><code class="language-text">https://www.python.org/downloads/windows/</code></pre>
-<div class="image-container"><img src="image/week1-slides/1772459212492.png" alt="1772459212492" class="slide-img" onclick="openModal('image/week1-slides/1772459212492.png')"><div class="img-caption">Find Python 3.12.10 via Ctrl+F</div></div>
+<div class="image-container"><img src="image/week_01/1772459212492.png" alt="1772459212492" class="slide-img" onclick="openModal('image/week_01/1772459212492.png')"><div class="img-caption">Find Python 3.12.10 via Ctrl+F</div></div>
 <p class="slide-text">🚨 <strong>CRITICAL</strong>: Check <code class="inline-code">Add python.exe to PATH</code> during installation.</p>
 <p class="slide-text">2. Verify your installation in PowerShell or CMD:</p>
 <pre class="code-block"><code class="language-powershell">py -3.12 --version
 py -m pip --version</code></pre>
-<div class="image-container"><img src="image/week1-slides/1772460696669.png" alt="1772460696669" class="slide-img" onclick="openModal('image/week1-slides/1772460696669.png')"></div>
+<div class="image-container"><img src="image/week_01/1772460696669.png" alt="1772460696669" class="slide-img" onclick="openModal('image/week_01/1772460696669.png')"></div>
 </div>
 </section>
 <section class="slide practice-slide" id="slide-27">
@@ -1011,7 +1012,7 @@ python -m pip install -U pip</code></pre>
 <a href="https://antigravity.google/" target="_blank" class="reference-link">📚 Antigravity</a>
 <p class="slide-text">Antigravity is Google's agent-first development platform.</p>
 <ul class="plain-bullets"><li>Download and install: <code class="inline-code">https://antigravity.google/download</code></li><li>Log in with your Google account.</li><li>Open your <code class="inline-code">UST_Lecture_AgenticAI</code> folder.</li><li>Follow instructions to verify <code class="inline-code">.venv</code> is recognized.</li></ul>
-<div class="image-container"><img src="image/week1-slides/1772460915459.png" alt="1772460915459" class="slide-img" onclick="openModal('image/week1-slides/1772460915459.png')"></div>
+<div class="image-container"><img src="image/week_01/1772460915459.png" alt="1772460915459" class="slide-img" onclick="openModal('image/week_01/1772460915459.png')"></div>
 </div>
 </section>
 <section class="slide" id="slide-31">
@@ -1029,11 +1030,11 @@ python -m pip install -U pip</code></pre>
     A->>T: Run python demo_basic.py
     T-->>A: Generates demo_basic.png
     A-->>U: Review Output & Chart</div></div>
-<div class="image-container"><img src="image/week1-slides/1772460983627.png" alt="1772460983627" class="slide-img" onclick="openModal('image/week1-slides/1772460983627.png')"><div class="img-caption">Antigravity IDE</div></div>
-<div class="image-container"><img src="image/week1-slides/1772461028900.png" alt="1772461028900" class="slide-img" onclick="openModal('image/week1-slides/1772461028900.png')"><div class="img-caption">Ask Antigravity to create the code</div></div>
-<div class="image-container"><img src="image/week1-slides/1772461515017.png" alt="1772461515017" class="slide-img" onclick="openModal('image/week1-slides/1772461515017.png')"><div class="img-caption">Approve the execution of Antigravity</div></div>
-<div class="image-container"><img src="image/week1-slides/1772461678952.png" alt="1772461678952" class="slide-img" onclick="openModal('image/week1-slides/1772461678952.png')"><div class="img-caption">Final confirmation of the execution</div></div>
-<div class="image-container"><img src="image/week1-slides/1772461773995.png" alt="1772461773995" class="slide-img" onclick="openModal('image/week1-slides/1772461773995.png')"><div class="img-caption">Created code and plot created by the code</div></div>
+<div class="image-container"><img src="image/week_01/1772460983627.png" alt="1772460983627" class="slide-img" onclick="openModal('image/week_01/1772460983627.png')"><div class="img-caption">Antigravity IDE</div></div>
+<div class="image-container"><img src="image/week_01/1772461028900.png" alt="1772461028900" class="slide-img" onclick="openModal('image/week_01/1772461028900.png')"><div class="img-caption">Ask Antigravity to create the code</div></div>
+<div class="image-container"><img src="image/week_01/1772461515017.png" alt="1772461515017" class="slide-img" onclick="openModal('image/week_01/1772461515017.png')"><div class="img-caption">Approve the execution of Antigravity</div></div>
+<div class="image-container"><img src="image/week_01/1772461678952.png" alt="1772461678952" class="slide-img" onclick="openModal('image/week_01/1772461678952.png')"><div class="img-caption">Final confirmation of the execution</div></div>
+<div class="image-container"><img src="image/week_01/1772461773995.png" alt="1772461773995" class="slide-img" onclick="openModal('image/week_01/1772461773995.png')"><div class="img-caption">Created code and plot created by the code</div></div>
 </div>
 </section>
 <section class="slide title-slide" id="slide-32">
@@ -1054,10 +1055,10 @@ python -m pip install -U pip</code></pre>
     Step2 --> Step3[3. Vote with Reaction ("1,2", "3", or "None")]
     Step3 --> Step4[4. Reply with your<br>Stance & Rationale]
     style Step4 fill:#ffe082,stroke:#ffb300,stroke-width:2px</div></div>
-<div class="image-container"><img src="image/week1-slides/1772461191648.png" alt="1772461191648" class="slide-img" onclick="openModal('image/week1-slides/1772461191648.png')"><div class="img-caption">UST LMS → This Course → Discussion</div></div>
-<div class="image-container"><img src="image/week1-slides/1772461220423.png" alt="1772461220423" class="slide-img" onclick="openModal('image/week1-slides/1772461220423.png')"><div class="img-caption">Week 1 Discussion</div></div>
-<div class="image-container"><img src="image/week1-slides/1772462214079.png" alt="1772462214079" class="slide-img" onclick="openModal('image/week1-slides/1772462214079.png')"><div class="img-caption">Dicussion Topic → Reply</div></div>
-<div class="image-container"><img src="image/week1-slides/1772462254346.png" alt="1772462254346" class="slide-img" onclick="openModal('image/week1-slides/1772462254346.png')"><div class="img-caption">Reply format: the numbers of panels you agree / your opinion</div></div>
+<div class="image-container"><img src="image/week_01/1772461191648.png" alt="1772461191648" class="slide-img" onclick="openModal('image/week_01/1772461191648.png')"><div class="img-caption">UST LMS → This Course → Discussion</div></div>
+<div class="image-container"><img src="image/week_01/1772461220423.png" alt="1772461220423" class="slide-img" onclick="openModal('image/week_01/1772461220423.png')"><div class="img-caption">Week 1 Discussion</div></div>
+<div class="image-container"><img src="image/week_01/1772462214079.png" alt="1772462214079" class="slide-img" onclick="openModal('image/week_01/1772462214079.png')"><div class="img-caption">Dicussion Topic → Reply</div></div>
+<div class="image-container"><img src="image/week_01/1772462254346.png" alt="1772462254346" class="slide-img" onclick="openModal('image/week_01/1772462254346.png')"><div class="img-caption">Reply format: the numbers of panels you agree / your opinion</div></div>
 </div>
 </section>
 
@@ -1082,7 +1083,7 @@ python -m pip install -U pip</code></pre>
         <a class="nav-link" onclick="goToSlide(1)">Intro</a>
         <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
         <a class="nav-link" onclick="goToSlide(23)">Practice</a>
-        <a class="nav-link" onclick="goToSlide(32)">Discussion</a>
+        <a class="nav-link" onclick="goToSlide(20)">Discussion</a>
       </div>
     </div>
   </nav>

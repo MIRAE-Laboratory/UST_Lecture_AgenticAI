@@ -253,7 +253,8 @@
   }
   .mermaid-group {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 1rem;
     width: 100%;
     justify-content: center;
@@ -949,24 +950,25 @@ def select_persona(personas):
 <h2 class="slide-title">Step 1.5 — Create <strong><code class="inline-code">personas.md</code></strong></h2>
 <p class="slide-subtitle">The persona library that drives system prompts</p>
 <p class="slide-text">Create a file named <code class="inline-code">personas.md</code> in the same folder as <code class="inline-code">agent.py</code> (i.e., <code class="inline-code">practices/week4/</code>).</p>
-<p class="slide-text"><code class="inline-code"></code>`md</p>
-<p class="slide-text">Role: You are a senior peer reviewer for a top-tier journal.</p>
-<p class="slide-text">Instructions:</p>
-<ul class="plain-bullets"><li>Be direct and critical, but constructive.</li><li>Ask for missing assumptions, baselines, and evaluation details.</li></ul>
-<p class="slide-text">Output format:</p>
-<ul class="plain-bullets"><li>Strengths (3 bullets)</li><li>Weaknesses (3 bullets)</li><li>Questions (3 bullets)</li></ul>
+<pre class="code-block"><code class="language-md">### Strict Peer Reviewer
+Role: You are a senior peer reviewer for a top-tier journal.
+Instructions:
+- Be direct and critical, but constructive.
+- Ask for missing assumptions, baselines, and evaluation details.
+Output format:
+- Strengths (3 bullets)
+- Weaknesses (3 bullets)
+- Questions (3 bullets)
+---
+
+### Creative Research Brainstormer
+Role: You are a wildly creative interdisciplinary researcher.
+Instructions:
+- Generate 10 unconventional ideas.
+- For each idea: risk, feasibility, and one quick experiment.</code></pre>
 </div>
 </section>
-<section class="slide" id="slide-20">
-<div class="slide-content">
-<h2 class="slide-title">## Creative Research Brainstormer</h2>
-<p class="slide-text">Role: You are a wildly creative interdisciplinary researcher.</p>
-<p class="slide-text">Instructions:</p>
-<ul class="plain-bullets"><li>Generate 10 unconventional ideas.</li><li>For each idea: risk, feasibility, and one quick experiment.</li></ul>
-<p class="slide-text"><code class="inline-code"></code>`</p>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-21">
+<section class="slide practice-slide" id="slide-20">
 <div class="slide-content">
 <h2 class="slide-title">Step 2 — <strong>Define Tools</strong> (<code class="inline-code">tools.py</code>)</h2>
 <p class="slide-subtitle">Functions the agent can call during conversation</p>
@@ -1034,7 +1036,7 @@ def run_tool(name: str, args: dict) -&gt; str:
     return f"Unknown tool: {name}"</code></pre>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-22">
+<section class="slide practice-slide" id="slide-21">
 <div class="slide-content">
 <h2 class="slide-title">Step 3 — <strong>Model Client</strong> (<code class="inline-code">client.py</code>)</h2>
 <p class="slide-subtitle">One interface for Gemini, Ollama, and OpenAI</p>
@@ -1075,7 +1077,7 @@ def get_client(provider):
 </div>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-23">
+<section class="slide practice-slide" id="slide-22">
 <div class="slide-content">
 <h2 class="slide-title">Step 4 — <strong>The Agent Loop</strong> (<code class="inline-code">agent.py</code>)</h2>
 <p class="slide-subtitle">The ReAct loop that ties everything together</p>
@@ -1157,7 +1159,7 @@ if __name__ == "__main__":
     agent_loop()</code></pre>
 </div>
 </section>
-<section class="slide" id="slide-24">
+<section class="slide" id="slide-23">
 <div class="slide-content">
 <h2 class="slide-title">How It All Fits Together — <strong>Architecture</strong></h2>
 <p class="slide-subtitle">From persona selection to tool-augmented response</p>
@@ -1183,7 +1185,7 @@ if __name__ == "__main__":
     A->>U: 🎭 [Strict Reviewer]: "The mean yield is 81.97%..."</div></div>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-25">
+<section class="slide practice-slide" id="slide-24">
 <div class="slide-content">
 <h2 class="slide-title">Step 5 — <strong>Run Your Agent</strong></h2>
 <p class="slide-subtitle">Test with different personas and tools</p>
@@ -1223,7 +1225,7 @@ You: What's sqrt(144) + pi?
 as your reviewer, I must ask: why is this relevant to your research?</code></pre>
 </div>
 </section>
-<section class="slide" id="slide-26">
+<section class="slide" id="slide-25">
 <div class="slide-content">
 <h2 class="slide-title">Customize — <strong>Edit & Create Personas</strong></h2>
 <p class="slide-subtitle">The <code class="inline-code">personas.md</code> file is your persona library</p>
@@ -1243,7 +1245,7 @@ as your reviewer, I must ask: why is this relevant to your research?</code></pre
 </div>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-27">
+<section class="slide practice-slide" id="slide-26">
 <div class="slide-content">
 <h2 class="slide-title">Bonus — <strong>Add Your Own Tool</strong></h2>
 <p class="slide-subtitle">Extend the agent with a function relevant to YOUR research</p>
@@ -1280,7 +1282,7 @@ TOOLS.append({"type": "function", "function": {
 TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit"], a["to_unit"])</code></pre>
 </div>
 </section>
-<section class="slide" id="slide-28">
+<section class="slide" id="slide-27">
 <div class="slide-content">
 <h2 class="slide-title">✅ <strong>Practice Checklist</strong></h2>
 <p class="slide-subtitle">Complete these tasks during the hands-on session</p>
@@ -1292,13 +1294,13 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 </div>
 </div>
 </section>
-<section class="slide title-slide" id="slide-29">
+<section class="slide title-slide" id="slide-28">
 <div class="slide-content">
 <h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
 <p class="slide-subtitle">Week 3 Review & The Director's Role — Human's Irreplaceable Contribution</p>
 </div>
 </section>
-<section class="slide" id="slide-30">
+<section class="slide" id="slide-29">
 <div class="slide-content">
 <h2 class="slide-title">Week 3 Review — <strong>Managing Expectations</strong></h2>
 <p class="slide-subtitle">What AI can do vs. what it should never do? Three agents debated.</p>
@@ -1318,7 +1320,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 </div>
 </div>
 </section>
-<section class="slide" id="slide-31">
+<section class="slide" id="slide-30">
 <div class="slide-content">
 <h2 class="slide-title">How Did You Vote?</h2>
 <p class="slide-subtitle">A clear pattern emerged — but with interesting nuances</p>
@@ -1334,7 +1336,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 </div>
 </div>
 </section>
-<section class="slide" id="slide-32">
+<section class="slide" id="slide-31">
 <div class="slide-content">
 <h2 class="slide-title">Key Theme 1 — <strong>Automate the Bolts, Own the Blueprint</strong></h2>
 <p class="slide-subtitle">The strongest consensus across the class</p>
@@ -1355,7 +1357,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 <div class="highlight-quote">"AI should be used as a powerful assistant for efficiency while ensuring that all key interpretations, decisions, and validations remain under human control." — Tan</div>
 </div>
 </section>
-<section class="slide" id="slide-33">
+<section class="slide" id="slide-32">
 <div class="slide-content">
 <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Where Is YOUR Boundary?</h2>
 <p class="slide-subtitle">10 minutes — Manuella vs Waad: Is Iron Man dangerous or empowering?</p>
@@ -1367,7 +1369,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 </div>
 </div>
 </section>
-<section class="slide" id="slide-34">
+<section class="slide" id="slide-33">
 <div class="slide-content">
 <h2 class="slide-title">Key Theme 2 — <strong>The Hidden Danger: AI Shapes How We Think</strong></h2>
 <p class="slide-subtitle">Margareth's insight goes beyond output quality to cognitive influence</p>
@@ -1387,7 +1389,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 </div>
 </div>
 </section>
-<section class="slide" id="slide-35">
+<section class="slide" id="slide-34">
 <div class="slide-content">
 <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Anchoring Experiment</h2>
 <p class="slide-subtitle">5 minutes — Experience cognitive anchoring firsthand</p>
@@ -1399,7 +1401,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 </div>
 </div>
 </section>
-<section class="slide" id="slide-36">
+<section class="slide" id="slide-35">
 <div class="slide-content">
 <h2 class="slide-title">Key Theme 3 — <strong>One Size Does NOT Fit All</strong></h2>
 <p class="slide-subtitle">Your field determines how much AI autonomy is acceptable</p>
@@ -1423,7 +1425,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 </div>
 </div>
 </section>
-<section class="slide" id="slide-37">
+<section class="slide" id="slide-36">
 <div class="slide-content">
 <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Design Your AI Policy</h2>
 <p class="slide-subtitle">10 minutes — Create a field-specific AI autonomy policy</p>
@@ -1435,7 +1437,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 </div>
 </div>
 </section>
-<section class="slide" id="slide-38">
+<section class="slide" id="slide-37">
 <div class="slide-content">
 <h2 class="slide-title">Key Theme 4 — <strong>Who Is Responsible When AI Fails?</strong></h2>
 <p class="slide-subtitle">The question nobody can fully answer yet</p>
@@ -1456,7 +1458,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 <div class="highlight-quote">"It is a tool and it's up to the human to decide what tool is appropriate — not using a calculator for a math test if the goal is learning calculation." — Margareth</div>
 </div>
 </section>
-<section class="slide" id="slide-39">
+<section class="slide" id="slide-38">
 <div class="slide-content">
 <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — The Accountability Test</h2>
 <p class="slide-subtitle">10 minutes — Who bears responsibility?</p>
@@ -1468,7 +1470,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 </div>
 </div>
 </section>
-<section class="slide" id="slide-40">
+<section class="slide" id="slide-39">
 <div class="slide-content">
 <h2 class="slide-title">From Debate to <strong>Practice</strong> — Tools Are the Answer to Your Concerns</h2>
 <p class="slide-subtitle">Today's lecture addresses what you worried about last week</p>
@@ -1489,7 +1491,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 <div class="highlight-quote">"Your Week 3 concerns about automation boundaries, cognitive bias, and accountability are exactly the problems that function calling and tool design are built to address."</div>
 </div>
 </section>
-<section class="slide" id="slide-41">
+<section class="slide" id="slide-40">
 <div class="slide-content">
 <h2 class="slide-title">How Your Thinking Has <strong>Evolved</strong></h2>
 <p class="slide-subtitle">Four weeks of growing sophistication</p>
@@ -1505,7 +1507,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 </div>
 </div>
 </section>
-<section class="slide" id="slide-42">
+<section class="slide" id="slide-41">
 <div class="slide-content">
 <h2 class="slide-title">Phase 1 Complete — <strong>What's Next?</strong></h2>
 <p class="slide-subtitle">From literacy to building real systems</p>
@@ -1534,7 +1536,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 <div class="highlight-quote">"Phase 1 gave you literacy: what AI is, how it works, how to instruct it, and how to give it tools. Phase 2: you'll build real systems that use all of this."</div>
 </div>
 </section>
-<section class="slide" id="slide-43">
+<section class="slide" id="slide-42">
 <div class="slide-content">
 <h2 class="slide-title">🗣️ <strong>Week 4 Discussion Questions</strong> (UST LMS)</h2>
 <p class="slide-subtitle">Post your response on the forum this week</p>
@@ -1545,7 +1547,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 <p class="slide-text">4. After completing Phase 1, has your <strong>Week 1 position</strong> (AI as assistant vs crutch) changed? Write a "letter to your Week 1 self" explaining what you've learned and how your thinking has evolved across all 4 weeks.</p>
 </div>
 </section>
-<section class="slide" id="slide-44">
+<section class="slide" id="slide-43">
 <div class="slide-content">
 <h2 class="slide-title">Want to Learn More?</h2>
 <p class="slide-text">Key Papers</p>
@@ -1564,7 +1566,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
 <a href="https://www.youtube.com/watch?v=F_oMF35RMZM" target="_blank" class="reference-link">📚 Building AI Agents — Anthropic (YouTube)</a>
 </div>
 </section>
-<section class="slide" id="slide-45">
+<section class="slide" id="slide-44">
 <div class="slide-content">
 <h2 class="slide-title">Wrap-Up of <strong>Week 4</strong></h2>
 <p class="slide-subtitle">Three things to remember</p>
@@ -1599,7 +1601,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
       <div class="nav-controls">
         <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
         <div class="page-input-wrapper">
-          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">45</span>
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">44</span>
         </div>
         <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
       </div>
@@ -1607,7 +1609,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
         <a class="nav-link" onclick="goToSlide(1)">Intro</a>
         <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
         <a class="nav-link" onclick="goToSlide(15)">Practice</a>
-        <a class="nav-link" onclick="goToSlide(29)">Discussion</a>
+        <a class="nav-link" onclick="goToSlide(28)">Discussion</a>
       </div>
     </div>
   </nav>
@@ -1615,7 +1617,7 @@ TOOL_FUNCTIONS["unit_convert"] = lambda a: unit_convert(a["value"], a["from_unit
   <script>
     const pres = document.getElementById('presentation');
     const pageInput = document.getElementById('pageInput');
-    const totalSlides = 45;
+    const totalSlides = 44;
     let currentSlide = 1;
 
     // Modal logic
