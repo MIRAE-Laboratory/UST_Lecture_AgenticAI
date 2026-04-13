@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<!-- Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --text-main: #1e293b;
+    --accent: #0f4c81;
+    --card-blue: #eff6ff;
+    --border-blue: #bfdbfe;
+    --card-green: #f0fdf4;
+    --border-green: #bbf7d0;
+    --card-orange: #fff7ed;
+    --border-orange: #fed7aa;
+    --card-pink: #fdf2f8;
+    --border-pink: #fbcfe8;
+    --card-purple: #faf5ff;
+    --border-purple: #e9d5ff;
+    --card-yellow: #fefce8;
+    --border-yellow: #fef08a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    overflow: hidden; /* Hide scrollbars, use custom navigation */
+    font-size: 1.8rem;
+  }
+  .presentation {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    width: 100vw;
+  }
+  .presentation::-webkit-scrollbar { display: none; }
+  .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 60px 80px; /* Top/Bottom 60px, Left/Right 80px for margins */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-content {
+    background: var(--bg-main);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    font-size: 1rem; /* 1.5x of original */
+  }
+  .slide-title {
+    font-size: 2rem; /* 1.5x of original */
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    border-bottom: 5px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: 1rem; /* 1.5x of original */
+    color: #64748b;    
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  /* Title Slide Variations */
+  .title-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  }
+  .title-slide .slide-title { font-size: 2.5rem; border: none; margin-bottom: 1.5rem; color: var(--accent); }
+  .title-slide .slide-subtitle { font-size: 1.5rem; font-weight: 600; color: #334155; }
+  
+  /* Title Emphasis Variations */
+  .title-emphasis-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+  .title-emphasis-slide .slide-title {
+    font-size: 3rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-emphasis-slide .slide-subtitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+  
+  /* Layouts */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased min-width to prevent 4 columns on wide screens */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+  .card-header { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.4rem; }
+  .card-header .icon { font-size: 1.3rem; margin-right: 0.5rem; }
+  .card-body ul { list-style-type: none; padding-left: 0; }
+  .card-body li { margin-bottom: 0.5rem; position: relative; padding-left: 1.2rem; line-height: 1.4; font-size: 0.95rem; }
+  .card-body li::before { content: "•"; color: #94a3b8; font-weight: bold; position: absolute; left: 0; top: 0; }
+  .plain-bullets li { position: relative; padding-left: 1.2rem; list-style-type: none; }
+  .plain-bullets li::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: 0; top: 0; }
+  
+  .slide-text {
+    font-size: 1.6rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  .card-blue { background: var(--card-blue); border-color: var(--border-blue); color: #1e3a8a; }
+  .card-green { background: var(--card-green); border-color: var(--border-green); color: #14532d; }
+  .card-orange { background: var(--card-orange); border-color: var(--border-orange); color: #7c2d12; }
+  .card-pink { background: var(--card-pink); border-color: var(--border-pink); color: #831843; }
+  .card-purple { background: var(--card-purple); border-color: var(--border-purple); color: #4c1d95; }
+  .card-yellow { background: var(--card-yellow); border-color: var(--border-yellow); color: #713f12; }
+  
+  .highlight-quote {
+    background: #f8fafc;
+    border-left: 5px solid var(--accent);
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .image-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    margin: 0.5rem 0;
+  }
+  .img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .image-container {
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .slide-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .slide-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Modal Overlay */
+  .image-modal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .image-modal.active {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 9999;
+  }
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .image-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: #94a3b8;
+  }
+  .img-caption {
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .mermaid-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+  }
+  .mermaid-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .mermaid-group .mermaid-container {
+    margin: 0;
+    flex: 1;
+    min-height: auto;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Consolas', monospace;
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  .mermaid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .reference-link {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .inline-code {
+    background: #e2e8f0;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .styled-table th { background: #334155; color: white; text-align: left; padding: 1rem; }
+  .styled-table td { padding: 1rem; background: white; border-bottom: 1px solid #f1f5f9; }
+  .styled-table tr:hover td { background: #f8fafc; }
+  
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .flow-step {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #cbd5e1;
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin: 0 1rem;
+  }
+  
+  .slide-number {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .plain-bullets {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+  .plain-bullets li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Fixed Layout Elements */
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: #0f172a;
+    color: #94a3b8;
+    z-index: 2000;
+    border-bottom: 1px solid #1e293b;
+  }
+  .header-logo { color: white; margin-right: 1.5rem; letter-spacing: -0.5px; font-size: 0.75rem; }
+  .header-sep { color: #334155; margin: 0 1rem; }
+  .header-subtitle { font-size: 0.75rem; }
+
+  .side-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* 2/3 of 50px approx */
+    height: 70px; /* 2/3 of 100px approx */
+    background: rgba(30, 41, 59, 0.4);
+    border: none;
+    color: white;
+    font-size: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: background 0.2s, width 0.2s;
+    border-radius: 6px;
+  }
+  .side-nav-btn:hover { background: rgba(37, 99, 235, 0.8); width: 45px; }
+  .prev-side { left: 10px; }
+  .next-side { right: 10px; }
+
+  /* Navigation Bar (Fixed Bottom) */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    height: 50px;
+    z-index: 2000;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .nav-main-btn {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 20px;
+  }
+  .btn-nav {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover {
+    background: #1e293b;
+    color: white;
+  }
+  .page-input-wrapper {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin: 0 8px;
+    font-family: monospace;
+  }
+  .page-input {
+    background: transparent;
+    border: 1px solid #334155;
+    color: white;
+    width: 32px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    padding: 1px;
+    margin-right: 4px;
+  }
+  .section-links {
+    display: flex;
+    gap: 16px;
+    border-left: 1px solid #1e293b;
+    padding-left: 20px;
+  }
+  .nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <header class="global-header">
+    <span class="header-logo">Multi-Agent Research Debate</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">Two AI Personas Discuss Your Papers — You Moderate</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+<div class="slide-content">
+<h1 class="slide-title">Multi-Agent Research Debate</h1>
+<p class="slide-subtitle">Two AI Personas Discuss Your Papers — You Moderate</p>
+<div class="highlight-quote">Week 7 of Phase 2: Building Real Systems (Weeks 5-8)</div>
+</div>
+</section>
+<section class="slide" id="slide-2">
+<div class="slide-content">
+<h2 class="slide-title">Contents</h2>
+<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 7</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+<div class="card-body"><ul><li>Multi-Agent Conversation — why two perspectives beat one</li><li>Debate as a research tool — surfacing hidden assumptions</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+<div class="card-body"><ul><li>Build a Research Debate App (Streamlit)</li><li>Two customizable personas debate using YOUR paper metadata</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+<div class="card-body"><ul><li>Week 6 Student Response Review</li><li>Midterm final check — submission next week</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-3">
+<div class="slide-content">
+<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+<p class="slide-subtitle">Why Two AI Voices Are Better Than One</p>
+</div>
+</section>
+<section class="slide" id="slide-4">
+<div class="slide-content">
+<h2 class="slide-title">The Story So Far — <strong>Where We Are</strong></h2>
+<p class="slide-subtitle">Week 5 → 6 → 7 progression</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📄</span> Week 5 — Chat with Papers</div>
+<div class="card-body"><ul><li>Upload PDFs, ask questions, get answers</li><li>Single AI voice — helpful but one-sided</li><li>"What does this paper say?" → summary</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔬</span> Week 6 — Extract & Visualize</div>
+<div class="card-body"><ul><li>Metadata extraction, charts, author networks</li><li>Data-driven view of your paper collection</li><li>"What patterns exist?" → charts</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> Week 7 — Debate with Papers</div>
+<div class="card-body"><ul><li>Two AI personas argue about your research topic</li><li>Using your paper metadata as evidence</li><li>"What should we think about this?" → <strong>structured disagreement</strong></li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Week 5 answered questions. Week 6 found patterns. Week 7 challenges assumptions."</div>
+</div>
+</section>
+<section class="slide" id="slide-5">
+<div class="slide-content">
+<h2 class="slide-title">Why <strong>Debate</strong> as a Research Tool?</h2>
+<p class="slide-subtitle">The problem with a single AI perspective</p>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The Echo Chamber Problem</div>
+<div class="card-body"><ul><li>Ask one AI: "Is deep learning good for materials science?"</li><li>Answer: "Yes, deep learning shows promising results in..."</li><li>It agrees with your premise — it doesn't push back</li><li>You get <strong>confirmation</strong>, not <strong>insight</strong></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💡</span> The Debate Solution</div>
+<div class="card-body"><ul><li>Ask TWO AIs with different perspectives to argue the point</li><li>Optimist: "Deep learning has transformed property prediction by..."</li><li>Skeptic: "But the lack of interpretability means that..."</li><li>You get <strong>tension</strong> — and tension reveals what matters</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> Research Application</div>
+<div class="card-body"><ul><li>Literature review: two views on methodology choices</li><li>Gap analysis: "This is important" vs "This is already solved"</li><li>Future directions: "We should pursue X" vs "X has fundamental limits"</li><li>The debate surfaces <strong>assumptions you didn't know you had</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-6">
+<div class="slide-content">
+<h2 class="slide-title">Multi-Agent <strong>Conversation Pattern</strong></h2>
+<p class="slide-subtitle">How two AI personas interact — a new design pattern</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🏗️</span> Architecture</div>
+<div class="card-body"><ul><li><strong>Persona A</strong> sends a message → its response is added to shared history</li><li><strong>Persona B</strong> sees A's message + history → responds to A</li><li><strong>Repeat</strong> — each agent builds on the other's arguments</li><li>Both share the same <strong>metadata context</strong> as evidence base</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔄</span> The Turn Cycle</div>
+<div class="card-body"><ul><li>Each "round" = Persona A speaks + Persona B responds</li><li>Rounds continue until user pauses or max rounds reached</li><li>Each persona maintains its character and argues from its position</li><li>Metadata serves as shared "ground truth" both must reference</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">👤</span> The Human Moderator</div>
+<div class="card-body"><ul><li>User can <strong>pause</strong> the debate at any time</li><li>User can <strong>interject</strong> with a comment or redirect</li><li>User can <strong>modify personas</strong> mid-debate to shift perspective</li><li>User can <strong>resume</strong> — both agents see the user's interjection</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-7">
+<div class="slide-content">
+<h2 class="slide-title">Designing <strong>Debate Personas</strong></h2>
+<p class="slide-subtitle">Good personas create productive tension — not just disagreement</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎭</span> What Makes a Good Debate Persona?</div>
+<div class="card-body"><ul><li>Clear <strong>position</strong> — not neutral, not vague</li><li>Defined <strong>reasoning style</strong> — how they argue, what evidence they value</li><li><strong>Grounded in data</strong> — must reference actual papers from the collection</li><li><strong>Respectful</strong> — challenges ideas, not people</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> Good Persona Pairs</div>
+<div class="card-body"><ul><li><strong>Methodologist vs Empiricist</strong> — "The method is flawed" vs "But it works in practice"</li><li><strong>Innovator vs Traditionalist</strong> — "We need new approaches" vs "Established methods are reliable"</li><li><strong>Optimist vs Skeptic</strong> — "This trend will transform the field" vs "This is hype"</li><li><strong>Specialist vs Generalist</strong> — "Depth in one area" vs "Cross-disciplinary connections"</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">❌</span> Bad Persona Pairs</div>
+<div class="card-body"><ul><li>Two personas that agree on everything → no debate</li><li>One persona with no expertise → unfair argument</li><li>Personas with personal attacks → toxic, not productive</li><li>Personas that ignore the data → speculation, not analysis</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-8">
+<div class="slide-content">
+<h2 class="slide-title">Persona <strong>Prompt Structure</strong></h2>
+<p class="slide-subtitle">How to define a persona for research debate</p>
+<pre class="code-block"><code class="language-text">You are [PERSONA NAME], a [ROLE/PERSPECTIVE].
+
+## Your Position
+[What you believe and argue for — 2-3 sentences]
+
+## Your Reasoning Style
+- You prioritize [type of evidence/logic]
+- You are skeptical of [what you push back on]
+- You always reference specific papers from the data provided
+
+## Rules
+- Respond in 100-150 words per turn
+- Cite specific paper titles or authors as evidence
+- Acknowledge good points from the other side
+- Stay in character throughout the debate</code></pre>
+<div class="highlight-quote">"A well-designed persona prompt is like casting a role in a play — the character must be clear enough to be consistent, but flexible enough to respond naturally."</div>
+</div>
+</section>
+<section class="slide" id="slide-9">
+<div class="slide-content">
+<h2 class="slide-title">Example — <strong>Two Research Personas</strong></h2>
+<p class="slide-subtitle">Designed for a materials science paper collection</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔬</span> Dr. Data (The Empiricist)</div>
+<div class="card-body"><ul><li>"I believe in what the numbers show."</li><li>Prioritizes: statistical evidence, reproducibility, large datasets</li><li>Skeptical of: theoretical claims without experimental validation</li><li>Style: precise, measured, data-driven arguments</li><li>"According to Kim et al. (2025), the error rate dropped from 24% to 1.5% — that's not speculation, that's evidence."</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🧠</span> Prof. Theory (The Conceptualist)</div>
+<div class="card-body"><ul><li>"I care about WHY things work, not just THAT they work."</li><li>Prioritizes: interpretability, causal mechanisms, first principles</li><li>Skeptical of: black-box models, correlation-only findings</li><li>Style: probing questions, analogies, connecting to broader principles</li><li>"Yes, GNN reduces error — but can anyone explain WHY? Without mechanism, we're optimizing in the dark."</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-10">
+<div class="slide-content">
+<h2 class="slide-title">The Human as <strong>Moderator</strong></h2>
+<p class="slide-subtitle">This is where YOUR irreplaceable skill (Week 6 discussion) comes in</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> What the Moderator Does</div>
+<div class="card-body"><ul><li><strong>Directs</strong> the topic: "Now discuss the methodology limitations"</li><li><strong>Challenges</strong> both sides: "Dr. Data, you ignored the small sample size"</li><li><strong>Redirects</strong>: "This is going in circles — let's move to future directions"</li><li><strong>Synthesizes</strong>: "It seems you both agree on X but disagree on Y"</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔗</span> Connection to Week 6 Discussion</div>
+<div class="card-body"><ul><li><strong>Iron Man</strong>: you set the research direction (choose the debate topic)</li><li><strong>Captain America</strong>: you maintain integrity (spot hallucinations)</li><li><strong>Hulk</strong>: you validate claims (check against actual metadata)</li><li><strong>Han's epistemic taste</strong>: you know when the debate is productive vs noise</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"The AI debates. You judge. This is the human-AI collaboration pattern we've been building toward all semester."</div>
+</div>
+</section>
+<section class="slide" id="slide-11">
+<div class="slide-content">
+<h2 class="slide-title">Technical <strong>Architecture</strong></h2>
+<p class="slide-subtitle">How the debate system works under the hood</p>
+<div class="mermaid-container"><div class="mermaid">sequenceDiagram
+    participant U as 👤 User (Moderator)
+    participant A as 🔵 Persona A
+    participant B as 🟠 Persona B
+    participant M as 📁 Metadata Context
+
+    U->>A: Set topic + persona prompt
+    U->>B: Set topic + persona prompt
+    M-->>A: Paper metadata as evidence
+    M-->>B: Paper metadata as evidence
+    loop Each Round
+        A->>B: Argument (sees full history)
+        B->>A: Counter-argument (sees full history)
+        U-->>U: Pause / Interject / Continue?
+    end
+    U->>U: Synthesize & conclude</div></div>
+</div>
+</section>
+<section class="slide" id="slide-12">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Shared History</strong> — The Key Design Choice</h2>
+<p class="slide-subtitle">How messages flow between personas and user</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📝</span> Message Types</div>
+<div class="card-body"><ul><li><strong>[Persona A]</strong>: "Based on the metadata, deep learning papers grew 300%..."</li><li><strong>[Persona B]</strong>: "But Prof. Theory would note that interpretability papers are at 0%..."</li><li><strong>[User/Moderator]</strong>: "Good point. Let's focus on interpretability specifically."</li><li>All three types go into the <strong>same conversation history</strong></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔧</span> Implementation</div>
+<div class="card-body"><ul><li>Single list of messages: <code class="inline-code">[{role, name, content}, ...]</code></li><li>Persona A sees: system prompt A + shared history + "Your turn"</li><li>Persona B sees: system prompt B + shared history + "Your turn"</li><li>User interjection: added as "moderator" message, both see it next turn</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚡</span> Why This Works</div>
+<div class="card-body"><ul><li>Shared context means personas <strong>respond to each other</strong>, not just repeat</li><li>User interjections <strong>redirect</strong> the conversation naturally</li><li>The debate evolves — later rounds are more nuanced than early ones</li><li>Metadata citations keep both personas <strong>grounded in evidence</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-13">
+<div class="slide-content">
+<h2 class="slide-title">Lecture Summary — Multi-Agent Research Debate</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🗣️</span> Why Debate?</div>
+<div class="card-body"><ul><li>Single AI confirms your biases; two AIs surface hidden assumptions</li><li>Debate = structured disagreement grounded in evidence (your metadata)</li><li>Four persona pair patterns: Methodologist/Empiricist, Innovator/Traditionalist, Optimist/Skeptic, Specialist/Generalist</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔧</span> How It Works</div>
+<div class="card-body"><ul><li>Shared conversation history — personas respond to each other</li><li>User as moderator: pause, interject, redirect, resume</li><li>Both personas reference the same metadata as evidence</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">👤</span> The Human Role</div>
+<div class="card-body"><ul><li>Connects to every week's discussion: you direct (Iron Man), validate (Hulk), maintain integrity (Cap), and exercise epistemic taste (Han)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-14">
+<div class="slide-content">
+<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+<p class="slide-subtitle">Build a Research Debate App — Two Personas, Your Data, You Moderate</p>
+</div>
+</section>
+<section class="slide" id="slide-15">
+<div class="slide-content">
+<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
+<p class="slide-subtitle">Extend the Week 6 app with a debate tab</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> Goal</div>
+<div class="card-body"><ul><li>Add a <strong>Debate</strong> tab to the existing Streamlit app</li><li>Two editable personas debate a user-chosen topic</li><li>Metadata from extracted papers serves as shared evidence</li><li>User controls: Start, Pause, Interject, Resume</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📁</span> New Files</div>
+<div class="card-body"><ul><li><code class="inline-code">debate_engine.py</code> — debate loop, persona management, history</li><li><code class="inline-code">app.py</code> — add Tab 5: Research Debate</li><li>Reuses: <code class="inline-code">pdf_to_md.py</code>, <code class="inline-code">llm_client.py</code> from Week 6</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚡</span> Key Features</div>
+<div class="card-body"><ul><li>Editable persona prompts (text areas in sidebar or inline)</li><li>Round-by-round generation with streaming</li><li>User interjection between rounds</li><li>Full debate history displayed as a conversation</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-16">
+<div class="slide-content">
+<h2 class="slide-title">Step 0 — <strong>File Structure</strong></h2>
+<p class="slide-subtitle">Add to your existing Week 6 project</p>
+<pre class="code-block"><code class="language-text">practices/week_06/
+  app.py                # Updated — add Tab 5 (Debate)
+  pdf_to_md.py          # Same as Week 6
+  llm_client.py         # Updated — add debate_turn()
+  chart_generator.py    # Same as Week 6
+  debate_engine.py      # NEW — persona management + debate loop
+  md_output/            # Your extracted .md files
+  pdfs/                 # Your PDF files</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Build on Week 6</div>
+<div class="card-body"><ul><li>Same app, same data — just a new way to explore it</li><li>The debate uses the SAME metadata that powers charts and Q&A</li><li>Week 3 persona concept + Week 6 data + new interaction pattern</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-17">
+<div class="slide-content">
+<h2 class="slide-title">Step 1 — <strong>Debate Engine</strong> (<code class="inline-code">debate_engine.py</code>)</h2>
+<p class="slide-subtitle">Persona definitions + debate turn management</p>
+<pre class="code-block"><code class="language-python"># debate_engine.py
+DEFAULT_PERSONAS = {
+    "Dr. Data (Empiricist)": """You are Dr. Data, an empirical researcher.
+## Your Position
+You believe in evidence-based conclusions. Numbers and reproducibility matter most.
+## Your Style
+- Cite specific papers and statistics from the data provided
+- Be skeptical of claims without quantitative evidence
+- Acknowledge strong counter-arguments, then redirect
+## Rules
+- Respond in 100-150 words per turn
+- Reference specific paper titles or authors as evidence
+- Stay in character""",
+
+    "Prof. Theory (Conceptualist)": """You are Prof. Theory, a theoretical researcher.
+## Your Position
+You care about WHY things work, not just THAT they work. Interpretability and
+mechanism matter more than benchmark scores.
+## Your Style
+- Ask probing questions about assumptions and mechanisms
+- Connect findings to broader scientific principles
+- Challenge black-box approaches, demand explanations
+## Rules
+- Respond in 100-150 words per turn
+- Reference specific paper titles or authors as evidence
+- Stay in character""",
+}
+
+def build_persona_system_prompt(persona_prompt, metadata_context, topic):
+    """Build full system prompt for a debate persona."""
+    return f"""{persona_prompt}
+
+## Debate Topic
+{topic}
+
+## Available Evidence (Paper Metadata)
+{metadata_context}
+
+## Instructions
+- Use the paper metadata above as your evidence base
+- Cite specific papers by title or author when making claims
+- Respond to the other persona's latest argument directly
+- Keep your response focused and under 150 words"""
+
+def build_metadata_context(all_meta):
+    """Format metadata as readable context for personas."""
+    parts = []
+    for meta in all_meta:
+        lines = [f"### {meta.get('title', meta.get('_filename', '?'))}"]
+        for k, v in meta.items():
+            if not k.startswith("_"):
+                lines.append(f"- {k}: {v}")
+        parts.append("\n".join(lines))
+    return "\n\n".join(parts)</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-18">
+<div class="slide-content">
+<h2 class="slide-title">Step 2 — <strong>Debate Turn Function</strong> (<code class="inline-code">llm_client.py</code>)</h2>
+<p class="slide-subtitle">Generate one persona's response given the shared history</p>
+<pre class="code-block"><code class="language-python"># Add to llm_client.py
+
+def debate_turn(client, model, system_prompt, history):
+    """Generate one debate turn — streaming.
+
+    Args:
+        system_prompt: persona-specific system prompt with metadata
+        history: shared conversation history (all turns so far)
+    """
+    messages = [{"role": "system", "content": system_prompt}]
+    messages.extend(history)
+    messages.append({"role": "user", "content": "Your turn to respond."})
+    return client.chat.completions.create(
+        model=model, messages=messages, stream=True
+    )</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Design Choices</div>
+<div class="card-body"><ul><li>"Your turn to respond" triggers the persona to continue the debate</li><li>The <strong>system prompt</strong> defines WHO they are and WHAT data they have</li><li>The <strong>history</strong> shows what's been said — they respond to the latest argument</li><li>Streaming lets the user see the response forming in real time</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-19">
+<div class="slide-content">
+<h2 class="slide-title">Step 3 — <strong>Tab 5: Debate Setup</strong> (<code class="inline-code">app.py</code>)</h2>
+<p class="slide-subtitle">Topic input + persona editors + debate controls</p>
+<pre class="code-block"><code class="language-python"># app.py — Tab 5 (Debate)
+from debate_engine import (
+    DEFAULT_PERSONAS, build_persona_system_prompt, build_metadata_context
+)
+from llm_client import debate_turn
+
+with tab5:
+    st.header("🗣️ Research Debate")
+    all_meta = load_all_metadata(MD_DIR)
+
+    if len(all_meta) &lt; 2:
+        st.info("Need at least 2 papers. Extract more in Tab 1.")
+    else:
+        # --- Debate Setup ---
+        topic = st.text_input(
+            "Debate Topic",
+            placeholder="e.g., Is deep learning the best approach for materials science?",
+        )
+        persona_names = list(DEFAULT_PERSONAS.keys())
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("### 🔵 Persona A")
+            name_a = st.text_input("Name", persona_names[0], key="name_a")
+            prompt_a = st.text_area(
+                "Persona Prompt", DEFAULT_PERSONAS[persona_names[0]],
+                height=200, key="prompt_a")
+        with col2:
+            st.markdown("### 🟠 Persona B")
+            name_b = st.text_input("Name", persona_names[1], key="name_b")
+            prompt_b = st.text_area(
+                "Persona Prompt", DEFAULT_PERSONAS[persona_names[1]],
+                height=200, key="prompt_b")
+
+        max_rounds = st.slider("Max Rounds", 1, 10, 3)</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-20">
+<div class="slide-content">
+<h2 class="slide-title">Step 4 — <strong>Debate Loop with User Control</strong></h2>
+<p class="slide-subtitle">Start → Round → Pause/Interject → Resume</p>
+<pre class="code-block"><code class="language-python">        # --- Session State ---
+        if "debate_history" not in st.session_state:
+            st.session_state.debate_history = []
+        if "debate_round" not in st.session_state:
+            st.session_state.debate_round = 0
+        if "debate_paused" not in st.session_state:
+            st.session_state.debate_paused = False
+
+        meta_context = build_metadata_context(all_meta)
+        sys_a = build_persona_system_prompt(prompt_a, meta_context, topic)
+        sys_b = build_persona_system_prompt(prompt_b, meta_context, topic)
+
+        # --- Display History ---
+        for msg in st.session_state.debate_history:
+            role_icon = "🔵" if msg["name"] == name_a else (
+                "🟠" if msg["name"] == name_b else "👤")
+            st.markdown(f"**{role_icon} {msg['name']}**: {msg['content']}")
+
+        # --- Controls ---
+        ctrl_cols = st.columns(4)
+        start = ctrl_cols[0].button("▶️ Start / Next Round",
+            disabled=not topic or client is None)
+        pause = ctrl_cols[1].button("⏸️ Pause")
+        clear = ctrl_cols[2].button("🗑️ Reset Debate")
+
+        # User interjection
+        interjection = st.chat_input("💬 Interject as moderator...")</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-21">
+<div class="slide-content">
+<h2 class="slide-title">Step 5 — <strong>Generating Debate Turns</strong></h2>
+<p class="slide-subtitle">Persona A speaks, then Persona B responds — one round at a time</p>
+<pre class="code-block"><code class="language-python">        if clear:
+            st.session_state.debate_history = []
+            st.session_state.debate_round = 0
+            st.session_state.debate_paused = False
+            st.rerun()
+
+        if pause:
+            st.session_state.debate_paused = True
+
+        if interjection:
+            st.session_state.debate_history.append(
+                {"role": "user", "name": "Moderator", "content": interjection})
+            st.session_state.debate_paused = False
+            st.rerun()
+
+        if start and not st.session_state.debate_paused:
+            history_msgs = [
+                {"role": "assistant", "content": f"[{m['name']}]: {m['content']}"}
+                for m in st.session_state.debate_history
+            ]
+            # Persona A turn
+            st.markdown(f"**🔵 {name_a}**:")
+            ph_a = st.empty()
+            text_a = ""
+            for chunk in debate_turn(client, model, sys_a, history_msgs):
+                if chunk.choices[0].delta.content:
+                    text_a += chunk.choices[0].delta.content
+                    ph_a.markdown(text_a + "▌")
+            ph_a.markdown(text_a)
+            st.session_state.debate_history.append(
+                {"role": "assistant", "name": name_a, "content": text_a})
+
+            # Persona B turn
+            history_msgs.append(
+                {"role": "assistant", "content": f"[{name_a}]: {text_a}"})
+            st.markdown(f"**🟠 {name_b}**:")
+            ph_b = st.empty()
+            text_b = ""
+            for chunk in debate_turn(client, model, sys_b, history_msgs):
+                if chunk.choices[0].delta.content:
+                    text_b += chunk.choices[0].delta.content
+                    ph_b.markdown(text_b + "▌")
+            ph_b.markdown(text_b)
+            st.session_state.debate_history.append(
+                {"role": "assistant", "name": name_b, "content": text_b})
+
+            st.session_state.debate_round += 1
+            st.rerun()</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-22">
+<div class="slide-content">
+<h2 class="slide-title">Step 6 — <strong>Run and Test</strong></h2>
+<p class="slide-subtitle">Same app as Week 6, now with debate functionality</p>
+<pre class="code-block"><code class="language-bash">cd practices/week_06
+streamlit run app.py</code></pre>
+<pre class="code-block"><code class="language-text">Expected UI (Tab 5 — Debate):
+┌──────────────────────────────────────────────────────────────────┐
+│  🗣️ Research Debate                                              │
+│                                                                  │
+│  Topic: [Is multi-agent AI better than single-agent?          ]  │
+│                                                                  │
+│  🔵 Persona A              🟠 Persona B                          │
+│  [Dr. Data (Empiricist)]   [Prof. Theory (Conceptualist)]        │
+│  [editable prompt...]      [editable prompt...]                  │
+│                                                                  │
+│  Rounds: [===3===]  [▶️ Start] [⏸️ Pause] [🗑️ Reset]             │
+│                                                                  │
+│  🔵 Dr. Data: According to Kim et al. (2025), multi-agent...    │
+│  🟠 Prof. Theory: But can we explain WHY agents collaborate...   │
+│  👤 Moderator: Focus on the error rate reduction specifically.   │
+│  🔵 Dr. Data: The error rate dropped from 24% to 1.5%...        │
+│  🟠 Prof. Theory: Impressive, but correlation isn't causation... │
+│                                                                  │
+│  💬 [Interject as moderator...                                ]  │
+└──────────────────────────────────────────────────────────────────┘</code></pre>
+</div>
+</section>
+<section class="slide" id="slide-23">
+<div class="slide-content">
+<h2 class="slide-title">✅ <strong>Week 7 Practice Checklist</strong></h2>
+<div class="highlight-quote">Complete these steps during the practice session:</div>
+<p class="slide-text">1. - [ ] Create <code class="inline-code">debate_engine.py</code> with default personas and helper functions</p>
+<p class="slide-text">2. - [ ] Add <code class="inline-code">debate_turn()</code> to <code class="inline-code">llm_client.py</code></p>
+<p class="slide-text">3. - [ ] Add Tab 5 (Debate) to <code class="inline-code">app.py</code> with persona editors and debate controls</p>
+<p class="slide-text">4. - [ ] Run <code class="inline-code">streamlit run app.py</code> and start a debate with default personas</p>
+<p class="slide-text">5. - [ ] <strong>Interject</strong> as moderator mid-debate — does the conversation shift?</p>
+<p class="slide-text">6. - [ ] <strong>Edit a persona</strong> prompt and restart — how does the debate change?</p>
+<p class="slide-text">7. - [ ] <strong>Bonus</strong>: create your own persona pair for YOUR research field</p>
+</div>
+</section>
+<section class="slide title-slide" id="slide-24">
+<div class="slide-content">
+<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+<p class="slide-subtitle">Week 6 Review & Final Midterm Check</p>
+</div>
+</section>
+<section class="slide" id="slide-25">
+<div class="slide-content">
+<h2 class="slide-title">Week 6 — <strong>"The Risk of Not Reading"</strong> Responses</h2>
+<p class="slide-subtitle">15 responses analyzed — Hulk dominates, but the interesting ideas are elsewhere</p>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">📊</span> The Vote Count</div>
+<div class="card-body"><ul><li><strong>Hulk (pragmatic balance)</strong>: Seher, Gyeongsu, Manuella, Ly, Tan, DongYun, Hyunwoo — <strong>7 votes</strong></li><li><strong>Iron Man + Hulk combo</strong>: Huy, Irfan, Waad — <strong>3 votes</strong></li><li><strong>Iron Man</strong>: Rupam, Han — <strong>2 votes</strong></li><li><strong>Captain America</strong>: Yadanar — <strong>1 vote</strong></li><li><strong>Iron Man + Captain America</strong>: Nazhiefah — <strong>1 vote</strong></li><li><strong>"None" (meta-critique)</strong>: Jaewhoon — <strong>1 vote</strong></li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔬</span> The Consensus</div>
+<div class="card-body"><ul><li>Almost everyone agrees: AI handles initial filtering, humans do final synthesis</li><li>The "balance" position is now the <strong>default</strong> — nobody argues for full automation OR full manual</li><li>But <strong>how</strong> you balance is where the real disagreement lives</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">🔥</span> The Surprise</div>
+<div class="card-body"><ul><li><strong>Rupam</strong> switched from his usual Hulk to <strong>Iron Man</strong> — "published papers are already verified, risk is minimal"</li><li><strong>Jaewhoon</strong> rejected ALL three personas — "the question itself is wrong"</li><li>These outliers reveal more than the consensus</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-26">
+<div class="slide-content">
+<h2 class="slide-title">Theme 1 — <strong>The "Research Director" Paradigm</strong></h2>
+<p class="slide-subtitle">Upgrading the human role from reader to investigator</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Core Idea</div>
+<div class="card-body"><ul><li><strong>Huy</strong>: coined "Research Director model of Agentic Scrutiny"</li><li>Not outsourcing your mind — <strong>upgrading your role</strong> from laborer to investigator</li><li>Active tracking: require AI to provide "clickable links to specific sentences"</li><li>Spot-check protocol: deep-read 10% to calibrate the AI's lens on the other 90%</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💡</span> Conditional Delegation</div>
+<div class="card-body"><ul><li><strong>Waad</strong>: "save 90% of time wasted on tedious research... dive deep into the top 5 key papers"</li><li><strong>Irfan</strong>: "the real irreplaceable skill is knowing what to trust, what to question, and what is worth deeply reading"</li><li><strong>Han</strong>: "AI can be trusted for indexing... but this is precisely where human work should begin"</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔗</span> Why This Matters for Today</div>
+<div class="card-body"><ul><li>The debate tool is exactly this pattern — AI argues, you <strong>direct and verify</strong></li><li>You don't read every paper — you read the AI's debate and judge its quality</li><li>The "Research Director" decides what's worth investigating further</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"We aren't 'outsourcing' our minds; we are upgrading our role from laborer to investigator." — Huy</div>
+</div>
+</section>
+<section class="slide" id="slide-27">
+<div class="slide-content">
+<h2 class="slide-title">Theme 2 — <strong>Jaewhoon's Meta-Critique</strong></h2>
+<p class="slide-subtitle">"The question itself is wrong" — the deepest challenge yet</p>
+<div class="cards-grid">
+<div class="card card-purple">
+<div class="card-header"><span class="icon">💎</span> The Argument</div>
+<div class="card-body"><ul><li>The crisis of "not reading" existed <strong>before AI</strong> — low-quality journals, citation inflation, copyright issues</li><li>Experienced researchers already tell students: "read a paper in 30 minutes or less"</li><li>That's "basically not that much different from using AI for summarizing papers"</li><li>AI didn't create the problem — it <strong>accelerated</strong> an existing crisis</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The Real Question</div>
+<div class="card-body"><ul><li>"The point should be moved to <strong>'what is the essential ability in research'</strong>, not 'does AI threaten reading abilities'"</li><li>China's new professional doctorate: doctoral-level degree <strong>without papers</strong>, earned by solving industrial problems</li><li>"As papers written by AI begin to pass peer review, we need to discuss <strong>what is the real value of human in doing research</strong>"</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🤔</span> Class Reflection</div>
+<div class="card-body"><ul><li>Jaewhoon is the only student who chose <strong>"None"</strong> — rejecting all three personas</li><li>This is a meta-level challenge: the debate about AI-and-reading assumes reading is central</li><li>What if the <strong>entire frame</strong> of paper-based research is shifting?</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"The value of reading comes from well-written papers that solve difficult problems with deep thinking. But in reality, most of us just extract the main idea." — Jaewhoon</div>
+</div>
+</section>
+<section class="slide" id="slide-28">
+<div class="slide-content">
+<h2 class="slide-title">Theme 3 — <strong>Context Shifts Everything</strong></h2>
+<p class="slide-subtitle">Your position changes depending on the situation you're in</p>
+<div class="cards-grid">
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔄</span> The Position Shifters</div>
+<div class="card-body"><ul><li><strong>Rupam</strong>: "Today my answer is different from usual — I usually relate to Hulk, but today I align with Iron Man"</li><li>Published papers are already verified → lower risk → AI can handle it</li><li><strong>Nazhiefah</strong>: "It depends on what we are looking for" — Iron Man when pressured to produce, Captain America when there's time</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> The Deep Readers</div>
+<div class="card-body"><ul><li><strong>Yadanar</strong>: "I don't fully trust AI with papers that are very important for my research field"</li><li><strong>Manuella</strong>: "If you cannot clearly explain your findings, true insight has not been achieved"</li><li><strong>Hyunwoo</strong>: "A small error in understanding a mathematical model can cause actual hardware damage"</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🧠</span> The Retention Problem</div>
+<div class="card-body"><ul><li><strong>Gyeongsu</strong>: "AI helps us process tons of info, but will I actually <strong>remember</strong> any of it?"</li><li><strong>DongYun</strong>: "Mistakes made by AI can cause a series of errors that get worse over time"</li><li>Reading isn't just about extraction — it's about <strong>building internal models</strong></li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Today my answer is different from usual. AI is a tool meant to make difficult tasks easier, not a replacement for the human mind." — Rupam</div>
+</div>
+</section>
+<section class="slide" id="slide-29">
+<div class="slide-content">
+<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+<p class="slide-subtitle">The debate app is a direct test of the "Research Director" model</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> You Are the Research Director</div>
+<div class="card-body"><ul><li>Today you built an app where two AIs debate using your paper data</li><li>YOU set the topic and personas (Huy's "architectural design of the intake pipeline")</li><li>YOU verify citations against real metadata (Waad's "conditional delegation")</li><li>YOU decide when to interject and redirect (Irfan's "knowing what to question")</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔗</span> Testing Jaewhoon's Challenge</div>
+<div class="card-body"><ul><li>The debate format doesn't require you to read every paper — it requires you to <strong>judge arguments about papers</strong></li><li>Is that "the essential ability in research"? Or is something lost?</li><li>Use today's practice to test this on yourself</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> The Moderation Test</div>
+<div class="card-body"><ul><li>If you can't spot when a persona misrepresents a paper → you need more domain knowledge</li><li>If you can redirect the debate productively → you have "epistemic taste" (Han, Week 5)</li><li>The tool makes your judgment <strong>visible</strong> — to yourself and others</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-30">
+<div class="slide-content">
+<h2 class="slide-title">Midterm — <strong>Final Check</strong></h2>
+<p class="slide-subtitle">Submission is NEXT WEEK</p>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">📅</span> Deadline</div>
+<div class="card-body"><ul><li><strong>Week 8 (April 17, Friday) 24:00</strong></li><li>Email to <strong>hogeony@ust.ac.kr</strong></li><li>Working prototype + 5-minute live demo</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📦</span> Deliverables</div>
+<div class="card-body"><ul><li><strong>Specification document</strong> — 5 Questions answered</li><li><strong>Working prototype</strong> — Streamlit/Gradio app, runnable code</li><li><strong>5-minute demo plan</strong> — what will you show and explain?</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> Self-Check</div>
+<div class="card-body"><ul><li>Does your app <strong>run</strong>? (test it right now!)</li><li>Can you explain your <strong>design decisions</strong> in the demo?</li><li>Does your app demonstrate the <strong>human-AI interaction</strong> you specified?</li><li>Have you tested with <strong>real data</strong> from your research domain?</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚠️</span> Common Mistakes</div>
+<div class="card-body"><ul><li>App that doesn't start (missing dependencies, wrong paths)</li><li>No real data — only dummy/test inputs</li><li>Can't explain WHY you made certain design choices</li><li>Spec document doesn't match what the prototype actually does</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-31">
+<div class="slide-content">
+<h2 class="slide-title">🗣️ <strong>Week 7 Discussion Questions</strong> (UST LMS)</h2>
+<p class="slide-subtitle">Post your response on the forum this week</p>
+<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+<p class="slide-text">1. You just used a <strong>debate tool</strong> where two AI personas argued about your research topic. Did the debate surface any insight you wouldn't have found with a single AI? Was there a moment where you felt the need to <strong>interject as moderator</strong> — what triggered it? Does this experience support or challenge <strong>Han's "epistemic taste" argument</strong>?</p>
+<p class="slide-text">2. <strong>Midterm final update</strong>: Your prototype is due next week. Describe your app in one sentence. What's the single most impressive thing it does? What's the one thing you're most worried about for the demo?</p>
+</div>
+</section>
+<section class="slide" id="slide-32">
+<div class="slide-content">
+<h2 class="slide-title">Want to Learn More?</h2>
+<p class="slide-text">Multi-Agent Systems</p>
+<a href="https://microsoft.github.io/autogen/" target="_blank" class="reference-link">📚 AutoGen — Multi-Agent Conversation Framework</a>
+<a href="https://www.crewai.com/" target="_blank" class="reference-link">📚 CrewAI — AI Agent Collaboration</a>
+<a href="https://langchain-ai.github.io/langgraph/" target="_blank" class="reference-link">📚 LangGraph — Multi-Actor Orchestration</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Debate & Argumentation in AI</p>
+<a href="https://openai.com/index/debate/" target="_blank" class="reference-link">📚 AI Debate as Alignment Strategy (OpenAI)</a>
+<a href="https://arxiv.org/abs/2303.08769" target="_blank" class="reference-link">📚 Socratic Method with LLMs</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Anthropic Free Online Courses (Recommended)</p>
+<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api) — API 활용 실습</div>
+<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol) — MCP 서버/클라이언트 구축</div>
+<div class="highlight-quote">🎓 [Introduction to Agent Skills](https://anthropic.skilljar.com/introduction-to-agent-skills) — 재사용 가능한 에이전트 스킬 생성</div>
+</div>
+</section>
+<section class="slide" id="slide-33">
+<div class="slide-content">
+<h2 class="slide-title">Wrap-Up of <strong>Week 7</strong></h2>
+<p class="slide-subtitle">Three things to remember</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> Lecture</div>
+<div class="card-body"><ul><li>Two AI perspectives beat one — debate surfaces hidden assumptions; persona design creates productive tension; shared history + metadata grounding = evidence-based disagreement</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> Practice</div>
+<div class="card-body"><ul><li>Built a <strong>Research Debate</strong> tab: two editable personas + user moderation (pause, interject, resume); same metadata from Week 6, new interaction pattern</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+<div class="card-body"><ul><li>Week 6 review: Hulk won again, but Huy's "Research Director" model and Jaewhoon's meta-critique challenge the frame; <strong>Midterm due next week April 17 24:00</strong></li></ul></div>
+</div>
+</div>
+<p class="slide-text"><strong>Next week:</strong> Working prototype + 5-minute live demo. Good luck!</p>
+</div>
+</section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">33</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(14)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(24)">Discussion</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 33;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+      
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+      
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+      
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if(currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if(currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if(newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+           currentSlide = newSlide;
+           pageInput.value = currentSlide;
+           updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if(e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: -100, behavior: 'smooth'});
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: 100, behavior: 'smooth'});
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+         const pageNum = parseInt(hash.replace('#slide-', ''));
+         if(!isNaN(pageNum)) {
+           setTimeout(() => goToSlide(pageNum), 100);
+         }
+      }
+    });
+  </script>
+</body>
+</html>
