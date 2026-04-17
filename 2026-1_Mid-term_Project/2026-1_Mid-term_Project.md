@@ -1,4 +1,4 @@
-# 2026-1 Mid-term Project - INDEX
+# UST :: Agentic AI :: 2026-1 :: Mid-term Projectt - INDEX
 
 이 문서는 각 학생 폴더에 있는 Markdown 파일들을 쉽게 열어보기 위한 목차(Index)입니다. 아래 링크를 클릭하시면 해당 마크다운 파일로 곧바로 연결됩니다.
 
