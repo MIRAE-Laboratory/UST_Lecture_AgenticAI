@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Midterm Project - EpistemicScout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- Mermaid.js -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  </script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #34495e;
+      --accent: #2980b9;
+      --bg-color: #ecf0f1;
+      --text-color: #2c3e50;
+      --card-bg: #ffffff;
+      --border-radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body,
+    html {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      overflow: hidden;
+      font-size: 1.2rem;
+    }
+
+    .presentation {
+      display: flex;
+      flex-direction: column;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .presentation::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .presentation::-webkit-scrollbar-thumb {
+      background: var(--secondary);
+      border-radius: 4px;
+    }
+
+    .slide {
+      scroll-snap-align: start;
+      flex: 0 0 100vh;
+      padding: 80px 10%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .slide-content {
+      background: var(--card-bg);
+      width: 100%;
+      max-height: 90%;
+      border-radius: var(--border-radius);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      padding: 3rem 4rem;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .slide-title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      border-left: 8px solid var(--accent);
+      padding-left: 1rem;
+      line-height: 1.1;
+    }
+
+    .slide-subtitle {
+      font-size: 1.4rem;
+      color: #7f8c8d;
+      margin-bottom: 2rem;
+      font-weight: 300;
+      padding-left: 1rem;
+    }
+
+    .title-slide .slide-content {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(120deg, #ffffff, #e0eafc);
+    }
+
+    .title-slide .slide-title {
+      font-size: 4rem;
+      border: none;
+      padding: 0;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .title-slide .slide-subtitle {
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--secondary);
+      padding: 0;
+    }
+
+    .title-slide .highlight-quote {
+      border: none;
+      background: var(--accent);
+      color: white;
+      padding: 1.5rem 3rem;
+      border-radius: 50px;
+      font-weight: bold;
+      box-shadow: 0 10px 20px rgba(41, 128, 185, 0.3);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .card {
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      background: #f8f9fa;
+      border-top: 5px solid var(--accent);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      color: var(--primary);
+    }
+
+    .card-header .icon {
+      font-size: 2rem;
+      margin-right: 1rem;
+      background: white;
+      padding: 10px;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      color: var(--secondary);
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .card-body li {
+      margin-bottom: 0.8rem;
+    }
+
+    .highlight-quote {
+      background: #fcfcfc;
+      border-left: 5px solid var(--accent);
+      padding: 1.5rem;
+      font-size: 1.3rem;
+      font-style: italic;
+      margin: 1.5rem 0;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.02);
+    }
+
+    .mermaid-container {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      margin: 1rem auto;
+      width: 100%;
+      height: 65vh;
+      max-height: 65vh;
+      overflow: auto;
+    }
+
+    .mermaid {
+      min-width: 900px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .mermaid svg {
+      width: 100% !important;
+      height: auto !important;
+    }
+
+    .global-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      color: var(--primary);
+      z-index: 2000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      font-weight: bold;
+    }
+
+    .header-logo {
+      font-size: 1.4rem;
+      color: var(--accent);
+    }
+
+    .header-sep {
+      margin: 0 1rem;
+      color: #bdc3c7;
+    }
+
+    .side-nav-btn {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 40px;
+      background: var(--accent);
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      border-radius: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
+    }
+
+    .side-nav-btn:hover {
+      background: var(--primary);
+    }
+
+    .prev-side {
+      top: 75px;
+    }
+
+    .next-side {
+      bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="global-header">
+    <span class="header-logo">EpistemicScout</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">Agentic Research Gap Discovery System</span>
+  </header>
+
+  <button class="side-nav-btn prev-side"
+    onclick="document.getElementById('presentation').scrollBy({top:-window.innerHeight, behavior:'smooth'})"
+    title="Previous Slide">▲</button>
+  <button class="side-nav-btn next-side"
+    onclick="document.getElementById('presentation').scrollBy({top:window.innerHeight, behavior:'smooth'})"
+    title="Next Slide">▼</button>
+
+  <div class="presentation" id="presentation">
+    <!-- Title Slide -->
+    <section class="slide title-slide" id="slide-1">
+      <div class="slide-content">
+        <h1 class="slide-title">EpistemicScout</h1>
+        <p class="slide-subtitle">Agentic Research Gap Discovery System</p>
+        <div class="highlight-quote">Midterm Project Presentation<br><br><strong>By:</strong> Huy Quang Tran (ID:
+          02522035)<br><br><strong>Date:</strong> 2026-04-17</div>
+      </div>
+    </section>
+
+    <!-- Slide 2: Problem & Motivation -->
+    <section class="slide" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title">Problem & Motivation</h2>
+        <p class="slide-subtitle">Why do we need EpistemicScout?</p>
+        <div class="cards-grid">
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🔍</span> The Information Explosion</div>
+            <div class="card-body">
+              <ul>
+                <li>Thousands of academic papers are published monthly, making it impossible to synthesize all data to
+                  find "white space".</li>
+                <li>The current tools for literature review are not efficient and effective.</li>
+                <li>It is hard to find the "white space" in the literature.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🛑</span> Bounded Rationality</div>
+            <div class="card-body">
+              <ul>
+                <li>Graduate students and R&D professionals spend months on manual literature reviews and often miss
+                  inter-disciplinary connections.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">💡</span> The Agentic Solution</div>
+            <div class="card-body">
+              <ul>
+                <li>We orchestrate a team of LLM agents to automatically cross-reference methods, claims, and results
+                  accurately across the corpus.</li>
+                <li>We use Graph to visualize the trending connections between papers.</li>
+                <li>LLM detect the research gaps in each cluster of papers.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 3: Specs & Evaluation -->
+    <section class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="slide-title">Project Specs & Evaluation</h2>
+        <p class="slide-subtitle">Addressing Creativity, Usefulness, Concreteness, and Presentation</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">✨</span> Creativity</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>The Dialectical Debate Chamber:</strong> Using multi-agent personas (Conceptualist vs.
+                  Empiricist) to stress-test research ideas in real-time.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🛠️</span> Usefulness</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Solving Bounded Rationality:</strong> Alleviates the burden of reading thousands of
+                  publications.</li>
+                <li>Finds hidden contradictions across inter-disciplinary boundaries.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🧱</span> Concreteness</div>
+            <div class="card-body">
+              <ul>
+                <li>Clear pipeline: PDF ➔ NER ➔ Knowledge Graph ➔ Gap Topology Analysis.</li>
+                <li>Actionable metric: <em>0% hallucination on citations</em>.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">🎨</span> Presentation</div>
+            <div class="card-body">
+              <ul>
+                <li>Interactive <strong>Streamlit Web App</strong> interface.</li>
+                <li>Hybrid toggle for local privacy (Ollama) vs. cloud speed (Gemini).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4: Webapp Structure Explanation
+    <section class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title">Webapp Structure Overview</h2>
+        <p class="slide-subtitle">A modular approach to the system components</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🖥️</span> Front-End (Streamlit)</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Sidebar:</strong> Global controls for LLM backend toggling (Gemini/Ollama).</li>
+                <li><strong>UI Tabs:</strong> Discovery Map (Knowledge Field), Research Chat (Insights), and Debate
+                  Chamber (Agent Verification).</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">⚙️</span> Back-End (LangGraph & Chroma)</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Orchestrator:</strong> Manages the state, controlling exactly when to extract, synthesize,
+                  and critique data.</li>
+                <li><strong>Vector Database:</strong> ChromaDB maintains local, persistent storage for semantic search.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- Slide 5: Web App Architecture -->
+    <section class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title">Web App Architecture</h2>
+        <p class="slide-subtitle">How Streamlit meets LangGraph Multi-Agent Orchestration</p>
+
+        <div class="mermaid-container">
+          <div class="mermaid">
+            graph TD
+            A[User UI - app.py] --> B(Orchestrator LangGraph)
+            subgraph "Agents Directory"
+            B --> E1((Extractor Agent))
+            B --> E2((Synthesizer Agent))
+            B --> E3((Critic Agent))
+            end
+            subgraph "Utils Backbone"
+            E1 -.-> P(PDF Parser)
+            E2 -.-> V(ChromaDB Vector Store)
+            E3 -.-> V
+            end
+            B --> D[UI Outputs]
+            subgraph "UI Directory"
+            D --> U1[Discovery Map]
+            D --> U2[Research Chat]
+            D --> U3[Debate Chamber]
+            end
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 6: Demo Flow -->
+    <section class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title">System Demo Flow</h2>
+        <p class="slide-subtitle">From uploading a PDF to a formulated research hypothesis</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📤</span> Step 1: Ingestion</div>
+            <div class="card-body">
+              <ul>
+                <li>Upload multiple PDFs through the sidebar.</li>
+                <li>Extract text strictly via <code>PyMuPDF</code>.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧠</span> Step 2: Orchestration</div>
+            <div class="card-body">
+              <ul>
+                <li>Orchestrator node triggers Extractor ➔ Synthesizer ➔ Critic.</li>
+                <li>Outputs a structured Knowledge Graph of the research field.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🌐</span> Step 3: Discovery</div>
+            <div class="card-body">
+              <ul>
+                <li>User explores 'islands' and missing links in the <strong>Discovery Map</strong> dashboard.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">⚖️</span> Step 4: Verification</div>
+            <div class="card-body">
+              <ul>
+                <li>The hypothesis is thrown into the <strong>Debate Chamber</strong>.</li>
+                <li>Conceptualist and Empiricist critique the validity.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 7: Future Plans -->
+    <section class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title">Future Plan</h2>
+        <p class="slide-subtitle">Expanding the Horizon of EpistemicScout</p>
+        <div class="highlight-quote">
+          "The ultimate goal of EpistemicScout is to close the loop from literature discovery directly to experimental
+          design."
+        </div>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">1️⃣</span> Short Term</div>
+            <div class="card-body">
+              <ul>
+                <li>Integrate advanced multimodal models (e.g., reading charts/graphs in PDFs).</li>
+                <li>Incorporate an Open Web Search Agent to cross-reference gaps against real-time pre-prints (arXiv).
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">2️⃣</span> Long Term</div>
+            <div class="card-body">
+              <ul>
+                <li>Automated export of LaTeX/Markdown Research Proposals derived directly from the Debate Chamber
+                  resolution.</li>
+                <li>Persistent multi-user collaborative session state.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+
+</html>
