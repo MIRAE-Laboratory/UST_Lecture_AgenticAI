@@ -36,7 +36,7 @@ If the generated outfit is unsatisfactory or risky, the user can recover without
 ## 4. Interaction Flow
 The diagram below shows the full human-AI interaction loop, where the user first defines inputs (Architect), then reviews and verifies the output before finalizing (Fail-safe).
 
-![poster](./fitpick_architecture.png)
+![poster](./fitPick_architecture.png)
 
 ---
 
