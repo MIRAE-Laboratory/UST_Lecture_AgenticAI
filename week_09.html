@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<!-- Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --text-main: #1e293b;
+    --accent: #0f4c81;
+    --card-blue: #eff6ff;
+    --border-blue: #bfdbfe;
+    --card-green: #f0fdf4;
+    --border-green: #bbf7d0;
+    --card-orange: #fff7ed;
+    --border-orange: #fed7aa;
+    --card-pink: #fdf2f8;
+    --border-pink: #fbcfe8;
+    --card-purple: #faf5ff;
+    --border-purple: #e9d5ff;
+    --card-yellow: #fefce8;
+    --border-yellow: #fef08a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    overflow: hidden; /* Hide scrollbars, use custom navigation */
+    font-size: 1.8rem;
+  }
+  .presentation {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    width: 100vw;
+  }
+  .presentation::-webkit-scrollbar { display: none; }
+  .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 60px 80px; /* Top/Bottom 60px, Left/Right 80px for margins */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-content {
+    background: var(--bg-main);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    font-size: 1rem; /* 1.5x of original */
+  }
+  .slide-title {
+    font-size: 2rem; /* 1.5x of original */
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    border-bottom: 5px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: 1rem; /* 1.5x of original */
+    color: #64748b;    
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  /* Title Slide Variations */
+  .title-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  }
+  .title-slide .slide-title { font-size: 2.5rem; border: none; margin-bottom: 1.5rem; color: var(--accent); }
+  .title-slide .slide-subtitle { font-size: 1.5rem; font-weight: 600; color: #334155; }
+  
+  /* Title Emphasis Variations */
+  .title-emphasis-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+  .title-emphasis-slide .slide-title {
+    font-size: 3rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-emphasis-slide .slide-subtitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+  
+  /* Layouts */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased min-width to prevent 4 columns on wide screens */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+  .card-header { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.4rem; }
+  .card-header .icon { font-size: 1.3rem; margin-right: 0.5rem; }
+  .card-body ul { list-style-type: none; padding-left: 0; }
+  .card-body li { margin-bottom: 0.5rem; position: relative; padding-left: 1.2rem; line-height: 1.4; font-size: 0.95rem; }
+  .card-body li::before { content: "•"; color: #94a3b8; font-weight: bold; position: absolute; left: 0; top: 0; }
+  .plain-bullets li { position: relative; padding-left: 1.2rem; list-style-type: none; }
+  .plain-bullets li::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: 0; top: 0; }
+  
+  .slide-text {
+    font-size: 1.6rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  .card-blue { background: var(--card-blue); border-color: var(--border-blue); color: #1e3a8a; }
+  .card-green { background: var(--card-green); border-color: var(--border-green); color: #14532d; }
+  .card-orange { background: var(--card-orange); border-color: var(--border-orange); color: #7c2d12; }
+  .card-pink { background: var(--card-pink); border-color: var(--border-pink); color: #831843; }
+  .card-purple { background: var(--card-purple); border-color: var(--border-purple); color: #4c1d95; }
+  .card-yellow { background: var(--card-yellow); border-color: var(--border-yellow); color: #713f12; }
+  
+  .highlight-quote {
+    background: #f8fafc;
+    border-left: 5px solid var(--accent);
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .image-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    margin: 0.5rem 0;
+  }
+  .img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .image-container {
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .slide-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .slide-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Modal Overlay */
+  .image-modal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .image-modal.active {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 9999;
+  }
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .image-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: #94a3b8;
+  }
+  .img-caption {
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .mermaid-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+  }
+  .mermaid-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .mermaid-group .mermaid-container {
+    margin: 0;
+    flex: 1;
+    min-height: auto;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Consolas', monospace;
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  .mermaid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .reference-link {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .inline-code {
+    background: #e2e8f0;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .styled-table th { background: #334155; color: white; text-align: left; padding: 1rem; }
+  .styled-table td { padding: 1rem; background: white; border-bottom: 1px solid #f1f5f9; }
+  .styled-table tr:hover td { background: #f8fafc; }
+  
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .flow-step {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #cbd5e1;
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin: 0 1rem;
+  }
+  
+  .slide-number {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .plain-bullets {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+  .plain-bullets li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Fixed Layout Elements */
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: #0f172a;
+    color: #94a3b8;
+    z-index: 2000;
+    border-bottom: 1px solid #1e293b;
+  }
+  .header-logo { color: white; margin-right: 1.5rem; letter-spacing: -0.5px; font-size: 0.75rem; }
+  .header-sep { color: #334155; margin: 0 1rem; }
+  .header-subtitle { font-size: 0.75rem; }
+
+  .side-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* 2/3 of 50px approx */
+    height: 70px; /* 2/3 of 100px approx */
+    background: rgba(30, 41, 59, 0.4);
+    border: none;
+    color: white;
+    font-size: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: background 0.2s, width 0.2s;
+    border-radius: 6px;
+  }
+  .side-nav-btn:hover { background: rgba(37, 99, 235, 0.8); width: 45px; }
+  .prev-side { left: 10px; }
+  .next-side { right: 10px; }
+
+  /* Navigation Bar (Fixed Bottom) */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    height: 50px;
+    z-index: 2000;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .nav-main-btn {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 20px;
+  }
+  .btn-nav {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover {
+    background: #1e293b;
+    color: white;
+  }
+  .page-input-wrapper {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin: 0 8px;
+    font-family: monospace;
+  }
+  .page-input {
+    background: transparent;
+    border: 1px solid #334155;
+    color: white;
+    width: 32px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    padding: 1px;
+    margin-right: 4px;
+  }
+  .section-links {
+    display: flex;
+    gap: 16px;
+    border-left: 1px solid #1e293b;
+    padding-left: 20px;
+  }
+  .nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <header class="global-header">
+    <span class="header-logo">Function Calling</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">How AI Agents Take Action — Not Just Talk</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+<div class="slide-content">
+<h1 class="slide-title">Function Calling</h1>
+<p class="slide-subtitle">How AI Agents Take Action — Not Just Talk</p>
+<div class="highlight-quote">Week 9 of Phase 3: Advanced Patterns (Weeks 9-12)</div>
+</div>
+</section>
+<section class="slide" id="slide-2">
+<div class="slide-content">
+<h2 class="slide-title">Contents</h2>
+<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 9</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+<div class="card-body"><ul><li>The limit of "text in, text out" LLMs</li><li>Function calling — letting AI invoke real code</li><li>The agentic loop: call → observe → decide → repeat</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+<div class="card-body"><ul><li>Build a research agent with <strong>3 tools</strong>: search, fetch, summarize</li><li>The agent decides which tool to call based on user question</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+<div class="card-body"><ul><li>Designing tool definitions clearly</li><li>Midterm reflection: vague specs → flaky agents</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-3">
+<div class="slide-content">
+<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+<p class="slide-subtitle">Function Calling — Giving AI the Power to Act</p>
+</div>
+</section>
+<section class="slide" id="slide-4">
+<div class="slide-content">
+<h2 class="slide-title">The Story So Far — <strong>From Talking to Acting</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📄</span> What We've Built So Far</div>
+<div class="card-body"><ul><li>Week 5: AI <strong>answers</strong> questions about papers</li><li>Week 6: AI <strong>extracts</strong> metadata into structured form</li><li>Week 7: AI <strong>debates</strong> topics with personas</li><li>All of these = AI produces <strong>text</strong> as output</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The Limitation</div>
+<div class="card-body"><ul><li>The LLM only outputs <strong>text</strong> — it can't actually DO anything</li><li>It can't search a database, call an API, read a file, run code</li><li>You had to write all the surrounding logic yourself</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🚀</span> Today's Shift</div>
+<div class="card-body"><ul><li>Give the LLM access to <strong>real functions</strong></li><li>Let it decide which function to call, with what arguments</li><li>Now the LLM can <strong>act</strong>, not just describe actions</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-5">
+<div class="slide-content">
+<h2 class="slide-title">The Core Problem — <strong>LLMs Can't Do Anything</strong></h2>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">❌</span> What an LLM Can't Do</div>
+<div class="card-body"><ul><li>It can't check today's weather</li><li>It can't search your local files</li><li>It can't run a calculation reliably (<code class="inline-code">23847 × 9281</code> = ?)</li><li>It can't query a database</li><li>It only generates text based on training data</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">💡</span> What If We Gave It Tools?</div>
+<div class="card-body"><ul><li>"Here's a <code class="inline-code">get_weather(city)</code> function"</li><li>"Here's a <code class="inline-code">search_papers(query)</code> function"</li><li>"Here's a <code class="inline-code">calculate(expr)</code> function"</li><li>The LLM still outputs text — but the text says <strong>"call this function with these arguments"</strong></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> The Result</div>
+<div class="card-body"><ul><li>The LLM becomes an <strong>orchestrator</strong> — it picks the right tool</li><li>The actual work happens in your real code</li><li>Reliable, verifiable, and the LLM stays in its lane</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-6">
+<div class="slide-content">
+<h2 class="slide-title">What is <strong>Function Calling</strong>?</h2>
+<p class="slide-subtitle">A simple but powerful API pattern</p>
+<pre class="code-block"><code class="language-text">1. You define functions in JSON:
+   { name: "search_papers", description: "...", parameters: {...} }
+
+2. You send the user message + function definitions to the LLM
+
+3. The LLM responds with EITHER:
+   (a) A normal text answer, OR
+   (b) "I want to call search_papers with query='deep learning'"
+
+4. If (b), YOUR code runs the real function and gets the result
+
+5. You send the result back to the LLM → it forms the final answer</code></pre>
+<div class="highlight-quote">"The LLM never actually runs code. It just tells YOU which function to run, and YOU run it."</div>
+</div>
+</section>
+<section class="slide" id="slide-7">
+<div class="slide-content">
+<h2 class="slide-title">The Flow — <strong>Visualized</strong></h2>
+<div class="mermaid-container"><div class="mermaid">sequenceDiagram
+    participant U as 👤 User
+    participant A as 💻 Your App
+    participant L as 🤖 LLM
+    participant F as 🔧 Real Function
+
+    U->>A: "Find recent GNN papers"
+    A->>L: message + tool definitions
+    L-->>A: tool_call: search_papers(query="GNN")
+    A->>F: search_papers("GNN")
+    F-->>A: [paper1, paper2, paper3]
+    A->>L: tool_result: [...]
+    L-->>A: "I found 3 papers: ..."
+    A-->>U: Final answer</div></div>
+</div>
+</section>
+<section class="slide" id="slide-8">
+<div class="slide-content">
+<h2 class="slide-title">A <strong>Tool Definition</strong> — JSON Schema</h2>
+<p class="slide-subtitle">This is what you send to the LLM</p>
+<pre class="code-block"><code class="language-python">tool = {
+    "type": "function",
+    "function": {
+        "name": "search_papers",
+        "description": "Search the local paper collection by keyword.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "Keyword or topic to search for"
+                },
+                "max_results": {
+                    "type": "integer",
+                    "description": "How many papers to return (default 5)"
+                }
+            },
+            "required": ["query"]
+        }
+    }
+}</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Three Things the LLM Sees</div>
+<div class="card-body"><ul><li><strong>name</strong> — identifier the LLM uses to "call" the function</li><li><strong>description</strong> — when should the LLM use this? (CRITICAL)</li><li><strong>parameters</strong> — what arguments are needed (JSON schema)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-9">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Description</strong> is Where Specifying Lives</h2>
+<p class="slide-subtitle">This is the new prompt engineering</p>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">❌</span> Vague Description</div>
+<div class="card-body"><ul><li><code class="inline-code">"description": "search papers"</code></li><li>LLM has no idea <strong>when</strong> to call this vs other tools</li><li>It might call it for "what is deep learning?" (wrong — that's general knowledge)</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> Clear Description</div>
+<div class="card-body"><ul><li><code class="inline-code">"description": "Search the user's local paper collection (extracted via Week 6 metadata). Use this when the user asks about specific papers or trends in THEIR collection. Do NOT use for general knowledge questions."</code></li><li>LLM now knows <strong>exactly</strong> when to call it</li><li>The description is your <strong>contract</strong> with the LLM</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Tool description = clearer specification. The skill from Week 8's midterm reflection — directly applied here."</div>
+</div>
+</section>
+<section class="slide" id="slide-10">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Agentic Loop</strong> — Multiple Tool Calls</h2>
+<p class="slide-subtitle">One question may need several tools</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔄</span> The Pattern</div>
+<div class="card-body"><ul><li>User asks a question</li><li>LLM thinks → calls Tool A</li><li>Sees Tool A's result → decides to call Tool B</li><li>Sees Tool B's result → maybe calls Tool C</li><li>Eventually: enough info → produces final answer</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📝</span> Concrete Example</div>
+<div class="card-body"><ul><li><strong>User</strong>: "Summarize the top 3 GNN papers in my collection"</li><li><strong>LLM call 1</strong>: <code class="inline-code">search_papers(query="GNN", max_results=3)</code> → gets 3 papers</li><li><strong>LLM call 2</strong>: <code class="inline-code">get_paper_details(id=1)</code> → gets full text of paper 1</li><li><strong>LLM call 3</strong>: <code class="inline-code">get_paper_details(id=2)</code> → gets full text of paper 2</li><li><strong>LLM call 4</strong>: <code class="inline-code">get_paper_details(id=3)</code> → gets full text of paper 3</li><li><strong>LLM final</strong>: synthesizes summary across all 3</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚠️</span> Important</div>
+<div class="card-body"><ul><li>You loop in your code: while LLM keeps calling tools, run them</li><li>Set a max iteration count to prevent infinite loops</li><li>Each step is observable — you see exactly what was called</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-11">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Agentic Loop</strong> in Code</h2>
+<p class="slide-subtitle">This is the heart of every agent system</p>
+<pre class="code-block"><code class="language-python">messages = [{"role": "user", "content": user_question}]
+
+for step in range(MAX_STEPS):
+    resp = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        tools=tool_definitions,
+    )
+    msg = resp.choices[0].message
+    messages.append(msg)
+
+    if not msg.tool_calls:
+        # LLM gave a final answer — done
+        return msg.content
+
+    # LLM wants to call tools — run them
+    for tc in msg.tool_calls:
+        result = run_tool(tc.function.name, tc.function.arguments)
+        messages.append({
+            "role": "tool",
+            "tool_call_id": tc.id,
+            "content": str(result),
+        })</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Read This Loop Carefully</div>
+<div class="card-body"><ul><li>It alternates: LLM call → run tools → LLM call → run tools → ...</li><li>Exits when LLM stops requesting tools (gives final answer)</li><li><code class="inline-code">MAX_STEPS</code> prevents runaway loops</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-12">
+<div class="slide-content">
+<h2 class="slide-title">When to Use <strong>Function Calling</strong></h2>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> Good Fit</div>
+<div class="card-body"><ul><li>The task needs <strong>real-world data</strong> (DB, API, files, calculations)</li><li>The task involves <strong>multiple specialized steps</strong> (search → fetch → summarize)</li><li>You need <strong>deterministic</strong> parts mixed with LLM reasoning</li><li>You want the LLM's actions to be <strong>inspectable</strong></li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">❌</span> Not a Good Fit</div>
+<div class="card-body"><ul><li>Pure text transformation (translate, summarize, rewrite) → just prompt</li><li>Single-shot Q&A from training data → just prompt</li><li>Tasks where you don't trust the LLM to choose tools wisely → fixed pipeline</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🤔</span> Function Calling vs Fixed Pipeline</div>
+<div class="card-body"><ul><li><strong>Fixed pipeline (Week 7-style)</strong>: you write the order, LLM fills in</li><li><strong>Function calling</strong>: LLM decides the order itself</li><li>Function calling = more flexible, but harder to predict</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-13">
+<div class="slide-content">
+<h2 class="slide-title">Common Pitfalls — <strong>What Goes Wrong</strong></h2>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">1️⃣</span> Vague Tool Descriptions</div>
+<div class="card-body"><ul><li>LLM picks the wrong tool, or no tool when one was needed</li><li><strong>Fix</strong>: be explicit about WHEN to use each tool, with examples</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">2️⃣</span> Too Many Tools</div>
+<div class="card-body"><ul><li>20 tools → LLM gets confused, picks randomly</li><li><strong>Fix</strong>: keep it under ~7 tools, group related ones</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">3️⃣</span> Infinite Loops</div>
+<div class="card-body"><ul><li>LLM keeps calling tools forever</li><li><strong>Fix</strong>: set <code class="inline-code">MAX_STEPS = 10</code> and bail out gracefully</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">4️⃣</span> No Validation</div>
+<div class="card-body"><ul><li>LLM passes garbage arguments — your function crashes</li><li><strong>Fix</strong>: validate arguments inside each tool function, return error messages the LLM can read</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-14">
+<div class="slide-content">
+<h2 class="slide-title">Lecture Summary — <strong>Function Calling</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Core Idea</div>
+<div class="card-body"><ul><li>LLM outputs structured JSON saying "call this function with these arguments"</li><li>YOUR code runs the function and returns the result</li><li>LLM sees the result and decides what to do next</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔄</span> The Agentic Loop</div>
+<div class="card-body"><ul><li>Loop until LLM stops requesting tools</li><li>Each tool call is observable — full transparency</li><li>Set MAX_STEPS to prevent runaway behavior</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📝</span> The Skill That Matters</div>
+<div class="card-body"><ul><li>Tool <strong>descriptions</strong> = where you specify WHEN to use each tool</li><li>Vague descriptions → LLM picks the wrong tool</li><li>Clear descriptions → LLM behaves predictably</li><li><strong>This is specifying skill, applied to tool design</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-15">
+<div class="slide-content">
+<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+<p class="slide-subtitle">Build a Research Agent with 3 Tools</p>
+</div>
+</section>
+<section class="slide" id="slide-16">
+<div class="slide-content">
+<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Goal</div>
+<div class="card-body"><ul><li>A chat interface where the user asks research questions</li><li>The agent has <strong>3 tools</strong> for accessing the paper collection</li><li>The agent <strong>decides</strong> which tools to call, in what order</li><li>The chat shows every tool call so users can see what's happening</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔧</span> The Three Tools</div>
+<div class="card-body"><ul><li><code class="inline-code">search_papers(query, max_results)</code> — keyword search in metadata</li><li><code class="inline-code">get_paper_details(paper_id)</code> — full info for one paper</li><li><code class="inline-code">count_papers_by_year(year)</code> — simple stats query</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📁</span> Files</div>
+<div class="card-body"><ul><li><code class="inline-code">tools.py</code> — the 3 tool functions + their JSON schemas</li><li><code class="inline-code">agent.py</code> — the agentic loop</li><li><code class="inline-code">app.py</code> — add Tab 7 (Agent Chat)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-17">
+<div class="slide-content">
+<h2 class="slide-title">Step 1 — <strong>Tool Functions</strong> (<code class="inline-code">tools.py</code>)</h2>
+<p class="slide-subtitle">Three real Python functions the agent can call</p>
+<pre class="code-block"><code class="language-python"># tools.py
+import json
+from pdf_to_md import load_all_metadata
+MD_DIR = "md_output"
+
+def search_papers(query: str, max_results: int = 5) -&gt; str:
+    """Keyword search in titles and abstracts."""
+    papers = load_all_metadata(MD_DIR)
+    q = query.lower()
+    hits = []
+    for i, p in enumerate(papers):
+        text = (p.get("title", "") + " " + p.get("abstract", "")).lower()
+        if q in text:
+            hits.append({"id": i, "title": p.get("title", "?")})
+        if len(hits) &gt;= max_results:
+            break
+    return json.dumps(hits)
+
+def get_paper_details(paper_id: int) -&gt; str:
+    """Full metadata for a single paper by id."""
+    papers = load_all_metadata(MD_DIR)
+    if 0 &lt;= paper_id &lt; len(papers):
+        return json.dumps(papers[paper_id])
+    return json.dumps({"error": f"paper_id {paper_id} not found"})
+
+def count_papers_by_year(year: int) -&gt; str:
+    """Count papers published in a given year."""
+    papers = load_all_metadata(MD_DIR)
+    count = sum(1 for p in papers if str(p.get("year", "")) == str(year))
+    return json.dumps({"year": year, "count": count})</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-18">
+<div class="slide-content">
+<h2 class="slide-title">Step 2 — <strong>Tool Schemas</strong> (<code class="inline-code">tools.py</code>)</h2>
+<p class="slide-subtitle">How the LLM sees each tool</p>
+<pre class="code-block"><code class="language-python">TOOL_SCHEMAS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "search_papers",
+            "description": (
+                "Search the user's local paper collection by keyword. "
+                "Use when the user asks about a specific topic in THEIR papers."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {"type": "string", "description": "Search keyword"},
+                    "max_results": {"type": "integer", "description": "Default 5"}
+                },
+                "required": ["query"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_paper_details",
+            "description": "Get full metadata for one paper by its id (from search).",
+            "parameters": {
+                "type": "object",
+                "properties": {"paper_id": {"type": "integer"}},
+                "required": ["paper_id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "count_papers_by_year",
+            "description": "Count how many papers in the collection were published in a given year.",
+            "parameters": {
+                "type": "object",
+                "properties": {"year": {"type": "integer"}},
+                "required": ["year"]
+            }
+        }
+    }
+]
+
+TOOL_FUNCS = {
+    "search_papers": search_papers,
+    "get_paper_details": get_paper_details,
+    "count_papers_by_year": count_papers_by_year,
+}</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-19">
+<div class="slide-content">
+<h2 class="slide-title">Step 3 — <strong>Agent Loop</strong> (<code class="inline-code">agent.py</code>)</h2>
+<p class="slide-subtitle">The heart of any function-calling agent</p>
+<pre class="code-block"><code class="language-python"># agent.py
+import json
+from tools import TOOL_SCHEMAS, TOOL_FUNCS
+
+MAX_STEPS = 8
+
+def run_agent(client, model, user_question, on_step=None):
+    """Run the agentic loop. on_step(event) is called for each tool call."""
+    messages = [
+        {"role": "system", "content":
+         "You are a research assistant with access to the user's paper collection. "
+         "Use tools to answer questions about their papers. "
+         "When unsure which paper, use search_papers first."},
+        {"role": "user", "content": user_question},
+    ]
+
+    for step in range(MAX_STEPS):
+        resp = client.chat.completions.create(
+            model=model, messages=messages, tools=TOOL_SCHEMAS,
+        )
+        msg = resp.choices[0].message
+        messages.append(msg)
+
+        if not msg.tool_calls:
+            return msg.content  # final answer
+
+        for tc in msg.tool_calls:
+            name = tc.function.name
+            args = json.loads(tc.function.arguments)
+            if on_step:
+                on_step({"type": "call", "name": name, "args": args})
+            try:
+                result = TOOL_FUNCS[name](**args)
+            except Exception as e:
+                result = json.dumps({"error": str(e)})
+            if on_step:
+                on_step({"type": "result", "name": name, "result": result})
+            messages.append({
+                "role": "tool",
+                "tool_call_id": tc.id,
+                "content": result,
+            })
+
+    return "Stopped — too many steps."</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-20">
+<div class="slide-content">
+<h2 class="slide-title">Step 4 — <strong>Streamlit UI</strong> (<code class="inline-code">app.py</code> Tab 7)</h2>
+<p class="slide-subtitle">Show every tool call in real time</p>
+<pre class="code-block"><code class="language-python"># app.py — Tab 7 (Agent Chat)
+from agent import run_agent
+
+with tab7:
+    st.header("🔧 Research Agent (Function Calling)")
+    question = st.text_input(
+        "Ask about your papers",
+        placeholder="e.g., How many GNN papers do I have from 2024?"
+    )
+
+    if st.button("▶️ Run Agent", disabled=not question):
+        events = []
+
+        def on_step(event):
+            events.append(event)
+
+        with st.spinner("Agent thinking..."):
+            answer = run_agent(client, model, question, on_step=on_step)
+
+        # Show every tool call (transparency)
+        st.subheader("🔍 Tool Calls")
+        for e in events:
+            if e["type"] == "call":
+                st.markdown(f"📞 **{e['name']}**(`{e['args']}`)")
+            else:
+                st.markdown(f"📦 result: `{e['result'][:200]}...`")
+
+        st.subheader("💬 Final Answer")
+        st.markdown(answer)</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-21">
+<div class="slide-content">
+<h2 class="slide-title">Step 5 — <strong>Try These Questions</strong></h2>
+<p class="slide-subtitle">See the agent pick different tools</p>
+<pre class="code-block"><code class="language-text">Question 1: "How many papers from 2024 do I have?"
+   → Agent calls count_papers_by_year(2024) → answers
+
+Question 2: "Find papers about graph neural networks"
+   → Agent calls search_papers("graph neural networks") → lists them
+
+Question 3: "Tell me about the first GNN paper in detail"
+   → Agent calls search_papers("GNN") → then get_paper_details(id=X)
+   → synthesizes a summary
+
+Question 4: "Compare 2023 vs 2024 paper counts"
+   → Agent calls count_papers_by_year(2023)
+   → then count_papers_by_year(2024)
+   → presents both numbers</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> What to Watch For</div>
+<div class="card-body"><ul><li>Does the agent pick the <strong>right tool</strong>?</li><li>Does it call <strong>multiple tools</strong> when needed?</li><li>Does it sometimes <strong>fail to use a tool</strong> when it should?</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-22">
+<div class="slide-content">
+<h2 class="slide-title">✅ <strong>Week 9 Practice Checklist</strong></h2>
+<div class="highlight-quote">Complete these steps during the practice session:</div>
+<p class="slide-text">1. - [ ] Create <code class="inline-code">tools.py</code> with the 3 functions and their schemas</p>
+<p class="slide-text">2. - [ ] Create <code class="inline-code">agent.py</code> with the <code class="inline-code">run_agent()</code> loop</p>
+<p class="slide-text">3. - [ ] Add Tab 7 to <code class="inline-code">app.py</code> showing tool calls in real time</p>
+<p class="slide-text">4. - [ ] Test with the 4 example questions — does the agent pick the right tools?</p>
+<p class="slide-text">5. - [ ] Try a question the agent <strong>should NOT</strong> use a tool for (e.g., "What is deep learning?") — does it answer directly?</p>
+<p class="slide-text">6. - [ ] <strong>Bonus</strong>: edit one tool's description to be vague, see how behavior changes</p>
+<p class="slide-text">7. - [ ] <strong>Bonus</strong>: add a 4th tool of your choice (e.g., <code class="inline-code">list_authors()</code>)</p>
+</div>
+</section>
+<section class="slide title-slide" id="slide-23">
+<div class="slide-content">
+<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+<p class="slide-subtitle">Authorship & Accountability — Who Owns the AI's Output?</p>
+</div>
+</section>
+<section class="slide" id="slide-24">
+<div class="slide-content">
+<h2 class="slide-title">Week 7 — <strong>"Who is Responsible for a Flawed AI Hypothesis?"</strong></h2>
+<p class="slide-subtitle">14 responses analyzed — a near-universal consensus, with one twist</p>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">📊</span> The Vote Count</div>
+<div class="card-body"><ul><li><strong>All three (1+2+3 combined)</strong>: Huy, Waad, Nazhiefah, DongYun, Minh — <strong>5 votes</strong></li><li><strong>Hulk only (3)</strong>: Namcheol, Gyeongsu, Han, Hyunwoo — <strong>4 votes</strong></li><li><strong>Captain America only (2)</strong>: Yadanar, Ly, Seher — <strong>3 votes</strong></li><li><strong>Captain + Hulk (2,3)</strong>: Irfan — <strong>1 vote</strong></li><li><strong>Iron Man only (1)</strong>: Tan — <strong>1 vote</strong></li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🤝</span> The Universal Consensus</div>
+<div class="card-body"><ul><li>Almost everyone says: <strong>the human is fully accountable, period</strong></li><li>"AI cannot bear moral or scientific accountability" appears in nearly every response</li><li>Even Iron Man supporters don't excuse the human — they just emphasize speed</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">🔥</span> The Real Disagreement</div>
+<div class="card-body"><ul><li>The split is NOT about <em>who</em> is responsible</li><li>The split is about <em>how</em> to manage AI to fulfill that responsibility</li><li>This is a much more productive disagreement</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-25">
+<div class="slide-content">
+<h2 class="slide-title">Theme 1 — <strong>The Real Disagreement is HOW, Not WHO</strong></h2>
+<p class="slide-subtitle">Three management philosophies emerge</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🚀</span> The Velocity Camp (Iron Man side)</div>
+<div class="card-body"><ul><li><strong>Tan</strong>: "Define problem, select data, choose model — the researcher is in control at every step"</li><li><strong>Huy</strong>: "AI provides the velocity, but the human provides the vector"</li><li>Position: embrace speed, but never abdicate decisions</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🛡️</span> The Integrity Camp (Captain America side)</div>
+<div class="card-body"><ul><li><strong>Yadanar</strong>: "Relying on AI without careful judgment weakens scientific integrity"</li><li><strong>Ly</strong>: "If results are wrong, we don't blame the software — we check our model"</li><li><strong>Seher</strong>: "Use multiple AI systems to cross-check, but final judgment must be human"</li><li>Position: keep deep engagement to maintain accountability</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">🔬</span> The Verification Camp (Hulk side)</div>
+<div class="card-body"><ul><li><strong>Hyunwoo</strong>: "A flawed hypothesis can result in severe hardware damage"</li><li><strong>Gyeongsu</strong>: "AI hallucinated fake research papers in my coding work"</li><li><strong>Han</strong>: "Researchers must never blindly trust AI; must personally verify every result"</li><li>Position: build active verification systems around the AI</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"The real question isn't 'is the AI responsible?' (no), but 'what does taking responsibility actually look like in practice?'"</div>
+</div>
+</section>
+<section class="slide" id="slide-26">
+<div class="slide-content">
+<h2 class="slide-title">Theme 2 — <strong>The Tool Metaphors</strong></h2>
+<p class="slide-subtitle">How students framed the AI's role</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔨</span> "AI is a Tool" — Most Common Frame</div>
+<div class="card-body"><ul><li><strong>DongYun</strong>: "AI is merely a tool, like a hammer"</li><li><strong>Tan</strong>: "AI is fundamentally a tool without intent or accountability"</li><li><strong>Minh</strong>: "We do not credit the power drill for the architecture"</li><li>The hammer/drill metaphor is intuitive but limited — tools don't <em>suggest</em> what to build</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚛️</span> "AI is a High-Power Instrument" — Namcheol's Reframe</div>
+<div class="card-body"><ul><li>"A nuclear engineer doesn't blame the reactor if a control rod is miscalibrated"</li><li>But the engineer DOES need active containment, monitoring, documentation</li><li>This metaphor better captures the <em>operational risk</em> dimension</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🧭</span> "Velocity vs Vector" — Huy's New Frame</div>
+<div class="card-body"><ul><li>AI provides the <strong>velocity</strong> (speed of generating ideas)</li><li>Human provides the <strong>vector</strong> (direction and validation)</li><li>Captures both the productivity gain AND the irreplaceable human role</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-27">
+<div class="slide-content">
+<h2 class="slide-title">Theme 3 — <strong>Real Engineering Stakes</strong></h2>
+<p class="slide-subtitle">Why this isn't an abstract debate</p>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> Concrete Failures Students Have Seen or Worry About</div>
+<div class="card-body"><ul><li><strong>Gyeongsu</strong>: AI fabricated fake paper citations — would have been "deeply embarrassing" if used in a presentation</li><li><strong>Hyunwoo</strong>: "A flawed hypothesis regarding system dynamics can result in severe hardware damage"</li><li><strong>Minh</strong>: Motor winding design — "AI-generated hypothesis is merely a high-probability suggestion that must undergo empirical validation"</li><li><strong>Waad</strong>: "Dangerous trend where the ease of a single button press erodes critical thinking in younger generations"</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔍</span> The Pattern</div>
+<div class="card-body"><ul><li>These aren't theoretical concerns — students are encountering them in their own work</li><li>The verification step isn't a luxury; it's how you avoid catastrophic failure</li><li>Engineering domains (robotics, motors, hardware) have <strong>physical consequences</strong> for AI errors</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"AI changes how ideas are generated. It does not change who is responsible for them." — Huy</div>
+</div>
+</section>
+<section class="slide" id="slide-28">
+<div class="slide-content">
+<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+<p class="slide-subtitle">Function calling makes accountability MECHANICAL, not just philosophical</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔧</span> Tool Calls = Accountability Made Visible</div>
+<div class="card-body"><ul><li>Today's agent shows EVERY tool call in the UI</li><li>You see what the agent searched for, what it retrieved, what it computed</li><li>This is <strong>operational</strong> accountability — not just claimed, but observable</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🎯</span> Tool Descriptions = Where You Specify Limits</div>
+<div class="card-body"><ul><li>Want to constrain the AI? Write narrow tool descriptions</li><li>"Use ONLY when..." in the description prevents misuse</li><li>This is the verification camp's discipline, baked into the system design</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔁</span> The Velocity-Vector Pattern in Code</div>
+<div class="card-body"><ul><li>Tools provide the <strong>velocity</strong> (search 1000 papers in seconds)</li><li>Tool definitions and the loop's exit conditions provide the <strong>vector</strong></li><li>You designed the rails the agent runs on — that's where your accountability lives</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-29">
+<div class="slide-content">
+<h2 class="slide-title">Activity — <strong>Design a Tool with Built-In Accountability</strong></h2>
+<p class="slide-subtitle">Apply the lessons in pairs (10 min)</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📋</span> The Task</div>
+<div class="card-body"><ul><li>Pick any tool from your own research workflow you'd want to automate</li><li>Write its <code class="inline-code">description</code> field with <strong>explicit limits</strong> built in</li><li>Show your description to a partner — can they tell when the LLM should/shouldn't use it?</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">✏️</span> Required Elements in Your Description</div>
+<div class="card-body"><ul><li><strong>What</strong> the tool does (1 sentence)</li><li><strong>When</strong> to use it (specific scenarios)</li><li><strong>When NOT</strong> to use it (boundaries)</li><li><strong>What outputs to verify</strong> (the human-in-the-loop checkpoint)</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> Example</div>
+<div class="card-body"><ul><li>"Generate a hypothesis from input data. Use ONLY for preliminary brainstorming on small datasets (<1000 rows). Do NOT use for high-stakes claims. <strong>OUTPUT MUST BE VALIDATED</strong> against at least one independent baseline before being included in any report."</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-30">
+<div class="slide-content">
+<h2 class="slide-title">🗣️ <strong>Week 9 Discussion Questions</strong> (UST LMS)</h2>
+<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+<p class="slide-text">1. Several classmates (Huy, Namcheol, Minh) reframed the AI accountability debate using metaphors — "velocity vs vector", "high-power instrument", "power drill". <strong>Which metaphor best captures how YOU work with AI in your research?</strong> Or propose a better one.</p>
+<p class="slide-text">2. In today's practice, you saw every tool call the agent made (transparency). <strong>Does this kind of visibility change your sense of responsibility for the AI's output?</strong> Would you trust an AI more or less if you couldn't see its tool calls?</p>
+</div>
+</section>
+<section class="slide" id="slide-31">
+<div class="slide-content">
+<h2 class="slide-title">Want to Learn More?</h2>
+<p class="slide-text">Function Calling Documentation</p>
+<a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" class="reference-link">📚 OpenAI: Function Calling Guide</a>
+<a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use" target="_blank" class="reference-link">📚 Anthropic: Tool Use Overview</a>
+<a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" class="reference-link">📚 Anthropic: Building Effective Agents</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Agent Frameworks (built on function calling)</p>
+<a href="https://langchain-ai.github.io/langgraph/" target="_blank" class="reference-link">📚 LangGraph — Stateful Agent Workflows</a>
+<a href="https://github.com/openai/openai-agents-python" target="_blank" class="reference-link">📚 OpenAI Agents SDK</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Anthropic Free Online Courses</p>
+<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)</div>
+<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
+<div class="highlight-quote">🎓 [Introduction to Agent Skills](https://anthropic.skilljar.com/introduction-to-agent-skills)</div>
+</div>
+</section>
+<section class="slide" id="slide-32">
+<div class="slide-content">
+<h2 class="slide-title">Wrap-Up of <strong>Week 9</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> Lecture</div>
+<div class="card-body"><ul><li>Function calling = LLM outputs JSON describing which function to call; YOUR code runs it; result fed back; loop until done</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> Practice</div>
+<div class="card-body"><ul><li>Built a research agent with <strong>3 tools</strong> (search, fetch, count); the agent picks tools based on the question; every call is visible to the user</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+<div class="card-body"><ul><li>Week 7 review: universal consensus that humans are accountable; the real disagreement is HOW (velocity / integrity / verification camps); Huy's "velocity vs vector" frame connects accountability to today's tool design</li></ul></div>
+</div>
+</div>
+<p class="slide-text"><strong>Next week:</strong> What happens when tool calls fail — error handling and recovery in agent loops.</p>
+</div>
+</section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">32</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(15)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(23)">Discussion</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 32;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+      
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+      
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+      
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if(currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if(currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if(newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+           currentSlide = newSlide;
+           pageInput.value = currentSlide;
+           updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if(e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: -100, behavior: 'smooth'});
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: 100, behavior: 'smooth'});
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+         const pageNum = parseInt(hash.replace('#slide-', ''));
+         if(!isNaN(pageNum)) {
+           setTimeout(() => goToSlide(pageNum), 100);
+         }
+      }
+    });
+  </script>
+</body>
+</html>
