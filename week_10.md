@@ -287,14 +287,17 @@ RUBRIC = {
 ## Slide: Three Strategies Code
 - type: practice
 - title: Step 2 — **Three Generation Strategies**
+- subtitle: One small `llm_call` helper, three different prompts
 
 ```python
+# evaluator.py — using google-genai SDK
 def llm_call(client, model, prompt):
-    resp = client.chat.completions.create(
+    """Single-turn call to a Gemini model."""
+    resp = client.models.generate_content(
         model=model,
-        messages=[{"role": "user", "content": prompt}],
+        contents=prompt,
     )
-    return resp.choices[0].message.content
+    return resp.text
 
 
 def generate_naive(client, model, hometown):
@@ -325,6 +328,11 @@ Rewrite this to score better on these criteria:
 {rubric_text}"""
     return llm_call(client, model, prompt)
 ```
+
+- card(yellow, 💡): SDK Note
+  - Uses `google-genai` (native Gemini SDK), not OpenAI-compatible
+  - `client.models.generate_content(model=..., contents=...)` — single string in, `.text` out
+  - All later functions reuse this single `llm_call` helper
 
 =====
 
@@ -368,49 +376,77 @@ Return ONLY a JSON object like:
 
 =====
 
-## Slide: Compare Strategies UI
+## Slide: App Setup
 - type: practice
-- title: Step 4 — **UI: Compare 3 Strategies** (`app.py` Tab 8)
-- subtitle: Same task, three rubric placements, side-by-side scores
+- title: Step 4a — **App Setup** (`app.py` — top of file)
+- subtitle: Standalone Streamlit app — client, model, imports
 
 ```python
-# app.py — Tab 8 (Evaluation Lab)
+# app.py
+import os
+from dotenv import load_dotenv
+from google import genai
+
+load_dotenv()
+
+client = genai.Client(api_key=os.environ.get("GOOGLE_API_KEY"))
+model = os.environ.get("LLM_MODEL", "gemini-2.5-flash")
+
+import streamlit as st
 import pandas as pd, altair as alt
 from evaluator import (
     RUBRIC, generate_naive, generate_aware, generate_refine, evaluate,
+    iterative_threshold, iterative_self_evolving
+)
+```
+
+- card(yellow, 💡): Why a Standalone App?
+  - This week's evaluator is independent of Weeks 5-7 (no shared tabs)
+  - Run with `streamlit run app.py` — fresh single-page UI
+  - `LLM_MODEL` env var lets you swap the generator without editing code
+
+=====
+
+## Slide: Compare Strategies UI
+- type: practice
+- title: Step 4b — **UI: Compare 3 Strategies**
+- subtitle: Header, hometown input, judge selector, then run all three
+
+```python
+st.header("📊 Evaluation Lab — Hometown Introductions")
+hometown = st.text_input("Your hometown", "Daejeon, South Korea")
+judge = st.selectbox(
+    "Judge model",
+    ["gemini-3-flash-preview", "gemini-2.0-flash"],
 )
 
-with tab8:
-    st.header("📊 Evaluation Lab — Hometown Introductions")
-    hometown = st.text_input("Your hometown", "Daejeon, South Korea")
-    judge = st.selectbox("Judge model", ["gpt-4o-mini", "gemini-2.0-flash"])
+if st.button("🚀 Run All 3 Strategies", disabled=not hometown):
+    rows = []
+    for name, fn in [
+        ("Naive", generate_naive),
+        ("Refine", generate_refine),
+        ("Aware", generate_aware),
+    ]:
+        with st.spinner(f"{name}..."):
+            text = fn(client, model, hometown)
+            scores = evaluate(client, judge, text)
+        st.subheader(f"{name} Strategy")
+        st.write(text)
+        st.json(scores)
+        for k, v in scores.items():
+            rows.append({"strategy": name, "criterion": k, "score": v})
 
-    if st.button("🚀 Run All 3 Strategies", disabled=not hometown):
-        rows = []
-        for name, fn in [
-            ("Naive", generate_naive),
-            ("Refine", generate_refine),
-            ("Aware", generate_aware),
-        ]:
-            with st.spinner(f"{name}..."):
-                text = fn(client, model, hometown)
-                scores = evaluate(client, judge, text)
-            st.subheader(f"{name} Strategy")
-            st.write(text)
-            st.json(scores)
-            for k, v in scores.items():
-                rows.append({"strategy": name, "criterion": k, "score": v})
-
-        df = pd.DataFrame(rows)
-        chart = alt.Chart(df).mark_bar().encode(
-            x="score:Q", y="criterion:N", color="strategy:N", row="strategy:N",
-        )
-        st.altair_chart(chart, use_container_width=True)
+    df = pd.DataFrame(rows)
+    chart = alt.Chart(df).mark_bar().encode(
+        x="score:Q", y="criterion:N", color="strategy:N", row="strategy:N",
+    )
+    st.altair_chart(chart, use_container_width=True)
 ```
 
 - card(yellow, 💡): Run This First
-  - Confirms your rubric, judge, and 3 strategies all work
+  - Confirms rubric + judge + 3 strategies all work
   - Building block for the iterative loops next
+  - Different model for **generation** (`model`) and **judging** (`judge`) — avoids self-bias
 
 =====
 
@@ -457,38 +493,38 @@ Rewrite the text to specifically improve these aspects. Keep what works."""
 
 ## Slide: Threshold Loop UI
 - type: practice
-- title: Step 5b — **UI: Threshold Loop** (independent button)
-- subtitle: Run this section by itself — separate from Step 4
+- title: Step 5b — **UI: Threshold Loop** (append to `app.py`)
+- subtitle: Run this section by itself — independent button
 
 ```python
-    # Append below the Compare-Strategies block
-    st.divider()
-    st.subheader("🎯 Threshold Loop")
+# Append below the Compare-Strategies block
+st.divider()
+st.subheader("🎯 Threshold Loop")
 
-    th_max_iters = st.slider("Max iterations", 1, 10, 4, key="th_iters")
-    th_threshold = st.slider("Threshold per criterion", 5, 10, 8, key="th_th")
+th_max_iters = st.slider("Max iterations", 1, 10, 4, key="th_iters")
+th_threshold = st.slider("Threshold per criterion", 5, 10, 8, key="th_th")
 
-    if st.button("🔁 Run Threshold Loop"):
-        with st.spinner("Iterating..."):
-            history = iterative_threshold(
-                client, model, judge, hometown,
-                max_iters=th_max_iters, threshold=th_threshold,
-            )
-
-        # Score trajectory per criterion
-        traj = pd.DataFrame([
-            {"iter": h["iter"], "criterion": k, "score": v}
-            for h in history for k, v in h["scores"].items()
-        ])
-        line = alt.Chart(traj).mark_line(point=True).encode(
-            x="iter:O", y="score:Q", color="criterion:N",
+if st.button("🔁 Run Threshold Loop"):
+    with st.spinner("Iterating..."):
+        history = iterative_threshold(
+            client, model, judge, hometown,
+            max_iters=th_max_iters, threshold=th_threshold,
         )
-        st.altair_chart(line, use_container_width=True)
 
-        final = history[-1]
-        st.subheader(f"Final — iter {final['iter']}, avg {final['avg']:.1f}")
-        st.write(final["text"])
-        st.json(final["scores"])
+    # Score trajectory per criterion
+    traj = pd.DataFrame([
+        {"iter": h["iter"], "criterion": k, "score": v}
+        for h in history for k, v in h["scores"].items()
+    ])
+    line = alt.Chart(traj).mark_line(point=True).encode(
+        x="iter:O", y="score:Q", color="criterion:N",
+    )
+    st.altair_chart(line, use_container_width=True)
+
+    final = history[-1]
+    st.subheader(f"Final — iter {final['iter']}, avg {final['avg']:.1f}")
+    st.write(final["text"])
+    st.json(final["scores"])
 ```
 
 - card(yellow, 💡): What to Observe
@@ -573,42 +609,48 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 
 ## Slide: Self-Evolving Loop UI
 - type: practice
-- title: Step 6b — **UI: Self-Evolving Loop** (independent button)
-- subtitle: Add below threshold loop — visualize avg vs running best
+- title: Step 6b — **UI: Self-Evolving Loop** (append to `app.py`)
+- subtitle: Add `iterative_self_evolving` to the import line first
 
 ```python
-    # Append below the Threshold Loop block
-    st.divider()
-    st.subheader("🚀 Self-Evolving Loop")
+# At the top of app.py, update the import:
+from evaluator import (
+    RUBRIC, generate_naive, generate_aware, generate_refine, evaluate,
+    iterative_threshold, iterative_self_evolving,
+)
 
-    se_max_iters = st.slider("Max iterations", 3, 20, 10, key="se_iters")
-    se_patience = st.slider("Patience (no-improve count)", 1, 5, 3, key="se_pat")
+# Append below the Threshold Loop block
+st.divider()
+st.subheader("🚀 Self-Evolving Loop")
 
-    if st.button("🔁 Run Self-Evolving Loop"):
-        with st.spinner("Iterating..."):
-            history, best = iterative_self_evolving(
-                client, model, judge, hometown,
-                max_iters=se_max_iters, patience=se_patience,
-            )
+se_max_iters = st.slider("Max iterations", 3, 20, 10, key="se_iters")
+se_patience = st.slider("Patience (no-improve count)", 1, 5, 3, key="se_pat")
 
-        # Plot avg per iteration AND running best (the ratchet)
-        avg_df = pd.DataFrame([
-            {"iter": h["iter"], "metric": "avg", "score": h["avg"]} for h in history
-        ])
-        running_best = []
-        bs = -1
-        for h in history:
-            bs = max(bs, h["avg"])
-            running_best.append({"iter": h["iter"], "metric": "best", "score": bs})
+if st.button("🔁 Run Self-Evolving Loop"):
+    with st.spinner("Iterating..."):
+        history, best = iterative_self_evolving(
+            client, model, judge, hometown,
+            max_iters=se_max_iters, patience=se_patience,
+        )
 
-        line = alt.Chart(pd.concat([avg_df, pd.DataFrame(running_best)])).mark_line(
-            point=True).encode(x="iter:O", y="score:Q", color="metric:N")
-        st.altair_chart(line, use_container_width=True)
+    # Plot avg per iteration AND running best (the ratchet)
+    avg_df = pd.DataFrame([
+        {"iter": h["iter"], "metric": "avg", "score": h["avg"]} for h in history
+    ])
+    running_best = []
+    bs = -1
+    for h in history:
+        bs = max(bs, h["avg"])
+        running_best.append({"iter": h["iter"], "metric": "best", "score": bs})
 
-        # Show the BEST output (not the latest)
-        st.subheader(f"Best — iter {best['iter']}, avg {best['avg']:.1f}")
-        st.write(best["text"])
-        st.json(best["scores"])
+    line = alt.Chart(pd.concat([avg_df, pd.DataFrame(running_best)])).mark_line(
+        point=True).encode(x="iter:O", y="score:Q", color="metric:N")
+    st.altair_chart(line, use_container_width=True)
+
+    # Show the BEST output (not the latest)
+    st.subheader(f"Best — iter {best['iter']}, avg {best['avg']:.1f}")
+    st.write(best["text"])
+    st.json(best["scores"])
 ```
 
 - card(yellow, 💡): Read the Chart
@@ -625,27 +667,29 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 - subtitle: Same task, same judge, different generators
 
 ```python
-    st.divider()
-    st.subheader("🔬 Multi-Model Comparison")
-    candidate_models = st.multiselect(
-        "Models to compare",
-        ["gpt-4o-mini", "gemini-2.0-flash", "claude-3-5-haiku"],
-        default=["gpt-4o-mini", "gemini-2.0-flash"]
-    )
-    if st.button("⚖️ Compare Models", disabled=not candidate_models):
-        rows = []
-        for m in candidate_models:
-            text = generate_aware(client, m, hometown)
-            scores = evaluate(client, judge, text)
-            for k, v in scores.items():
-                rows.append({"model": m, "criterion": k, "score": v})
+# Append below the Self-Evolving Loop block
+st.divider()
+st.subheader("🔬 Multi-Model Comparison")
 
-        df = pd.DataFrame(rows)
-        chart = alt.Chart(df).mark_bar().encode(
-            x="score:Q", y="criterion:N", color="model:N",
-            row="model:N",
-        )
-        st.altair_chart(chart, use_container_width=True)
+candidate_models = st.multiselect(
+    "Models to compare",
+    ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash", "gemini-3-flash-preview"],
+    default=["gemini-2.5-flash", "gemini-2.0-flash"],
+)
+
+if st.button("⚖️ Compare Models", disabled=not candidate_models):
+    rows = []
+    for m in candidate_models:
+        text = generate_aware(client, m, hometown)
+        scores = evaluate(client, judge, text)
+        for k, v in scores.items():
+            rows.append({"model": m, "criterion": k, "score": v})
+
+    df = pd.DataFrame(rows)
+    chart = alt.Chart(df).mark_bar().encode(
+        x="score:Q", y="criterion:N", color="model:N", row="model:N",
+    )
+    st.altair_chart(chart, use_container_width=True)
 ```
 
 - card(yellow, 💡): Pick the Right Model for the Right Task
@@ -662,25 +706,26 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 
 ### Stage 1 — Foundations
 1. - [ ] Define `RUBRIC` in `evaluator.py` with 5 criteria
-2. - [ ] Implement `generate_naive`, `generate_aware`, `generate_refine`
+2. - [ ] Implement `generate_naive`, `generate_aware`, `generate_refine` (using `llm_call` with `google-genai` SDK)
 3. - [ ] Implement `evaluate()` with robust JSON parsing
-4. - [ ] Build the **Compare 3 Strategies** UI — does **Aware** score higher than **Naive**?
+4. - [ ] Set up `app.py` — `.env` with `GOOGLE_API_KEY`, `genai.Client`, imports
+5. - [ ] Build the **Compare 3 Strategies** UI — does **Aware** score higher than **Naive**?
 
 ### Stage 2 — Threshold Loop (start here, finish before Stage 3)
-5. - [ ] Implement `iterative_threshold()` in `evaluator.py`
-6. - [ ] Build the **Threshold Loop** UI section (independent button)
-7. - [ ] Run with threshold=8 — does it stop early or hit max?
-8. - [ ] Run with threshold=10 — does it now hit max iterations?
+6. - [ ] Implement `iterative_threshold()` in `evaluator.py`
+7. - [ ] Append the **Threshold Loop** UI section to `app.py` (independent button)
+8. - [ ] Run with threshold=8 — does it stop early or hit max?
+9. - [ ] Run with threshold=10 — does it now hit max iterations?
 
 ### Stage 3 — Self-Evolving Loop (only after Stage 2 works)
-9. - [ ] Implement `iterative_self_evolving()` in `evaluator.py`
-10. - [ ] Build the **Self-Evolving Loop** UI section (independent button)
-11. - [ ] Run with patience=3 — observe the `avg` vs `best` lines
-12. - [ ] Compare final avg score with Stage 2 — did self-evolving find a higher peak?
+10. - [ ] Implement `iterative_self_evolving()` in `evaluator.py`
+11. - [ ] Append the **Self-Evolving Loop** UI section to `app.py`
+12. - [ ] Run with patience=3 — observe the `avg` vs `best` lines
+13. - [ ] Compare final avg score with Stage 2 — did self-evolving find a higher peak?
 
 ### Stage 4 — Bonus
-13. - [ ] Multi-model comparison — which model wins per criterion?
-14. - [ ] Edit one criterion's definition to be vague — see scores become unstable
+14. - [ ] Multi-model comparison — which model wins per criterion?
+15. - [ ] Edit one criterion's definition to be vague — see scores become unstable
 
 =====
 

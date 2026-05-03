@@ -768,12 +768,15 @@ RUBRIC = {
 <section class="slide practice-slide" id="slide-15">
 <div class="slide-content">
 <h2 class="slide-title">Step 2 — <strong>Three Generation Strategies</strong></h2>
-<pre class="code-block"><code class="language-python">def llm_call(client, model, prompt):
-    resp = client.chat.completions.create(
+<p class="slide-subtitle">One small <code class="inline-code">llm_call</code> helper, three different prompts</p>
+<pre class="code-block"><code class="language-python"># evaluator.py — using google-genai SDK
+def llm_call(client, model, prompt):
+    """Single-turn call to a Gemini model."""
+    resp = client.models.generate_content(
         model=model,
-        messages=[{"role": "user", "content": prompt}],
+        contents=prompt,
     )
-    return resp.choices[0].message.content
+    return resp.text
 
 
 def generate_naive(client, model, hometown):
@@ -803,6 +806,12 @@ def generate_refine(client, model, hometown):
 Rewrite this to score better on these criteria:
 {rubric_text}"""
     return llm_call(client, model, prompt)</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> SDK Note</div>
+<div class="card-body"><ul><li>Uses <code class="inline-code">google-genai</code> (native Gemini SDK), not OpenAI-compatible</li><li><code class="inline-code">client.models.generate_content(model=..., contents=...)</code> — single string in, <code class="inline-code">.text</code> out</li><li>All later functions reuse this single <code class="inline-code">llm_call</code> helper</li></ul></div>
+</div>
+</div>
 </div>
 </section>
 <section class="slide practice-slide" id="slide-16">
@@ -844,49 +853,73 @@ Return ONLY a JSON object like:
 </section>
 <section class="slide practice-slide" id="slide-17">
 <div class="slide-content">
-<h2 class="slide-title">Step 4 — <strong>UI: Compare 3 Strategies</strong> (<code class="inline-code">app.py</code> Tab 8)</h2>
-<p class="slide-subtitle">Same task, three rubric placements, side-by-side scores</p>
-<pre class="code-block"><code class="language-python"># app.py — Tab 8 (Evaluation Lab)
+<h2 class="slide-title">Step 4a — <strong>App Setup</strong> (<code class="inline-code">app.py</code> — top of file)</h2>
+<p class="slide-subtitle">Standalone Streamlit app — client, model, imports</p>
+<pre class="code-block"><code class="language-python"># app.py
+import os
+from dotenv import load_dotenv
+from google import genai
+
+load_dotenv()
+
+client = genai.Client(api_key=os.environ.get("GOOGLE_API_KEY"))
+model = os.environ.get("LLM_MODEL", "gemini-2.5-flash")
+
+import streamlit as st
 import pandas as pd, altair as alt
 from evaluator import (
     RUBRIC, generate_naive, generate_aware, generate_refine, evaluate,
-)
-
-with tab8:
-    st.header("📊 Evaluation Lab — Hometown Introductions")
-    hometown = st.text_input("Your hometown", "Daejeon, South Korea")
-    judge = st.selectbox("Judge model", ["gpt-4o-mini", "gemini-2.0-flash"])
-
-    if st.button("🚀 Run All 3 Strategies", disabled=not hometown):
-        rows = []
-        for name, fn in [
-            ("Naive", generate_naive),
-            ("Refine", generate_refine),
-            ("Aware", generate_aware),
-        ]:
-            with st.spinner(f"{name}..."):
-                text = fn(client, model, hometown)
-                scores = evaluate(client, judge, text)
-            st.subheader(f"{name} Strategy")
-            st.write(text)
-            st.json(scores)
-            for k, v in scores.items():
-                rows.append({"strategy": name, "criterion": k, "score": v})
-
-        df = pd.DataFrame(rows)
-        chart = alt.Chart(df).mark_bar().encode(
-            x="score:Q", y="criterion:N", color="strategy:N", row="strategy:N",
-        )
-        st.altair_chart(chart, use_container_width=True)</code></pre>
+    iterative_threshold, iterative_self_evolving
+)</code></pre>
 <div class="cards-grid">
 <div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Run This First</div>
-<div class="card-body"><ul><li>Confirms your rubric, judge, and 3 strategies all work</li><li>Building block for the iterative loops next</li></ul></div>
+<div class="card-header"><span class="icon">💡</span> Why a Standalone App?</div>
+<div class="card-body"><ul><li>This week's evaluator is independent of Weeks 5-7 (no shared tabs)</li><li>Run with <code class="inline-code">streamlit run app.py</code> — fresh single-page UI</li><li><code class="inline-code">LLM_MODEL</code> env var lets you swap the generator without editing code</li></ul></div>
 </div>
 </div>
 </div>
 </section>
 <section class="slide practice-slide" id="slide-18">
+<div class="slide-content">
+<h2 class="slide-title">Step 4b — <strong>UI: Compare 3 Strategies</strong></h2>
+<p class="slide-subtitle">Header, hometown input, judge selector, then run all three</p>
+<pre class="code-block"><code class="language-python">st.header("📊 Evaluation Lab — Hometown Introductions")
+hometown = st.text_input("Your hometown", "Daejeon, South Korea")
+judge = st.selectbox(
+    "Judge model",
+    ["gemini-3-flash-preview", "gemini-2.0-flash"],
+)
+
+if st.button("🚀 Run All 3 Strategies", disabled=not hometown):
+    rows = []
+    for name, fn in [
+        ("Naive", generate_naive),
+        ("Refine", generate_refine),
+        ("Aware", generate_aware),
+    ]:
+        with st.spinner(f"{name}..."):
+            text = fn(client, model, hometown)
+            scores = evaluate(client, judge, text)
+        st.subheader(f"{name} Strategy")
+        st.write(text)
+        st.json(scores)
+        for k, v in scores.items():
+            rows.append({"strategy": name, "criterion": k, "score": v})
+
+    df = pd.DataFrame(rows)
+    chart = alt.Chart(df).mark_bar().encode(
+        x="score:Q", y="criterion:N", color="strategy:N", row="strategy:N",
+    )
+    st.altair_chart(chart, use_container_width=True)</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Run This First</div>
+<div class="card-body"><ul><li>Confirms rubric + judge + 3 strategies all work</li><li>Building block for the iterative loops next</li><li>Different model for <strong>generation</strong> (<code class="inline-code">model</code>) and <strong>judging</strong> (<code class="inline-code">judge</code>) — avoids self-bias</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-19">
 <div class="slide-content">
 <h2 class="slide-title">Step 5a — <strong>Threshold Loop</strong> (function in <code class="inline-code">evaluator.py</code>)</h2>
 <p class="slide-subtitle">The simplest improvement loop — stop when good enough</p>
@@ -924,38 +957,38 @@ Rewrite the text to specifically improve these aspects. Keep what works."""
 </div>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-19">
+<section class="slide practice-slide" id="slide-20">
 <div class="slide-content">
-<h2 class="slide-title">Step 5b — <strong>UI: Threshold Loop</strong> (independent button)</h2>
-<p class="slide-subtitle">Run this section by itself — separate from Step 4</p>
-<pre class="code-block"><code class="language-python">    # Append below the Compare-Strategies block
-    st.divider()
-    st.subheader("🎯 Threshold Loop")
+<h2 class="slide-title">Step 5b — <strong>UI: Threshold Loop</strong> (append to <code class="inline-code">app.py</code>)</h2>
+<p class="slide-subtitle">Run this section by itself — independent button</p>
+<pre class="code-block"><code class="language-python"># Append below the Compare-Strategies block
+st.divider()
+st.subheader("🎯 Threshold Loop")
 
-    th_max_iters = st.slider("Max iterations", 1, 10, 4, key="th_iters")
-    th_threshold = st.slider("Threshold per criterion", 5, 10, 8, key="th_th")
+th_max_iters = st.slider("Max iterations", 1, 10, 4, key="th_iters")
+th_threshold = st.slider("Threshold per criterion", 5, 10, 8, key="th_th")
 
-    if st.button("🔁 Run Threshold Loop"):
-        with st.spinner("Iterating..."):
-            history = iterative_threshold(
-                client, model, judge, hometown,
-                max_iters=th_max_iters, threshold=th_threshold,
-            )
-
-        # Score trajectory per criterion
-        traj = pd.DataFrame([
-            {"iter": h["iter"], "criterion": k, "score": v}
-            for h in history for k, v in h["scores"].items()
-        ])
-        line = alt.Chart(traj).mark_line(point=True).encode(
-            x="iter:O", y="score:Q", color="criterion:N",
+if st.button("🔁 Run Threshold Loop"):
+    with st.spinner("Iterating..."):
+        history = iterative_threshold(
+            client, model, judge, hometown,
+            max_iters=th_max_iters, threshold=th_threshold,
         )
-        st.altair_chart(line, use_container_width=True)
 
-        final = history[-1]
-        st.subheader(f"Final — iter {final['iter']}, avg {final['avg']:.1f}")
-        st.write(final["text"])
-        st.json(final["scores"])</code></pre>
+    # Score trajectory per criterion
+    traj = pd.DataFrame([
+        {"iter": h["iter"], "criterion": k, "score": v}
+        for h in history for k, v in h["scores"].items()
+    ])
+    line = alt.Chart(traj).mark_line(point=True).encode(
+        x="iter:O", y="score:Q", color="criterion:N",
+    )
+    st.altair_chart(line, use_container_width=True)
+
+    final = history[-1]
+    st.subheader(f"Final — iter {final['iter']}, avg {final['avg']:.1f}")
+    st.write(final["text"])
+    st.json(final["scores"])</code></pre>
 <div class="cards-grid">
 <div class="card card-yellow">
 <div class="card-header"><span class="icon">💡</span> What to Observe</div>
@@ -964,7 +997,7 @@ Rewrite the text to specifically improve these aspects. Keep what works."""
 </div>
 </div>
 </section>
-<section class="slide" id="slide-20">
+<section class="slide" id="slide-21">
 <div class="slide-content">
 <h2 class="slide-title">One Step Further — <strong>Why Threshold Isn't Always Enough</strong></h2>
 <p class="slide-subtitle">From "good enough" to "best possible"</p>
@@ -984,7 +1017,7 @@ Rewrite the text to specifically improve these aspects. Keep what works."""
 </div>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-21">
+<section class="slide practice-slide" id="slide-22">
 <div class="slide-content">
 <h2 class="slide-title">Step 6a — <strong>Self-Evolving Loop</strong> (function in <code class="inline-code">evaluator.py</code>)</h2>
 <p class="slide-subtitle">Track best, refine from best, patience-based stopping</p>
@@ -1032,42 +1065,48 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 </div>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-22">
+<section class="slide practice-slide" id="slide-23">
 <div class="slide-content">
-<h2 class="slide-title">Step 6b — <strong>UI: Self-Evolving Loop</strong> (independent button)</h2>
-<p class="slide-subtitle">Add below threshold loop — visualize avg vs running best</p>
-<pre class="code-block"><code class="language-python">    # Append below the Threshold Loop block
-    st.divider()
-    st.subheader("🚀 Self-Evolving Loop")
+<h2 class="slide-title">Step 6b — <strong>UI: Self-Evolving Loop</strong> (append to <code class="inline-code">app.py</code>)</h2>
+<p class="slide-subtitle">Add <code class="inline-code">iterative_self_evolving</code> to the import line first</p>
+<pre class="code-block"><code class="language-python"># At the top of app.py, update the import:
+from evaluator import (
+    RUBRIC, generate_naive, generate_aware, generate_refine, evaluate,
+    iterative_threshold, iterative_self_evolving,
+)
 
-    se_max_iters = st.slider("Max iterations", 3, 20, 10, key="se_iters")
-    se_patience = st.slider("Patience (no-improve count)", 1, 5, 3, key="se_pat")
+# Append below the Threshold Loop block
+st.divider()
+st.subheader("🚀 Self-Evolving Loop")
 
-    if st.button("🔁 Run Self-Evolving Loop"):
-        with st.spinner("Iterating..."):
-            history, best = iterative_self_evolving(
-                client, model, judge, hometown,
-                max_iters=se_max_iters, patience=se_patience,
-            )
+se_max_iters = st.slider("Max iterations", 3, 20, 10, key="se_iters")
+se_patience = st.slider("Patience (no-improve count)", 1, 5, 3, key="se_pat")
 
-        # Plot avg per iteration AND running best (the ratchet)
-        avg_df = pd.DataFrame([
-            {"iter": h["iter"], "metric": "avg", "score": h["avg"]} for h in history
-        ])
-        running_best = []
-        bs = -1
-        for h in history:
-            bs = max(bs, h["avg"])
-            running_best.append({"iter": h["iter"], "metric": "best", "score": bs})
+if st.button("🔁 Run Self-Evolving Loop"):
+    with st.spinner("Iterating..."):
+        history, best = iterative_self_evolving(
+            client, model, judge, hometown,
+            max_iters=se_max_iters, patience=se_patience,
+        )
 
-        line = alt.Chart(pd.concat([avg_df, pd.DataFrame(running_best)])).mark_line(
-            point=True).encode(x="iter:O", y="score:Q", color="metric:N")
-        st.altair_chart(line, use_container_width=True)
+    # Plot avg per iteration AND running best (the ratchet)
+    avg_df = pd.DataFrame([
+        {"iter": h["iter"], "metric": "avg", "score": h["avg"]} for h in history
+    ])
+    running_best = []
+    bs = -1
+    for h in history:
+        bs = max(bs, h["avg"])
+        running_best.append({"iter": h["iter"], "metric": "best", "score": bs})
 
-        # Show the BEST output (not the latest)
-        st.subheader(f"Best — iter {best['iter']}, avg {best['avg']:.1f}")
-        st.write(best["text"])
-        st.json(best["scores"])</code></pre>
+    line = alt.Chart(pd.concat([avg_df, pd.DataFrame(running_best)])).mark_line(
+        point=True).encode(x="iter:O", y="score:Q", color="metric:N")
+    st.altair_chart(line, use_container_width=True)
+
+    # Show the BEST output (not the latest)
+    st.subheader(f"Best — iter {best['iter']}, avg {best['avg']:.1f}")
+    st.write(best["text"])
+    st.json(best["scores"])</code></pre>
 <div class="cards-grid">
 <div class="card card-yellow">
 <div class="card-header"><span class="icon">💡</span> Read the Chart</div>
@@ -1076,31 +1115,33 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 </div>
 </div>
 </section>
-<section class="slide practice-slide" id="slide-23">
+<section class="slide practice-slide" id="slide-24">
 <div class="slide-content">
 <h2 class="slide-title">Step 7 — <strong>Multi-Model Comparison</strong></h2>
 <p class="slide-subtitle">Same task, same judge, different generators</p>
-<pre class="code-block"><code class="language-python">    st.divider()
-    st.subheader("🔬 Multi-Model Comparison")
-    candidate_models = st.multiselect(
-        "Models to compare",
-        ["gpt-4o-mini", "gemini-2.0-flash", "claude-3-5-haiku"],
-        default=["gpt-4o-mini", "gemini-2.0-flash"]
-    )
-    if st.button("⚖️ Compare Models", disabled=not candidate_models):
-        rows = []
-        for m in candidate_models:
-            text = generate_aware(client, m, hometown)
-            scores = evaluate(client, judge, text)
-            for k, v in scores.items():
-                rows.append({"model": m, "criterion": k, "score": v})
+<pre class="code-block"><code class="language-python"># Append below the Self-Evolving Loop block
+st.divider()
+st.subheader("🔬 Multi-Model Comparison")
 
-        df = pd.DataFrame(rows)
-        chart = alt.Chart(df).mark_bar().encode(
-            x="score:Q", y="criterion:N", color="model:N",
-            row="model:N",
-        )
-        st.altair_chart(chart, use_container_width=True)</code></pre>
+candidate_models = st.multiselect(
+    "Models to compare",
+    ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash", "gemini-3-flash-preview"],
+    default=["gemini-2.5-flash", "gemini-2.0-flash"],
+)
+
+if st.button("⚖️ Compare Models", disabled=not candidate_models):
+    rows = []
+    for m in candidate_models:
+        text = generate_aware(client, m, hometown)
+        scores = evaluate(client, judge, text)
+        for k, v in scores.items():
+            rows.append({"model": m, "criterion": k, "score": v})
+
+    df = pd.DataFrame(rows)
+    chart = alt.Chart(df).mark_bar().encode(
+        x="score:Q", y="criterion:N", color="model:N", row="model:N",
+    )
+    st.altair_chart(chart, use_container_width=True)</code></pre>
 <div class="cards-grid">
 <div class="card card-yellow">
 <div class="card-header"><span class="icon">💡</span> Pick the Right Model for the Right Task</div>
@@ -1109,33 +1150,34 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 </div>
 </div>
 </section>
-<section class="slide" id="slide-24">
+<section class="slide" id="slide-25">
 <div class="slide-content">
 <h2 class="slide-title">✅ <strong>Week 10 Practice Checklist</strong></h2>
 <div class="highlight-quote">Complete these steps during the practice session:</div>
 <p class="slide-text">1. - [ ] Define <code class="inline-code">RUBRIC</code> in <code class="inline-code">evaluator.py</code> with 5 criteria</p>
-<p class="slide-text">2. - [ ] Implement <code class="inline-code">generate_naive</code>, <code class="inline-code">generate_aware</code>, <code class="inline-code">generate_refine</code></p>
+<p class="slide-text">2. - [ ] Implement <code class="inline-code">generate_naive</code>, <code class="inline-code">generate_aware</code>, <code class="inline-code">generate_refine</code> (using <code class="inline-code">llm_call</code> with <code class="inline-code">google-genai</code> SDK)</p>
 <p class="slide-text">3. - [ ] Implement <code class="inline-code">evaluate()</code> with robust JSON parsing</p>
-<p class="slide-text">4. - [ ] Build the <strong>Compare 3 Strategies</strong> UI — does <strong>Aware</strong> score higher than <strong>Naive</strong>?</p>
-<p class="slide-text">5. - [ ] Implement <code class="inline-code">iterative_threshold()</code> in <code class="inline-code">evaluator.py</code></p>
-<p class="slide-text">6. - [ ] Build the <strong>Threshold Loop</strong> UI section (independent button)</p>
-<p class="slide-text">7. - [ ] Run with threshold=8 — does it stop early or hit max?</p>
-<p class="slide-text">8. - [ ] Run with threshold=10 — does it now hit max iterations?</p>
-<p class="slide-text">9. - [ ] Implement <code class="inline-code">iterative_self_evolving()</code> in <code class="inline-code">evaluator.py</code></p>
-<p class="slide-text">10. - [ ] Build the <strong>Self-Evolving Loop</strong> UI section (independent button)</p>
-<p class="slide-text">11. - [ ] Run with patience=3 — observe the <code class="inline-code">avg</code> vs <code class="inline-code">best</code> lines</p>
-<p class="slide-text">12. - [ ] Compare final avg score with Stage 2 — did self-evolving find a higher peak?</p>
-<p class="slide-text">13. - [ ] Multi-model comparison — which model wins per criterion?</p>
-<p class="slide-text">14. - [ ] Edit one criterion's definition to be vague — see scores become unstable</p>
+<p class="slide-text">4. - [ ] Set up <code class="inline-code">app.py</code> — <code class="inline-code">.env</code> with <code class="inline-code">GOOGLE_API_KEY</code>, <code class="inline-code">genai.Client</code>, imports</p>
+<p class="slide-text">5. - [ ] Build the <strong>Compare 3 Strategies</strong> UI — does <strong>Aware</strong> score higher than <strong>Naive</strong>?</p>
+<p class="slide-text">6. - [ ] Implement <code class="inline-code">iterative_threshold()</code> in <code class="inline-code">evaluator.py</code></p>
+<p class="slide-text">7. - [ ] Append the <strong>Threshold Loop</strong> UI section to <code class="inline-code">app.py</code> (independent button)</p>
+<p class="slide-text">8. - [ ] Run with threshold=8 — does it stop early or hit max?</p>
+<p class="slide-text">9. - [ ] Run with threshold=10 — does it now hit max iterations?</p>
+<p class="slide-text">10. - [ ] Implement <code class="inline-code">iterative_self_evolving()</code> in <code class="inline-code">evaluator.py</code></p>
+<p class="slide-text">11. - [ ] Append the <strong>Self-Evolving Loop</strong> UI section to <code class="inline-code">app.py</code></p>
+<p class="slide-text">12. - [ ] Run with patience=3 — observe the <code class="inline-code">avg</code> vs <code class="inline-code">best</code> lines</p>
+<p class="slide-text">13. - [ ] Compare final avg score with Stage 2 — did self-evolving find a higher peak?</p>
+<p class="slide-text">14. - [ ] Multi-model comparison — which model wins per criterion?</p>
+<p class="slide-text">15. - [ ] Edit one criterion's definition to be vague — see scores become unstable</p>
 </div>
 </section>
-<section class="slide title-slide" id="slide-25">
+<section class="slide title-slide" id="slide-26">
 <div class="slide-content">
 <h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
 <p class="slide-subtitle">Ambiguity vs Clarity — Why Vague Instructions Break Agents</p>
 </div>
 </section>
-<section class="slide" id="slide-26">
+<section class="slide" id="slide-27">
 <div class="slide-content">
 <h2 class="slide-title">Week 9 — <strong>Why Do Agents Fail at Vague Tasks?</strong></h2>
 <p class="slide-subtitle">12 responses analyzed — a Hulk-Captain America coalition emerges</p>
@@ -1155,7 +1197,7 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 </div>
 </div>
 </section>
-<section class="slide" id="slide-27">
+<section class="slide" id="slide-28">
 <div class="slide-content">
 <h2 class="slide-title">Theme 1 — <strong>The Flexibility-Uncertainty Tradeoff</strong></h2>
 <p class="slide-subtitle">Margareth's framing — and why "design vs demand" is incomplete</p>
@@ -1176,7 +1218,7 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 <div class="highlight-quote">"More clarity reduces the system to something closer to conventional programming." — Margareth</div>
 </div>
 </section>
-<section class="slide" id="slide-28">
+<section class="slide" id="slide-29">
 <div class="slide-content">
 <h2 class="slide-title">Theme 2 — <strong>Two Deepest Critiques: Huy & Minh</strong></h2>
 <p class="slide-subtitle">Beyond all three personas</p>
@@ -1197,7 +1239,7 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 <div class="highlight-quote">"An agent might achieve the right goal through the wrong logic, simply because we failed to define the boundaries of its autonomy." — Minh</div>
 </div>
 </section>
-<section class="slide" id="slide-29">
+<section class="slide" id="slide-30">
 <div class="slide-content">
 <h2 class="slide-title">Theme 3 — <strong>What Vague Prompts Actually Look Like</strong></h2>
 <p class="slide-subtitle">Yadanar's concrete examples make the abstract real</p>
@@ -1218,7 +1260,7 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 <div class="highlight-quote">"AI doesn't truly understand intent — it just fills gaps based on probability." — Yadanar</div>
 </div>
 </section>
-<section class="slide" id="slide-30">
+<section class="slide" id="slide-31">
 <div class="slide-content">
 <h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
 <p class="slide-subtitle">Jaewhoon's "feedback loop" hits the lecture's core idea</p>
@@ -1242,7 +1284,7 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 </div>
 </div>
 </section>
-<section class="slide" id="slide-31">
+<section class="slide" id="slide-32">
 <div class="slide-content">
 <h2 class="slide-title">Activity — <strong>Write a Rubric for Your Research</strong></h2>
 <p class="slide-subtitle">10 minutes in pairs</p>
@@ -1262,7 +1304,7 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 </div>
 </div>
 </section>
-<section class="slide" id="slide-32">
+<section class="slide" id="slide-33">
 <div class="slide-content">
 <h2 class="slide-title">🗣️ <strong>Week 10 Discussion Questions</strong> (UST LMS)</h2>
 <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
@@ -1270,7 +1312,7 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 <p class="slide-text">2. Margareth argued that more clarity reduces the system "to something closer to conventional programming." After writing a strict rubric today, <strong>did your final output feel more constrained — and was that good or bad?</strong> Where would you draw the line between flexibility and reliability for your own research?</p>
 </div>
 </section>
-<section class="slide" id="slide-33">
+<section class="slide" id="slide-34">
 <div class="slide-content">
 <h2 class="slide-title">Want to Learn More?</h2>
 <p class="slide-text">LLM Evaluation</p>
@@ -1288,7 +1330,7 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
 <div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
 </div>
 </section>
-<section class="slide" id="slide-34">
+<section class="slide" id="slide-35">
 <div class="slide-content">
 <h2 class="slide-title">Wrap-Up of <strong>Week 10</strong></h2>
 <div class="cards-grid">
@@ -1322,7 +1364,7 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
       <div class="nav-controls">
         <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
         <div class="page-input-wrapper">
-          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">34</span>
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">35</span>
         </div>
         <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
       </div>
@@ -1330,7 +1372,7 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
         <a class="nav-link" onclick="goToSlide(1)">Intro</a>
         <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
         <a class="nav-link" onclick="goToSlide(12)">Practice</a>
-        <a class="nav-link" onclick="goToSlide(25)">Discussion</a>
+        <a class="nav-link" onclick="goToSlide(26)">Discussion</a>
       </div>
     </div>
   </nav>
@@ -1338,7 +1380,7 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
   <script>
     const pres = document.getElementById('presentation');
     const pageInput = document.getElementById('pageInput');
-    const totalSlides = 34;
+    const totalSlides = 35;
     let currentSlide = 1;
 
     // Modal logic
