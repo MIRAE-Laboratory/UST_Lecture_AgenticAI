@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<!-- Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --text-main: #1e293b;
+    --accent: #0f4c81;
+    --card-blue: #eff6ff;
+    --border-blue: #bfdbfe;
+    --card-green: #f0fdf4;
+    --border-green: #bbf7d0;
+    --card-orange: #fff7ed;
+    --border-orange: #fed7aa;
+    --card-pink: #fdf2f8;
+    --border-pink: #fbcfe8;
+    --card-purple: #faf5ff;
+    --border-purple: #e9d5ff;
+    --card-yellow: #fefce8;
+    --border-yellow: #fef08a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    overflow: hidden; /* Hide scrollbars, use custom navigation */
+    font-size: 1.8rem;
+  }
+  .presentation {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    width: 100vw;
+  }
+  .presentation::-webkit-scrollbar { display: none; }
+  .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 60px 80px; /* Top/Bottom 60px, Left/Right 80px for margins */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-content {
+    background: var(--bg-main);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    font-size: 1rem; /* 1.5x of original */
+  }
+  .slide-title {
+    font-size: 2rem; /* 1.5x of original */
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    border-bottom: 5px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: 1rem; /* 1.5x of original */
+    color: #64748b;    
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  /* Title Slide Variations */
+  .title-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  }
+  .title-slide .slide-title { font-size: 2.5rem; border: none; margin-bottom: 1.5rem; color: var(--accent); }
+  .title-slide .slide-subtitle { font-size: 1.5rem; font-weight: 600; color: #334155; }
+  
+  /* Title Emphasis Variations */
+  .title-emphasis-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+  .title-emphasis-slide .slide-title {
+    font-size: 3rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-emphasis-slide .slide-subtitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+  
+  /* Layouts */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased min-width to prevent 4 columns on wide screens */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+  .card-header { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.4rem; }
+  .card-header .icon { font-size: 1.3rem; margin-right: 0.5rem; }
+  .card-body ul { list-style-type: none; padding-left: 0; }
+  .card-body li { margin-bottom: 0.5rem; position: relative; padding-left: 1.2rem; line-height: 1.4; font-size: 0.95rem; }
+  .card-body li::before { content: "•"; color: #94a3b8; font-weight: bold; position: absolute; left: 0; top: 0; }
+  .plain-bullets li { position: relative; padding-left: 1.2rem; list-style-type: none; }
+  .plain-bullets li::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: 0; top: 0; }
+  
+  .slide-text {
+    font-size: 1.6rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  .card-blue { background: var(--card-blue); border-color: var(--border-blue); color: #1e3a8a; }
+  .card-green { background: var(--card-green); border-color: var(--border-green); color: #14532d; }
+  .card-orange { background: var(--card-orange); border-color: var(--border-orange); color: #7c2d12; }
+  .card-pink { background: var(--card-pink); border-color: var(--border-pink); color: #831843; }
+  .card-purple { background: var(--card-purple); border-color: var(--border-purple); color: #4c1d95; }
+  .card-yellow { background: var(--card-yellow); border-color: var(--border-yellow); color: #713f12; }
+  
+  .highlight-quote {
+    background: #f8fafc;
+    border-left: 5px solid var(--accent);
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .image-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    margin: 0.5rem 0;
+  }
+  .img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .image-container {
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .slide-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .slide-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Modal Overlay */
+  .image-modal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .image-modal.active {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 9999;
+  }
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .image-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: #94a3b8;
+  }
+  .img-caption {
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .mermaid-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+  }
+  .mermaid-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .mermaid-group .mermaid-container {
+    margin: 0;
+    flex: 1;
+    min-height: auto;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Consolas', monospace;
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  .mermaid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .reference-link {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .inline-code {
+    background: #e2e8f0;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .styled-table th { background: #334155; color: white; text-align: left; padding: 1rem; }
+  .styled-table td { padding: 1rem; background: white; border-bottom: 1px solid #f1f5f9; }
+  .styled-table tr:hover td { background: #f8fafc; }
+  
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .flow-step {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #cbd5e1;
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin: 0 1rem;
+  }
+  
+  .slide-number {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .plain-bullets {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+  .plain-bullets li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Fixed Layout Elements */
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: #0f172a;
+    color: #94a3b8;
+    z-index: 2000;
+    border-bottom: 1px solid #1e293b;
+  }
+  .header-logo { color: white; margin-right: 1.5rem; letter-spacing: -0.5px; font-size: 0.75rem; }
+  .header-sep { color: #334155; margin: 0 1rem; }
+  .header-subtitle { font-size: 0.75rem; }
+
+  .side-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* 2/3 of 50px approx */
+    height: 70px; /* 2/3 of 100px approx */
+    background: rgba(30, 41, 59, 0.4);
+    border: none;
+    color: white;
+    font-size: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: background 0.2s, width 0.2s;
+    border-radius: 6px;
+  }
+  .side-nav-btn:hover { background: rgba(37, 99, 235, 0.8); width: 45px; }
+  .prev-side { left: 10px; }
+  .next-side { right: 10px; }
+
+  /* Navigation Bar (Fixed Bottom) */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    height: 50px;
+    z-index: 2000;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .nav-main-btn {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 20px;
+  }
+  .btn-nav {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover {
+    background: #1e293b;
+    color: white;
+  }
+  .page-input-wrapper {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin: 0 8px;
+    font-family: monospace;
+  }
+  .page-input {
+    background: transparent;
+    border: 1px solid #334155;
+    color: white;
+    width: 32px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    padding: 1px;
+    margin-right: 4px;
+  }
+  .section-links {
+    display: flex;
+    gap: 16px;
+    border-left: 1px solid #1e293b;
+    padding-left: 20px;
+  }
+  .nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <header class="global-header">
+    <span class="header-logo">Evaluation of LLM Outputs</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">Rubrics, LLM-as-Judge, and Iterative Improvement Loops</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+<div class="slide-content">
+<h1 class="slide-title">Evaluation of LLM Outputs</h1>
+<p class="slide-subtitle">Rubrics, LLM-as-Judge, and Iterative Improvement Loops</p>
+<div class="highlight-quote">Week 10 of Phase 3: Advanced Patterns (Weeks 9-12)</div>
+</div>
+</section>
+<section class="slide" id="slide-2">
+<div class="slide-content">
+<h2 class="slide-title">Contents</h2>
+<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 10</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+<div class="card-body"><ul><li>The evaluation gap — we build, but how do we measure quality?</li><li>LLM-as-a-Judge — using LLMs to score LLM outputs</li><li>Three strategies: naive, refine, aware; then iterate</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+<div class="card-body"><ul><li>Build a <strong>Hometown Introduction Generator</strong></li><li>Compare 3 generation strategies + multi-model evaluation + iterative loop</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+<div class="card-body"><ul><li>Week 9 — Ambiguity vs Clarity: why agents fail at vague tasks</li><li>Connection: rubrics as disambiguation mechanism</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-3">
+<div class="slide-content">
+<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+<p class="slide-subtitle">How to Measure Whether an LLM Output is Good</p>
+</div>
+</section>
+<section class="slide" id="slide-4">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Evaluation Gap</strong> — Where We Are</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📄</span> What We've Built So Far</div>
+<div class="card-body"><ul><li>Week 5-7: chat, metadata, debate</li><li>Week 9: agents that call tools</li><li>All produce outputs — but how good are they?</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">❓</span> The Uncomfortable Question</div>
+<div class="card-body"><ul><li>"Looks good to me" — but is that enough?</li><li>Different LLMs give different answers — which is best?</li><li>You changed the prompt — did it actually improve?</li><li>Without measurement, you're flying blind</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> Today's Goal</div>
+<div class="card-body"><ul><li>Turn "good" from a feeling into a <strong>score</strong></li><li>Build a system that <strong>measures itself</strong>, then <strong>improves itself</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-5">
+<div class="slide-content">
+<h2 class="slide-title">Why Evaluating LLMs is <strong>Hard</strong></h2>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">🤔</span> "Good" is Subjective</div>
+<div class="card-body"><ul><li>"Write me a report on Seoul" → infinite valid answers</li><li>No single ground truth like math problems</li><li>Reasonable people disagree on what's "best"</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">💡</span> The Trick — Operationalize "Good"</div>
+<div class="card-body"><ul><li>Don't try to define "good" in one word</li><li>Break it into <strong>measurable criteria</strong>: completeness, accuracy, structure, engagement</li><li>Each criterion gets a score → total = quality estimate</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📋</span> This is a Rubric</div>
+<div class="card-body"><ul><li>Same idea as a grading rubric in school</li><li>Subjective overall, but each criterion is concrete enough to score</li><li>Once you have a rubric, you can measure ANYTHING</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-6">
+<div class="slide-content">
+<h2 class="slide-title"><strong>LLM-as-a-Judge</strong> — The Core Idea</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🧑‍⚖️</span> The Setup</div>
+<div class="card-body"><ul><li>You have an output from LLM A</li><li>You ask LLM B (the judge): "Score this on these criteria"</li><li>LLM B returns numerical scores per criterion</li><li>Average = quality estimate</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> Why It Works</div>
+<div class="card-body"><ul><li>LLMs are good at applying explicit criteria to text</li><li>Cheap and fast (vs hiring human raters)</li><li>Reproducible (same input → similar score)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚠️</span> Limits to Know</div>
+<div class="card-body"><ul><li>Same model judging itself = biased (likes its own style)</li><li>Use a <strong>different model</strong> as judge when possible</li><li>Judge can be wrong — sanity check on a few examples</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-7">
+<div class="slide-content">
+<h2 class="slide-title">Three Strategies — <strong>Where Does the Rubric Go?</strong></h2>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">1️⃣</span> Naive — Just Ask</div>
+<div class="card-body"><ul><li>"Write an introduction to my hometown"</li><li>No criteria mentioned, LLM guesses what's wanted</li><li>Baseline — simplest possible approach</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">2️⃣</span> Refine — Ask Then Improve</div>
+<div class="card-body"><ul><li>Step 1: get a draft (naive)</li><li>Step 2: "Here's a draft, here's the rubric — rewrite to score better"</li><li>Two LLM calls, but the rubric is applied AFTER</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">3️⃣</span> Aware — Include Rubric Upfront</div>
+<div class="card-body"><ul><li>"Write an introduction. It will be scored on these criteria: [rubric]"</li><li>Single LLM call, rubric embedded in the request</li><li>The model knows the test before it writes</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Same task, three ways to use the rubric. Which gives the highest score?"</div>
+</div>
+</section>
+<section class="slide" id="slide-8">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Iterative Loop</strong> — Generate, Score, Improve</h2>
+<div class="mermaid-container"><div class="mermaid">graph LR
+    A[Initial Output] --> B[LLM Judge Scores]
+    B --> C{Stopping<br/>Condition?}
+    C -->|No| D[Find Weak Criteria]
+    D --> E[Targeted Refinement]
+    E --> B
+    C -->|Yes| F[✅ Final Output]
+
+    style A fill:#fff3cd
+    style B fill:#cce5ff
+    style D fill:#ffe5cc
+    style E fill:#ffe5cc
+    style F fill:#d4edda</div></div>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Two Stopping Strategies</div>
+<div class="card-body"><ul><li><strong>Threshold mode</strong> — stop when all criteria ≥ target (e.g., all ≥ 8)</li><li><strong>Self-evolving mode</strong> — keep going until best score hasn't improved in N iterations (patience)</li><li>Threshold = "good enough"; Self-evolving = "push to the ceiling"</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-9">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Self-Evolving Mode</strong> — Push Beyond "Good Enough"</h2>
+<p class="slide-subtitle">Track the best, refine from the best, stop on no improvement</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📈</span> Track the Best</div>
+<div class="card-body"><ul><li>Don't just look at the <strong>latest</strong> iteration</li><li>Keep a record of the <strong>highest-scoring output so far</strong></li><li>The latest iteration may have <strong>regressed</strong> — that's OK, we keep the best</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔄</span> Refine FROM the Best, Not the Latest</div>
+<div class="card-body"><ul><li>At each iteration, refine starting from the <strong>best text</strong>, not the last one</li><li>This prevents the loop from drifting downward after a bad refinement</li><li>Conceptually: hill-climbing with memory</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">⏱️</span> Patience-Based Stopping</div>
+<div class="card-body"><ul><li>Set <code class="inline-code">patience = 3</code> — wait 3 iterations for a new best</li><li>If 3 consecutive iterations don't beat the best → stop</li><li>You've likely hit the model's ceiling for this task</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Threshold says 'I'm done when it's good enough.' Self-evolving says 'I'm done when I can't make it any better.'"</div>
+</div>
+</section>
+<section class="slide" id="slide-10">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Multi-Model Comparison</strong> — Same Task, Different Models</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔬</span> Why Compare Models?</div>
+<div class="card-body"><ul><li>GPT-4, Claude, Gemini, Llama — all give different answers</li><li>Some are better at facts, others at structure, others at style</li><li>Without measurement, you'd just pick one and hope</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📊</span> The Setup</div>
+<div class="card-body"><ul><li>Run the same prompt on N models</li><li>Score each output with the <strong>same rubric</strong> (using the same judge)</li><li>Plot: model on x-axis, score per criterion on y-axis</li><li>Now you can pick the right model for the right task</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">⚠️</span> Important — Use One Judge</div>
+<div class="card-body"><ul><li>Different judges give different absolute scores</li><li>For comparison, judge MUST be consistent across all candidates</li><li>Best: use a strong model as judge that didn't generate any candidate</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-11">
+<div class="slide-content">
+<h2 class="slide-title">Lecture Summary — <strong>Evaluation</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📋</span> Rubrics</div>
+<div class="card-body"><ul><li>Operationalize "good" into measurable criteria</li><li>Same idea as grading rubrics, applied to AI outputs</li><li>This is the bridge from subjective to scorable</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🧑‍⚖️</span> LLM-as-a-Judge</div>
+<div class="card-body"><ul><li>Use one LLM to score another's output</li><li>Use a different model as judge to avoid self-bias</li><li>Cheap, fast, reproducible — but verify on samples</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔁</span> Three Strategies + Two Loop Modes</div>
+<div class="card-body"><ul><li>Naive / Refine / Aware — three ways to use a rubric</li><li><strong>Threshold mode</strong>: stop when good enough; <strong>Self-evolving mode</strong>: refine FROM best, stop on patience</li><li>Multi-model comparison picks the right tool for the job</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-12">
+<div class="slide-content">
+<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+<p class="slide-subtitle">Hometown Introduction — Generate, Score, Improve</p>
+</div>
+</section>
+<section class="slide" id="slide-13">
+<div class="slide-content">
+<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Task</div>
+<div class="card-body"><ul><li>Generate an <strong>introduction to your hometown</strong> (1 paragraph)</li><li>Score it with a 5-criterion rubric</li><li>Compare 3 strategies + multiple models + iterative loop</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📁</span> New File</div>
+<div class="card-body"><ul><li><code class="inline-code">evaluator.py</code> — rubric, generation strategies, judge, loop</li><li><code class="inline-code">app.py</code> — add Tab 8: Evaluation Lab</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚡</span> Why Hometown?</div>
+<div class="card-body"><ul><li>Concrete (you know the ground truth — your own town)</li><li>Quality is genuinely subjective (good for rubric practice)</li><li>Different aspects (history / food / geography) → multi-criterion natural</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-14">
+<div class="slide-content">
+<h2 class="slide-title">Step 1 — <strong>Define the Rubric</strong> (<code class="inline-code">evaluator.py</code>)</h2>
+<p class="slide-subtitle">Five criteria, each with an explicit definition</p>
+<pre class="code-block"><code class="language-python"># evaluator.py
+RUBRIC = {
+    "completeness": (
+        "Covers multiple aspects: history, culture, food, geography, and people. "
+        "Score 0 if only one aspect; 10 if all five are present."
+    ),
+    "specificity": (
+        "Uses concrete details (place names, dishes, festivals) rather than generic claims. "
+        "Score 0 for vague platitudes; 10 for vivid specifics."
+    ),
+    "structure": (
+        "Has logical flow with a clear opening, body, and closing. "
+        "Score 0 for disorganized text; 10 for well-paragraphed prose."
+    ),
+    "engagement": (
+        "Reads as something someone would WANT to read, not a list of facts. "
+        "Score 0 for dry encyclopedia tone; 10 for vivid storytelling."
+    ),
+    "accuracy_caution": (
+        "Avoids confident claims that could be wrong (specific dates, statistics). "
+        "Score 0 if it invents specific facts; 10 if it stays within safe knowledge."
+    ),
+}</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Each Criterion is Self-Contained</div>
+<div class="card-body"><ul><li>Has a name, a definition, and a scoring rule</li><li>The judge doesn't need to guess what "engagement" means</li><li>This is the disambiguation work</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-15">
+<div class="slide-content">
+<h2 class="slide-title">Step 2 — <strong>Three Generation Strategies</strong></h2>
+<pre class="code-block"><code class="language-python">def llm_call(client, model, prompt):
+    resp = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return resp.choices[0].message.content
+
+
+def generate_naive(client, model, hometown):
+    """Strategy 1: just ask, no rubric."""
+    return llm_call(client, model, f"Write a 1-paragraph introduction to {hometown}.")
+
+
+def generate_aware(client, model, hometown):
+    """Strategy 3: include rubric in the prompt upfront."""
+    rubric_text = "\n".join(f"- {k}: {v}" for k, v in RUBRIC.items())
+    prompt = f"""Write a 1-paragraph introduction to {hometown}.
+
+Your output will be scored on these criteria:
+{rubric_text}
+
+Address each criterion in your writing."""
+    return llm_call(client, model, prompt)
+
+
+def generate_refine(client, model, hometown):
+    """Strategy 2: generate first, then refine with rubric."""
+    draft = generate_naive(client, model, hometown)
+    rubric_text = "\n".join(f"- {k}: {v}" for k, v in RUBRIC.items())
+    prompt = f"""Original draft:
+{draft}
+
+Rewrite this to score better on these criteria:
+{rubric_text}"""
+    return llm_call(client, model, prompt)</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-16">
+<div class="slide-content">
+<h2 class="slide-title">Step 3 — <strong>The LLM Judge</strong> (<code class="inline-code">evaluator.py</code>)</h2>
+<p class="slide-subtitle">Same rubric, structured JSON output</p>
+<pre class="code-block"><code class="language-python">import json, re
+
+def evaluate(client, judge_model, text):
+    """Score text on each rubric criterion (0-10)."""
+    rubric_text = "\n".join(f"- {k}: {v}" for k, v in RUBRIC.items())
+    prompt = f"""Score the following text on each criterion (0-10 integer).
+
+Text:
+{text}
+
+Criteria:
+{rubric_text}
+
+Return ONLY a JSON object like:
+{{"completeness": 7, "specificity": 8, "structure": 6, "engagement": 7, "accuracy_caution": 9}}"""
+
+    raw = llm_call(client, judge_model, prompt)
+    # Extract JSON from response (LLMs sometimes wrap it in code blocks)
+    match = re.search(r"\{[^}]+\}", raw, re.DOTALL)
+    if not match:
+        return {k: 0 for k in RUBRIC}
+    try:
+        return json.loads(match.group(0))
+    except json.JSONDecodeError:
+        return {k: 0 for k in RUBRIC}</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Robust Parsing</div>
+<div class="card-body"><ul><li>LLMs may add commentary around JSON — extract with regex</li><li>Fall back to zero scores on parse failure (visible in UI)</li><li>For production: add retries with stricter formatting prompts</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-17">
+<div class="slide-content">
+<h2 class="slide-title">Step 4 — <strong>UI: Compare 3 Strategies</strong> (<code class="inline-code">app.py</code> Tab 8)</h2>
+<p class="slide-subtitle">Same task, three rubric placements, side-by-side scores</p>
+<pre class="code-block"><code class="language-python"># app.py — Tab 8 (Evaluation Lab)
+import pandas as pd, altair as alt
+from evaluator import (
+    RUBRIC, generate_naive, generate_aware, generate_refine, evaluate,
+)
+
+with tab8:
+    st.header("📊 Evaluation Lab — Hometown Introductions")
+    hometown = st.text_input("Your hometown", "Daejeon, South Korea")
+    judge = st.selectbox("Judge model", ["gpt-4o-mini", "gemini-2.0-flash"])
+
+    if st.button("🚀 Run All 3 Strategies", disabled=not hometown):
+        rows = []
+        for name, fn in [
+            ("Naive", generate_naive),
+            ("Refine", generate_refine),
+            ("Aware", generate_aware),
+        ]:
+            with st.spinner(f"{name}..."):
+                text = fn(client, model, hometown)
+                scores = evaluate(client, judge, text)
+            st.subheader(f"{name} Strategy")
+            st.write(text)
+            st.json(scores)
+            for k, v in scores.items():
+                rows.append({"strategy": name, "criterion": k, "score": v})
+
+        df = pd.DataFrame(rows)
+        chart = alt.Chart(df).mark_bar().encode(
+            x="score:Q", y="criterion:N", color="strategy:N", row="strategy:N",
+        )
+        st.altair_chart(chart, use_container_width=True)</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Run This First</div>
+<div class="card-body"><ul><li>Confirms your rubric, judge, and 3 strategies all work</li><li>Building block for the iterative loops next</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-18">
+<div class="slide-content">
+<h2 class="slide-title">Step 5a — <strong>Threshold Loop</strong> (function in <code class="inline-code">evaluator.py</code>)</h2>
+<p class="slide-subtitle">The simplest improvement loop — stop when good enough</p>
+<pre class="code-block"><code class="language-python">def iterative_threshold(client, gen_model, judge_model, hometown,
+                        max_iters=4, threshold=8):
+    """Generate → score → refine weak criteria. Stop when all ≥ threshold."""
+    text = generate_aware(client, gen_model, hometown)
+    history = []
+
+    for i in range(max_iters):
+        scores = evaluate(client, judge_model, text)
+        avg = sum(scores.values()) / len(scores)
+        history.append({"iter": i, "text": text, "scores": scores, "avg": avg})
+
+        weak = [k for k, v in scores.items() if v &lt; threshold]
+        if not weak:
+            break  # all criteria above threshold → done
+
+        weak_defs = "\n".join(f"- {k}: {RUBRIC[k]}" for k in weak)
+        prompt = f"""Current text:
+{text}
+
+It scored low on these criteria:
+{weak_defs}
+
+Rewrite the text to specifically improve these aspects. Keep what works."""
+        text = llm_call(client, gen_model, prompt)
+
+    return history</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> The Logic</div>
+<div class="card-body"><ul><li>At each iteration, identify weak criteria (below threshold)</li><li>Refine targeting only those criteria</li><li>Exit as soon as all criteria are above the bar — "good enough"</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-19">
+<div class="slide-content">
+<h2 class="slide-title">Step 5b — <strong>UI: Threshold Loop</strong> (independent button)</h2>
+<p class="slide-subtitle">Run this section by itself — separate from Step 4</p>
+<pre class="code-block"><code class="language-python">    # Append below the Compare-Strategies block
+    st.divider()
+    st.subheader("🎯 Threshold Loop")
+
+    th_max_iters = st.slider("Max iterations", 1, 10, 4, key="th_iters")
+    th_threshold = st.slider("Threshold per criterion", 5, 10, 8, key="th_th")
+
+    if st.button("🔁 Run Threshold Loop"):
+        with st.spinner("Iterating..."):
+            history = iterative_threshold(
+                client, model, judge, hometown,
+                max_iters=th_max_iters, threshold=th_threshold,
+            )
+
+        # Score trajectory per criterion
+        traj = pd.DataFrame([
+            {"iter": h["iter"], "criterion": k, "score": v}
+            for h in history for k, v in h["scores"].items()
+        ])
+        line = alt.Chart(traj).mark_line(point=True).encode(
+            x="iter:O", y="score:Q", color="criterion:N",
+        )
+        st.altair_chart(line, use_container_width=True)
+
+        final = history[-1]
+        st.subheader(f"Final — iter {final['iter']}, avg {final['avg']:.1f}")
+        st.write(final["text"])
+        st.json(final["scores"])</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> What to Observe</div>
+<div class="card-body"><ul><li>Does the loop stop early (all ≥ threshold) or run to max?</li><li>Which criteria are the last to clear?</li><li>Try lowering threshold to 7 — does it stop faster?</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-20">
+<div class="slide-content">
+<h2 class="slide-title">One Step Further — <strong>Why Threshold Isn't Always Enough</strong></h2>
+<p class="slide-subtitle">From "good enough" to "best possible"</p>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> Threshold Mode Limits</div>
+<div class="card-body"><ul><li>Stops at the FIRST output where all scores clear the bar</li><li>Doesn't try to keep improving past that point</li><li>The latest iteration may also have regressed in some criteria</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">💡</span> What If We Want the BEST?</div>
+<div class="card-body"><ul><li>Track the highest-scoring output seen so far (<code class="inline-code">best</code>)</li><li>Each refinement starts from <code class="inline-code">best</code>, not from <code class="inline-code">latest</code></li><li>Stop only when we can't beat <code class="inline-code">best</code> for N rounds (patience)</li><li>This is <strong>self-evolving</strong> — pushing to the ceiling</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> When to Use Each</div>
+<div class="card-body"><ul><li><strong>Threshold</strong>: production tasks where "passing the bar" is the goal</li><li><strong>Self-evolving</strong>: research/exploration when you want maximum quality</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-21">
+<div class="slide-content">
+<h2 class="slide-title">Step 6a — <strong>Self-Evolving Loop</strong> (function in <code class="inline-code">evaluator.py</code>)</h2>
+<p class="slide-subtitle">Track best, refine from best, patience-based stopping</p>
+<pre class="code-block"><code class="language-python">def iterative_self_evolving(client, gen_model, judge_model, hometown,
+                            max_iters=10, patience=3):
+    """Track best, refine FROM best, stop when best hasn't improved in `patience` iters."""
+    text = generate_aware(client, gen_model, hometown)
+    history = []
+    best = {"avg": -1, "text": "", "scores": {}, "iter": -1}
+    no_improve = 0
+
+    for i in range(max_iters):
+        scores = evaluate(client, judge_model, text)
+        avg = sum(scores.values()) / len(scores)
+        history.append({"iter": i, "text": text, "scores": scores, "avg": avg})
+
+        if avg &gt; best["avg"]:
+            best = {"avg": avg, "text": text, "scores": scores, "iter": i}
+            no_improve = 0
+        else:
+            no_improve += 1
+
+        if no_improve &gt;= patience:
+            break  # no new best for `patience` rounds → ceiling reached
+
+        # KEY: refine FROM best['text'], not from latest text
+        min_score = min(best["scores"].values())
+        weak = [k for k, v in best["scores"].items() if v &lt;= min_score + 1]
+        weak_defs = "\n".join(f"- {k}: {RUBRIC[k]}" for k in weak)
+        prompt = f"""Current best text (avg {best['avg']:.1f}):
+{best['text']}
+
+These criteria are the weakest in the current best:
+{weak_defs}
+
+Rewrite to push these specific criteria higher. Preserve the strengths."""
+        text = llm_call(client, gen_model, prompt)
+
+    return history, best</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> The Three Key Differences from Threshold</div>
+<div class="card-body"><ul><li><strong>Tracks <code class="inline-code">best</code></strong> dictionary separately from <code class="inline-code">text</code></li><li><strong>Refines from <code class="inline-code">best['text']</code></strong> — not from latest (which might have regressed)</li><li><strong>Stops on patience</strong> — N rounds without a new best</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-22">
+<div class="slide-content">
+<h2 class="slide-title">Step 6b — <strong>UI: Self-Evolving Loop</strong> (independent button)</h2>
+<p class="slide-subtitle">Add below threshold loop — visualize avg vs running best</p>
+<pre class="code-block"><code class="language-python">    # Append below the Threshold Loop block
+    st.divider()
+    st.subheader("🚀 Self-Evolving Loop")
+
+    se_max_iters = st.slider("Max iterations", 3, 20, 10, key="se_iters")
+    se_patience = st.slider("Patience (no-improve count)", 1, 5, 3, key="se_pat")
+
+    if st.button("🔁 Run Self-Evolving Loop"):
+        with st.spinner("Iterating..."):
+            history, best = iterative_self_evolving(
+                client, model, judge, hometown,
+                max_iters=se_max_iters, patience=se_patience,
+            )
+
+        # Plot avg per iteration AND running best (the ratchet)
+        avg_df = pd.DataFrame([
+            {"iter": h["iter"], "metric": "avg", "score": h["avg"]} for h in history
+        ])
+        running_best = []
+        bs = -1
+        for h in history:
+            bs = max(bs, h["avg"])
+            running_best.append({"iter": h["iter"], "metric": "best", "score": bs})
+
+        line = alt.Chart(pd.concat([avg_df, pd.DataFrame(running_best)])).mark_line(
+            point=True).encode(x="iter:O", y="score:Q", color="metric:N")
+        st.altair_chart(line, use_container_width=True)
+
+        # Show the BEST output (not the latest)
+        st.subheader(f"Best — iter {best['iter']}, avg {best['avg']:.1f}")
+        st.write(best["text"])
+        st.json(best["scores"])</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Read the Chart</div>
+<div class="card-body"><ul><li><strong>avg</strong> zigzags — some iterations regress, that's normal</li><li><strong>best</strong> is monotone non-decreasing — the ratchet</li><li>When <strong>best</strong> plateaus for <code class="inline-code">patience</code> iters → the loop stops</li><li>Output shown is <strong>best</strong>, not latest — this is the whole point</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-23">
+<div class="slide-content">
+<h2 class="slide-title">Step 7 — <strong>Multi-Model Comparison</strong></h2>
+<p class="slide-subtitle">Same task, same judge, different generators</p>
+<pre class="code-block"><code class="language-python">    st.divider()
+    st.subheader("🔬 Multi-Model Comparison")
+    candidate_models = st.multiselect(
+        "Models to compare",
+        ["gpt-4o-mini", "gemini-2.0-flash", "claude-3-5-haiku"],
+        default=["gpt-4o-mini", "gemini-2.0-flash"]
+    )
+    if st.button("⚖️ Compare Models", disabled=not candidate_models):
+        rows = []
+        for m in candidate_models:
+            text = generate_aware(client, m, hometown)
+            scores = evaluate(client, judge, text)
+            for k, v in scores.items():
+                rows.append({"model": m, "criterion": k, "score": v})
+
+        df = pd.DataFrame(rows)
+        chart = alt.Chart(df).mark_bar().encode(
+            x="score:Q", y="criterion:N", color="model:N",
+            row="model:N",
+        )
+        st.altair_chart(chart, use_container_width=True)</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Pick the Right Model for the Right Task</div>
+<div class="card-body"><ul><li>One model may be best at structure but weak at engagement</li><li>Now you have evidence, not vibes</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-24">
+<div class="slide-content">
+<h2 class="slide-title">✅ <strong>Week 10 Practice Checklist</strong></h2>
+<div class="highlight-quote">Complete these steps during the practice session:</div>
+<p class="slide-text">1. - [ ] Define <code class="inline-code">RUBRIC</code> in <code class="inline-code">evaluator.py</code> with 5 criteria</p>
+<p class="slide-text">2. - [ ] Implement <code class="inline-code">generate_naive</code>, <code class="inline-code">generate_aware</code>, <code class="inline-code">generate_refine</code></p>
+<p class="slide-text">3. - [ ] Implement <code class="inline-code">evaluate()</code> with robust JSON parsing</p>
+<p class="slide-text">4. - [ ] Build the <strong>Compare 3 Strategies</strong> UI — does <strong>Aware</strong> score higher than <strong>Naive</strong>?</p>
+<p class="slide-text">5. - [ ] Implement <code class="inline-code">iterative_threshold()</code> in <code class="inline-code">evaluator.py</code></p>
+<p class="slide-text">6. - [ ] Build the <strong>Threshold Loop</strong> UI section (independent button)</p>
+<p class="slide-text">7. - [ ] Run with threshold=8 — does it stop early or hit max?</p>
+<p class="slide-text">8. - [ ] Run with threshold=10 — does it now hit max iterations?</p>
+<p class="slide-text">9. - [ ] Implement <code class="inline-code">iterative_self_evolving()</code> in <code class="inline-code">evaluator.py</code></p>
+<p class="slide-text">10. - [ ] Build the <strong>Self-Evolving Loop</strong> UI section (independent button)</p>
+<p class="slide-text">11. - [ ] Run with patience=3 — observe the <code class="inline-code">avg</code> vs <code class="inline-code">best</code> lines</p>
+<p class="slide-text">12. - [ ] Compare final avg score with Stage 2 — did self-evolving find a higher peak?</p>
+<p class="slide-text">13. - [ ] Multi-model comparison — which model wins per criterion?</p>
+<p class="slide-text">14. - [ ] Edit one criterion's definition to be vague — see scores become unstable</p>
+</div>
+</section>
+<section class="slide title-slide" id="slide-25">
+<div class="slide-content">
+<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+<p class="slide-subtitle">Ambiguity vs Clarity — Why Vague Instructions Break Agents</p>
+</div>
+</section>
+<section class="slide" id="slide-26">
+<div class="slide-content">
+<h2 class="slide-title">Week 9 — <strong>Why Do Agents Fail at Vague Tasks?</strong></h2>
+<p class="slide-subtitle">12 responses analyzed — a Hulk-Captain America coalition emerges</p>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">📊</span> The Vote Distribution</div>
+<div class="card-body"><ul><li><strong>Cap + Hulk (2,3)</strong>: Waad, Manuella, Margareth, Minh — <strong>4 votes</strong> (largest)</li><li><strong>Hulk only (3)</strong>: DongYun, Yadanar, Han — <strong>3 votes</strong></li><li><strong>Iron Man only (1)</strong>: Tan — <strong>1 vote</strong></li><li><strong>Iron Man + Hulk (1,3)</strong>: Irfan — <strong>1 vote</strong></li><li><strong>Iron Man + Cap (1,2)</strong>: Jaewhoon — <strong>1 vote</strong></li><li><strong>Captain America only (2)</strong>: Ly — <strong>1 vote</strong></li><li><strong>None</strong>: Huy — <strong>1 vote</strong> (rejects all three frames)</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🤝</span> The Coalition's Position</div>
+<div class="card-body"><ul><li>Humans must specify clearly <strong>AND</strong> verify outputs</li><li>Pure Iron Man (only engineering) has 1 lonely vote (Tan)</li><li>The class converges on: <strong>clarity is a human responsibility, but the system must support it</strong></li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">🔥</span> Three Solution Schools Within the Coalition</div>
+<div class="card-body"><ul><li><strong>Design school</strong>: build better interfaces (Irfan, Tan)</li><li><strong>Demand school</strong>: humans must be precise (Ly, Waad, Manuella)</li><li><strong>Tradeoff school</strong>: explicit about flexibility ↔ uncertainty (Margareth, Minh)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-27">
+<div class="slide-content">
+<h2 class="slide-title">Theme 1 — <strong>The Flexibility-Uncertainty Tradeoff</strong></h2>
+<p class="slide-subtitle">Margareth's framing — and why "design vs demand" is incomplete</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">⚖️</span> Margareth's Sharp Insight</div>
+<div class="card-body"><ul><li>"More ambiguity allows greater flexibility BUT increases uncertainty"</li><li>"More clarity requires more human effort and reduces the system to <strong>conventional programming</strong>"</li><li>There's no free lunch — every step toward clarity is a step away from flexibility</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🚧</span> Adding the Translation Layer Doesn't Solve It</div>
+<div class="card-body"><ul><li>"Introducing a 'middle layer' to translate vague instructions does not remove ambiguity but <strong>shifts it</strong> into another potentially equally complex problem"</li><li>Iron Man's middleware fix relocates the problem; doesn't dissolve it</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> The Real Question</div>
+<div class="card-body"><ul><li>Not "should we design for ambiguity OR demand clarity?"</li><li>But: <strong>how much flexibility am I willing to trade for how much certainty?</strong></li><li>This is a per-task design choice, not a universal answer</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"More clarity reduces the system to something closer to conventional programming." — Margareth</div>
+</div>
+</section>
+<section class="slide" id="slide-28">
+<div class="slide-content">
+<h2 class="slide-title">Theme 2 — <strong>Two Deepest Critiques: Huy & Minh</strong></h2>
+<p class="slide-subtitle">Beyond all three personas</p>
+<div class="cards-grid">
+<div class="card card-purple">
+<div class="card-header"><span class="icon">💎</span> Huy — "Metacognitive Clarity"</div>
+<div class="card-body"><ul><li>All three personas assume the human KNOWS what they want</li><li>At the research frontier: <strong>often you don't fully know yet</strong></li><li>The real skill: "knowing how well you currently understand what you want to find out"</li><li>Be honest about that gap <strong>before</strong> deploying autonomy</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> Minh — "Independence Threshold" + "Alignment Drift"</div>
+<div class="card-body"><ul><li>At what point do we transition AI from instruction-follower → autonomous decision-maker?</li><li>Granting AI independence to resolve vagueness → <strong>Alignment Drift</strong></li><li>System optimizes for "likely path" that violates implicit human ethics or physical constraints</li><li>"Right goal through wrong and potentially catastrophic logic"</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔗</span> The Common Thread</div>
+<div class="card-body"><ul><li>Both Huy and Minh point to a problem the personas miss</li><li>Personas frame it as communication — they frame it as <strong>agency boundaries</strong></li><li>The deeper question: how much should the AI fill in for us, ever?</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"An agent might achieve the right goal through the wrong logic, simply because we failed to define the boundaries of its autonomy." — Minh</div>
+</div>
+</section>
+<section class="slide" id="slide-29">
+<div class="slide-content">
+<h2 class="slide-title">Theme 3 — <strong>What Vague Prompts Actually Look Like</strong></h2>
+<p class="slide-subtitle">Yadanar's concrete examples make the abstract real</p>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">📊</span> "Analyze this dataset" — Yadanar's Example</div>
+<div class="card-body"><ul><li>Doesn't say what kind of analysis you want</li><li>Model picks "wrong patterns or even makes stuff up"</li><li>Vivid case of guessing under ambiguity</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">💻</span> "Improve this code"</div>
+<div class="card-body"><ul><li>Could change speed, readability, structure</li><li>"But not necessarily what you intended"</li><li>Each interpretation is plausible — and most are wrong for YOU</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔬</span> Why These Examples Land</div>
+<div class="card-body"><ul><li>These are commands students actually type every day</li><li>Each one is <strong>one short sentence</strong> — none feel "vague" subjectively</li><li>But each contains 3-5 hidden parameters the model has to guess</li><li><strong>Awareness of these hidden parameters = metacognitive clarity in practice</strong></li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"AI doesn't truly understand intent — it just fills gaps based on probability." — Yadanar</div>
+</div>
+</section>
+<section class="slide" id="slide-30">
+<div class="slide-content">
+<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+<p class="slide-subtitle">Jaewhoon's "feedback loop" hits the lecture's core idea</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔁</span> Jaewhoon — "The Feedback Loop is Key"</div>
+<div class="card-body"><ul><li>"When a user provides specific feedback on an unsatisfactory output, the AI incorporates that learning"</li><li>"Simple rejection doesn't help — clear, constructive criticism leads to better iterations"</li><li><strong>This is exactly what today's iterative loop is</strong></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> The Rubric IS the Constructive Feedback</div>
+<div class="card-body"><ul><li>"Score on completeness, specificity, structure..." — that's what Jaewhoon means by constructive criticism</li><li>The judge produces structured feedback the model can actually use</li><li>This is Irfan's "design for ambiguity" — operationalized in code</li></ul></div>
+</div>
+<div class="card card-purple">
+<div class="card-header"><span class="icon">💎</span> Connecting Huy's Critique</div>
+<div class="card-body"><ul><li>Writing the rubric = forcing metacognitive clarity</li><li>If you can't write a rubric, you don't yet know what "good" means to you</li><li>The system doesn't replace this — it <strong>surfaces</strong> the gap</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚖️</span> Connecting Margareth's Tradeoff</div>
+<div class="card-body"><ul><li>More criteria in the rubric = more clarity, less flexibility</li><li>Self-evolving loop pushes for the score ceiling — but at the cost of generation freedom</li><li>Choose the rubric depth that matches the certainty you need</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-31">
+<div class="slide-content">
+<h2 class="slide-title">Activity — <strong>Write a Rubric for Your Research</strong></h2>
+<p class="slide-subtitle">10 minutes in pairs</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📋</span> The Task</div>
+<div class="card-body"><ul><li>Pick one common output in your field (e.g., literature summary, code review, model evaluation)</li><li>Write a 4-5 criterion rubric, each with explicit scoring guidance</li><li>Trade rubrics with a partner — would you score the same way?</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">✏️</span> Required Elements</div>
+<div class="card-body"><ul><li>Each criterion needs a <strong>name</strong>, <strong>definition</strong>, and <strong>scoring guidance</strong> (what gets 0 vs 10)</li><li>Avoid criteria that overlap (e.g., "clarity" and "readability")</li><li>Make sure each criterion is <strong>independently scorable</strong></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> The Test</div>
+<div class="card-body"><ul><li>Show your rubric to your partner WITHOUT showing the original task description</li><li>Can they guess what kind of output it's evaluating?</li><li>If yes → your rubric is specific enough</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-32">
+<div class="slide-content">
+<h2 class="slide-title">🗣️ <strong>Week 10 Discussion Questions</strong> (UST LMS)</h2>
+<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+<p class="slide-text">1. Today you saw three strategies (naive, refine, aware) plus two loop modes (threshold, self-evolving). <strong>Which combination gave the biggest improvement on your hometown task?</strong> Connect your finding to Jaewhoon's claim that "the feedback loop is key."</p>
+<p class="slide-text">2. Margareth argued that more clarity reduces the system "to something closer to conventional programming." After writing a strict rubric today, <strong>did your final output feel more constrained — and was that good or bad?</strong> Where would you draw the line between flexibility and reliability for your own research?</p>
+</div>
+</section>
+<section class="slide" id="slide-33">
+<div class="slide-content">
+<h2 class="slide-title">Want to Learn More?</h2>
+<p class="slide-text">LLM Evaluation</p>
+<a href="https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/develop-tests" target="_blank" class="reference-link">📚 Anthropic: Evaluating LLM Outputs</a>
+<a href="https://github.com/openai/evals" target="_blank" class="reference-link">📚 OpenAI Evals — Open-source Eval Framework</a>
+<a href="https://docs.smith.langchain.com/evaluation" target="_blank" class="reference-link">📚 LangSmith — Evaluation and Tracing</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Research Papers</p>
+<div class="highlight-quote">📄 [G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment (2023)](https://arxiv.org/abs/2303.16634)</div>
+<div class="highlight-quote">📄 [Self-Refine: Iterative Refinement with Self-Feedback (2023)](https://arxiv.org/abs/2303.17651)</div>
+<div class="highlight-quote">📄 [Constitutional AI — Anthropic](https://arxiv.org/abs/2212.08073)</div>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Anthropic Free Online Courses</p>
+<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)</div>
+<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
+</div>
+</section>
+<section class="slide" id="slide-34">
+<div class="slide-content">
+<h2 class="slide-title">Wrap-Up of <strong>Week 10</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> Lecture</div>
+<div class="card-body"><ul><li>Rubrics turn "good" into measurable criteria; LLM-as-judge scores outputs cheaply; three strategies (naive / refine / aware) place the rubric at different points; iterative loop drives scores up</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> Practice</div>
+<div class="card-body"><ul><li>Built a <strong>Hometown Introduction Evaluator</strong>: 5-criterion rubric, 3 strategies, LLM judge, multi-model comparison, and TWO iterative loops — threshold-based (good enough) and self-evolving (push to ceiling, refine from best, patience-based stopping)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+<div class="card-body"><ul><li>Week 9 review (12 responses): Cap+Hulk coalition wins; Margareth's flexibility-uncertainty tradeoff; Huy's metacognitive clarity + Minh's Independence Threshold/Alignment Drift; Jaewhoon's "feedback loop is key" = exactly today's iterative practice</li></ul></div>
+</div>
+</div>
+<p class="slide-text"><strong>Next week:</strong> Multi-step planning — agents that decompose tasks themselves.</p>
+</div>
+</section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">34</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(12)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(25)">Discussion</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 34;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+      
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+      
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+      
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if(currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if(currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if(newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+           currentSlide = newSlide;
+           pageInput.value = currentSlide;
+           updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if(e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: -100, behavior: 'smooth'});
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: 100, behavior: 'smooth'});
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+         const pageNum = parseInt(hash.replace('#slide-', ''));
+         if(!isNaN(pageNum)) {
+           setTimeout(() => goToSlide(pageNum), 100);
+         }
+      }
+    });
+  </script>
+</body>
+</html>
