@@ -376,7 +376,7 @@ def reflexion_loop(client, gen_model, critic_model, judge_model, hometown,
 # At top of app.py, update import:
 from evaluator import (
     RUBRIC, generate_naive, generate_aware, generate_refine, evaluate,
-    iterative_threshold, self_critique, self_revise, reflexion_loop,
+    iterative_threshold, iterative_self_evolving, self_critique, self_revise, reflexion_loop,
 )
 
 # Append below the existing sections
