@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<!-- Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --text-main: #1e293b;
+    --accent: #0f4c81;
+    --card-blue: #eff6ff;
+    --border-blue: #bfdbfe;
+    --card-green: #f0fdf4;
+    --border-green: #bbf7d0;
+    --card-orange: #fff7ed;
+    --border-orange: #fed7aa;
+    --card-pink: #fdf2f8;
+    --border-pink: #fbcfe8;
+    --card-purple: #faf5ff;
+    --border-purple: #e9d5ff;
+    --card-yellow: #fefce8;
+    --border-yellow: #fef08a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    overflow: hidden; /* Hide scrollbars, use custom navigation */
+    font-size: 1.8rem;
+  }
+  .presentation {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    width: 100vw;
+  }
+  .presentation::-webkit-scrollbar { display: none; }
+  .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 60px 80px; /* Top/Bottom 60px, Left/Right 80px for margins */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-content {
+    background: var(--bg-main);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    font-size: 1rem; /* 1.5x of original */
+  }
+  .slide-title {
+    font-size: 2rem; /* 1.5x of original */
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    border-bottom: 5px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: 1rem; /* 1.5x of original */
+    color: #64748b;    
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  /* Title Slide Variations */
+  .title-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  }
+  .title-slide .slide-title { font-size: 2.5rem; border: none; margin-bottom: 1.5rem; color: var(--accent); }
+  .title-slide .slide-subtitle { font-size: 1.5rem; font-weight: 600; color: #334155; }
+  
+  /* Title Emphasis Variations */
+  .title-emphasis-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+  .title-emphasis-slide .slide-title {
+    font-size: 3rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-emphasis-slide .slide-subtitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+  
+  /* Layouts */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased min-width to prevent 4 columns on wide screens */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+  .card-header { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.4rem; }
+  .card-header .icon { font-size: 1.3rem; margin-right: 0.5rem; }
+  .card-body ul { list-style-type: none; padding-left: 0; }
+  .card-body li { margin-bottom: 0.5rem; position: relative; padding-left: 1.2rem; line-height: 1.4; font-size: 0.95rem; }
+  .card-body li::before { content: "•"; color: #94a3b8; font-weight: bold; position: absolute; left: 0; top: 0; }
+  .plain-bullets li { position: relative; padding-left: 1.2rem; list-style-type: none; }
+  .plain-bullets li::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: 0; top: 0; }
+  
+  .slide-text {
+    font-size: 1.6rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  .card-blue { background: var(--card-blue); border-color: var(--border-blue); color: #1e3a8a; }
+  .card-green { background: var(--card-green); border-color: var(--border-green); color: #14532d; }
+  .card-orange { background: var(--card-orange); border-color: var(--border-orange); color: #7c2d12; }
+  .card-pink { background: var(--card-pink); border-color: var(--border-pink); color: #831843; }
+  .card-purple { background: var(--card-purple); border-color: var(--border-purple); color: #4c1d95; }
+  .card-yellow { background: var(--card-yellow); border-color: var(--border-yellow); color: #713f12; }
+  
+  .highlight-quote {
+    background: #f8fafc;
+    border-left: 5px solid var(--accent);
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .image-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    margin: 0.5rem 0;
+  }
+  .img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .image-container {
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .slide-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .slide-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Modal Overlay */
+  .image-modal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .image-modal.active {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 9999;
+  }
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .image-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: #94a3b8;
+  }
+  .img-caption {
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .mermaid-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+  }
+  .mermaid-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .mermaid-group .mermaid-container {
+    margin: 0;
+    flex: 1;
+    min-height: auto;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Consolas', monospace;
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  .mermaid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .reference-link {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .inline-code {
+    background: #e2e8f0;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .styled-table th { background: #334155; color: white; text-align: left; padding: 1rem; }
+  .styled-table td { padding: 1rem; background: white; border-bottom: 1px solid #f1f5f9; }
+  .styled-table tr:hover td { background: #f8fafc; }
+  
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .flow-step {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #cbd5e1;
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin: 0 1rem;
+  }
+  
+  .slide-number {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .plain-bullets {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+  .plain-bullets li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Fixed Layout Elements */
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: #0f172a;
+    color: #94a3b8;
+    z-index: 2000;
+    border-bottom: 1px solid #1e293b;
+  }
+  .header-logo { color: white; margin-right: 1.5rem; letter-spacing: -0.5px; font-size: 0.75rem; }
+  .header-sep { color: #334155; margin: 0 1rem; }
+  .header-subtitle { font-size: 0.75rem; }
+
+  .side-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* 2/3 of 50px approx */
+    height: 70px; /* 2/3 of 100px approx */
+    background: rgba(30, 41, 59, 0.4);
+    border: none;
+    color: white;
+    font-size: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: background 0.2s, width 0.2s;
+    border-radius: 6px;
+  }
+  .side-nav-btn:hover { background: rgba(37, 99, 235, 0.8); width: 45px; }
+  .prev-side { left: 10px; }
+  .next-side { right: 10px; }
+
+  /* Navigation Bar (Fixed Bottom) */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    height: 50px;
+    z-index: 2000;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .nav-main-btn {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 20px;
+  }
+  .btn-nav {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover {
+    background: #1e293b;
+    color: white;
+  }
+  .page-input-wrapper {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin: 0 8px;
+    font-family: monospace;
+  }
+  .page-input {
+    background: transparent;
+    border: 1px solid #334155;
+    color: white;
+    width: 32px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    padding: 1px;
+    margin-right: 4px;
+  }
+  .section-links {
+    display: flex;
+    gap: 16px;
+    border-left: 1px solid #1e293b;
+    padding-left: 20px;
+  }
+  .nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <header class="global-header">
+    <span class="header-logo">Self-Reflection and Improvement Pipelines</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">Agents That Critique Themselves and Get Better</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+<div class="slide-content">
+<h1 class="slide-title">Self-Reflection and Improvement Pipelines</h1>
+<p class="slide-subtitle">Agents That Critique Themselves and Get Better</p>
+<div class="highlight-quote">Week 11 of Phase 3: Advanced Patterns (Weeks 9-12)</div>
+</div>
+</section>
+<section class="slide" id="slide-2">
+<div class="slide-content">
+<h2 class="slide-title">Contents</h2>
+<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 11</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+<div class="card-body"><ul><li>Self-reflection — when the model critiques its own work</li><li>The Reflexion pattern: generate → critique → revise → repeat</li><li>Self-bias problem and the cross-model critic solution</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+<div class="card-body"><ul><li>Extend Week 10 evaluator with <code class="inline-code">self_critique</code> + <code class="inline-code">self_revise</code></li><li>Build a Reflexion loop on the hometown task</li><li>Compare same-model vs cross-model critique</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+<div class="card-body"><ul><li>Week 10 — 1,000 AI agents vs 10 human experts</li><li>Echo chamber risk applies to self-reflection too</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-3">
+<div class="slide-content">
+<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+<p class="slide-subtitle">From External Scoring to Self-Reflection</p>
+</div>
+</section>
+<section class="slide" id="slide-4">
+<div class="slide-content">
+<h2 class="slide-title">Where We Left Off — <strong>Week 10 Recap</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📊</span> What Week 10 Built</div>
+<div class="card-body"><ul><li>Rubric (5 criteria with definitions)</li><li>LLM judge → numeric scores per criterion</li><li>Threshold loop (stop when good enough)</li><li>Self-evolving loop (track best, refine from best)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🤔</span> What Was Missing</div>
+<div class="card-body"><ul><li>Scores tell you <strong>how much</strong> is wrong, not <strong>why</strong></li><li>The refine prompt only knows criterion names, not specific weaknesses</li><li>The model doesn't reason about its own output's flaws</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> Today's Step Forward</div>
+<div class="card-body"><ul><li>Add a <strong>qualitative critique</strong> step before revising</li><li>Model writes WHY the output is weak, then uses that critique to improve</li><li>Same loop structure, but with <strong>reasoning</strong>, not just scores</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-5">
+<div class="slide-content">
+<h2 class="slide-title">What is <strong>Self-Reflection</strong> for an LLM?</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🪞</span> The Core Idea</div>
+<div class="card-body"><ul><li>The model reads its OWN output as if it were someone else's</li><li>Writes a critical analysis: what works, what doesn't, why</li><li>Then uses that analysis to write a better version</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔁</span> Three Steps</div>
+<div class="card-body"><ul><li><strong>Generate</strong> → produces an output</li><li><strong>Critique</strong> → analyzes the output's weaknesses (free-form text)</li><li><strong>Revise</strong> → rewrites using the critique as a guide</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚡</span> Why This Helps</div>
+<div class="card-body"><ul><li>Critique is <strong>specific</strong> ("the second sentence is generic") vs scores ("specificity: 6")</li><li>Forces the model to articulate problems before solving them</li><li>Often catches issues the rubric doesn't have a criterion for</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-6">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Reflexion Pattern</strong> — Generate, Critique, Revise</h2>
+<div class="mermaid-container"><div class="mermaid">graph LR
+    A[Generate Output] --> B[Self-Critique<br/>What's weak? Why?]
+    B --> C[Self-Revise<br/>Apply the critique]
+    C --> D[Score with Rubric]
+    D --> E{Good Enough?}
+    E -->|No| B
+    E -->|Yes| F[✅ Final Output]
+
+    style A fill:#fff3cd
+    style B fill:#ffe5cc
+    style C fill:#cce5ff
+    style D fill:#d6e4f0
+    style F fill:#d4edda</div></div>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Reflexion Adds a Reasoning Layer</div>
+<div class="card-body"><ul><li>Week 10 loop: generate → score → revise (uses rubric only)</li><li>Week 11 loop: generate → <strong>critique</strong> → revise → score (adds reasoning)</li><li>The critique step is the new ingredient</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-7">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Critique vs Score</strong> — Two Kinds of Feedback</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📊</span> Quantitative Score (Week 10)</div>
+<div class="card-body"><ul><li>"specificity: 6/10"</li><li>Tells you which criterion is weak</li><li>Doesn't tell you what specifically to change</li><li>Easy to compare across iterations</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">💬</span> Qualitative Critique (Week 11)</div>
+<div class="card-body"><ul><li>"The text mentions 'famous food' without naming any dishes. The opening sentence reads like a tourism brochure."</li><li>Tells you exactly what's wrong and where</li><li>Hard to compare numerically — but actionable</li><li>Catches subtle issues a rubric misses</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🤝</span> Use Both Together</div>
+<div class="card-body"><ul><li>Score = global signal (when to stop, which dimension)</li><li>Critique = local guidance (specific improvements)</li><li>Reflexion combines both</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-8">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Memory</strong> — Remembering What Didn't Work</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🧠</span> Without Memory</div>
+<div class="card-body"><ul><li>Each iteration starts fresh — no record of past mistakes</li><li>Model may "fix" something, then break it again later</li><li>Same flaws can recur across iterations</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📓</span> With Memory</div>
+<div class="card-body"><ul><li>Keep a list of past critiques + what was changed</li><li>Pass this history to the next critique step</li><li>"These were the issues last time — did the revision actually fix them?"</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">💡</span> Implementation</div>
+<div class="card-body"><ul><li>Append each critique to a <code class="inline-code">reflection_log</code></li><li>Include the log in the next critique prompt</li><li>Model can now spot patterns: "I keep failing on accuracy"</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-9">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Self-Bias Problem</strong> — Why Self-Critique Has Limits</h2>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The Echo Chamber Risk</div>
+<div class="card-body"><ul><li>Same model generates AND critiques the output</li><li>It tends to MISS the same things it would miss as a critic</li><li>Like proofreading your own writing — you read what you meant, not what you wrote</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📐</span> Empirical Pattern</div>
+<div class="card-body"><ul><li>Self-critique catches obvious flaws (typos, missing sections)</li><li>But misses subtle issues the model has a blind spot for</li><li>Scores tend to converge to the model's natural ceiling</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">💡</span> Connection to Today's Discussion</div>
+<div class="card-body"><ul><li>This is the same echo chamber Yadanar warned about: "1,000 AI agents trained on overlapping data reinforce the same mistake"</li><li>Self-reflection by the same model = a one-model echo chamber</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-10">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Cross-Model Critique</strong> — Breaking the Echo Chamber</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔀</span> The Fix</div>
+<div class="card-body"><ul><li>Use a <strong>different model</strong> to critique the output</li><li>Model A generates → Model B critiques → Model A revises</li><li>Different training data, different blind spots</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> Why It Works</div>
+<div class="card-body"><ul><li>Two models rarely share the same blind spots</li><li>Critic model brings independent perspective</li><li>This is Huy's "epistemically diverse" principle, in code</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚖️</span> Tradeoffs</div>
+<div class="card-body"><ul><li>More expensive (two model calls per iteration)</li><li>Critic model may be wrong in different ways than generator</li><li>Best critic isn't always the strongest model — different is what matters</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Cross-model critique = importing epistemic diversity from outside the echo chamber."</div>
+</div>
+</section>
+<section class="slide" id="slide-11">
+<div class="slide-content">
+<h2 class="slide-title">When to Use <strong>Self-Reflection</strong> vs Other Patterns</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">✅</span> Self-Reflection Helps Most When</div>
+<div class="card-body"><ul><li>Output quality is hard to fully capture in a rubric</li><li>Subtle issues (style, tone, coherence) matter</li><li>You have budget for extra LLM calls per iteration</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">❌</span> Self-Reflection Helps Less When</div>
+<div class="card-body"><ul><li>Task has clear measurable success (math, code that passes tests)</li><li>Output is short enough that issues are obvious from the score</li><li>Budget is tight — rubric loop is cheaper</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🎯</span> Decision Guide</div>
+<div class="card-body"><ul><li>Short, structured output → rubric loop (Week 10)</li><li>Long, qualitative output → reflexion loop (Week 11)</li><li>Critical decisions → cross-model critique to break self-bias</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-12">
+<div class="slide-content">
+<h2 class="slide-title">Lecture Summary — <strong>Self-Reflection</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🪞</span> Self-Reflection</div>
+<div class="card-body"><ul><li>Model critiques its own output qualitatively before revising</li><li>Critique is specific and actionable; complements numeric scores</li><li>Implements the <strong>Reflexion pattern</strong>: generate → critique → revise → score</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📓</span> Memory and Cross-Model</div>
+<div class="card-body"><ul><li>Memory: track past critiques to avoid repeating fixes</li><li>Cross-model critique: break the self-bias echo chamber</li><li>Both add cost — use when quality matters more than speed</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🎯</span> The Bigger Pattern</div>
+<div class="card-body"><ul><li>Week 10 added external measurement to generation</li><li>Week 11 adds internal reasoning about that measurement</li><li>Together: an agent that can both measure AND understand its own quality</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-13">
+<div class="slide-content">
+<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+<p class="slide-subtitle">Add Self-Critique to the Week 10 Evaluator</p>
+</div>
+</section>
+<section class="slide" id="slide-14">
+<div class="slide-content">
+<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Goal</div>
+<div class="card-body"><ul><li>Extend <code class="inline-code">evaluator.py</code> with <strong>two new functions</strong>: <code class="inline-code">self_critique</code> + <code class="inline-code">self_revise</code></li><li>Build a <code class="inline-code">reflexion_loop</code> that combines critique + scoring</li><li>Add a UI section to compare with Week 10's rubric loop</li><li>Bonus: cross-model critique to break self-bias</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📁</span> Files</div>
+<div class="card-body"><ul><li><code class="inline-code">evaluator.py</code> — add 3 functions (<code class="inline-code">self_critique</code>, <code class="inline-code">self_revise</code>, <code class="inline-code">reflexion_loop</code>)</li><li><code class="inline-code">app.py</code> — append a new section "🪞 Reflexion Loop"</li><li>Reuses Week 10's <code class="inline-code">RUBRIC</code>, <code class="inline-code">evaluate</code>, <code class="inline-code">generate_aware</code>, and <code class="inline-code">llm_call</code></li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚡</span> Why Same Task?</div>
+<div class="card-body"><ul><li>Same hometown intro → directly comparable to Week 10 results</li><li>You can see whether Reflexion's qualitative critique beats pure rubric scoring</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-15">
+<div class="slide-content">
+<h2 class="slide-title">Step 1 — <strong><code class="inline-code">self_critique()</code></strong> (<code class="inline-code">evaluator.py</code>)</h2>
+<p class="slide-subtitle">Model analyzes its own output qualitatively</p>
+<pre class="code-block"><code class="language-python"># evaluator.py — add to the bottom
+
+def self_critique(client, critic_model, text):
+    """Model writes a critical analysis of the given text."""
+    prompt = f"""Read the following text and write a critical analysis.
+
+Text:
+{text}
+
+Identify:
+1. The 2-3 strongest aspects (be specific — quote phrases)
+2. The 2-3 weakest aspects (be specific — quote phrases)
+3. Concrete changes that would improve the weakest parts
+
+Be honest and specific. Do NOT be defensive or vague.
+Do NOT just rewrite the text — only analyze it."""
+    return llm_call(client, critic_model, prompt)</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Why "Be Specific" Matters</div>
+<div class="card-body"><ul><li>Without prompting for specifics, models default to vague praise</li><li>"Quote phrases" forces the model to anchor to actual text</li><li>"Do NOT rewrite" prevents the model from skipping the analysis step</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-16">
+<div class="slide-content">
+<h2 class="slide-title">Step 2 — <strong><code class="inline-code">self_revise()</code></strong> (<code class="inline-code">evaluator.py</code>)</h2>
+<p class="slide-subtitle">Apply the critique to produce a revised output</p>
+<pre class="code-block"><code class="language-python">def self_revise(client, gen_model, text, critique):
+    """Rewrite the text using the critique as guidance."""
+    prompt = f"""Original text:
+{text}
+
+Critique of the text:
+{critique}
+
+Now write a revised version that:
+- Addresses each weakness identified in the critique
+- Keeps the strengths intact
+- Applies the specific changes suggested
+
+Output only the revised text. No commentary."""
+    return llm_call(client, gen_model, prompt)</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Two Inputs, One Output</div>
+<div class="card-body"><ul><li>The model sees BOTH the original and the critique</li><li>This is more reliable than trying to "remember" the critique implicitly</li><li>"Output only the revised text" prevents extra explanations</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-17">
+<div class="slide-content">
+<h2 class="slide-title">Step 3 — <strong><code class="inline-code">reflexion_loop()</code></strong> (<code class="inline-code">evaluator.py</code>)</h2>
+<p class="slide-subtitle">Combine critique + scoring + revision</p>
+<pre class="code-block"><code class="language-python">def reflexion_loop(client, gen_model, critic_model, judge_model, hometown,
+                   max_iters=4, threshold=8):
+    """Generate → critique → revise → score. Stop when all criteria ≥ threshold."""
+    text = generate_aware(client, gen_model, hometown)
+    history = []
+
+    for i in range(max_iters):
+        scores = evaluate(client, judge_model, text)
+        avg = sum(scores.values()) / len(scores)
+        critique = self_critique(client, critic_model, text)
+
+        history.append({
+            "iter": i, "text": text, "scores": scores,
+            "avg": avg, "critique": critique,
+        })
+
+        weak = [k for k, v in scores.items() if v &lt; threshold]
+        if not weak:
+            break  # all criteria above threshold
+
+        text = self_revise(client, gen_model, text, critique)
+
+    return history</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> The Order Matters</div>
+<div class="card-body"><ul><li><strong>Score first</strong> to know if we should keep going</li><li><strong>Critique second</strong> to get specific improvement guidance</li><li><strong>Revise third</strong> using both signals</li><li>Same threshold-based stopping as Week 10</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-18">
+<div class="slide-content">
+<h2 class="slide-title">Step 4 — <strong>UI: Reflexion Loop</strong> (append to <code class="inline-code">app.py</code>)</h2>
+<p class="slide-subtitle">Show critique alongside scores at each iteration</p>
+<pre class="code-block"><code class="language-python"># At top of app.py, update import:
+from evaluator import (
+    RUBRIC, generate_naive, generate_aware, generate_refine, evaluate,
+    iterative_threshold, self_critique, self_revise, reflexion_loop,
+)
+
+# Append below the existing sections
+st.divider()
+st.subheader("🪞 Reflexion Loop (Self-Critique + Revise)")
+
+rx_max_iters = st.slider("Max iterations", 1, 8, 4, key="rx_iters")
+rx_threshold = st.slider("Threshold per criterion", 5, 10, 8, key="rx_th")
+critic = st.selectbox(
+    "Critic model (try a different one for cross-model critique)",
+    ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-3-flash-preview"],
+    key="rx_critic",
+)
+
+if st.button("🪞 Run Reflexion Loop"):
+    with st.spinner("Generating, critiquing, revising..."):
+        history = reflexion_loop(
+            client, model, critic, judge, hometown,
+            max_iters=rx_max_iters, threshold=rx_threshold,
+        )
+
+    # Show each iteration: text, critique, scores
+    for h in history:
+        with st.expander(f"Iteration {h['iter']} — avg {h['avg']:.1f}"):
+            st.write("**Text:**")
+            st.write(h["text"])
+            st.write("**Critique:**")
+            st.info(h["critique"])
+            st.write("**Scores:**")
+            st.json(h["scores"])
+
+    final = history[-1]
+    st.subheader(f"Final — iter {final['iter']}, avg {final['avg']:.1f}")
+    st.write(final["text"])</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-19">
+<div class="slide-content">
+<h2 class="slide-title">Step 5 — <strong>Cross-Model Critique</strong> (no extra code)</h2>
+<p class="slide-subtitle">Just pick a different model in the UI</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔀</span> The Experiment</div>
+<div class="card-body"><ul><li>Run Reflexion with <code class="inline-code">model = critic</code> (same model) → record the final score</li><li>Run again with <code class="inline-code">critic</code> set to a DIFFERENT model → record the final score</li><li>The function signature already supports this — no code change needed</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔬</span> What to Look For</div>
+<div class="card-body"><ul><li>Does cross-model critique find issues same-model critique misses?</li><li>Are the critiques themselves different in style and depth?</li><li>Does the final score actually improve?</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚠️</span> Possible Surprises</div>
+<div class="card-body"><ul><li>Cross-model may NOT improve scores if both models share biases</li><li>The "different" critic might just be wrong in unfamiliar ways</li><li>Real test: read both critiques and judge them yourself</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Don't trust the score difference alone — read what each critic said. The educational value is in noticing what each missed."</div>
+</div>
+</section>
+<section class="slide" id="slide-20">
+<div class="slide-content">
+<h2 class="slide-title">✅ <strong>Week 11 Practice Checklist</strong></h2>
+<div class="highlight-quote">Complete these stages in order:</div>
+<p class="slide-text">1. - [ ] Add <code class="inline-code">self_critique()</code> to <code class="inline-code">evaluator.py</code></p>
+<p class="slide-text">2. - [ ] Add <code class="inline-code">self_revise()</code> to <code class="inline-code">evaluator.py</code></p>
+<p class="slide-text">3. - [ ] Test <code class="inline-code">self_critique</code> alone — does the critique mention specific phrases?</p>
+<p class="slide-text">4. - [ ] Test <code class="inline-code">self_revise</code> alone — does the revision actually address the critique?</p>
+<p class="slide-text">5. - [ ] Add <code class="inline-code">reflexion_loop()</code> to <code class="inline-code">evaluator.py</code></p>
+<p class="slide-text">6. - [ ] Append the Reflexion UI to <code class="inline-code">app.py</code></p>
+<p class="slide-text">7. - [ ] Run with same model as critic — observe the iteration trajectory</p>
+<p class="slide-text">8. - [ ] Compare final score with Week 10's threshold loop on the same hometown</p>
+<p class="slide-text">9. - [ ] Run with a DIFFERENT critic model</p>
+<p class="slide-text">10. - [ ] Read both critique sets — what does each catch that the other misses?</p>
+<p class="slide-text">11. - [ ] <strong>Bonus</strong>: add memory — pass past critiques to the next <code class="inline-code">self_critique</code> call</p>
+</div>
+</section>
+<section class="slide title-slide" id="slide-21">
+<div class="slide-content">
+<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+<p class="slide-subtitle">1,000 AI Agents vs 10 Experts — and What That Means for Self-Reflection</p>
+</div>
+</section>
+<section class="slide" id="slide-22">
+<div class="slide-content">
+<h2 class="slide-title">Week 10 — <strong>The Consensus Dilemma</strong></h2>
+<p class="slide-subtitle">8 responses analyzed — Hulk wins again, but the framing varies</p>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">📊</span> The Vote Distribution</div>
+<div class="card-body"><ul><li><strong>Hulk only (3)</strong>: Waad, Yadanar — <strong>2 votes</strong></li><li><strong>Iron Man only (1)</strong>: Rupam, Manuella — <strong>2 votes</strong></li><li><strong>Captain America + Hulk (2,3)</strong>: Minh, Margareth — <strong>2 votes</strong></li><li><strong>Iron Man + Hulk (1,3)</strong>: Irfan — <strong>1 vote</strong></li><li><strong>All three (1,2,3)</strong>: Huy — <strong>1 vote</strong></li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🤝</span> The Coalition</div>
+<div class="card-body"><ul><li>6/8 students explicitly include Hulk's verification stance</li><li>The "10 experts > 1,000 agents" intuition holds</li><li>Even Iron Man supporters (Manuella, Rupam) acknowledge human oversight needed</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">🔥</span> Three New Conceptual Frames</div>
+<div class="card-body"><ul><li><strong>Yadanar/Margareth</strong>: the echo chamber problem (homogeneous models)</li><li><strong>Huy</strong>: persuasive ≠ reliably correct</li><li><strong>Minh</strong>: AI as interpolation within a "Knowledge Seed", not autonomous discovery</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-23">
+<div class="slide-content">
+<h2 class="slide-title">Theme 1 — <strong>The Echo Chamber Problem</strong></h2>
+<p class="slide-subtitle">Why volume of AI agents doesn't equal reliability</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔁</span> Yadanar's Argument</div>
+<div class="card-body"><ul><li>"If those agents are similar in design or trained on overlapping data, they can reinforce the same mistake"</li><li>Medical diagnosis: many models agree, but a human catches what's unusual</li><li>Consensus from homogeneous sources = <strong>misleading</strong> consensus</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📐</span> Margareth's Refinement</div>
+<div class="card-body"><ul><li>"If the 1,000 AI agents are based on similar models, they may also reinforce the same patterns"</li><li>Distinguishes <strong>persuasive</strong> (accessible, interactive) from <strong>trustworthy</strong> (verified)</li><li>AI feels persuasive in interaction but not in correctness</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💡</span> Hulk's Original Frame</div>
+<div class="card-body"><ul><li>"Network a thousand unchecked models together → exponentially amplify a single hallucination"</li><li>This is mathematically the same as Yadanar's biological intuition</li><li>The echo chamber is a structural property, not a bug</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Volume of agreement ≠ correctness when the agents share blind spots." — synthesis</div>
+</div>
+</section>
+<section class="slide" id="slide-24">
+<div class="slide-content">
+<h2 class="slide-title">Theme 2 — <strong>Huy's Sharpest Cut: Persuasive ≠ Correct</strong></h2>
+<p class="slide-subtitle">The deepest critique of the question itself</p>
+<div class="cards-grid">
+<div class="card card-purple">
+<div class="card-header"><span class="icon">💎</span> Reframing the Question</div>
+<div class="card-body"><ul><li>"The question asks which is more persuasive, but the more important question is which is more reliably correct"</li><li>Persuasiveness can be a <strong>danger signal</strong> when it diverges from correctness</li><li>Confident AI consensus is the most persuasive AND most dangerous form</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The Asymmetric Risk</div>
+<div class="card-body"><ul><li>"10 epistemically diverse human experts > 1,000 homogeneous AI agents for novel problem framing"</li><li>Disagreement among experts is <strong>informative</strong> (signal)</li><li>Consensus among AI agents can be a <strong>correlated illusion</strong> (noise)</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Director's Skill</div>
+<div class="card-body"><ul><li>Know which category your problem falls into:</li><li>High-volume, well-specified, measurable → AI agents at scale</li><li>Architectural, novel, ambiguous → diverse human experts</li><li>Resist the persuasive force of confident AI output when you're in category 2</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Scale amplifies both insight and error. The irreplaceable skill is knowing which one you're looking at." — Huy</div>
+</div>
+</section>
+<section class="slide" id="slide-25">
+<div class="slide-content">
+<h2 class="slide-title">Theme 3 — <strong>Minh's Frame: Interpolation vs Discovery</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🌱</span> The Knowledge Seed</div>
+<div class="card-body"><ul><li>"AI is currently confined to the boundaries of the 'Knowledge Seed' provided by human experts"</li><li>It rearranges and optimizes within a known space</li><li>Human experts provide the ground truth that anchors AI</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🚀</span> First Principles vs Interpolation</div>
+<div class="card-body"><ul><li>AI = engine of interpolation (very good at it)</li><li>Human = capable of First Principles intuition (rare but irreplaceable)</li><li>"True discovery requires the ability to step outside the existing dataset"</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔗</span> Connection to Today</div>
+<div class="card-body"><ul><li>Self-reflection works WITHIN the model's existing knowledge</li><li>It cannot generate insights the model doesn't already implicitly contain</li><li>This is why cross-model critique helps — it imports knowledge from a different "seed"</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-26">
+<div class="slide-content">
+<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+<p class="slide-subtitle">Self-reflection has the SAME echo chamber problem at smaller scale</p>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> Same-Model Critique = One-Model Echo Chamber</div>
+<div class="card-body"><ul><li>When Model A critiques Model A's output, it shares Model A's blind spots</li><li>You get specific feedback, but not on the issues that ALSO escape the critique</li><li>This is Yadanar's 1,000-agent problem at N=1</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔀</span> Cross-Model Critique = Importing Diversity</div>
+<div class="card-body"><ul><li>Use a DIFFERENT model as critic</li><li>It brings different blind spots — and so different insights</li><li>This is Huy's "epistemically diverse" principle, applied in code</li><li>Even one different model > N copies of the same model</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Practice You Just Did</div>
+<div class="card-body"><ul><li>Stage 2 (same-model critique) → Yadanar's worst case</li><li>Stage 3 (cross-model critique) → the fix</li><li>Read the critiques side by side — was the cross-model one different in a useful way?</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-27">
+<div class="slide-content">
+<h2 class="slide-title">Activity — <strong>Read Two Critiques Side by Side</strong></h2>
+<p class="slide-subtitle">10 minutes — pair work</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📋</span> The Task</div>
+<div class="card-body"><ul><li>Take ONE hometown intro you generated</li><li>Get a same-model critique (Stage 2 result) and a cross-model critique (Stage 3 result)</li><li>Read both carefully</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔍</span> Compare Along Three Dimensions</div>
+<div class="card-body"><ul><li><strong>Coverage</strong>: did each critic find issues the other missed?</li><li><strong>Style</strong>: do the two critiques have different "voices" / focus areas?</li><li><strong>Usefulness</strong>: which critique would you actually act on?</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💡</span> Discussion Question for Pairs</div>
+<div class="card-body"><ul><li>If you had unlimited budget, would you use one strong critic, or three different critics?</li><li>When does diversity help, and when does it just add noise?</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-28">
+<div class="slide-content">
+<h2 class="slide-title">🗣️ <strong>Week 11 Discussion Questions</strong> (UST LMS)</h2>
+<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+<p class="slide-text">1. In today's practice, did <strong>cross-model critique</strong> actually find issues that <strong>same-model critique</strong> missed? Share one specific example. Connect to Yadanar's "echo chamber" argument from Week 10.</p>
+<p class="slide-text">2. Huy distinguished "persuasive" from "reliably correct." When you read a long, fluent self-critique from an LLM, <strong>does its eloquence make you trust it more — even when you can't verify the claims?</strong> What guards against this?</p>
+</div>
+</section>
+<section class="slide" id="slide-29">
+<div class="slide-content">
+<h2 class="slide-title">Want to Learn More?</h2>
+<p class="slide-text">Self-Reflection Research</p>
+<div class="highlight-quote">📄 [Reflexion: Language Agents with Verbal Reinforcement Learning (2023)](https://arxiv.org/abs/2303.11366)</div>
+<div class="highlight-quote">📄 [Self-Refine: Iterative Refinement with Self-Feedback (2023)](https://arxiv.org/abs/2303.17651)</div>
+<div class="highlight-quote">📄 [Constitutional AI — Self-Critique for Alignment (Anthropic, 2022)](https://arxiv.org/abs/2212.08073)</div>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Multi-Agent Critique</p>
+<div class="highlight-quote">📄 [Improving Factuality and Reasoning via Multiagent Debate (2023)](https://arxiv.org/abs/2305.14325)</div>
+<a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" class="reference-link">📚 Anthropic: Building Effective Agents</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Anthropic Free Online Courses</p>
+<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)</div>
+<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
+</div>
+</section>
+<section class="slide" id="slide-30">
+<div class="slide-content">
+<h2 class="slide-title">Wrap-Up of <strong>Week 11</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> Lecture</div>
+<div class="card-body"><ul><li>Self-reflection adds qualitative critique to Week 10's quantitative scoring; the Reflexion pattern (generate → critique → revise → score) makes the loop more informed; cross-model critique breaks the self-bias echo chamber</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> Practice</div>
+<div class="card-body"><ul><li>Extended <code class="inline-code">evaluator.py</code> with <code class="inline-code">self_critique</code>, <code class="inline-code">self_revise</code>, <code class="inline-code">reflexion_loop</code>; added a Reflexion UI section to <code class="inline-code">app.py</code> that shows critiques alongside scores; experimented with cross-model critique</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+<div class="card-body"><ul><li>Week 10 review (8 responses): echo chamber problem (Yadanar, Margareth), persuasive ≠ correct (Huy), interpolation vs discovery (Minh); same-model self-reflection has the SAME echo chamber risk → cross-model critique imports diversity</li></ul></div>
+</div>
+</div>
+<p class="slide-text"><strong>Next week:</strong> Multi-agent collaboration — when one agent isn't enough.</p>
+</div>
+</section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">30</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(13)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(21)">Discussion</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 30;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+      
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+      
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+      
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if(currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if(currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if(newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+           currentSlide = newSlide;
+           pageInput.value = currentSlide;
+           updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if(e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: -100, behavior: 'smooth'});
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: 100, behavior: 'smooth'});
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+         const pageNum = parseInt(hash.replace('#slide-', ''));
+         if(!isNaN(pageNum)) {
+           setTimeout(() => goToSlide(pageNum), 100);
+         }
+      }
+    });
+  </script>
+</body>
+</html>
