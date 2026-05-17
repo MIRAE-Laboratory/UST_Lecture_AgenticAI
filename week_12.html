@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<!-- Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --text-main: #1e293b;
+    --accent: #0f4c81;
+    --card-blue: #eff6ff;
+    --border-blue: #bfdbfe;
+    --card-green: #f0fdf4;
+    --border-green: #bbf7d0;
+    --card-orange: #fff7ed;
+    --border-orange: #fed7aa;
+    --card-pink: #fdf2f8;
+    --border-pink: #fbcfe8;
+    --card-purple: #faf5ff;
+    --border-purple: #e9d5ff;
+    --card-yellow: #fefce8;
+    --border-yellow: #fef08a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    overflow: hidden; /* Hide scrollbars, use custom navigation */
+    font-size: 1.8rem;
+  }
+  .presentation {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    width: 100vw;
+  }
+  .presentation::-webkit-scrollbar { display: none; }
+  .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 60px 80px; /* Top/Bottom 60px, Left/Right 80px for margins */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-content {
+    background: var(--bg-main);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    font-size: 1rem; /* 1.5x of original */
+  }
+  .slide-title {
+    font-size: 2rem; /* 1.5x of original */
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    border-bottom: 5px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: 1rem; /* 1.5x of original */
+    color: #64748b;    
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  /* Title Slide Variations */
+  .title-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  }
+  .title-slide .slide-title { font-size: 2.5rem; border: none; margin-bottom: 1.5rem; color: var(--accent); }
+  .title-slide .slide-subtitle { font-size: 1.5rem; font-weight: 600; color: #334155; }
+  
+  /* Title Emphasis Variations */
+  .title-emphasis-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+  .title-emphasis-slide .slide-title {
+    font-size: 3rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-emphasis-slide .slide-subtitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+  
+  /* Layouts */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased min-width to prevent 4 columns on wide screens */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+  .card-header { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.4rem; }
+  .card-header .icon { font-size: 1.3rem; margin-right: 0.5rem; }
+  .card-body ul { list-style-type: none; padding-left: 0; }
+  .card-body li { margin-bottom: 0.5rem; position: relative; padding-left: 1.2rem; line-height: 1.4; font-size: 0.95rem; }
+  .card-body li::before { content: "•"; color: #94a3b8; font-weight: bold; position: absolute; left: 0; top: 0; }
+  .plain-bullets li { position: relative; padding-left: 1.2rem; list-style-type: none; }
+  .plain-bullets li::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: 0; top: 0; }
+  
+  .slide-text {
+    font-size: 1.6rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  .card-blue { background: var(--card-blue); border-color: var(--border-blue); color: #1e3a8a; }
+  .card-green { background: var(--card-green); border-color: var(--border-green); color: #14532d; }
+  .card-orange { background: var(--card-orange); border-color: var(--border-orange); color: #7c2d12; }
+  .card-pink { background: var(--card-pink); border-color: var(--border-pink); color: #831843; }
+  .card-purple { background: var(--card-purple); border-color: var(--border-purple); color: #4c1d95; }
+  .card-yellow { background: var(--card-yellow); border-color: var(--border-yellow); color: #713f12; }
+  
+  .highlight-quote {
+    background: #f8fafc;
+    border-left: 5px solid var(--accent);
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .image-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    margin: 0.5rem 0;
+  }
+  .img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .image-container {
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .slide-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .slide-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Modal Overlay */
+  .image-modal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .image-modal.active {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 9999;
+  }
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .image-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: #94a3b8;
+  }
+  .img-caption {
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .mermaid-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+  }
+  .mermaid-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .mermaid-group .mermaid-container {
+    margin: 0;
+    flex: 1;
+    min-height: auto;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Consolas', monospace;
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  .mermaid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .reference-link {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .inline-code {
+    background: #e2e8f0;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .styled-table th { background: #334155; color: white; text-align: left; padding: 1rem; }
+  .styled-table td { padding: 1rem; background: white; border-bottom: 1px solid #f1f5f9; }
+  .styled-table tr:hover td { background: #f8fafc; }
+  
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .flow-step {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #cbd5e1;
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin: 0 1rem;
+  }
+  
+  .slide-number {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .plain-bullets {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+  .plain-bullets li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Fixed Layout Elements */
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: #0f172a;
+    color: #94a3b8;
+    z-index: 2000;
+    border-bottom: 1px solid #1e293b;
+  }
+  .header-logo { color: white; margin-right: 1.5rem; letter-spacing: -0.5px; font-size: 0.75rem; }
+  .header-sep { color: #334155; margin: 0 1rem; }
+  .header-subtitle { font-size: 0.75rem; }
+
+  .side-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* 2/3 of 50px approx */
+    height: 70px; /* 2/3 of 100px approx */
+    background: rgba(30, 41, 59, 0.4);
+    border: none;
+    color: white;
+    font-size: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: background 0.2s, width 0.2s;
+    border-radius: 6px;
+  }
+  .side-nav-btn:hover { background: rgba(37, 99, 235, 0.8); width: 45px; }
+  .prev-side { left: 10px; }
+  .next-side { right: 10px; }
+
+  /* Navigation Bar (Fixed Bottom) */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    height: 50px;
+    z-index: 2000;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .nav-main-btn {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 20px;
+  }
+  .btn-nav {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover {
+    background: #1e293b;
+    color: white;
+  }
+  .page-input-wrapper {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin: 0 8px;
+    font-family: monospace;
+  }
+  .page-input {
+    background: transparent;
+    border: 1px solid #334155;
+    color: white;
+    width: 32px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    padding: 1px;
+    margin-right: 4px;
+  }
+  .section-links {
+    display: flex;
+    gap: 16px;
+    border-left: 1px solid #1e293b;
+    padding-left: 20px;
+  }
+  .nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <header class="global-header">
+    <span class="header-logo">Memory and Retrieval-Augmented Generation</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">Vector Databases — How AI Remembers Across Sessions</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+<div class="slide-content">
+<h1 class="slide-title">Memory and Retrieval-Augmented Generation</h1>
+<p class="slide-subtitle">Vector Databases — How AI Remembers Across Sessions</p>
+<div class="highlight-quote">Week 12 of Phase 3: Advanced Patterns (Weeks 9-12)</div>
+</div>
+</section>
+<section class="slide" id="slide-2">
+<div class="slide-content">
+<h2 class="slide-title">Contents</h2>
+<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 12</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+<div class="card-body"><ul><li>The memory problem — LLMs forget after every call</li><li>Embeddings, vector databases, and similarity search — explained simply</li><li>The RAG pattern: retrieve → augment → generate</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+<div class="card-body"><ul><li>Build a vector memory from your paper PDFs (extends Week 6 pipeline)</li><li>Ask a question → see the top N most relevant chunks with similarity scores</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+<div class="card-body"><ul><li>Week 11 — Is "teaching" AI a new form of mentorship?</li><li>The class largely rejects the metaphor — what's the better frame?</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-3">
+<div class="slide-content">
+<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+<p class="slide-subtitle">Long-Term Context with Vector Databases</p>
+</div>
+</section>
+<section class="slide" id="slide-4">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Memory Problem</strong> — LLMs Forget Everything</h2>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">🧠</span> What Today's LLM Knows</div>
+<div class="card-body"><ul><li>Only what was in its training data (months/years old)</li><li>Only what you put in the current prompt</li><li><strong>Nothing about your previous conversations</strong></li><li><strong>Nothing about YOUR documents</strong> unless you paste them in</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📝</span> What This Means in Practice</div>
+<div class="card-body"><ul><li>You build an agent → it works in this session</li><li>Tomorrow you ask "what did we figure out yesterday?" → it has no idea</li><li>You upload 100 papers → it can read 1-2 at a time</li><li>There's no built-in "remember this for next time"</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> Today's Goal</div>
+<div class="card-body"><ul><li>Give the LLM a <strong>searchable memory</strong> of your documents</li><li>It can pull in the relevant parts when needed</li><li>Without you having to paste everything every time</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-5">
+<div class="slide-content">
+<h2 class="slide-title">The Naive Fix — <strong>Just Paste Everything</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🤔</span> Why Not Just Include All Papers?</div>
+<div class="card-body"><ul><li>"Just paste all 100 papers into the prompt every time"</li><li>Simple — model gets full context</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">❌</span> Why It Doesn't Work</div>
+<div class="card-body"><ul><li><strong>Cost</strong>: pasting 100 papers per call costs 100x more tokens</li><li><strong>Latency</strong>: 200,000-token prompts are slow</li><li><strong>Context limit</strong>: even the biggest models cap around 1-2 million tokens</li><li><strong>Signal vs noise</strong>: model gets lost in 100 papers; needs the RIGHT 2-3</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💡</span> The Better Idea</div>
+<div class="card-body"><ul><li>Find the <strong>relevant 2-3 papers</strong> for the current question</li><li>Paste only those into the prompt</li><li>But how do we know what's relevant without reading everything?</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-6">
+<div class="slide-content">
+<h2 class="slide-title">What is an <strong>Embedding</strong>?</h2>
+<p class="slide-subtitle">The single most important concept this week</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔢</span> The Idea</div>
+<div class="card-body"><ul><li>An embedding turns text into a <strong>list of numbers</strong> (typically 768 or 1024 numbers)</li><li>Each number represents some hidden aspect of the text's meaning</li><li>You don't read these numbers — but the computer can compare them</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🪞</span> Why It Helps</div>
+<div class="card-body"><ul><li>Two texts with <strong>similar meaning</strong> get <strong>similar number lists</strong></li><li>Two unrelated texts get <strong>very different</strong> number lists</li><li>So "compare meanings" becomes "compare lists of numbers" — fast and easy</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📝</span> Concrete Example</div>
+<div class="card-body"><ul><li>"What is a transformer in AI?" → <code class="inline-code">[0.12, -0.85, 0.34, ...]</code></li><li>"Explain the attention mechanism" → <code class="inline-code">[0.15, -0.81, 0.31, ...]</code> (close!)</li><li>"How do I make kimchi?" → <code class="inline-code">[-0.67, 0.42, -0.91, ...]</code> (far away)</li><li>The math: just numerical distance between these lists</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-7">
+<div class="slide-content">
+<h2 class="slide-title">A <strong>Map of Meanings</strong> — The Mental Picture</h2>
+<p class="slide-subtitle">Imagine every sentence has a location</p>
+<div class="mermaid-container"><div class="mermaid">graph TB
+    subgraph "Map of Meanings (2D simplification)"
+      ML["🤖 Machine learning"]
+      DL["🧠 Deep learning"]
+      NN["⚙️ Neural networks"]
+      KIM["🥬 How to make kimchi"]
+      SOUP["🍲 Korean soup recipes"]
+      BUS["🚌 Bus schedule"]
+    end
+
+    ML -.->|close| DL
+    DL -.->|close| NN
+    ML -.->|close| NN
+    KIM -.->|close| SOUP
+    KIM -.->|far| ML
+    BUS -.->|far| everything
+
+    style ML fill:#cce5ff
+    style DL fill:#cce5ff
+    style NN fill:#cce5ff
+    style KIM fill:#d4edda
+    style SOUP fill:#d4edda
+    style BUS fill:#fff3cd</div></div>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> The Intuition</div>
+<div class="card-body"><ul><li>Real embeddings live in 1000+ dimensional space, not 2D — but the idea is the same</li><li>"Find similar meaning" = "find points near each other on this map"</li><li><strong>You don't have to understand the dimensions — just trust the distance</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-8">
+<div class="slide-content">
+<h2 class="slide-title">What is a <strong>Vector Database</strong>?</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🗄️</span> The Definition</div>
+<div class="card-body"><ul><li>A storage system designed to find <strong>nearest neighbors</strong> in vector space</li><li>Input: a query vector</li><li>Output: the top N stored vectors closest to it, with similarity scores</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📚</span> What It Stores</div>
+<div class="card-body"><ul><li>For each piece of text: <code class="inline-code">(text, embedding_vector, optional_metadata)</code></li><li>Example: <code class="inline-code">("Transformers use attention...", [0.12, -0.85, ...], {"source": "paper1.pdf"})</code></li><li>You can store millions of these and search in milliseconds</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🛠️</span> Common Choices</div>
+<div class="card-body"><ul><li><strong>In-memory (numpy)</strong>: simplest, good for thousands of chunks</li><li><strong>FAISS, Chroma</strong>: open source, fast, easy to start</li><li><strong>Pinecone, Weaviate</strong>: hosted, production-scale</li><li>For today: pure numpy — you'll see exactly what's happening, no magic</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-9">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Similarity Search</strong> — Cosine Similarity in One Slide</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📐</span> The Math (One Formula)</div>
+<div class="card-body"><ul><li>Cosine similarity = <code class="inline-code">dot(a, b) / (norm(a) * norm(b))</code></li><li>Output is between -1 and 1</li><li><strong>1.0 = identical direction</strong>, 0 = unrelated, -1 = opposite</li><li>Most text embeddings stay in 0.0–1.0 range</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> How We Use It</div>
+<div class="card-body"><ul><li>Embed user's question → query vector <code class="inline-code">q</code></li><li>For each chunk in store: compute <code class="inline-code">cosine_sim(q, chunk_vector)</code></li><li>Sort by similarity (highest first)</li><li>Return top N</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚡</span> Interpreting the Score</div>
+<div class="card-body"><ul><li>0.85+ → very strong match (probably what user wants)</li><li>0.65–0.85 → relevant, worth showing</li><li>Below 0.5 → weak — probably not useful</li><li>Threshold values depend on your embedding model</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-10">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>RAG Pattern</strong> — Retrieval-Augmented Generation</h2>
+<p class="slide-subtitle">Search before you generate</p>
+<div class="mermaid-container"><div class="mermaid">graph LR
+    Q[❓ User Question] --> E1[Embed Question]
+    E1 --> S[Search Vector DB]
+    S --> T[Top N Chunks<br/>+ similarity scores]
+    T --> P[Build Prompt:<br/>Question + Chunks]
+    P --> L[🤖 LLM Generates Answer]
+    L --> A[💬 Answer with Citations]
+
+    style Q fill:#fff3cd
+    style S fill:#cce5ff
+    style T fill:#d6e4f0
+    style L fill:#ffe5cc
+    style A fill:#d4edda</div></div>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Why "Augmented"?</div>
+<div class="card-body"><ul><li>The LLM's prompt is <strong>augmented</strong> with retrieved context</li><li>It answers based on what was just retrieved, not just training data</li><li>This is how ChatGPT handles file uploads, Notion AI, Perplexity, etc.</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-11">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Memory of Past Tasks</strong> — Beyond Documents</h2>
+<p class="slide-subtitle">The bigger picture for agentic AI</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📓</span> What to Remember</div>
+<div class="card-body"><ul><li>Past user questions + the agent's answers</li><li>Past tool calls + their results</li><li>Past failures + what fixed them</li><li>Reflexion critiques from Week 11</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔍</span> How Memory Helps</div>
+<div class="card-body"><ul><li>When a similar task comes up → retrieve past examples</li><li>"Last time I asked about X, the agent used tool Y and got result Z"</li><li>Avoids repeating same exploration; reuses lessons learned</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚠️</span> Selective Memory Matters</div>
+<div class="card-body"><ul><li>Remember what worked → reinforce good patterns</li><li>Remember what failed → avoid same mistakes</li><li>But also: when should the agent <strong>forget</strong> outdated info?</li><li>This is the Week 12 discussion topic</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-12">
+<div class="slide-content">
+<h2 class="slide-title">When RAG <strong>Helps</strong> vs <strong>Hurts</strong></h2>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> RAG Helps Most When</div>
+<div class="card-body"><ul><li>The answer lives in YOUR documents, not the LLM's training data</li><li>Documents are too many to paste in full</li><li>Users ask questions that map to specific passages</li><li>You need citations to actual sources</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">❌</span> RAG Hurts When</div>
+<div class="card-body"><ul><li>The retrieved chunks are not actually relevant (poor chunking, weak embeddings)</li><li>The question requires synthesizing across MANY chunks (top-N isn't enough)</li><li>The LLM gets confused by irrelevant retrieved context</li><li>Latency budget is tight (embedding + search adds overhead)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🎯</span> Practical Tips</div>
+<div class="card-body"><ul><li><strong>Chunk size matters</strong>: too small = lose context, too big = too much noise</li><li><strong>Always show similarity scores</strong> to the user — transparency catches bad retrieval</li><li><strong>Hybrid search</strong> (keyword + vector) often beats pure vector for technical domains</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-13">
+<div class="slide-content">
+<h2 class="slide-title">Lecture Summary — <strong>Memory and RAG</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔢</span> Embeddings</div>
+<div class="card-body"><ul><li>Turn text into number lists where similar meaning = similar numbers</li><li>This makes "find related text" a math problem (cosine similarity)</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🗄️</span> Vector Database + Search</div>
+<div class="card-body"><ul><li>Stores <code class="inline-code">(text, embedding)</code> pairs</li><li>Given a query embedding, returns nearest neighbors with scores</li><li>You can build one in pure numpy for thousands of chunks</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔁</span> The RAG Pattern</div>
+<div class="card-body"><ul><li>Embed query → search → retrieve top N → put in LLM prompt → generate</li><li>This is how AI assistants gain access to YOUR documents</li><li>For agentic AI: extends to remembering past tasks, failures, decisions</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-14">
+<div class="slide-content">
+<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+<p class="slide-subtitle">Build a Paper Memory with Vector Search</p>
+</div>
+</section>
+<section class="slide" id="slide-15">
+<div class="slide-content">
+<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Goal</div>
+<div class="card-body"><ul><li>Take the <strong>MD files extracted in Week 6</strong> (paper PDFs → Markdown)</li><li>Chunk them, embed each chunk, store in an in-memory vector DB</li><li>User asks a question → app shows <strong>top N chunks</strong> with similarity scores</li><li>Optional: pass top chunks to LLM for a synthesized answer</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📁</span> New File</div>
+<div class="card-body"><ul><li><code class="inline-code">memory.py</code> — chunking, embedding, vector store, search</li><li><code class="inline-code">app.py</code> — append a new section "🧠 Paper Memory"</li><li>Reuses MD files in <code class="inline-code">md_output/</code> from Week 6</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚡</span> Why Show Similarity Scores?</div>
+<div class="card-body"><ul><li>Transparency — user sees WHY this chunk was retrieved</li><li>If scores are all low (e.g., 0.3) → no good answer in the docs</li><li>Connects to Week 11: visible feedback enables judgment</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-16">
+<div class="slide-content">
+<h2 class="slide-title">Step 1 — <strong>Chunking</strong> (<code class="inline-code">memory.py</code>)</h2>
+<p class="slide-subtitle">Split long Markdown files into searchable pieces</p>
+<pre class="code-block"><code class="language-python"># memory.py
+from pathlib import Path
+
+CHUNK_SIZE = 800       # characters per chunk
+CHUNK_OVERLAP = 100    # overlap to preserve context across boundaries
+
+
+def chunk_text(text, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
+    """Split a long text into overlapping chunks."""
+    chunks = []
+    i = 0
+    while i &lt; len(text):
+        chunks.append(text[i:i + size])
+        i += size - overlap
+    return chunks</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Why Overlap?</div>
+<div class="card-body"><ul><li>A sentence might be split across two chunks</li><li>Overlap ensures key phrases appear in at least one chunk fully</li><li>Typical: 10-15% overlap (here: 100/800 ≈ 12.5%)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-17">
+<div class="slide-content">
+<h2 class="slide-title">Step 2 — <strong>Embedding Function</strong> (<code class="inline-code">memory.py</code>)</h2>
+<p class="slide-subtitle">Convert text to a vector using Gemini embeddings</p>
+<pre class="code-block"><code class="language-python">import numpy as np
+
+EMBEDDING_MODEL = "gemini-embedding-001"
+
+def embed_text(client, text, model=EMBEDDING_MODEL):
+    """Get an embedding vector for a piece of text."""
+    result = client.models.embed_content(
+        model=model,
+        contents=text,
+    )
+    return np.array(result.embeddings[0].values)</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> What You Get Back</div>
+<div class="card-body"><ul><li>A numpy array of ~768 or 1024 floats</li><li>Same model + same text → same embedding (deterministic)</li><li>Different text → different embedding (usually)</li><li>The numbers themselves are meaningless to read</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-18">
+<div class="slide-content">
+<h2 class="slide-title">Step 3 — <strong>Build the Vector Store</strong> (<code class="inline-code">memory.py</code>)</h2>
+<p class="slide-subtitle">Process all MD files into searchable chunks</p>
+<pre class="code-block"><code class="language-python">def build_vector_store(client, md_dir="md_output"):
+    """Read all MD files, chunk them, embed each chunk."""
+    store = []  # list of dicts with text, embedding, source
+    md_files = list(Path(md_dir).glob("*.md"))
+    for md_file in md_files:
+        text = md_file.read_text(encoding="utf-8")
+        for chunk_idx, chunk in enumerate(chunk_text(text)):
+            embedding = embed_text(client, chunk)
+            store.append({
+                "text": chunk,
+                "embedding": embedding,
+                "source": md_file.name,
+                "chunk_idx": chunk_idx,
+            })
+    return store</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Pure In-Memory</div>
+<div class="card-body"><ul><li>Just a Python list — no database server</li><li>Fast enough for a few thousand chunks</li><li>Lost when app restarts — see "Persistence" in checklist for upgrade</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-19">
+<div class="slide-content">
+<h2 class="slide-title">Step 4 — <strong>Similarity Search</strong> (<code class="inline-code">memory.py</code>)</h2>
+<p class="slide-subtitle">Cosine similarity, top-N results</p>
+<pre class="code-block"><code class="language-python">def cosine_sim(a, b):
+    """Cosine similarity between two vectors."""
+    return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
+
+
+def search(client, query, store, top_k=5):
+    """Return top_k chunks most similar to query, sorted by similarity."""
+    query_vec = embed_text(client, query)
+    scored = []
+    for item in store:
+        sim = cosine_sim(query_vec, item["embedding"])
+        scored.append({**item, "similarity": sim})
+    scored.sort(key=lambda x: -x["similarity"])
+    return scored[:top_k]</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> The Whole "Vector DB" in 6 Lines</div>
+<div class="card-body"><ul><li>This IS what a vector database does, just slower at scale</li><li>Real vector DBs use clever indexing (HNSW, IVF) for millions of vectors</li><li>For learning + thousands of chunks → numpy is perfect</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-20">
+<div class="slide-content">
+<h2 class="slide-title">Step 5 — <strong>Streamlit UI</strong> (append to <code class="inline-code">app.py</code>)</h2>
+<p class="slide-subtitle">Build store once, query many times</p>
+<pre class="code-block"><code class="language-python"># At top of app.py, add:
+from memory import build_vector_store, search
+
+# Append at the bottom:
+st.divider()
+st.header("🧠 Paper Memory (Vector Search)")
+
+if "vector_store" not in st.session_state:
+    st.session_state.vector_store = None
+
+if st.button("🔨 Build / Rebuild Vector Store"):
+    with st.spinner("Embedding all chunks..."):
+        st.session_state.vector_store = build_vector_store(client)
+    st.success(f"Built store with {len(st.session_state.vector_store)} chunks")
+
+query = st.text_input(
+    "Ask about your papers",
+    placeholder="e.g., How does deep learning predict material properties?",
+)
+top_k = st.slider("How many results", 1, 10, 5)
+
+if st.button("🔍 Search", disabled=not (query and st.session_state.vector_store)):
+    with st.spinner("Searching..."):
+        results = search(client, query, st.session_state.vector_store, top_k=top_k)
+
+    for i, r in enumerate(results, 1):
+        with st.expander(
+            f"#{i} — similarity {r['similarity']:.2%} — "
+            f"{r['source']} (chunk {r['chunk_idx']})"
+        ):
+            st.write(r["text"])</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Caching the Store</div>
+<div class="card-body"><ul><li>Storing in <code class="inline-code">st.session_state</code> means you rebuild only when needed</li><li>Embedding 100 papers takes time — don't redo it on every query</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-21">
+<div class="slide-content">
+<h2 class="slide-title">Step 6 (Bonus) — <strong>Generate an Answer with Retrieved Context</strong></h2>
+<p class="slide-subtitle">Full RAG — search results feed into LLM</p>
+<pre class="code-block"><code class="language-python"># Bonus: append to memory.py
+def rag_answer(client, model, query, store, top_k=5):
+    """Retrieve top chunks, then ask LLM to answer with them as context."""
+    results = search(client, query, store, top_k=top_k)
+    context = "\n\n---\n\n".join(
+        f"[Source: {r['source']}, similarity {r['similarity']:.2f}]\n{r['text']}"
+        for r in results
+    )
+    prompt = f"""Answer the question using ONLY the context below.
+If the context doesn't contain the answer, say so.
+
+Context:
+{context}
+
+Question: {query}
+
+Answer with citations to the source filenames."""
+    return llm_call(client, model, prompt), results</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Always Return BOTH</div>
+<div class="card-body"><ul><li>Return the answer AND the retrieved chunks</li><li>User can verify the answer against the actual sources</li><li>This is the practical version of "show your work"</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-22">
+<div class="slide-content">
+<h2 class="slide-title">✅ <strong>Week 12 Practice Checklist</strong></h2>
+<div class="highlight-quote">Complete these stages in order:</div>
+<p class="slide-text">1. - [ ] Create <code class="inline-code">memory.py</code> with <code class="inline-code">chunk_text()</code> and <code class="inline-code">embed_text()</code></p>
+<p class="slide-text">2. - [ ] Test <code class="inline-code">embed_text("hello")</code> — confirm you get a numpy array back</p>
+<p class="slide-text">3. - [ ] Add <code class="inline-code">build_vector_store()</code> — print the number of chunks created</p>
+<p class="slide-text">4. - [ ] Add <code class="inline-code">cosine_sim()</code> and <code class="inline-code">search()</code></p>
+<p class="slide-text">5. - [ ] Append the Streamlit section to <code class="inline-code">app.py</code></p>
+<p class="slide-text">6. - [ ] Build the store, then ask a question from one of your papers — does the top result come from that paper?</p>
+<p class="slide-text">7. - [ ] Ask a question NOT covered by any paper — what similarity scores do you see?</p>
+<p class="slide-text">8. - [ ] Try chunk sizes 300, 800, 1500 — does retrieval quality change?</p>
+<p class="slide-text">9. - [ ] Look at chunks that "felt wrong" — was the retrieval bad, or was the question ambiguous?</p>
+<p class="slide-text">10. - [ ] Add <code class="inline-code">rag_answer()</code> and a button that uses the top chunks for an LLM answer</p>
+<p class="slide-text">11. - [ ] <strong>Persistence</strong>: save the store to a <code class="inline-code">.npz</code> file so you don't re-embed each session</p>
+</div>
+</section>
+<section class="slide title-slide" id="slide-23">
+<div class="slide-content">
+<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+<p class="slide-subtitle">Is Teaching AI a New Form of Mentorship?</p>
+</div>
+</section>
+<section class="slide" id="slide-24">
+<div class="slide-content">
+<h2 class="slide-title">Week 11 — <strong>"Is Teaching AI a New Form of Mentorship?"</strong></h2>
+<p class="slide-subtitle">9 responses analyzed — the class largely rejects the framing</p>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">📊</span> The Vote Distribution</div>
+<div class="card-body"><ul><li><strong>None / rejected the framing</strong>: DongYun, Huy, Waad, Irfan — <strong>4 votes</strong></li><li><strong>Hulk only (3)</strong>: Yadanar — <strong>1 vote</strong></li><li><strong>Captain America + Hulk (2,3)</strong>: Ly, Manuella — <strong>2 votes</strong></li><li><strong>New paradigm proposed</strong>: Seher — <strong>1 vote</strong></li><li><strong>Synthesis of all three (1,2,3)</strong>: Rupam — <strong>1 vote</strong></li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🤝</span> The Surprise</div>
+<div class="card-body"><ul><li>Only <strong>3 out of 9</strong> picked a specific persona</li><li><strong>5 explicitly rejected</strong> the question's framing</li><li>The class is moving from "pick a stance" → "reframe the question"</li><li>This is intellectual maturity, not avoidance</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">🔥</span> The Emerging Position</div>
+<div class="card-body"><ul><li>"Mentorship" is the wrong word — but architecture / authorship / containment IS the right frame</li><li>The interesting question isn't "can AI be a student?" but <strong>"what role should humans take?"</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-25">
+<div class="slide-content">
+<h2 class="slide-title">Theme 1 — <strong>The "Mentorship" Word is Suspect</strong></h2>
+<p class="slide-subtitle">Three students attack the metaphor itself</p>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">🚫</span> Yadanar — Language Shapes Behavior</div>
+<div class="card-body"><ul><li>"If we keep calling this mentoring, are we blurring the line between genuine guidance and simple automation?"</li><li>The word makes us <strong>feel safer</strong> than the actual situation warrants</li><li>"It also risks letting us off the hook" — we ask "is the AI learning?" instead of "are we designing well?"</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🧠</span> Huy — It's Alignment Engineering</div>
+<div class="card-body"><ul><li>Not mentorship in the classical sense</li><li>It's "authoring at a higher level of abstraction"</li><li>"We are writing the values, constraints, and correction criteria that govern what 'better' means to the system"</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔄</span> DongYun — But the Pattern IS Similar</div>
+<div class="card-body"><ul><li>"Mentorship: giving help and advice over a period of time"</li><li>Iterative prompting + refinement looks like exactly that</li><li>The metaphor isn't wrong — but it's incomplete</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Mentoring suggests dialogue, care, and growth of character. Self-correction is really just a technical loop." — Yadanar</div>
+</div>
+</section>
+<section class="slide" id="slide-26">
+<div class="slide-content">
+<h2 class="slide-title">Theme 2 — <strong>From Supervision to Architecture</strong></h2>
+<p class="slide-subtitle">The shift in human role</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🏗️</span> Huy — Architectural Authorship</div>
+<div class="card-body"><ul><li>"Architect the value space within which autonomous action is permitted"</li><li>Not supervising every action — designing the rules of the game</li><li>"Carries just as much weight" as classical authorship</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🛡️</span> Waad — Strategic Authorship</div>
+<div class="card-body"><ul><li>"Manual supervision is simply unfeasible at scale"</li><li>"Define, manage, control, and verify the safe operating space"</li><li>Same idea, different vocabulary</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎓</span> Seher — Apprentice Paradigm</div>
+<div class="card-body"><ul><li>"AI is treated like an apprentice system"</li><li>Attempts → tests → receives critique → improves</li><li>"Humans design the boundaries, AI performs and improves, evaluation mechanisms decide when human judgment is truly needed"</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"We aren't supervisors — we're architects of the value space the system operates inside." — synthesis</div>
+</div>
+</section>
+<section class="slide" id="slide-27">
+<div class="slide-content">
+<h2 class="slide-title">Theme 3 — <strong>The Boundary Problem</strong></h2>
+<p class="slide-subtitle">Where humans MUST step in</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔍</span> Concrete Examples Students Gave</div>
+<div class="card-body"><ul><li><strong>Ly</strong>: AI generates simulation code → human verifies math/assumptions</li><li><strong>Manuella</strong>: AI revises citation → may sound stronger but cite wrong source</li><li><strong>Yadanar</strong>: AI flags errors → human decides if proposed fix is correct</li><li>All three describe: <strong>AI generates, human validates final correctness</strong></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> The Common Pattern</div>
+<div class="card-body"><ul><li>AI handles <strong>iteration</strong> (cheap, repeatable, low-stakes)</li><li>Humans handle <strong>judgment</strong> (rare, expensive, high-stakes)</li><li>The boundary is set by the human (Seher's "design the boundaries")</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚠️</span> The Hard Question</div>
+<div class="card-body"><ul><li>WHERE you set the boundary determines everything</li><li>Set it too narrow → AI can't help much</li><li>Set it too wide → catastrophic failures slip through</li><li>"Knowing where to set the boundary" = the new senior skill</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-28">
+<div class="slide-content">
+<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+<p class="slide-subtitle">Memory is NOT mentorship — but it changes what's possible</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🧠</span> What Memory Adds</div>
+<div class="card-body"><ul><li>Vector memory = the system "remembers" past documents and (optionally) past tasks</li><li>This isn't learning in the human sense — it's structured retrieval</li><li>Yadanar's point applies: don't anthropomorphize what is "just better tuned"</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🏗️</span> The Architectural Question</div>
+<div class="card-body"><ul><li>You decide what goes INTO the memory (chunks, sources, metadata)</li><li>You decide what queries CAN be answered (the search interface)</li><li>You decide what should be FORGOTTEN (stale data, failed attempts)</li><li>This is exactly Huy's "architecting the value space"</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🤔</span> The Selective Memory Problem</div>
+<div class="card-body"><ul><li>Should the agent remember its failed attempts?</li><li>If yes → it avoids repeating mistakes</li><li>If no → it stays unbiased, won't carry over wrong lessons</li><li>Today's discussion: <strong>what should AI remember?</strong> (this leads into next week)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-29">
+<div class="slide-content">
+<h2 class="slide-title">Activity — <strong>Design the Memory Boundary</strong></h2>
+<p class="slide-subtitle">10 minutes — pair work</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📋</span> The Task</div>
+<div class="card-body"><ul><li>Imagine your midterm app, running for a year</li><li>Decide: what should it <strong>remember</strong>, what should it <strong>forget</strong>?</li><li>Make 3 lists: KEEP, FORGET, ASK USER</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">💭</span> Categories to Consider</div>
+<div class="card-body"><ul><li>Past user questions + answers</li><li>Failed tool calls (what arguments crashed)</li><li>User corrections ("that's wrong, the answer is X")</li><li>Personal preferences ("I always want results in 2 paragraphs")</li><li>Old/outdated facts that have since changed</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> The Test</div>
+<div class="card-body"><ul><li>Share with your partner — would their boundary settings match yours?</li><li>Where you disagree = where the architectural decision matters most</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-30">
+<div class="slide-content">
+<h2 class="slide-title">🗣️ <strong>Week 12 Discussion Questions</strong> (UST LMS)</h2>
+<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+<p class="slide-text">1. Today you saw similarity scores for each retrieved chunk. <strong>Did the scores match your intuition</strong> of which papers were relevant? Share one example where the top score was the right answer, and one where it wasn't — what does that tell you about embedding limits?</p>
+<p class="slide-text">2. Yadanar argued that calling AI self-correction "mentorship" makes people feel <strong>safer than they should</strong>. After building a vector memory today, <strong>does giving an AI "memory" carry similar risks of overclaiming</strong>? When would you call this "remembering" vs just "indexed retrieval"?</p>
+</div>
+</section>
+<section class="slide" id="slide-31">
+<div class="slide-content">
+<h2 class="slide-title">Want to Learn More?</h2>
+<p class="slide-text">Vector Databases & Embeddings</p>
+<a href="https://ai.google.dev/gemini-api/docs/embeddings" target="_blank" class="reference-link">📚 Google: Embeddings Guide</a>
+<a href="https://www.pinecone.io/learn/vector-embeddings/" target="_blank" class="reference-link">📚 Pinecone Learning Center — Vector Embeddings 101</a>
+<a href="https://docs.trychroma.com/" target="_blank" class="reference-link">📚 Chroma — Open-source Vector DB</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">RAG Patterns</p>
+<a href="https://docs.anthropic.com/en/docs/build-with-claude/use-cases" target="_blank" class="reference-link">📚 Anthropic: Retrieval Augmented Generation Guide</a>
+<div class="highlight-quote">📄 [Retrieval-Augmented Generation for NLP Tasks (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401)</div>
+<div class="highlight-quote">📄 [Lost in the Middle: How Language Models Use Long Contexts (2023)](https://arxiv.org/abs/2307.03172)</div>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Anthropic Free Online Courses</p>
+<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)</div>
+<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
+</div>
+</section>
+<section class="slide" id="slide-32">
+<div class="slide-content">
+<h2 class="slide-title">Wrap-Up of <strong>Week 12</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> Lecture</div>
+<div class="card-body"><ul><li>Embeddings turn text into number lists where similar meaning = similar numbers; vector DB = fast nearest-neighbor search over embeddings; RAG = retrieve before generate, with citations to actual sources</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> Practice</div>
+<div class="card-body"><ul><li>Built a paper memory: chunk MD files → embed each chunk → store in numpy → search by cosine similarity; UI shows top N chunks with similarity scores for transparency</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+<div class="card-body"><ul><li>Week 11 (9 responses): class rejects the "mentorship" metaphor; emerging consensus = humans architect the value space, not supervise every action; memory architecture = today's concrete example of that authorship</li></ul></div>
+</div>
+</div>
+<p class="slide-text"><strong>Next week:</strong> Reflection on the journey — what worked, what didn't, what comes next.</p>
+</div>
+</section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">32</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(14)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(23)">Discussion</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 32;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+      
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+      
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+      
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if(currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if(currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if(newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+           currentSlide = newSlide;
+           pageInput.value = currentSlide;
+           updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if(e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: -100, behavior: 'smooth'});
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: 100, behavior: 'smooth'});
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+         const pageNum = parseInt(hash.replace('#slide-', ''));
+         if(!isNaN(pageNum)) {
+           setTimeout(() => goToSlide(pageNum), 100);
+         }
+      }
+    });
+  </script>
+</body>
+</html>
