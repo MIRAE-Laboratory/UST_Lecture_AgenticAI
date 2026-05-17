@@ -429,7 +429,7 @@ ollama pull qwen3.5:0.8b
 
 # Option A: Google Gemini (free tier available)
 GOOGLE_API_KEY=your_gemini_key_here
-GEMINI_MODEL=gemini-3.1-flash-lite-preview
+GEMINI_MODEL=gemini-3.1-flash-lite
 
 # Option B: Ollama (runs locally, no API key needed)
 OLLAMA_MODEL=qwen3.5:0.8b
@@ -625,7 +625,7 @@ def get_client(provider):
         return OpenAI(
             api_key=os.getenv("GOOGLE_API_KEY"),
             base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-        ), os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite-preview")
+        ), os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
 
     elif provider == "ollama":
         return OpenAI(

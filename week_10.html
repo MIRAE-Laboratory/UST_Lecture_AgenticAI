@@ -863,7 +863,7 @@ from google import genai
 load_dotenv()
 
 client = genai.Client(api_key=os.environ.get("GOOGLE_API_KEY"))
-model = os.environ.get("LLM_MODEL", "gemini-2.5-flash")
+model = os.environ.get("LLM_MODEL", "gemini-3.1-flash-lite")
 
 import streamlit as st
 import pandas as pd, altair as alt
@@ -887,7 +887,7 @@ from evaluator import (
 hometown = st.text_input("Your hometown", "Daejeon, South Korea")
 judge = st.selectbox(
     "Judge model",
-    ["gemini-3-flash-preview", "gemini-2.0-flash"],
+    ["gemini-3.1-flash-lite", "gemini-2.0-flash"],
 )
 
 if st.button("🚀 Run All 3 Strategies", disabled=not hometown):
@@ -1125,8 +1125,8 @@ st.subheader("🔬 Multi-Model Comparison")
 
 candidate_models = st.multiselect(
     "Models to compare",
-    ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash", "gemini-3-flash-preview"],
-    default=["gemini-2.5-flash", "gemini-2.0-flash"],
+    ["gemini-3.1-flash-lite", "gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"],
+    default=["gemini-3.1-flash-lite", "gemini-2.0-flash"],
 )
 
 if st.button("⚖️ Compare Models", disabled=not candidate_models):

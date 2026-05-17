@@ -856,7 +856,7 @@ rx_max_iters = st.slider("Max iterations", 1, 8, 4, key="rx_iters")
 rx_threshold = st.slider("Threshold per criterion", 5, 10, 8, key="rx_th")
 critic = st.selectbox(
     "Critic model (try a different one for cross-model critique)",
-    ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-3-flash-preview"],
+    ["gemini-3.1-flash-lite", "gemini-2.5-flash", "gemini-2.0-flash"],
     key="rx_critic",
 )
 

@@ -795,6 +795,15 @@ CHUNK_SIZE = 800       # characters per chunk
 CHUNK_OVERLAP = 100    # overlap to preserve context across boundaries
 
 
+def strip_frontmatter(text):
+    """Remove YAML frontmatter (between --- markers) from a Markdown file."""
+    if text.startswith("---"):
+        parts = text.split("---", 2)
+        if len(parts) &gt;= 3:
+            return parts[2].strip()
+    return text
+
+
 def chunk_text(text, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
     """Split a long text into overlapping chunks."""
     chunks = []
@@ -804,6 +813,10 @@ def chunk_text(text, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
         i += size - overlap
     return chunks</code></pre>
 <div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Why Strip Frontmatter?</div>
+<div class="card-body"><ul><li>Week 6 MD files start with YAML metadata between <code class="inline-code">---</code> markers</li><li>If we don't strip it, <strong>chunk 0 of every paper is metadata</strong> — pollutes search</li><li>We chunk only the BODY for semantic search</li></ul></div>
+</div>
 <div class="card card-yellow">
 <div class="card-header"><span class="icon">💡</span> Why Overlap?</div>
 <div class="card-body"><ul><li>A sentence might be split across two chunks</li><li>Overlap ensures key phrases appear in at least one chunk fully</li><li>Typical: 10-15% overlap (here: 100/800 ≈ 12.5%)</li></ul></div>
@@ -820,16 +833,19 @@ def chunk_text(text, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
 EMBEDDING_MODEL = "gemini-embedding-001"
 
 def embed_text(client, text, model=EMBEDDING_MODEL):
-    """Get an embedding vector for a piece of text."""
-    result = client.models.embed_content(
-        model=model,
-        contents=text,
-    )
-    return np.array(result.embeddings[0].values)</code></pre>
+    """Get an embedding vector for a single piece of text."""
+    result = client.models.embed_content(model=model, contents=text)
+    return np.array(result.embeddings[0].values)
+
+
+def embed_batch(client, texts, model=EMBEDDING_MODEL):
+    """Embed many texts in one API call (much faster + avoids rate limits)."""
+    result = client.models.embed_content(model=model, contents=texts)
+    return [np.array(e.values) for e in result.embeddings]</code></pre>
 <div class="cards-grid">
 <div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> What You Get Back</div>
-<div class="card-body"><ul><li>A numpy array of ~768 or 1024 floats</li><li>Same model + same text → same embedding (deterministic)</li><li>Different text → different embedding (usually)</li><li>The numbers themselves are meaningless to read</li></ul></div>
+<div class="card-header"><span class="icon">💡</span> Single vs Batch</div>
+<div class="card-body"><ul><li><code class="inline-code">embed_text()</code> — for the user's QUERY (one text)</li><li><code class="inline-code">embed_batch()</code> — for building the store (many texts in one call)</li><li>Batching is dramatically faster AND helps avoid 429 rate-limit errors</li></ul></div>
 </div>
 </div>
 </div>
@@ -838,25 +854,45 @@ def embed_text(client, text, model=EMBEDDING_MODEL):
 <div class="slide-content">
 <h2 class="slide-title">Step 3 — <strong>Build the Vector Store</strong> (<code class="inline-code">memory.py</code>)</h2>
 <p class="slide-subtitle">Process all MD files into searchable chunks</p>
-<pre class="code-block"><code class="language-python">def build_vector_store(client, md_dir="md_output"):
-    """Read all MD files, chunk them, embed each chunk."""
-    store = []  # list of dicts with text, embedding, source
-    md_files = list(Path(md_dir).glob("*.md"))
-    for md_file in md_files:
-        text = md_file.read_text(encoding="utf-8")
-        for chunk_idx, chunk in enumerate(chunk_text(text)):
-            embedding = embed_text(client, chunk)
-            store.append({
-                "text": chunk,
-                "embedding": embedding,
-                "source": md_file.name,
-                "chunk_idx": chunk_idx,
+<pre class="code-block"><code class="language-python">import time
+
+def build_vector_store(client, md_dir="md_output",
+                       batch_size=20, on_progress=None):
+    """Read all MD files, chunk them, embed in batches.
+
+    Args:
+        on_progress: optional callback(fraction_done, status_text)
+    """
+    # 1) Collect all chunks first (strip YAML frontmatter from each file)
+    chunks_meta = []
+    for md_file in sorted(Path(md_dir).glob("*.md")):
+        text = strip_frontmatter(md_file.read_text(encoding="utf-8"))
+        for i, ch in enumerate(chunk_text(text)):
+            chunks_meta.append({
+                "text": ch, "source": md_file.name, "chunk_idx": i,
             })
+
+    # 2) Embed in batches — much faster + dodges per-minute rate limits
+    store = []
+    total = len(chunks_meta)
+    for start in range(0, total, batch_size):
+        batch = chunks_meta[start:start + batch_size]
+        try:
+            vectors = embed_batch(client, [c["text"] for c in batch])
+        except Exception as e:
+            # Rate-limit hit? back off and retry once
+            time.sleep(5)
+            vectors = embed_batch(client, [c["text"] for c in batch])
+        for c, v in zip(batch, vectors):
+            store.append({**c, "embedding": v})
+        if on_progress:
+            on_progress((start + len(batch)) / total,
+                        f"Embedded {start + len(batch)}/{total} chunks")
     return store</code></pre>
 <div class="cards-grid">
 <div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Pure In-Memory</div>
-<div class="card-body"><ul><li>Just a Python list — no database server</li><li>Fast enough for a few thousand chunks</li><li>Lost when app restarts — see "Persistence" in checklist for upgrade</li></ul></div>
+<div class="card-header"><span class="icon">💡</span> Three Improvements over a Naive Loop</div>
+<div class="card-body"><ul><li><strong>Strip frontmatter</strong> — chunk only body text, not YAML metadata</li><li><strong>Batch embedding</strong> — typically 10-20x faster than per-chunk calls</li><li><strong>Progress callback + retry</strong> — UI can show a progress bar, recovers from transient errors</li></ul></div>
 </div>
 </div>
 </div>
@@ -891,10 +927,19 @@ def search(client, query, store, top_k=5):
 <div class="slide-content">
 <h2 class="slide-title">Step 5 — <strong>Streamlit UI</strong> (append to <code class="inline-code">app.py</code>)</h2>
 <p class="slide-subtitle">Build store once, query many times</p>
-<pre class="code-block"><code class="language-python"># At top of app.py, add:
-from memory import build_vector_store, search
+<pre class="code-block"><code class="language-python"># === Top of app.py (same setup as Week 10) ===
+import os
+from dotenv import load_dotenv
+from google import genai
 
-# Append at the bottom:
+load_dotenv()
+client = genai.Client(api_key=os.environ.get("GOOGLE_API_KEY"))
+model = os.environ.get("LLM_MODEL", "gemini-3.1-flash-lite")
+
+import streamlit as st
+from memory import build_vector_store, search   # NEW for Week 12
+
+# === Append at the bottom of app.py ===
 st.divider()
 st.header("🧠 Paper Memory (Vector Search)")
 
@@ -902,9 +947,13 @@ if "vector_store" not in st.session_state:
     st.session_state.vector_store = None
 
 if st.button("🔨 Build / Rebuild Vector Store"):
-    with st.spinner("Embedding all chunks..."):
-        st.session_state.vector_store = build_vector_store(client)
-    st.success(f"Built store with {len(st.session_state.vector_store)} chunks")
+    bar = st.progress(0.0)
+    status = st.empty()
+    def cb(frac, msg):
+        bar.progress(frac)
+        status.text(msg)
+    st.session_state.vector_store = build_vector_store(client, on_progress=cb)
+    status.text(f"✅ Built store with {len(st.session_state.vector_store)} chunks")
 
 query = st.text_input(
     "Ask about your papers",
@@ -924,8 +973,8 @@ if st.button("🔍 Search", disabled=not (query and st.session_state.vector_stor
             st.write(r["text"])</code></pre>
 <div class="cards-grid">
 <div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Caching the Store</div>
-<div class="card-body"><ul><li>Storing in <code class="inline-code">st.session_state</code> means you rebuild only when needed</li><li>Embedding 100 papers takes time — don't redo it on every query</li></ul></div>
+<div class="card-header"><span class="icon">💡</span> Two Important Details</div>
+<div class="card-body"><ul><li><strong><code class="inline-code">client</code> setup</strong> — same <code class="inline-code">genai.Client(...)</code> as Week 10; reuse the same <code class="inline-code">.env</code></li><li><strong>Progress callback</strong> — wires <code class="inline-code">build_vector_store(on_progress=cb)</code> to <code class="inline-code">st.progress()</code> so the user sees embedding progress (not a frozen screen)</li></ul></div>
 </div>
 </div>
 </div>
@@ -935,7 +984,11 @@ if st.button("🔍 Search", disabled=not (query and st.session_state.vector_stor
 <h2 class="slide-title">Step 6 (Bonus) — <strong>Generate an Answer with Retrieved Context</strong></h2>
 <p class="slide-subtitle">Full RAG — search results feed into LLM</p>
 <pre class="code-block"><code class="language-python"># Bonus: append to memory.py
-def rag_answer(client, model, query, store, top_k=5):
+# Reuse Week 10's helper instead of redefining it
+from evaluator import llm_call
+
+
+def rag_answer(client, gen_model, query, store, top_k=5):
     """Retrieve top chunks, then ask LLM to answer with them as context."""
     results = search(client, query, store, top_k=top_k)
     context = "\n\n---\n\n".join(
@@ -951,7 +1004,14 @@ Context:
 Question: {query}
 
 Answer with citations to the source filenames."""
-    return llm_call(client, model, prompt), results</code></pre>
+    return llm_call(client, gen_model, prompt), results</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Reusing <code class="inline-code">llm_call</code> from Week 10</div>
+<div class="card-body"><ul><li>We defined <code class="inline-code">llm_call(client, model, prompt)</code> in <code class="inline-code">evaluator.py</code> (Week 10)</li><li>Just import it — don't redefine the same wrapper twice</li><li>If you skipped Week 10, define it here:</li></ul></div>
+</div>
+</div>
+<p class="slide-text"><code class="inline-code">def llm_call(client, model, prompt): return client.models.generate_content(model=model, contents=prompt).text</code></p>
 <div class="cards-grid">
 <div class="card card-yellow">
 <div class="card-header"><span class="icon">💡</span> Always Return BOTH</div>
@@ -964,17 +1024,20 @@ Answer with citations to the source filenames."""
 <div class="slide-content">
 <h2 class="slide-title">✅ <strong>Week 12 Practice Checklist</strong></h2>
 <div class="highlight-quote">Complete these stages in order:</div>
-<p class="slide-text">1. - [ ] Create <code class="inline-code">memory.py</code> with <code class="inline-code">chunk_text()</code> and <code class="inline-code">embed_text()</code></p>
+<p class="slide-text">1. - [ ] Create <code class="inline-code">memory.py</code> with <code class="inline-code">strip_frontmatter()</code>, <code class="inline-code">chunk_text()</code>, <code class="inline-code">embed_text()</code>, <code class="inline-code">embed_batch()</code></p>
 <p class="slide-text">2. - [ ] Test <code class="inline-code">embed_text("hello")</code> — confirm you get a numpy array back</p>
-<p class="slide-text">3. - [ ] Add <code class="inline-code">build_vector_store()</code> — print the number of chunks created</p>
-<p class="slide-text">4. - [ ] Add <code class="inline-code">cosine_sim()</code> and <code class="inline-code">search()</code></p>
-<p class="slide-text">5. - [ ] Append the Streamlit section to <code class="inline-code">app.py</code></p>
-<p class="slide-text">6. - [ ] Build the store, then ask a question from one of your papers — does the top result come from that paper?</p>
-<p class="slide-text">7. - [ ] Ask a question NOT covered by any paper — what similarity scores do you see?</p>
-<p class="slide-text">8. - [ ] Try chunk sizes 300, 800, 1500 — does retrieval quality change?</p>
-<p class="slide-text">9. - [ ] Look at chunks that "felt wrong" — was the retrieval bad, or was the question ambiguous?</p>
-<p class="slide-text">10. - [ ] Add <code class="inline-code">rag_answer()</code> and a button that uses the top chunks for an LLM answer</p>
-<p class="slide-text">11. - [ ] <strong>Persistence</strong>: save the store to a <code class="inline-code">.npz</code> file so you don't re-embed each session</p>
+<p class="slide-text">3. - [ ] Test <code class="inline-code">strip_frontmatter()</code> on one of your MD files — does it remove the YAML block?</p>
+<p class="slide-text">4. - [ ] Add <code class="inline-code">build_vector_store()</code> with <code class="inline-code">on_progress</code> callback support</p>
+<p class="slide-text">5. - [ ] Add <code class="inline-code">cosine_sim()</code> and <code class="inline-code">search()</code></p>
+<p class="slide-text">6. - [ ] Append the Streamlit section to <code class="inline-code">app.py</code> (with <code class="inline-code">st.progress</code> callback wired)</p>
+<p class="slide-text">7. - [ ] Build the store — watch the progress bar advance</p>
+<p class="slide-text">8. - [ ] Ask a question from one of your papers — does the top result come from that paper?</p>
+<p class="slide-text">9. - [ ] <strong>Verify</strong>: open the top chunk's text — is it body content (good) or YAML metadata (bug)?</p>
+<p class="slide-text">10. - [ ] Ask a question NOT covered by any paper — what similarity scores do you see?</p>
+<p class="slide-text">11. - [ ] Try chunk sizes 300, 800, 1500 — does retrieval quality change?</p>
+<p class="slide-text">12. - [ ] Look at chunks that "felt wrong" — was the retrieval bad, or was the question ambiguous?</p>
+<p class="slide-text">13. - [ ] Add <code class="inline-code">rag_answer()</code> (import <code class="inline-code">llm_call</code> from <code class="inline-code">evaluator.py</code>) and a button that uses the top chunks for an LLM answer</p>
+<p class="slide-text">14. - [ ] <strong>Persistence</strong>: save the store to a <code class="inline-code">.npz</code> file so you don't re-embed each session</p>
 </div>
 </section>
 <section class="slide title-slide" id="slide-23">

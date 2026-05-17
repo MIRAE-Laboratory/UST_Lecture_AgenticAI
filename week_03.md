@@ -504,7 +504,7 @@ pip install google-generativeai python-dotenv
 ```text
 # practices/.env (DO NOT COMMIT)
 GOOGLE_API_KEY=your_key_here
-GEMINI_MODEL=gemini-3.1-flash-lite-preview   # optional (code has a default)
+GEMINI_MODEL=gemini-3.1-flash-lite   # optional (code has a default)
 ```
 
 =====

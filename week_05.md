@@ -316,7 +316,7 @@ pip install streamlit PyPDF2 openai python-dotenv
 
 # Option A: Google Gemini
 GOOGLE_API_KEY=your_gemini_key_here
-GEMINI_MODEL=gemini-2.0-flash
+GEMINI_MODEL=gemini-3.1-flash-lite
 
 # Option B: Ollama (local)
 OLLAMA_MODEL=qwen3:1.7b
@@ -397,7 +397,7 @@ def get_client(provider: str):
         return OpenAI(
             api_key=os.getenv("GOOGLE_API_KEY"),
             base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-        ), os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+        ), os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
     elif provider == "Ollama":
         return OpenAI(base_url="http://localhost:11434/v1",
                       api_key="ollama"), os.getenv("OLLAMA_MODEL", "qwen3:1.7b")

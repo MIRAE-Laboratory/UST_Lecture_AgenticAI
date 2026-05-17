@@ -357,7 +357,7 @@ graph LR
 ```text
 # .env file (add to .gitignore!)
 GOOGLE_API_KEY=your_api_key_here
-GEMINI_MODEL=gemini-3.1-flash-lite-preview
+GEMINI_MODEL=gemini-3.1-flash-lite
 ```
 ![1773027763548](image/week_02/1773027763548.png)
 ```bash

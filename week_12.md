@@ -326,6 +326,15 @@ CHUNK_SIZE = 800       # characters per chunk
 CHUNK_OVERLAP = 100    # overlap to preserve context across boundaries
 
 
+def strip_frontmatter(text):
+    """Remove YAML frontmatter (between --- markers) from a Markdown file."""
+    if text.startswith("---"):
+        parts = text.split("---", 2)
+        if len(parts) >= 3:
+            return parts[2].strip()
+    return text
+
+
 def chunk_text(text, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
     """Split a long text into overlapping chunks."""
     chunks = []
@@ -335,6 +344,11 @@ def chunk_text(text, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
         i += size - overlap
     return chunks
 ```
+
+- card(yellow, 💡): Why Strip Frontmatter?
+  - Week 6 MD files start with YAML metadata between `---` markers
+  - If we don't strip it, **chunk 0 of every paper is metadata** — pollutes search
+  - We chunk only the BODY for semantic search
 
 - card(yellow, 💡): Why Overlap?
   - A sentence might be split across two chunks
@@ -354,19 +368,21 @@ import numpy as np
 EMBEDDING_MODEL = "gemini-embedding-001"
 
 def embed_text(client, text, model=EMBEDDING_MODEL):
-    """Get an embedding vector for a piece of text."""
-    result = client.models.embed_content(
-        model=model,
-        contents=text,
-    )
+    """Get an embedding vector for a single piece of text."""
+    result = client.models.embed_content(model=model, contents=text)
     return np.array(result.embeddings[0].values)
+
+
+def embed_batch(client, texts, model=EMBEDDING_MODEL):
+    """Embed many texts in one API call (much faster + avoids rate limits)."""
+    result = client.models.embed_content(model=model, contents=texts)
+    return [np.array(e.values) for e in result.embeddings]
 ```
 
-- card(yellow, 💡): What You Get Back
-  - A numpy array of ~768 or 1024 floats
-  - Same model + same text → same embedding (deterministic)
-  - Different text → different embedding (usually)
-  - The numbers themselves are meaningless to read
+- card(yellow, 💡): Single vs Batch
+  - `embed_text()` — for the user's QUERY (one text)
+  - `embed_batch()` — for building the store (many texts in one call)
+  - Batching is dramatically faster AND helps avoid 429 rate-limit errors
 
 =====
 
@@ -376,27 +392,47 @@ def embed_text(client, text, model=EMBEDDING_MODEL):
 - subtitle: Process all MD files into searchable chunks
 
 ```python
-def build_vector_store(client, md_dir="md_output"):
-    """Read all MD files, chunk them, embed each chunk."""
-    store = []  # list of dicts with text, embedding, source
-    md_files = list(Path(md_dir).glob("*.md"))
-    for md_file in md_files:
-        text = md_file.read_text(encoding="utf-8")
-        for chunk_idx, chunk in enumerate(chunk_text(text)):
-            embedding = embed_text(client, chunk)
-            store.append({
-                "text": chunk,
-                "embedding": embedding,
-                "source": md_file.name,
-                "chunk_idx": chunk_idx,
+import time
+
+def build_vector_store(client, md_dir="md_output",
+                       batch_size=20, on_progress=None):
+    """Read all MD files, chunk them, embed in batches.
+
+    Args:
+        on_progress: optional callback(fraction_done, status_text)
+    """
+    # 1) Collect all chunks first (strip YAML frontmatter from each file)
+    chunks_meta = []
+    for md_file in sorted(Path(md_dir).glob("*.md")):
+        text = strip_frontmatter(md_file.read_text(encoding="utf-8"))
+        for i, ch in enumerate(chunk_text(text)):
+            chunks_meta.append({
+                "text": ch, "source": md_file.name, "chunk_idx": i,
             })
+
+    # 2) Embed in batches — much faster + dodges per-minute rate limits
+    store = []
+    total = len(chunks_meta)
+    for start in range(0, total, batch_size):
+        batch = chunks_meta[start:start + batch_size]
+        try:
+            vectors = embed_batch(client, [c["text"] for c in batch])
+        except Exception as e:
+            # Rate-limit hit? back off and retry once
+            time.sleep(5)
+            vectors = embed_batch(client, [c["text"] for c in batch])
+        for c, v in zip(batch, vectors):
+            store.append({**c, "embedding": v})
+        if on_progress:
+            on_progress((start + len(batch)) / total,
+                        f"Embedded {start + len(batch)}/{total} chunks")
     return store
 ```
 
-- card(yellow, 💡): Pure In-Memory
-  - Just a Python list — no database server
-  - Fast enough for a few thousand chunks
-  - Lost when app restarts — see "Persistence" in checklist for upgrade
+- card(yellow, 💡): Three Improvements over a Naive Loop
+  - **Strip frontmatter** — chunk only body text, not YAML metadata
+  - **Batch embedding** — typically 10-20x faster than per-chunk calls
+  - **Progress callback + retry** — UI can show a progress bar, recovers from transient errors
 
 =====
 
@@ -435,10 +471,19 @@ def search(client, query, store, top_k=5):
 - subtitle: Build store once, query many times
 
 ```python
-# At top of app.py, add:
-from memory import build_vector_store, search
+# === Top of app.py (same setup as Week 10) ===
+import os
+from dotenv import load_dotenv
+from google import genai
 
-# Append at the bottom:
+load_dotenv()
+client = genai.Client(api_key=os.environ.get("GOOGLE_API_KEY"))
+model = os.environ.get("LLM_MODEL", "gemini-3.1-flash-lite")
+
+import streamlit as st
+from memory import build_vector_store, search   # NEW for Week 12
+
+# === Append at the bottom of app.py ===
 st.divider()
 st.header("🧠 Paper Memory (Vector Search)")
 
@@ -446,9 +491,13 @@ if "vector_store" not in st.session_state:
     st.session_state.vector_store = None
 
 if st.button("🔨 Build / Rebuild Vector Store"):
-    with st.spinner("Embedding all chunks..."):
-        st.session_state.vector_store = build_vector_store(client)
-    st.success(f"Built store with {len(st.session_state.vector_store)} chunks")
+    bar = st.progress(0.0)
+    status = st.empty()
+    def cb(frac, msg):
+        bar.progress(frac)
+        status.text(msg)
+    st.session_state.vector_store = build_vector_store(client, on_progress=cb)
+    status.text(f"✅ Built store with {len(st.session_state.vector_store)} chunks")
 
 query = st.text_input(
     "Ask about your papers",
@@ -468,9 +517,9 @@ if st.button("🔍 Search", disabled=not (query and st.session_state.vector_stor
             st.write(r["text"])
 ```
 
-- card(yellow, 💡): Caching the Store
-  - Storing in `st.session_state` means you rebuild only when needed
-  - Embedding 100 papers takes time — don't redo it on every query
+- card(yellow, 💡): Two Important Details
+  - **`client` setup** — same `genai.Client(...)` as Week 10; reuse the same `.env`
+  - **Progress callback** — wires `build_vector_store(on_progress=cb)` to `st.progress()` so the user sees embedding progress (not a frozen screen)
 
 =====
 
@@ -481,7 +530,11 @@ if st.button("🔍 Search", disabled=not (query and st.session_state.vector_stor
 
 ```python
 # Bonus: append to memory.py
-def rag_answer(client, model, query, store, top_k=5):
+# Reuse Week 10's helper instead of redefining it
+from evaluator import llm_call
+
+
+def rag_answer(client, gen_model, query, store, top_k=5):
     """Retrieve top chunks, then ask LLM to answer with them as context."""
     results = search(client, query, store, top_k=top_k)
     context = "\n\n---\n\n".join(
@@ -497,8 +550,14 @@ Context:
 Question: {query}
 
 Answer with citations to the source filenames."""
-    return llm_call(client, model, prompt), results
+    return llm_call(client, gen_model, prompt), results
 ```
+
+- card(yellow, 💡): Reusing `llm_call` from Week 10
+  - We defined `llm_call(client, model, prompt)` in `evaluator.py` (Week 10)
+  - Just import it — don't redefine the same wrapper twice
+  - If you skipped Week 10, define it here:
+    `def llm_call(client, model, prompt): return client.models.generate_content(model=model, contents=prompt).text`
 
 - card(yellow, 💡): Always Return BOTH
   - Return the answer AND the retrieved chunks
@@ -514,23 +573,26 @@ Answer with citations to the source filenames."""
 > Complete these stages in order:
 
 ### Stage 1 — Build the Memory
-1. - [ ] Create `memory.py` with `chunk_text()` and `embed_text()`
+1. - [ ] Create `memory.py` with `strip_frontmatter()`, `chunk_text()`, `embed_text()`, `embed_batch()`
 2. - [ ] Test `embed_text("hello")` — confirm you get a numpy array back
-3. - [ ] Add `build_vector_store()` — print the number of chunks created
+3. - [ ] Test `strip_frontmatter()` on one of your MD files — does it remove the YAML block?
+4. - [ ] Add `build_vector_store()` with `on_progress` callback support
 
 ### Stage 2 — Search
-4. - [ ] Add `cosine_sim()` and `search()`
-5. - [ ] Append the Streamlit section to `app.py`
-6. - [ ] Build the store, then ask a question from one of your papers — does the top result come from that paper?
+5. - [ ] Add `cosine_sim()` and `search()`
+6. - [ ] Append the Streamlit section to `app.py` (with `st.progress` callback wired)
+7. - [ ] Build the store — watch the progress bar advance
+8. - [ ] Ask a question from one of your papers — does the top result come from that paper?
+9. - [ ] **Verify**: open the top chunk's text — is it body content (good) or YAML metadata (bug)?
 
 ### Stage 3 — Explore
-7. - [ ] Ask a question NOT covered by any paper — what similarity scores do you see?
-8. - [ ] Try chunk sizes 300, 800, 1500 — does retrieval quality change?
-9. - [ ] Look at chunks that "felt wrong" — was the retrieval bad, or was the question ambiguous?
+10. - [ ] Ask a question NOT covered by any paper — what similarity scores do you see?
+11. - [ ] Try chunk sizes 300, 800, 1500 — does retrieval quality change?
+12. - [ ] Look at chunks that "felt wrong" — was the retrieval bad, or was the question ambiguous?
 
 ### Stage 4 — Bonus
-10. - [ ] Add `rag_answer()` and a button that uses the top chunks for an LLM answer
-11. - [ ] **Persistence**: save the store to a `.npz` file so you don't re-embed each session
+13. - [ ] Add `rag_answer()` (import `llm_call` from `evaluator.py`) and a button that uses the top chunks for an LLM answer
+14. - [ ] **Persistence**: save the store to a `.npz` file so you don't re-embed each session
 
 =====
 
