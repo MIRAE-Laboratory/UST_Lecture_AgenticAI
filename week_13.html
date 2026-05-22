@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<!-- Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --text-main: #1e293b;
+    --accent: #0f4c81;
+    --card-blue: #eff6ff;
+    --border-blue: #bfdbfe;
+    --card-green: #f0fdf4;
+    --border-green: #bbf7d0;
+    --card-orange: #fff7ed;
+    --border-orange: #fed7aa;
+    --card-pink: #fdf2f8;
+    --border-pink: #fbcfe8;
+    --card-purple: #faf5ff;
+    --border-purple: #e9d5ff;
+    --card-yellow: #fefce8;
+    --border-yellow: #fef08a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    overflow: hidden; /* Hide scrollbars, use custom navigation */
+    font-size: 1.8rem;
+  }
+  .presentation {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    width: 100vw;
+  }
+  .presentation::-webkit-scrollbar { display: none; }
+  .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 60px 80px; /* Top/Bottom 60px, Left/Right 80px for margins */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-content {
+    background: var(--bg-main);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    font-size: 1rem; /* 1.5x of original */
+  }
+  .slide-title {
+    font-size: 2rem; /* 1.5x of original */
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    border-bottom: 5px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: 1rem; /* 1.5x of original */
+    color: #64748b;    
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  /* Title Slide Variations */
+  .title-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  }
+  .title-slide .slide-title { font-size: 2.5rem; border: none; margin-bottom: 1.5rem; color: var(--accent); }
+  .title-slide .slide-subtitle { font-size: 1.5rem; font-weight: 600; color: #334155; }
+  
+  /* Title Emphasis Variations */
+  .title-emphasis-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+  .title-emphasis-slide .slide-title {
+    font-size: 3rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-emphasis-slide .slide-subtitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+  
+  /* Layouts */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased min-width to prevent 4 columns on wide screens */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+  .card-header { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.4rem; }
+  .card-header .icon { font-size: 1.3rem; margin-right: 0.5rem; }
+  .card-body ul { list-style-type: none; padding-left: 0; }
+  .card-body li { margin-bottom: 0.5rem; position: relative; padding-left: 1.2rem; line-height: 1.4; font-size: 0.95rem; }
+  .card-body li::before { content: "•"; color: #94a3b8; font-weight: bold; position: absolute; left: 0; top: 0; }
+  .plain-bullets li { position: relative; padding-left: 1.2rem; list-style-type: none; }
+  .plain-bullets li::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: 0; top: 0; }
+  
+  .slide-text {
+    font-size: 1.6rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  .card-blue { background: var(--card-blue); border-color: var(--border-blue); color: #1e3a8a; }
+  .card-green { background: var(--card-green); border-color: var(--border-green); color: #14532d; }
+  .card-orange { background: var(--card-orange); border-color: var(--border-orange); color: #7c2d12; }
+  .card-pink { background: var(--card-pink); border-color: var(--border-pink); color: #831843; }
+  .card-purple { background: var(--card-purple); border-color: var(--border-purple); color: #4c1d95; }
+  .card-yellow { background: var(--card-yellow); border-color: var(--border-yellow); color: #713f12; }
+  
+  .highlight-quote {
+    background: #f8fafc;
+    border-left: 5px solid var(--accent);
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .image-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    margin: 0.5rem 0;
+  }
+  .img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .image-container {
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .slide-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .slide-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Modal Overlay */
+  .image-modal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .image-modal.active {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 9999;
+  }
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .image-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: #94a3b8;
+  }
+  .img-caption {
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .mermaid-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+  }
+  .mermaid-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .mermaid-group .mermaid-container {
+    margin: 0;
+    flex: 1;
+    min-height: auto;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Consolas', monospace;
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  .mermaid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .reference-link {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .inline-code {
+    background: #e2e8f0;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .styled-table th { background: #334155; color: white; text-align: left; padding: 1rem; }
+  .styled-table td { padding: 1rem; background: white; border-bottom: 1px solid #f1f5f9; }
+  .styled-table tr:hover td { background: #f8fafc; }
+  
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .flow-step {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #cbd5e1;
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin: 0 1rem;
+  }
+  
+  .slide-number {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .plain-bullets {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+  .plain-bullets li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Fixed Layout Elements */
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: #0f172a;
+    color: #94a3b8;
+    z-index: 2000;
+    border-bottom: 1px solid #1e293b;
+  }
+  .header-logo { color: white; margin-right: 1.5rem; letter-spacing: -0.5px; font-size: 0.75rem; }
+  .header-sep { color: #334155; margin: 0 1rem; }
+  .header-subtitle { font-size: 0.75rem; }
+
+  .side-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* 2/3 of 50px approx */
+    height: 70px; /* 2/3 of 100px approx */
+    background: rgba(30, 41, 59, 0.4);
+    border: none;
+    color: white;
+    font-size: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: background 0.2s, width 0.2s;
+    border-radius: 6px;
+  }
+  .side-nav-btn:hover { background: rgba(37, 99, 235, 0.8); width: 45px; }
+  .prev-side { left: 10px; }
+  .next-side { right: 10px; }
+
+  /* Navigation Bar (Fixed Bottom) */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    height: 50px;
+    z-index: 2000;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .nav-main-btn {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 20px;
+  }
+  .btn-nav {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover {
+    background: #1e293b;
+    color: white;
+  }
+  .page-input-wrapper {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin: 0 8px;
+    font-family: monospace;
+  }
+  .page-input {
+    background: transparent;
+    border: 1px solid #334155;
+    color: white;
+    width: 32px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    padding: 1px;
+    margin-right: 4px;
+  }
+  .section-links {
+    display: flex;
+    gap: 16px;
+    border-left: 1px solid #1e293b;
+    padding-left: 20px;
+  }
+  .nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <header class="global-header">
+    <span class="header-logo">Multi-Agent Systems</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">Team Dynamics — Orchestrating Multiple Roles</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+<div class="slide-content">
+<h1 class="slide-title">Multi-Agent Systems</h1>
+<p class="slide-subtitle">Team Dynamics — Orchestrating Multiple Roles</p>
+<div class="highlight-quote">Week 13 of Phase 4: Composition and Leadership (Weeks 13-14)</div>
+</div>
+</section>
+<section class="slide" id="slide-2">
+<div class="slide-content">
+<h2 class="slide-title">Contents</h2>
+<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 13</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+<div class="card-body"><ul><li>Roles vs personas — what changes when agents specialize</li><li>Three orchestration patterns: pipeline, manager-worker, round-robin</li><li>Information asymmetry and shared memory</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+<div class="card-body"><ul><li>Build a <strong>2-agent role-play</strong>: Hypothesis Proposer + Methodologist Reviewer</li><li>3-round orchestrated flow (proposal → critique → revision)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+<div class="card-body"><ul><li>Week 12 — Selective Memory: should AI remember failed experiments?</li><li>Leadership: when YOU manage a team of agents</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-3">
+<div class="slide-content">
+<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+<p class="slide-subtitle">Team Dynamics — Orchestrating Multiple Roles</p>
+</div>
+</section>
+<section class="slide" id="slide-4">
+<div class="slide-content">
+<h2 class="slide-title">The Story So Far — <strong>Where Multi-Agent Fits</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🧩</span> What We've Already Built</div>
+<div class="card-body"><ul><li>Week 7: Two <strong>personas</strong> debating (user moderates)</li><li>Week 9: Single agent using <strong>tools</strong></li><li>Week 10: Single output, scored by a <strong>judge</strong> model</li><li>Week 11: <strong>Reflexion</strong> — same model critiques itself</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🤔</span> What's Still Missing</div>
+<div class="card-body"><ul><li>A real research team has <strong>specialized members</strong> (not just two opinions)</li><li>Each member sees <strong>different information</strong> and does a <strong>different job</strong></li><li>The team runs by <strong>structured workflow</strong>, not free chat</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> Today's Step Forward</div>
+<div class="card-body"><ul><li>Define agents by <strong>role (function)</strong>, not persona (opinion)</li><li>Use an <strong>orchestrator</strong> to coordinate them programmatically</li><li>Practice with 2 agents → the pattern extends to N agents</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-5">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Role vs Persona</strong> — A Key Distinction</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎭</span> Persona (Week 7)</div>
+<div class="card-body"><ul><li>A <strong>viewpoint</strong> or character: "Dr. Data, the empiricist"</li><li>Two personas debate the SAME question from different angles</li><li>Output: arguments for comparison; user judges</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔧</span> Role (Week 13)</div>
+<div class="card-body"><ul><li>A <strong>function</strong> with responsibilities: "Hypothesis Proposer", "Methodologist Reviewer"</li><li>Each role does a <strong>different job</strong> in a shared workflow</li><li>Output: a final artifact produced collaboratively</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💡</span> Practical Difference</div>
+<div class="card-body"><ul><li>Personas → adversarial, parallel ("vs")</li><li>Roles → cooperative, sequential ("then")</li><li>Both are useful — but for different goals</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-6">
+<div class="slide-content">
+<h2 class="slide-title">Three <strong>Orchestration Patterns</strong> — How Teams Coordinate</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">➡️</span> 1. Pipeline (Sequential Handoff)</div>
+<div class="card-body"><ul><li>Agent A finishes → passes result to Agent B → passes to Agent C</li><li>Example: Researcher → Writer → Editor</li><li>Strength: clear flow; Weakness: errors compound downstream</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">👔</span> 2. Manager-Worker (Delegation)</div>
+<div class="card-body"><ul><li>A "manager" agent assigns subtasks to "worker" agents</li><li>Workers return results; manager decides what's next</li><li>Example: Project lead delegating to specialists</li><li>Strength: dynamic, can handle ambiguity; Weakness: manager is bottleneck</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔄</span> 3. Round-Robin (Turn-Taking)</div>
+<div class="card-body"><ul><li>Agents take turns commenting/improving the same artifact</li><li>Example: peer review with 3 reviewers, all see all comments</li><li>Strength: diverse perspectives; Weakness: can stall on disagreement</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-7">
+<div class="slide-content">
+<h2 class="slide-title">Visualizing the <strong>Three Patterns</strong></h2>
+<div class="mermaid-container"><div class="mermaid">graph LR
+    subgraph Pipeline
+      P1[Agent A] --> P2[Agent B] --> P3[Agent C]
+    end
+    subgraph Manager-Worker
+      M[Manager] --> W1[Worker 1]
+      M --> W2[Worker 2]
+      M --> W3[Worker 3]
+      W1 --> M
+      W2 --> M
+      W3 --> M
+    end
+    subgraph Round-Robin
+      R1[Agent 1] --> R2[Agent 2]
+      R2 --> R3[Agent 3]
+      R3 --> R1
+    end
+
+    style P1 fill:#cce5ff
+    style M fill:#ffe5cc
+    style R1 fill:#d4edda</div></div>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Today's Practice Uses Pipeline + Iteration</div>
+<div class="card-body"><ul><li>Proposer → Reviewer → Proposer (3 turns)</li><li>Simplest pattern that shows real role specialization</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-8">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Information Asymmetry</strong> — Each Agent Sees Different Things</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">👁️</span> What This Means</div>
+<div class="card-body"><ul><li>Different agents have <strong>different system prompts</strong> (different identities and tasks)</li><li>They may see <strong>different context</strong> (e.g., the Reviewer sees the proposal, but not the Proposer's private notes)</li><li>This is FEATURE, not bug — diversity of view drives quality</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> Why It Matters</div>
+<div class="card-body"><ul><li>If every agent sees the same thing → they think alike → no real collaboration</li><li>Asymmetric context forces each role to <strong>contribute something distinct</strong></li><li>Connects to Week 11: cross-model critique = importing different blind spots</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚠️</span> But Be Careful</div>
+<div class="card-body"><ul><li>Too much asymmetry → agents can't communicate (no common ground)</li><li>The orchestrator decides what each agent sees — this is the design lever</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-9">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Shared vs Private</strong> Memory — The Architecture Decision</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📓</span> Shared Memory</div>
+<div class="card-body"><ul><li>All agents read/write the same conversation log</li><li>Pro: easy alignment, everyone on the same page</li><li>Con: agents can be biased by what others said before them</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔒</span> Private Memory</div>
+<div class="card-body"><ul><li>Each agent has its own context buffer</li><li>Pro: independent perspectives, no anchoring bias</li><li>Con: harder to coordinate, may duplicate work</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">⚖️</span> Hybrid (Most Real Systems)</div>
+<div class="card-body"><ul><li><strong>Shared</strong>: the artifact being built (e.g., current draft)</li><li><strong>Private</strong>: each agent's reasoning trace, notes</li><li>Orchestrator decides what gets promoted from private → shared</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-10">
+<div class="slide-content">
+<h2 class="slide-title">Today's Practice — <strong>2-Agent Role-Play</strong></h2>
+<div class="mermaid-container"><div class="mermaid">sequenceDiagram
+    participant U as 👤 User
+    participant O as 🧭 Orchestrator
+    participant P as 🟦 Proposer
+    participant R as 🟧 Reviewer
+
+    U->>O: Research topic
+    O->>P: "Propose a hypothesis about X"
+    P-->>O: Initial proposal
+    O->>R: "Review this proposal"
+    R-->>O: Critique
+    O->>P: "Revise based on the critique"
+    P-->>O: Revised proposal
+    O-->>U: Conversation log + final hypothesis</div></div>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> What Makes This Multi-Agent (vs Reflexion)</div>
+<div class="card-body"><ul><li><strong>Different roles</strong>: Proposer is creative, Reviewer is rigorous — distinct prompts</li><li><strong>Different jobs</strong>: propose vs critique vs revise — not just "improve yourself"</li><li><strong>Orchestrator-driven</strong>: code decides the flow, not the agents</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-11">
+<div class="slide-content">
+<h2 class="slide-title">When Multi-Agent <strong>Helps</strong> vs <strong>Hurts</strong></h2>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> Multi-Agent Helps When</div>
+<div class="card-body"><ul><li>Task has clearly distinct sub-roles (write, review, format, fact-check)</li><li>You need diverse perspectives (Week 12: avoid echo chamber)</li><li>Workflow has natural stages with handoffs</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">❌</span> Multi-Agent Hurts When</div>
+<div class="card-body"><ul><li>Task is small enough for one agent to handle well</li><li>Roles are vague — agents end up doing the same thing</li><li>Budget is tight: each role costs more LLM calls</li><li>You're using it to "feel sophisticated" rather than solve a real coordination problem</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">💸</span> The Coordination Tax</div>
+<div class="card-body"><ul><li>2 agents ≠ 2× the cost; closer to 3–4× (system prompts, history, retries)</li><li>Coordination overhead grows quickly with team size</li><li>Start with 2, expand only when the seams between agents become clear</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-12">
+<div class="slide-content">
+<h2 class="slide-title">Lecture Summary — <strong>Multi-Agent Systems</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎭</span> Role-Based Agents</div>
+<div class="card-body"><ul><li>Agents are defined by <strong>function</strong> (role) — Proposer, Reviewer, Editor</li><li>Each role gets a distinct system prompt and a distinct job</li><li>Different from personas (which differ by viewpoint, not function)</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🧭</span> Orchestration Patterns</div>
+<div class="card-body"><ul><li><strong>Pipeline</strong>: A → B → C handoff</li><li><strong>Manager-Worker</strong>: delegation and aggregation</li><li><strong>Round-Robin</strong>: turn-taking peer review</li><li>Today: pipeline + iteration for 2-agent role-play</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🧩</span> Architecture Choices</div>
+<div class="card-body"><ul><li>Shared vs private memory, information asymmetry — these are YOUR design decisions</li><li>"Coordination tax" is real — multi-agent is only worth it for tasks with real role distinction</li><li>Next week's discussion: leadership of a digital workforce</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-13">
+<div class="slide-content">
+<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+<p class="slide-subtitle">Build a 2-Agent Hypothesis Refinement Team</p>
+</div>
+</section>
+<section class="slide" id="slide-14">
+<div class="slide-content">
+<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Goal</div>
+<div class="card-body"><ul><li>User enters a research topic</li><li><strong>Proposer</strong> drafts a hypothesis (creative, ambitious)</li><li><strong>Reviewer</strong> critiques it (testability, confounders, design)</li><li><strong>Proposer</strong> revises addressing the critique</li><li>UI shows all 3 turns + final hypothesis</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📁</span> Files</div>
+<div class="card-body"><ul><li><code class="inline-code">team.py</code> — role definitions + orchestrator</li><li><code class="inline-code">app.py</code> — append "👥 Research Team" section</li><li>Reuses <code class="inline-code">llm_call</code> from <code class="inline-code">evaluator.py</code> (Week 10)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚡</span> Why This Setup?</div>
+<div class="card-body"><ul><li>Concrete role distinction (creative vs rigorous)</li><li>Same conversational context but different roles → see asymmetry in action</li><li>3-round pipeline is small enough to debug, big enough to feel like a team</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-15">
+<div class="slide-content">
+<h2 class="slide-title">Step 1 — <strong>Define the Roles</strong> (<code class="inline-code">team.py</code>)</h2>
+<p class="slide-subtitle">Two distinct system prompts — that's what makes them different</p>
+<pre class="code-block"><code class="language-python"># team.py
+from evaluator import llm_call   # reuse from Week 10
+
+ROLES = {
+    "proposer": {
+        "name": "Hypothesis Proposer",
+        "system": """You are a creative researcher who proposes bold, testable hypotheses.
+You favor ambitious but specific claims. You stay open to revision after critique.
+
+Your task: given a research topic (and optionally prior critique), propose ONE hypothesis.
+Output ONLY the hypothesis itself — 2 to 3 sentences. No preamble, no caveats.""",
+    },
+    "reviewer": {
+        "name": "Methodologist Reviewer",
+        "system": """You are a rigorous methodologist reviewing research hypotheses.
+
+For the hypothesis given, identify:
+1. Testability concerns (can it actually be measured?)
+2. Confounding variables (what else could explain the predicted result?)
+3. ONE concrete improvement (specific, actionable)
+
+Be direct but constructive. Output 3-5 bullet points only. No preamble.""",
+    },
+}</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> The Two Roles in One Glance</div>
+<div class="card-body"><ul><li>Proposer: <strong>creative, specific, brief</strong></li><li>Reviewer: <strong>rigorous, structured, concrete</strong></li><li>Same model, totally different behavior — purely from system prompts</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-16">
+<div class="slide-content">
+<h2 class="slide-title">Step 2 — <strong>Run a Single Role</strong> (<code class="inline-code">team.py</code>)</h2>
+<p class="slide-subtitle">Wrapping a role around <code class="inline-code">llm_call</code></p>
+<pre class="code-block"><code class="language-python">def run_role(client, model, role_key, task, history=""):
+    """Execute one agent turn with the role's system prompt + history."""
+    role = ROLES[role_key]
+    history_block = f"Conversation so far:\n{history}\n\n" if history else ""
+    prompt = f"""{role['system']}
+
+{history_block}Your task: {task}"""
+    return llm_call(client, model, prompt)</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Why a Plain Prompt (Not Multi-Turn Messages)?</div>
+<div class="card-body"><ul><li>We're using Gemini's simple <code class="inline-code">generate_content</code> — single prompt per call</li><li>History is <strong>inlined as text</strong> — gives full control over what each role sees</li><li>For multi-turn chat threads, you'd switch to <code class="inline-code">chats.send_message()</code>, but this is clearer for learning</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-17">
+<div class="slide-content">
+<h2 class="slide-title">Step 3 — <strong>The Orchestrator</strong> (<code class="inline-code">team.py</code>)</h2>
+<p class="slide-subtitle">3 turns: propose → critique → revise</p>
+<pre class="code-block"><code class="language-python">def role_play_simulation(client, model, topic):
+    """Run a 3-round Proposer-Reviewer-Proposer collaboration."""
+    log = []
+
+    # Round 1: initial proposal
+    proposal = run_role(client, model, "proposer",
+                        task=f"Propose a hypothesis about: {topic}")
+    log.append({"round": 1, "role": "proposer", "text": proposal})
+
+    # Round 2: reviewer critiques the proposal
+    history = f"[Proposer]: {proposal}"
+    critique = run_role(client, model, "reviewer",
+                        task="Review the hypothesis above.",
+                        history=history)
+    log.append({"round": 2, "role": "reviewer", "text": critique})
+
+    # Round 3: proposer revises based on critique
+    history = f"[Proposer]: {proposal}\n[Reviewer]: {critique}"
+    revision = run_role(client, model, "proposer",
+                        task="Revise your hypothesis addressing the critique. Keep it 2-3 sentences.",
+                        history=history)
+    log.append({"round": 3, "role": "proposer", "text": revision})
+
+    return log</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Notice the Information Asymmetry</div>
+<div class="card-body"><ul><li>Round 1 (Proposer): sees only the topic — must be creative</li><li>Round 2 (Reviewer): sees only the proposal — focuses on critique</li><li>Round 3 (Proposer): sees BOTH — must integrate</li><li>The orchestrator controls what each role sees at each step</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-18">
+<div class="slide-content">
+<h2 class="slide-title">Step 4 — <strong>Streamlit UI</strong> (append to <code class="inline-code">app.py</code>)</h2>
+<p class="slide-subtitle">Run the team, show all 3 rounds</p>
+<pre class="code-block"><code class="language-python"># === Top of app.py — same client setup as Week 10/12 ===
+# (load_dotenv, genai.Client, model = os.environ.get("LLM_MODEL", "gemini-3.1-flash-lite"))
+from team import ROLES, role_play_simulation
+
+# === Append at the bottom ===
+st.divider()
+st.header("👥 Research Team — Proposer + Reviewer")
+
+topic = st.text_input(
+    "Research topic",
+    placeholder="e.g., How does sleep affect memory consolidation in young adults?",
+)
+
+if st.button("▶️ Run Team", disabled=not topic):
+    with st.spinner("Team is working..."):
+        log = role_play_simulation(client, model, topic)
+
+    for entry in log:
+        role = ROLES[entry["role"]]["name"]
+        icon = "🟦" if entry["role"] == "proposer" else "🟧"
+        st.subheader(f"Round {entry['round']} — {icon} {role}")
+        st.write(entry["text"])
+
+    st.success("Final hypothesis is the Proposer's revision (Round 3).")</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> What to Watch For</div>
+<div class="card-body"><ul><li>Round 1 hypothesis vs Round 3 hypothesis — did the critique actually improve it?</li><li>Are Reviewer's bullets specific or generic?</li><li>If Reviewer is too soft, sharpen its system prompt and re-run</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-19">
+<div class="slide-content">
+<h2 class="slide-title">✅ <strong>Week 13 Practice Checklist</strong></h2>
+<div class="highlight-quote">Complete these stages in order:</div>
+<p class="slide-text">1. - [ ] Create <code class="inline-code">team.py</code> with the <code class="inline-code">ROLES</code> dictionary (2 roles)</p>
+<p class="slide-text">2. - [ ] Add <code class="inline-code">run_role()</code> and test it alone — does the Reviewer produce 3-5 bullets?</p>
+<p class="slide-text">3. - [ ] Add <code class="inline-code">role_play_simulation()</code> — verify all 3 turns appear in the log</p>
+<p class="slide-text">4. - [ ] Append the Research Team section to <code class="inline-code">app.py</code></p>
+<p class="slide-text">5. - [ ] Run with a topic from your own research field</p>
+<p class="slide-text">6. - [ ] Compare Round 1 vs Round 3 — did the revision actually improve?</p>
+<p class="slide-text">7. - [ ] Change the Reviewer's system prompt to be MORE harsh — does Round 3 change?</p>
+<p class="slide-text">8. - [ ] Add a third turn (Reviewer's final approval) — extend <code class="inline-code">role_play_simulation()</code></p>
+<p class="slide-text">9. - [ ] <strong>Bonus</strong>: add a third role (e.g., "Final Editor") to make a Pipeline of 3</p>
+<p class="slide-text">10. - [ ] Show ONLY the final hypothesis (collapse intermediate turns) — does the user trust it less without seeing the process?</p>
+<p class="slide-text">11. - [ ] Pair this with Week 10 evaluator — score the final hypothesis with the rubric</p>
+</div>
+</section>
+<section class="slide title-slide" id="slide-20">
+<div class="slide-content">
+<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+<p class="slide-subtitle">Selective Memory + Leadership of a Digital Workforce</p>
+</div>
+</section>
+<section class="slide" id="slide-21">
+<div class="slide-content">
+<h2 class="slide-title">Week 12 — <strong>Should AI Remember Failed Experiments?</strong></h2>
+<p class="slide-subtitle">7 responses — everyone says yes, but HOW differs sharply</p>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">📊</span> The Vote Pattern</div>
+<div class="card-body"><ul><li><strong>All three (1,2,3)</strong>: Huy, Manuella — <strong>2 votes</strong></li><li><strong>Iron Man + Hulk (1,3)</strong>: DongYun — <strong>1 vote</strong></li><li><strong>Hulk only (3)</strong>: Irfan — <strong>1 vote</strong></li><li><strong>None / reframe the question</strong>: Margareth, Yadanar, Seher — <strong>3 votes</strong></li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🤝</span> The Universal Yes</div>
+<div class="card-body"><ul><li><strong>Every single response</strong> agrees: failed experiments should be retained</li><li>Iron Man's "log failures" + Captain America's "preserve the record" + Hulk's "remember dangerous parameters" all converge</li><li>The disagreement is entirely about <strong>how to manage</strong> retained failures</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">🔥</span> The Reframers' Argument</div>
+<div class="card-body"><ul><li>3/7 students explicitly reject the "remember vs forget" framing</li><li>Margareth, Yadanar, Seher each propose a different reframe</li><li>Class is moving from "should we?" to "how should we?" — same as Weeks 9-11</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-22">
+<div class="slide-content">
+<h2 class="slide-title">Theme 1 — <strong>The Reframers</strong></h2>
+<p class="slide-subtitle">Beyond "remember or forget"</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🗂️</span> Margareth — Structured Storage</div>
+<div class="card-body"><ul><li>"Instead of storing everything in the AI's memory or context, maintain a structured history (DB, log) that can be queried"</li><li>Example: Bayesian optimization — past data builds a model, not just recall</li><li><strong>Selective storage AND structured use</strong> of negative data</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔥</span> Yadanar — Lessons, Not Logs</div>
+<div class="card-body"><ul><li>"AI should not just store failed experiments or erase them. It should learn from them."</li><li>"You do not remember every time you got burned, but you learn not to touch fire"</li><li>Transform raw failures into <strong>abstracted principles</strong></li></ul></div>
+</div>
+<div class="card card-purple">
+<div class="card-header"><span class="icon">💎</span> Seher — Living Records</div>
+<div class="card-body"><ul><li>The hidden flaw in "type failures before filing": classification at storage time freezes interpretation</li><li>Chatbot example: frustrating conversations were filed as failures — actually the most valuable signal</li><li><strong>Proposal</strong>: store raw data + versioned interpretation layer that updates over time</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Don't archive failures. Version them." — Seher</div>
+</div>
+</section>
+<section class="slide" id="slide-23">
+<div class="slide-content">
+<h2 class="slide-title">Theme 2 — <strong>Huy's Infrastructure Argument</strong></h2>
+<p class="slide-subtitle">The deepest critique of the field's current practice</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🏗️</span> The Three Conditions</div>
+<div class="card-body"><ul><li><strong>Contextual metadata</strong> — failure without parameters/conditions is noise, not signal</li><li><strong>Temporal tagging</strong> — a failed approach in one tech generation may be viable in the next</li><li><strong>Shared infrastructure</strong> — most negative data lives in proprietary lab notebooks, inaccessible</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> Why This Matters</div>
+<div class="card-body"><ul><li>Without metadata: the AI generalizes the wrong lesson from the failure</li><li>Without time tags: the system becomes "increasingly conservative and blind to newly opened solution spaces"</li><li>Without shared infra: the most valuable negative data is locked up</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> The Research Director's Role</div>
+<div class="card-body"><ul><li>"Not just to mandate failure logging within their own lab"</li><li><strong>Advocate for</strong>: shared databases, publication venues, standardized failure taxonomies</li><li>This is a <strong>system-level</strong> intervention, not an individual one</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Negative data is the boundary system that defines the safety, integrity, and efficiency of agentic exploration." — Huy</div>
+</div>
+</section>
+<section class="slide" id="slide-24">
+<div class="slide-content">
+<h2 class="slide-title">Theme 3 — <strong>The Classification Moment Problem</strong></h2>
+<p class="slide-subtitle">When do you decide what a failure means?</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">⏰</span> Seher's Key Insight</div>
+<div class="card-body"><ul><li>You classify failures at the moment of storage</li><li>But "many failures are only understood retrospectively"</li><li><strong>Freezing interpretation at storage = freezing it at the worst moment</strong> (when you understand the least)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📚</span> The Echo to Earlier Weeks</div>
+<div class="card-body"><ul><li>Week 10: rubric design — at what point do you decide what "good" means?</li><li>Week 11: self-reflection — the critique is generated AFTER the output, with hindsight</li><li>Week 12: memory architecture — what stays raw vs gets pre-digested?</li><li><strong>Common thread</strong>: interpretation has a "best time" to be done, and storage time is rarely it</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💡</span> Practical Takeaway</div>
+<div class="card-body"><ul><li>For your agents: store both raw events AND tags, but treat tags as <strong>mutable</strong></li><li>Revisit old labels when your understanding evolves</li><li>This requires <strong>leadership</strong> — someone has to schedule the revisits</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-25">
+<div class="slide-content">
+<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+<p class="slide-subtitle">Multi-agent systems make Week 12's questions concrete</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">👥</span> Today's Team Already Has This Problem</div>
+<div class="card-body"><ul><li>Round 2 Reviewer critiques the hypothesis — is the critique a "failure log" or a "lesson"?</li><li>If you saved every critique → store grows unbounded</li><li>If you only kept Round 3 → you lose the reasoning</li><li>Same selective memory question, scaled to 1 team</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🧭</span> Now Imagine 10 Agents</div>
+<div class="card-body"><ul><li>10 specialists running in parallel for a week</li><li>Many proposals fail, many critiques get rejected</li><li>WHO decides what's "failure" worth keeping? WHO decides when to revisit old labels?</li><li>That role is <strong>you</strong> — the human leader of the digital workforce</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> Leadership Has Concrete Decisions</div>
+<div class="card-body"><ul><li>Memory policy (Margareth's structured storage)</li><li>Distillation policy (Yadanar's lessons-not-logs)</li><li>Revisit cadence (Seher's living records)</li><li>Infrastructure investment (Huy's shared databases)</li><li>These ARE leadership decisions — not "soft" management</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-26">
+<div class="slide-content">
+<h2 class="slide-title">Activity — <strong>Design Your Team's Memory Policy</strong></h2>
+<p class="slide-subtitle">10 minutes — pair work</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📋</span> The Task</div>
+<div class="card-body"><ul><li>Imagine your midterm app, but now running with 5 specialized agents instead of 1</li><li>In one year, you've accumulated:</li><li>50,000 proposed hypotheses (5,000 became outputs, 45,000 were dropped)</li><li>200,000 critique comments</li><li>1,000 user corrections</li><li>What do you keep raw? What do you distill? When do you revisit?</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">💭</span> Make 4 Lists</div>
+<div class="card-body"><ul><li><strong>KEEP RAW</strong> (everything, unprocessed)</li><li><strong>DISTILL</strong> (turn into abstracted lessons)</li><li><strong>DISCARD</strong> (not worth storing)</li><li><strong>SCHEDULE TO REVISIT</strong> (labels that may change)</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> The Test</div>
+<div class="card-body"><ul><li>Share with your partner — would they make the same calls?</li><li>Where you disagree = where leadership judgment actually matters</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-27">
+<div class="slide-content">
+<h2 class="slide-title">🗣️ <strong>Week 13 Discussion Questions</strong> (UST LMS)</h2>
+<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+<p class="slide-text">1. In today's 2-agent practice, the Reviewer's critique often shaped Round 3 more than the original topic. Now imagine <strong>scaling to 10 agents</strong> — what would you do differently when one agent's output strongly biases all the others? Connect to Week 12's echo chamber concerns.</p>
+<p class="slide-text">2. Seher proposed "living failure records — version them, don't archive them." After today's practice, <strong>what would you have to track to enable retrospective re-interpretation</strong> of your team's past outputs? Be specific about one piece of metadata you'd want to log.</p>
+</div>
+</section>
+<section class="slide" id="slide-28">
+<div class="slide-content">
+<h2 class="slide-title">Want to Learn More?</h2>
+<p class="slide-text">Multi-Agent Frameworks</p>
+<a href="https://microsoft.github.io/autogen/" target="_blank" class="reference-link">📚 Microsoft AutoGen — Conversational Multi-Agent</a>
+<a href="https://www.crewai.com/" target="_blank" class="reference-link">📚 CrewAI — Role-Based Agent Teams</a>
+<a href="https://langchain-ai.github.io/langgraph/" target="_blank" class="reference-link">📚 LangGraph — Stateful Multi-Actor Workflows</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Research Papers</p>
+<div class="highlight-quote">📄 [Generative Agents: Interactive Simulacra of Human Behavior (Park et al., 2023)](https://arxiv.org/abs/2304.03442)</div>
+<div class="highlight-quote">📄 [MetaGPT: Meta Programming for Multi-Agent Collaborative Framework (2023)](https://arxiv.org/abs/2308.00352)</div>
+<div class="highlight-quote">📄 [Improving Factuality via Multiagent Debate (Du et al., 2023)](https://arxiv.org/abs/2305.14325)</div>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Anthropic Free Online Courses</p>
+<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)</div>
+<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
+</div>
+</section>
+<section class="slide" id="slide-29">
+<div class="slide-content">
+<h2 class="slide-title">Wrap-Up of <strong>Week 13</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> Lecture</div>
+<div class="card-body"><ul><li>Roles (function) differ from personas (viewpoint); three orchestration patterns — pipeline, manager-worker, round-robin; information asymmetry + shared/private memory are design choices that drive behavior</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> Practice</div>
+<div class="card-body"><ul><li>Built a <strong>2-agent Proposer-Reviewer team</strong> with <code class="inline-code">team.py</code>; 3-round pipeline (propose → critique → revise); same model, different system prompts → different roles in practice</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+<div class="card-body"><ul><li>Week 12 review (7 responses): universal yes to retaining failures; reframers (Margareth/Yadanar/Seher) shift the question to HOW; Huy's infrastructure argument; today's team makes Week 12's leadership questions concrete</li></ul></div>
+</div>
+</div>
+<p class="slide-text"><strong>Next week:</strong> Final project showcase + course wrap-up.</p>
+</div>
+</section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">29</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(13)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(20)">Discussion</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 29;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+      
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+      
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+      
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if(currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if(currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if(newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+           currentSlide = newSlide;
+           pageInput.value = currentSlide;
+           updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if(e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: -100, behavior: 'smooth'});
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: 100, behavior: 'smooth'});
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+         const pageNum = parseInt(hash.replace('#slide-', ''));
+         if(!isNaN(pageNum)) {
+           setTimeout(() => goToSlide(pageNum), 100);
+         }
+      }
+    });
+  </script>
+</body>
+</html>
