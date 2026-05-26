@@ -460,23 +460,27 @@ if st.button("▶️ Run Team", disabled=not topic):
 ## Slide: Week 12 Discussion Recap
 - type: cards
 - title: Week 12 — **Should AI Remember Failed Experiments?**
-- subtitle: 7 responses — everyone says yes, but HOW differs sharply
+- subtitle: 14 responses — near-universal "yes", but the consensus starts to crack
 
 - card(green, 📊): The Vote Pattern
-  - **All three (1,2,3)**: Huy, Manuella — **2 votes**
-  - **Iron Man + Hulk (1,3)**: DongYun — **1 vote**
-  - **Hulk only (3)**: Irfan — **1 vote**
-  - **None / reframe the question**: Margareth, Yadanar, Seher — **3 votes**
+  - **All three (1,2,3)**: Huy, Manuella, Nazhiefah — **3**
+  - **Hulk only (3)**: Irfan, Hyunwoo, Ly — **3**
+  - **None / reframe**: Margareth, Yadanar, Seher — **3**
+  - **Iron Man + Hulk (1,3)**: DongYun — **1**
+  - **Cap + Hulk (2,3)**: Waad — **1**
+  - **Iron Man + Cap (1,2, anti-Hulk)**: Gyeongsu — **1**
+  - **Iron Man only (1)**: Tan — **1**
+  - **"It depends" (definition)**: Jaewhoon — **1**
 
-- card(blue, 🤝): The Universal Yes
-  - **Every single response** agrees: failed experiments should be retained
-  - Iron Man's "log failures" + Captain America's "preserve the record" + Hulk's "remember dangerous parameters" all converge
-  - The disagreement is entirely about **how to manage** retained failures
+- card(blue, 🤝): The (Almost) Universal Yes
+  - 13/14 agree failed experiments should be retained in some form
+  - Backed by **real industry practice**: Waad (nuclear OEF), Hyunwoo (robotics safety)
+  - The disagreement is about **how to manage** — and now, **what even counts** as a failure
 
-- card(red, 🔥): The Reframers' Argument
-  - 3/7 students explicitly reject the "remember vs forget" framing
-  - Margareth, Yadanar, Seher each propose a different reframe
-  - Class is moving from "should we?" to "how should we?" — same as Weeks 9-11
+- card(red, 🔥): The Cracks Appear
+  - **Gyeongsu** rejects Hulk: "babysitting the system defeats automation"
+  - **Jaewhoon**: "it depends what we define as 'failed experiment'" — and sometimes delete + reset is right
+  - Class moves from "should we?" → "how?" → "what counts, and who decides?"
 
 =====
 
@@ -506,23 +510,23 @@ if st.button("▶️ Run Team", disabled=not topic):
 
 ## Slide: Theme 2
 - type: cards
-- title: Theme 2 — **Huy's Infrastructure Argument**
-- subtitle: The deepest critique of the field's current practice
+- title: Theme 2 — **Huy's Infrastructure + Industry Grounding**
+- subtitle: The "yes" is backed by how high-stakes fields already work
 
-- card(blue, 🏗️): The Three Conditions
-  - **Contextual metadata** — failure without parameters/conditions is noise, not signal
+- card(blue, 🏗️): Huy — Three Conditions for Useful Negative Data
+  - **Contextual metadata** — a failure log without parameters/conditions is noise, not signal
   - **Temporal tagging** — a failed approach in one tech generation may be viable in the next
-  - **Shared infrastructure** — most negative data lives in proprietary lab notebooks, inaccessible
+  - **Shared infrastructure** — most negative data is locked in proprietary lab notebooks
 
-- card(red, ⚠️): Why This Matters
-  - Without metadata: the AI generalizes the wrong lesson from the failure
-  - Without time tags: the system becomes "increasingly conservative and blind to newly opened solution spaces"
-  - Without shared infra: the most valuable negative data is locked up
+- card(green, ☢️): Waad — Nuclear Safety Already Does This
+  - "Every model, calculation, assumption, result — successful or not — is documented"
+  - **Operating Experience Feedback (OEF)**: a formal culture of preserving incidents, errors, near-misses
+  - "The goal is not to hide mistakes, but to understand them" — real-world proof of the "always retain" view
 
-- card(green, 🎯): The Research Director's Role
-  - "Not just to mandate failure logging within their own lab"
-  - **Advocate for**: shared databases, publication venues, standardized failure taxonomies
-  - This is a **system-level** intervention, not an individual one
+- card(orange, 🤖): Hyunwoo — Robotics Safety
+  - "If a system forgets the parameters that caused a collision, it may suggest the same trajectory again"
+  - Negative data prevents **physical hardware damage** — concrete, not abstract
+  - But "human oversight is required to understand WHY the failure occurred"
 
 - highlight-quote: "Negative data is the boundary system that defines the safety, integrity, and efficiency of agentic exploration." — Huy
 
@@ -530,24 +534,26 @@ if st.button("▶️ Run Team", disabled=not topic):
 
 ## Slide: Theme 3
 - type: cards
-- title: Theme 3 — **The Classification Moment Problem**
-- subtitle: When do you decide what a failure means?
+- title: Theme 3 — **The Cracks in the Consensus**
+- subtitle: Two students push back on the easy "always retain + always oversee" answer
 
-- card(blue, ⏰): Seher's Key Insight
-  - You classify failures at the moment of storage
-  - But "many failures are only understood retrospectively"
-  - **Freezing interpretation at storage = freezing it at the worst moment** (when you understand the least)
+- card(red, ⚙️): Gyeongsu — Anti-Over-Oversight
+  - Agrees with Iron Man (shortcut) and Captain America (integrity)
+  - But **rejects Hulk**: "micromanaging the AI out of fear defeats the purpose"
+  - "If we have to babysit the system at every single step, we lose all the benefits of automation"
+  - A direct challenge to the dominant "human-in-every-loop" stance
 
-- card(orange, 📚): The Echo to Earlier Weeks
-  - Week 10: rubric design — at what point do you decide what "good" means?
-  - Week 11: self-reflection — the critique is generated AFTER the output, with hindsight
-  - Week 12: memory architecture — what stays raw vs gets pre-digested?
-  - **Common thread**: interpretation has a "best time" to be done, and storage time is rarely it
+- card(purple, 🔍): Jaewhoon — The Definition Problem
+  - "It depends on what we define as a 'failed experiment'"
+  - Engineering reality: humans must **analyze the failure first**, THEN feed it to AI — "AI cannot find the missing point unless I type every fine detail"
+  - And the lone deletion case: if AI absorbed **wrong data into its weights**, "it may be better to delete all memories, reset, and re-learn"
 
-- card(green, 💡): Practical Takeaway
-  - For your agents: store both raw events AND tags, but treat tags as **mutable**
-  - Revisit old labels when your understanding evolves
-  - This requires **leadership** — someone has to schedule the revisits
+- card(blue, 💎): Seher — Why Freezing Labels Fails (recap)
+  - Classifying a failure at storage time freezes interpretation "at the worst possible moment — when you understand the least"
+  - Chatbot example: suppressed "frustrating" conversations were later the most valuable signal
+  - **"Don't archive failures. Version them."**
+
+- highlight-quote: "Babysitting the system at every step loses all the benefits of automation." — Gyeongsu, vs the Hulk majority
 
 =====
 
@@ -572,7 +578,7 @@ if st.button("▶️ Run Team", disabled=not topic):
   - Memory policy (Margareth's structured storage)
   - Distillation policy (Yadanar's lessons-not-logs)
   - Revisit cadence (Seher's living records)
-  - Infrastructure investment (Huy's shared databases)
+  - **Checkpoint placement** (Gyeongsu vs Hulk: oversee every step, or only key ones?)
   - These ARE leadership decisions — not "soft" management
 
 =====
@@ -609,7 +615,7 @@ if st.button("▶️ Run Team", disabled=not topic):
 > Visit: **UST LMS → Class → Discussion**
 
 1. In today's 2-agent practice, the Reviewer's critique often shaped Round 3 more than the original topic. Now imagine **scaling to 10 agents** — what would you do differently when one agent's output strongly biases all the others? Connect to Week 12's echo chamber concerns.
-2. Seher proposed "living failure records — version them, don't archive them." After today's practice, **what would you have to track to enable retrospective re-interpretation** of your team's past outputs? Be specific about one piece of metadata you'd want to log.
+2. Gyeongsu argued that "babysitting the system at every step loses all the benefits of automation," while the Hulk majority insists on human oversight at each step. After running your 2-agent team today, **where exactly would YOU put the human checkpoint** — every turn, only the final output, or only on disagreement? Defend your choice.
 
 =====
 
@@ -646,6 +652,6 @@ Anthropic Free Online Courses
   - Built a **2-agent Proposer-Reviewer team** with `team.py`; 3-round pipeline (propose → critique → revise); same model, different system prompts → different roles in practice
 
 - card(orange, 🗣️): Discussion
-  - Week 12 review (7 responses): universal yes to retaining failures; reframers (Margareth/Yadanar/Seher) shift the question to HOW; Huy's infrastructure argument; today's team makes Week 12's leadership questions concrete
+  - Week 12 review (14 responses): near-universal yes (backed by nuclear OEF + robotics); reframers shift to HOW; first cracks appear (Gyeongsu anti-oversight, Jaewhoon's definition + deletion case); today's team makes the leadership question — where to put the human checkpoint — concrete
 
 **Next week:** Final project showcase + course wrap-up.

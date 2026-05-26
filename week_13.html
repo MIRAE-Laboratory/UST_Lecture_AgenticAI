@@ -914,19 +914,19 @@ if st.button("▶️ Run Team", disabled=not topic):
 <section class="slide" id="slide-21">
 <div class="slide-content">
 <h2 class="slide-title">Week 12 — <strong>Should AI Remember Failed Experiments?</strong></h2>
-<p class="slide-subtitle">7 responses — everyone says yes, but HOW differs sharply</p>
+<p class="slide-subtitle">14 responses — near-universal "yes", but the consensus starts to crack</p>
 <div class="cards-grid">
 <div class="card card-green">
 <div class="card-header"><span class="icon">📊</span> The Vote Pattern</div>
-<div class="card-body"><ul><li><strong>All three (1,2,3)</strong>: Huy, Manuella — <strong>2 votes</strong></li><li><strong>Iron Man + Hulk (1,3)</strong>: DongYun — <strong>1 vote</strong></li><li><strong>Hulk only (3)</strong>: Irfan — <strong>1 vote</strong></li><li><strong>None / reframe the question</strong>: Margareth, Yadanar, Seher — <strong>3 votes</strong></li></ul></div>
+<div class="card-body"><ul><li><strong>All three (1,2,3)</strong>: Huy, Manuella, Nazhiefah — <strong>3</strong></li><li><strong>Hulk only (3)</strong>: Irfan, Hyunwoo, Ly — <strong>3</strong></li><li><strong>None / reframe</strong>: Margareth, Yadanar, Seher — <strong>3</strong></li><li><strong>Iron Man + Hulk (1,3)</strong>: DongYun — <strong>1</strong></li><li><strong>Cap + Hulk (2,3)</strong>: Waad — <strong>1</strong></li><li><strong>Iron Man + Cap (1,2, anti-Hulk)</strong>: Gyeongsu — <strong>1</strong></li><li><strong>Iron Man only (1)</strong>: Tan — <strong>1</strong></li><li><strong>"It depends" (definition)</strong>: Jaewhoon — <strong>1</strong></li></ul></div>
 </div>
 <div class="card card-blue">
-<div class="card-header"><span class="icon">🤝</span> The Universal Yes</div>
-<div class="card-body"><ul><li><strong>Every single response</strong> agrees: failed experiments should be retained</li><li>Iron Man's "log failures" + Captain America's "preserve the record" + Hulk's "remember dangerous parameters" all converge</li><li>The disagreement is entirely about <strong>how to manage</strong> retained failures</li></ul></div>
+<div class="card-header"><span class="icon">🤝</span> The (Almost) Universal Yes</div>
+<div class="card-body"><ul><li>13/14 agree failed experiments should be retained in some form</li><li>Backed by <strong>real industry practice</strong>: Waad (nuclear OEF), Hyunwoo (robotics safety)</li><li>The disagreement is about <strong>how to manage</strong> — and now, <strong>what even counts</strong> as a failure</li></ul></div>
 </div>
 <div class="card card-red">
-<div class="card-header"><span class="icon">🔥</span> The Reframers' Argument</div>
-<div class="card-body"><ul><li>3/7 students explicitly reject the "remember vs forget" framing</li><li>Margareth, Yadanar, Seher each propose a different reframe</li><li>Class is moving from "should we?" to "how should we?" — same as Weeks 9-11</li></ul></div>
+<div class="card-header"><span class="icon">🔥</span> The Cracks Appear</div>
+<div class="card-body"><ul><li><strong>Gyeongsu</strong> rejects Hulk: "babysitting the system defeats automation"</li><li><strong>Jaewhoon</strong>: "it depends what we define as 'failed experiment'" — and sometimes delete + reset is right</li><li>Class moves from "should we?" → "how?" → "what counts, and who decides?"</li></ul></div>
 </div>
 </div>
 </div>
@@ -954,20 +954,20 @@ if st.button("▶️ Run Team", disabled=not topic):
 </section>
 <section class="slide" id="slide-23">
 <div class="slide-content">
-<h2 class="slide-title">Theme 2 — <strong>Huy's Infrastructure Argument</strong></h2>
-<p class="slide-subtitle">The deepest critique of the field's current practice</p>
+<h2 class="slide-title">Theme 2 — <strong>Huy's Infrastructure + Industry Grounding</strong></h2>
+<p class="slide-subtitle">The "yes" is backed by how high-stakes fields already work</p>
 <div class="cards-grid">
 <div class="card card-blue">
-<div class="card-header"><span class="icon">🏗️</span> The Three Conditions</div>
-<div class="card-body"><ul><li><strong>Contextual metadata</strong> — failure without parameters/conditions is noise, not signal</li><li><strong>Temporal tagging</strong> — a failed approach in one tech generation may be viable in the next</li><li><strong>Shared infrastructure</strong> — most negative data lives in proprietary lab notebooks, inaccessible</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">⚠️</span> Why This Matters</div>
-<div class="card-body"><ul><li>Without metadata: the AI generalizes the wrong lesson from the failure</li><li>Without time tags: the system becomes "increasingly conservative and blind to newly opened solution spaces"</li><li>Without shared infra: the most valuable negative data is locked up</li></ul></div>
+<div class="card-header"><span class="icon">🏗️</span> Huy — Three Conditions for Useful Negative Data</div>
+<div class="card-body"><ul><li><strong>Contextual metadata</strong> — a failure log without parameters/conditions is noise, not signal</li><li><strong>Temporal tagging</strong> — a failed approach in one tech generation may be viable in the next</li><li><strong>Shared infrastructure</strong> — most negative data is locked in proprietary lab notebooks</li></ul></div>
 </div>
 <div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> The Research Director's Role</div>
-<div class="card-body"><ul><li>"Not just to mandate failure logging within their own lab"</li><li><strong>Advocate for</strong>: shared databases, publication venues, standardized failure taxonomies</li><li>This is a <strong>system-level</strong> intervention, not an individual one</li></ul></div>
+<div class="card-header"><span class="icon">☢️</span> Waad — Nuclear Safety Already Does This</div>
+<div class="card-body"><ul><li>"Every model, calculation, assumption, result — successful or not — is documented"</li><li><strong>Operating Experience Feedback (OEF)</strong>: a formal culture of preserving incidents, errors, near-misses</li><li>"The goal is not to hide mistakes, but to understand them" — real-world proof of the "always retain" view</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🤖</span> Hyunwoo — Robotics Safety</div>
+<div class="card-body"><ul><li>"If a system forgets the parameters that caused a collision, it may suggest the same trajectory again"</li><li>Negative data prevents <strong>physical hardware damage</strong> — concrete, not abstract</li><li>But "human oversight is required to understand WHY the failure occurred"</li></ul></div>
 </div>
 </div>
 <div class="highlight-quote">"Negative data is the boundary system that defines the safety, integrity, and efficiency of agentic exploration." — Huy</div>
@@ -975,22 +975,23 @@ if st.button("▶️ Run Team", disabled=not topic):
 </section>
 <section class="slide" id="slide-24">
 <div class="slide-content">
-<h2 class="slide-title">Theme 3 — <strong>The Classification Moment Problem</strong></h2>
-<p class="slide-subtitle">When do you decide what a failure means?</p>
+<h2 class="slide-title">Theme 3 — <strong>The Cracks in the Consensus</strong></h2>
+<p class="slide-subtitle">Two students push back on the easy "always retain + always oversee" answer</p>
 <div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚙️</span> Gyeongsu — Anti-Over-Oversight</div>
+<div class="card-body"><ul><li>Agrees with Iron Man (shortcut) and Captain America (integrity)</li><li>But <strong>rejects Hulk</strong>: "micromanaging the AI out of fear defeats the purpose"</li><li>"If we have to babysit the system at every single step, we lose all the benefits of automation"</li><li>A direct challenge to the dominant "human-in-every-loop" stance</li></ul></div>
+</div>
+<div class="card card-purple">
+<div class="card-header"><span class="icon">🔍</span> Jaewhoon — The Definition Problem</div>
+<div class="card-body"><ul><li>"It depends on what we define as a 'failed experiment'"</li><li>Engineering reality: humans must <strong>analyze the failure first</strong>, THEN feed it to AI — "AI cannot find the missing point unless I type every fine detail"</li><li>And the lone deletion case: if AI absorbed <strong>wrong data into its weights</strong>, "it may be better to delete all memories, reset, and re-learn"</li></ul></div>
+</div>
 <div class="card card-blue">
-<div class="card-header"><span class="icon">⏰</span> Seher's Key Insight</div>
-<div class="card-body"><ul><li>You classify failures at the moment of storage</li><li>But "many failures are only understood retrospectively"</li><li><strong>Freezing interpretation at storage = freezing it at the worst moment</strong> (when you understand the least)</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">📚</span> The Echo to Earlier Weeks</div>
-<div class="card-body"><ul><li>Week 10: rubric design — at what point do you decide what "good" means?</li><li>Week 11: self-reflection — the critique is generated AFTER the output, with hindsight</li><li>Week 12: memory architecture — what stays raw vs gets pre-digested?</li><li><strong>Common thread</strong>: interpretation has a "best time" to be done, and storage time is rarely it</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💡</span> Practical Takeaway</div>
-<div class="card-body"><ul><li>For your agents: store both raw events AND tags, but treat tags as <strong>mutable</strong></li><li>Revisit old labels when your understanding evolves</li><li>This requires <strong>leadership</strong> — someone has to schedule the revisits</li></ul></div>
+<div class="card-header"><span class="icon">💎</span> Seher — Why Freezing Labels Fails (recap)</div>
+<div class="card-body"><ul><li>Classifying a failure at storage time freezes interpretation "at the worst possible moment — when you understand the least"</li><li>Chatbot example: suppressed "frustrating" conversations were later the most valuable signal</li><li><strong>"Don't archive failures. Version them."</strong></li></ul></div>
 </div>
 </div>
+<div class="highlight-quote">"Babysitting the system at every step loses all the benefits of automation." — Gyeongsu, vs the Hulk majority</div>
 </div>
 </section>
 <section class="slide" id="slide-25">
@@ -1008,7 +1009,7 @@ if st.button("▶️ Run Team", disabled=not topic):
 </div>
 <div class="card card-green">
 <div class="card-header"><span class="icon">🎯</span> Leadership Has Concrete Decisions</div>
-<div class="card-body"><ul><li>Memory policy (Margareth's structured storage)</li><li>Distillation policy (Yadanar's lessons-not-logs)</li><li>Revisit cadence (Seher's living records)</li><li>Infrastructure investment (Huy's shared databases)</li><li>These ARE leadership decisions — not "soft" management</li></ul></div>
+<div class="card-body"><ul><li>Memory policy (Margareth's structured storage)</li><li>Distillation policy (Yadanar's lessons-not-logs)</li><li>Revisit cadence (Seher's living records)</li><li><strong>Checkpoint placement</strong> (Gyeongsu vs Hulk: oversee every step, or only key ones?)</li><li>These ARE leadership decisions — not "soft" management</li></ul></div>
 </div>
 </div>
 </div>
@@ -1038,7 +1039,7 @@ if st.button("▶️ Run Team", disabled=not topic):
 <h2 class="slide-title">🗣️ <strong>Week 13 Discussion Questions</strong> (UST LMS)</h2>
 <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
 <p class="slide-text">1. In today's 2-agent practice, the Reviewer's critique often shaped Round 3 more than the original topic. Now imagine <strong>scaling to 10 agents</strong> — what would you do differently when one agent's output strongly biases all the others? Connect to Week 12's echo chamber concerns.</p>
-<p class="slide-text">2. Seher proposed "living failure records — version them, don't archive them." After today's practice, <strong>what would you have to track to enable retrospective re-interpretation</strong> of your team's past outputs? Be specific about one piece of metadata you'd want to log.</p>
+<p class="slide-text">2. Gyeongsu argued that "babysitting the system at every step loses all the benefits of automation," while the Hulk majority insists on human oversight at each step. After running your 2-agent team today, <strong>where exactly would YOU put the human checkpoint</strong> — every turn, only the final output, or only on disagreement? Defend your choice.</p>
 </div>
 </section>
 <section class="slide" id="slide-28">
@@ -1073,7 +1074,7 @@ if st.button("▶️ Run Team", disabled=not topic):
 </div>
 <div class="card card-orange">
 <div class="card-header"><span class="icon">🗣️</span> Discussion</div>
-<div class="card-body"><ul><li>Week 12 review (7 responses): universal yes to retaining failures; reframers (Margareth/Yadanar/Seher) shift the question to HOW; Huy's infrastructure argument; today's team makes Week 12's leadership questions concrete</li></ul></div>
+<div class="card-body"><ul><li>Week 12 review (14 responses): near-universal yes (backed by nuclear OEF + robotics); reframers shift to HOW; first cracks appear (Gyeongsu anti-oversight, Jaewhoon's definition + deletion case); today's team makes the leadership question — where to put the human checkpoint — concrete</li></ul></div>
 </div>
 </div>
 <p class="slide-text"><strong>Next week:</strong> Final project showcase + course wrap-up.</p>
