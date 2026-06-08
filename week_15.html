@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<!-- Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --text-main: #1e293b;
+    --accent: #0f4c81;
+    --card-blue: #eff6ff;
+    --border-blue: #bfdbfe;
+    --card-green: #f0fdf4;
+    --border-green: #bbf7d0;
+    --card-orange: #fff7ed;
+    --border-orange: #fed7aa;
+    --card-pink: #fdf2f8;
+    --border-pink: #fbcfe8;
+    --card-purple: #faf5ff;
+    --border-purple: #e9d5ff;
+    --card-yellow: #fefce8;
+    --border-yellow: #fef08a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    overflow: hidden; /* Hide scrollbars, use custom navigation */
+    font-size: 1.8rem;
+  }
+  .presentation {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    width: 100vw;
+  }
+  .presentation::-webkit-scrollbar { display: none; }
+  .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 60px 80px; /* Top/Bottom 60px, Left/Right 80px for margins */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-content {
+    background: var(--bg-main);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    font-size: 1rem; /* 1.5x of original */
+  }
+  .slide-title {
+    font-size: 2rem; /* 1.5x of original */
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    border-bottom: 5px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: 1rem; /* 1.5x of original */
+    color: #64748b;    
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  /* Title Slide Variations */
+  .title-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  }
+  .title-slide .slide-title { font-size: 2.5rem; border: none; margin-bottom: 1.5rem; color: var(--accent); }
+  .title-slide .slide-subtitle { font-size: 1.5rem; font-weight: 600; color: #334155; }
+  
+  /* Title Emphasis Variations */
+  .title-emphasis-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+  .title-emphasis-slide .slide-title {
+    font-size: 3rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-emphasis-slide .slide-subtitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+  
+  /* Layouts */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased min-width to prevent 4 columns on wide screens */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+  .card-header { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.4rem; }
+  .card-header .icon { font-size: 1.3rem; margin-right: 0.5rem; }
+  .card-body ul { list-style-type: none; padding-left: 0; }
+  .card-body li { margin-bottom: 0.5rem; position: relative; padding-left: 1.2rem; line-height: 1.4; font-size: 0.95rem; }
+  .card-body li::before { content: "•"; color: #94a3b8; font-weight: bold; position: absolute; left: 0; top: 0; }
+  .plain-bullets li { position: relative; padding-left: 1.2rem; list-style-type: none; }
+  .plain-bullets li::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: 0; top: 0; }
+  
+  .slide-text {
+    font-size: 1.6rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  .card-blue { background: var(--card-blue); border-color: var(--border-blue); color: #1e3a8a; }
+  .card-green { background: var(--card-green); border-color: var(--border-green); color: #14532d; }
+  .card-orange { background: var(--card-orange); border-color: var(--border-orange); color: #7c2d12; }
+  .card-pink { background: var(--card-pink); border-color: var(--border-pink); color: #831843; }
+  .card-purple { background: var(--card-purple); border-color: var(--border-purple); color: #4c1d95; }
+  .card-yellow { background: var(--card-yellow); border-color: var(--border-yellow); color: #713f12; }
+  
+  .highlight-quote {
+    background: #f8fafc;
+    border-left: 5px solid var(--accent);
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .image-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    margin: 0.5rem 0;
+  }
+  .img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .image-container {
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .slide-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .slide-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Modal Overlay */
+  .image-modal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .image-modal.active {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 9999;
+  }
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .image-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: #94a3b8;
+  }
+  .img-caption {
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .mermaid-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+  }
+  .mermaid-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .mermaid-group .mermaid-container {
+    margin: 0;
+    flex: 1;
+    min-height: auto;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Consolas', monospace;
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  .mermaid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .reference-link {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .inline-code {
+    background: #e2e8f0;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .styled-table th { background: #334155; color: white; text-align: left; padding: 1rem; }
+  .styled-table td { padding: 1rem; background: white; border-bottom: 1px solid #f1f5f9; }
+  .styled-table tr:hover td { background: #f8fafc; }
+  
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .flow-step {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #cbd5e1;
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin: 0 1rem;
+  }
+  
+  .slide-number {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .plain-bullets {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+  .plain-bullets li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Fixed Layout Elements */
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: #0f172a;
+    color: #94a3b8;
+    z-index: 2000;
+    border-bottom: 1px solid #1e293b;
+  }
+  .header-logo { color: white; margin-right: 1.5rem; letter-spacing: -0.5px; font-size: 0.75rem; }
+  .header-sep { color: #334155; margin: 0 1rem; }
+  .header-subtitle { font-size: 0.75rem; }
+
+  .side-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* 2/3 of 50px approx */
+    height: 70px; /* 2/3 of 100px approx */
+    background: rgba(30, 41, 59, 0.4);
+    border: none;
+    color: white;
+    font-size: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: background 0.2s, width 0.2s;
+    border-radius: 6px;
+  }
+  .side-nav-btn:hover { background: rgba(37, 99, 235, 0.8); width: 45px; }
+  .prev-side { left: 10px; }
+  .next-side { right: 10px; }
+
+  /* Navigation Bar (Fixed Bottom) */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    height: 50px;
+    z-index: 2000;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .nav-main-btn {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 20px;
+  }
+  .btn-nav {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover {
+    background: #1e293b;
+    color: white;
+  }
+  .page-input-wrapper {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin: 0 8px;
+    font-family: monospace;
+  }
+  .page-input {
+    background: transparent;
+    border: 1px solid #334155;
+    color: white;
+    width: 32px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    padding: 1px;
+    margin-right: 4px;
+  }
+  .section-links {
+    display: flex;
+    gap: 16px;
+    border-left: 1px solid #1e293b;
+    padding-left: 20px;
+  }
+  .nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <header class="global-header">
+    <span class="header-logo">Standardization & Expansion</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">Connectivity through Model Context Protocol (MCP)</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+<div class="slide-content">
+<h1 class="slide-title">Standardization & Expansion</h1>
+<p class="slide-subtitle">Connectivity through Model Context Protocol (MCP)</p>
+<div class="highlight-quote">Week 15 of Phase 5: Ecosystem (Weeks 15-16)</div>
+</div>
+</section>
+<section class="slide" id="slide-2">
+<div class="slide-content">
+<h2 class="slide-title">Contents</h2>
+<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 15</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+<div class="card-body"><ul><li>Why standards matter — the USB-C analogy</li><li>What MCP is and how it differs from Week 9's function calling</li><li>The ecosystem effect of standardization</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+<div class="card-body"><ul><li>Build a <strong>tiny MCP server</strong> with 2 tools</li><li>Connect to it from a client — see interoperability in action</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+<div class="card-body"><ul><li>Sustainability — should research depend on a single AI vendor?</li><li>Open standards vs proprietary platforms</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-3">
+<div class="slide-content">
+<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+<p class="slide-subtitle">Connectivity — Standardizing How Agents Plug In</p>
+</div>
+</section>
+<section class="slide" id="slide-4">
+<div class="slide-content">
+<h2 class="slide-title">The Story So Far — <strong>Why Standards Now?</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔧</span> What We've Built</div>
+<div class="card-body"><ul><li>Week 9: agents call tools (function calling)</li><li>Week 12: agents query memory (RAG)</li><li>Week 13: agents work in teams</li><li>Week 14: humans approve at checkpoints</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚠️</span> The Problem We Haven't Faced</div>
+<div class="card-body"><ul><li>Every tool you wrote was <strong>custom</strong> for your app</li><li>If your friend wrote a great tool, you'd need to <strong>rewrite it</strong> for your code</li><li>Every model vendor has a slightly different API for tools</li><li><strong>There's no shared "language" for AI ↔ tool connections</strong></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> What Today Solves</div>
+<div class="card-body"><ul><li>A <strong>standard protocol</strong> so any AI can talk to any tool</li><li>Write the tool once → any compatible AI can use it</li><li>This is <strong>MCP — Model Context Protocol</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-5">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>USB-C Analogy</strong> — Why Standards Matter</h2>
+<p class="slide-subtitle">You've already lived this story with physical devices</p>
+<div class="mermaid-container"><div class="mermaid">graph LR
+    subgraph "Before USB-C (pre-2015)"
+      D1[Phone A<br/>micro-USB]
+      D2[Phone B<br/>Lightning]
+      D3[Laptop<br/>barrel jack]
+      D4[Camera<br/>mini-USB]
+      D5[3 cables<br/>2 chargers<br/>headache]
+    end
+    subgraph "After USB-C"
+      U1[Phone] --> U2[ONE cable]
+      U3[Laptop] --> U2
+      U4[Camera] --> U2
+      U5[Headphones] --> U2
+    end
+
+    style D5 fill:#f8d7da
+    style U2 fill:#d4edda</div></div>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> The Lesson</div>
+<div class="card-body"><ul><li><strong>Before USB-C</strong>: every device had its own cable; travel required a bag of chargers</li><li><strong>After USB-C</strong>: one cable works for everything; ecosystems flourish</li><li><strong>MCP is doing the same for AI tools</strong>: one protocol, many tools, any AI</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-6">
+<div class="slide-content">
+<h2 class="slide-title">What is <strong>MCP</strong>? — In One Slide</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔌</span> The Definition</div>
+<div class="card-body"><ul><li><strong>MCP = Model Context Protocol</strong> (announced by Anthropic, 2024)</li><li>An <strong>open standard</strong> for how AI agents connect to external tools and data</li><li>Think of it as <strong>the AI's USB port</strong> — a universal jack for plugging in capabilities</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📦</span> The Pattern</div>
+<div class="card-body"><ul><li><strong>MCP server</strong> = a small program that exposes tools/data (the "device")</li><li><strong>MCP client</strong> = the AI app that consumes them (the "laptop with USB ports")</li><li>Both follow the same protocol → they can talk regardless of who built them</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🌐</span> Why "Open"?</div>
+<div class="card-body"><ul><li>The spec is public — anyone can implement either side</li><li>No vendor approval needed to publish a server</li><li>Compare: closed AI plugin marketplaces (need vendor permission, locked to one platform)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-7">
+<div class="slide-content">
+<h2 class="slide-title">An MCP Server Offers <strong>Three Kinds of Things</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🛠️</span> 1. Tools — "Things the AI Can Do"</div>
+<div class="card-body"><ul><li>Functions the AI can call (e.g., <code class="inline-code">search_papers</code>, <code class="inline-code">send_email</code>, <code class="inline-code">get_weather</code>)</li><li>Just like Week 9 function calling, but defined in the <strong>standard format</strong></li><li>Example: a Notion MCP server exposes <code class="inline-code">create_page</code>, <code class="inline-code">search_pages</code>, <code class="inline-code">update_block</code></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📄</span> 2. Resources — "Things the AI Can Read"</div>
+<div class="card-body"><ul><li>Read-only data the AI can fetch (e.g., your files, a database table, a web page)</li><li>The AI loads them into context when needed — like opening a document</li><li>Example: a filesystem MCP server exposes <code class="inline-code">read_file</code>, <code class="inline-code">list_directory</code></li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">💬</span> 3. Prompts — "Pre-built Conversation Starters"</div>
+<div class="card-body"><ul><li>Reusable prompt templates the user can invoke</li><li>Like having a library of "saved searches" or "saved instructions"</li><li>Example: a GitHub MCP server might offer "summarize this PR" as a one-click prompt</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Tools = actions. Resources = data. Prompts = templates. Three slots, one connector."</div>
+</div>
+</section>
+<section class="slide" id="slide-8">
+<div class="slide-content">
+<h2 class="slide-title"><strong>MCP vs Week 9's Function Calling</strong> — What's Different?</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔧</span> Week 9 — Function Calling (Per-App)</div>
+<div class="card-body"><ul><li>You wrote tools inside YOUR Python code</li><li>The tool definitions only existed in YOUR app</li><li>To share a tool, your friend had to <strong>copy your code</strong></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🌐</span> Week 15 — MCP (Across Apps)</div>
+<div class="card-body"><ul><li>Tools live in a <strong>separate process/server</strong></li><li>Any MCP-compatible client (Claude Desktop, your Streamlit app, ...) can use it</li><li>Your friend installs your server → they get your tools instantly, no code copying</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">💡</span> The Real Shift</div>
+<div class="card-body"><ul><li>Function calling = <strong>per-app capability</strong></li><li>MCP = <strong>portable capability</strong> that travels between apps</li><li>Think: writing a Word document vs a PDF — one is editable in one program, one opens everywhere</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-9">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Ecosystem Effect</strong> — Why Standards Win</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📈</span> What Happens with a Standard</div>
+<div class="card-body"><ul><li>Anyone can publish servers — they don't need vendor permission</li><li>Users mix and match — "I want this filesystem server + that GitHub server"</li><li>Vendors compete on <strong>quality</strong>, not on <strong>lock-in</strong></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🏪</span> Real Examples (2025)</div>
+<div class="card-body"><ul><li><strong>Anthropic's reference servers</strong>: filesystem, GitHub, Slack, Google Drive</li><li><strong>Community servers</strong>: Notion, Postgres, Spotify, Maps, ... hundreds available</li><li><strong>Your custom server</strong>: 30 lines of Python can become a public capability</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🎯</span> For YOUR Research</div>
+<div class="card-body"><ul><li>You write an MCP server that does ONE thing for your field (e.g., "search PubChem", "query NIST data")</li><li>Anyone in your community can use it tomorrow</li><li><strong>Your code becomes shared infrastructure</strong> — Week 12's "shared databases" argument (Huy) made real</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-10">
+<div class="slide-content">
+<h2 class="slide-title">Where You'll See MCP Today</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">💻</span> Claude Desktop</div>
+<div class="card-body"><ul><li>Configure MCP servers in a JSON file</li><li>Suddenly Claude can read your files, search GitHub, query your databases</li><li>No app changes — just a config update</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🛠️</span> Cursor / VS Code / IDEs</div>
+<div class="card-body"><ul><li>AI coding assistants connect to MCP servers for docs, project context, terminal</li><li>Same protocol → switch IDE and your tools come with you</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔬</span> Research Tools (emerging)</div>
+<div class="card-body"><ul><li>Reference managers (Zotero, Mendeley) exposing libraries via MCP</li><li>Lab equipment exposing data via MCP</li><li>Your collaborators can connect their own AI to YOUR research tools</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> But...</div>
+<div class="card-body"><ul><li>The standard is young (1 year old as of 2026)</li><li>Discovery is still ad-hoc (no official "app store" yet)</li><li>Security model is evolving — be careful what you connect to</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-11">
+<div class="slide-content">
+<h2 class="slide-title">When MCP <strong>Fits</strong> and When It <strong>Doesn't</strong></h2>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> Use MCP When</div>
+<div class="card-body"><ul><li>Your tool is genuinely <strong>reusable</strong> across apps or users</li><li>You want others (or your future self) to use it without copying code</li><li>You need <strong>multiple AI clients</strong> (Claude Desktop + your app + a CLI) to share the same capability</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">❌</span> Don't Use MCP When</div>
+<div class="card-body"><ul><li>The tool is one-off, used only inside ONE app</li><li>You haven't validated the tool works as a plain function yet</li><li>You're prototyping — Week 9 function calling is faster for early experimentation</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🎯</span> The Progression</div>
+<div class="card-body"><ul><li>Stage 1: build the tool inline (Week 9)</li><li>Stage 2: it works and is useful → extract into a function</li><li>Stage 3: others want it → wrap as an MCP server</li><li>Stage 4: maintain it as shared infrastructure</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-12">
+<div class="slide-content">
+<h2 class="slide-title">Lecture Summary — <strong>MCP</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔌</span> The Idea</div>
+<div class="card-body"><ul><li>MCP is the USB-C of AI tools — a single open standard for connecting agents to capabilities</li><li>Tools / Resources / Prompts are the three socket types</li><li>Write once, plug in anywhere compatible</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🌐</span> The Ecosystem Effect</div>
+<div class="card-body"><ul><li>Servers can be reused across apps, users, and AI vendors</li><li>Your custom tool can become shared community infrastructure</li><li>Closes the gap between "one researcher's clever script" and "field-wide tool"</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⏳</span> The Maturity Caveat</div>
+<div class="card-body"><ul><li>It's new (announced late 2024) — fast-evolving, expect rough edges</li><li>Use MCP when reuse matters; keep using simple function calling otherwise</li><li>Today's practice: build your own minimal server + client</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-13">
+<div class="slide-content">
+<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+<p class="slide-subtitle">Build a Tiny MCP Server and Client</p>
+</div>
+</section>
+<section class="slide" id="slide-14">
+<div class="slide-content">
+<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Goal</div>
+<div class="card-body"><ul><li>Write a <strong>20-line MCP server</strong> that exposes 2 tools from your research domain</li><li>Write a <strong>15-line client</strong> that connects to it and calls the tools</li><li>Verify: the SAME server works from Claude Desktop too (bonus)</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📁</span> Files (in a new folder <code class="inline-code">mcp_demo/</code>)</div>
+<div class="card-body"><ul><li><code class="inline-code">server.py</code> — the MCP server (uses <code class="inline-code">FastMCP</code>)</li><li><code class="inline-code">client.py</code> — minimal client that lists tools and calls one</li><li><code class="inline-code">requirements.txt</code> — just <code class="inline-code">mcp</code></li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚡</span> Why a Tiny Custom Server?</div>
+<div class="card-body"><ul><li>You see the <strong>entire protocol</strong> in 35 lines total</li><li>No magic — you'll know exactly what's happening</li><li>It's the simplest path from "what's MCP?" to "I built one"</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-15">
+<div class="slide-content">
+<h2 class="slide-title">Step 1 — <strong>Install the MCP Python SDK</strong></h2>
+<pre class="code-block"><code class="language-bash"># Make a new folder
+mkdir mcp_demo && cd mcp_demo
+
+# Create a virtual environment (optional but recommended)
+python -m venv .venv
+.venv\Scripts\activate   # Windows
+# source .venv/bin/activate   # macOS/Linux
+
+# Install the SDK
+pip install "mcp[cli]"</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Why <code class="inline-code">[cli]</code>?</div>
+<div class="card-body"><ul><li>The <code class="inline-code">cli</code> extra includes a local inspector tool for testing</li><li>You can run <code class="inline-code">mcp dev server.py</code> to interactively poke your server in a browser</li><li>Helpful for debugging without writing a full client first</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-16">
+<div class="slide-content">
+<h2 class="slide-title">Step 2 — <strong>The Server</strong> (<code class="inline-code">server.py</code>)</h2>
+<p class="slide-subtitle">20 lines, 2 tools, fully functional MCP server</p>
+<pre class="code-block"><code class="language-python"># mcp_demo/server.py
+from mcp.server.fastmcp import FastMCP
+from datetime import datetime
+
+mcp = FastMCP("ResearchHelper")
+
+
+@mcp.tool()
+def current_time() -&gt; str:
+    """Get the current local date and time (ISO format)."""
+    return datetime.now().isoformat()
+
+
+@mcp.tool()
+def word_count(text: str) -&gt; dict:
+    """Count words and characters in a piece of text.
+
+    Args:
+        text: any string to analyze
+    """
+    return {
+        "words": len(text.split()),
+        "chars": len(text),
+        "lines": text.count("\n") + 1,
+    }
+
+
+if __name__ == "__main__":
+    mcp.run()   # runs over stdio by default</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> How <code class="inline-code">@mcp.tool()</code> Works</div>
+<div class="card-body"><ul><li>The decorator reads your function's name, docstring, and type hints</li><li>It builds the MCP tool schema automatically — no JSON writing</li><li>Any MCP-compatible client can now discover and call these tools</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-17">
+<div class="slide-content">
+<h2 class="slide-title">Step 3 — <strong>Test Server with MCP Inspector</strong></h2>
+<p class="slide-subtitle">Easiest way to verify before writing a client</p>
+<pre class="code-block"><code class="language-bash"># Run the inspector on your server
+mcp dev server.py</code></pre>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔍</span> What Happens</div>
+<div class="card-body"><ul><li>A local web UI opens in your browser</li><li>You can see both tools listed (<code class="inline-code">current_time</code>, <code class="inline-code">word_count</code>)</li><li>Click a tool → enter arguments → see the actual response</li><li>No code needed yet — this is the "Postman" of MCP</li></ul></div>
+</div>
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> What to Check</div>
+<div class="card-body"><ul><li>Both tools appear in the tool list</li><li><code class="inline-code">current_time()</code> returns a timestamp</li><li><code class="inline-code">word_count(text="hello world")</code> returns <code class="inline-code">{"words": 2, "chars": 11, ...}</code></li><li>If yes → your server is correct, move to the client</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-18">
+<div class="slide-content">
+<h2 class="slide-title">Step 4 — <strong>The Client</strong> (<code class="inline-code">client.py</code>)</h2>
+<p class="slide-subtitle">15 lines, connects to your server, lists & calls tools</p>
+<pre class="code-block"><code class="language-python"># mcp_demo/client.py
+import asyncio
+from mcp.client.stdio import stdio_client, StdioServerParameters
+from mcp import ClientSession
+
+
+async def main():
+    params = StdioServerParameters(command="python", args=["server.py"])
+    async with stdio_client(params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+
+            tools = await session.list_tools()
+            print("Available tools:", [t.name for t in tools.tools])
+
+            time_result = await session.call_tool("current_time", {})
+            print("Time:", time_result.content[0].text)
+
+            wc_result = await session.call_tool("word_count", {"text": "Hello MCP world"})
+            print("Word count:", wc_result.content[0].text)
+
+
+asyncio.run(main())</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> What the Client Does</div>
+<div class="card-body"><ul><li>Spawns your server as a subprocess (<code class="inline-code">stdio_client</code>)</li><li>Opens a session and handshakes (<code class="inline-code">initialize</code>)</li><li>Lists available tools dynamically (you didn't hardcode them!)</li><li>Calls each tool and prints the result</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-19">
+<div class="slide-content">
+<h2 class="slide-title">Step 5 — <strong>Run Client → Server Together</strong></h2>
+<pre class="code-block"><code class="language-bash"># In the mcp_demo/ folder
+python client.py</code></pre>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📺</span> Expected Output</div>
+<div class="card-body"><ul><li><code class="inline-code">Available tools: ['current_time', 'word_count']</code></li><li><code class="inline-code">Time: 2026-05-22T15:30:42.123456</code></li><li><code class="inline-code">Word count: {"words": 3, "chars": 15, "lines": 1}</code></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> What You Just Demonstrated</div>
+<div class="card-body"><ul><li>The client <strong>never imported</strong> your server's code</li><li>It discovered the tools <strong>at runtime via the protocol</strong></li><li>Replace <code class="inline-code">server.py</code> with a different MCP server (e.g., filesystem) → client still works</li><li><strong>This is interoperability</strong> — the whole point of standards</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-20">
+<div class="slide-content">
+<h2 class="slide-title">Step 6 (Bonus) — <strong>Use the Server from Claude Desktop</strong></h2>
+<pre class="code-block"><code class="language-json">// Edit Claude Desktop's MCP config file
+// Windows: %APPDATA%\Claude\claude_desktop_config.json
+// macOS: ~/Library/Application Support/Claude/claude_desktop_config.json
+{
+  "mcpServers": {
+    "research-helper": {
+      "command": "python",
+      "args": ["C:/path/to/mcp_demo/server.py"]
+    }
+  }
+}</code></pre>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🚀</span> After Restarting Claude Desktop</div>
+<div class="card-body"><ul><li>Your custom tools appear in Claude's tool list</li><li>Ask Claude: "What's the current time?" → it calls YOUR <code class="inline-code">current_time</code> tool</li><li>Same server, two different clients (your Python script + Claude Desktop)</li></ul></div>
+</div>
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> The Power Moment</div>
+<div class="card-body"><ul><li>You didn't write any code specific to Claude Desktop</li><li>Anyone with Claude Desktop can now use your server by editing one JSON file</li><li>This is the <strong>ecosystem effect</strong> in your own hands</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-21">
+<div class="slide-content">
+<h2 class="slide-title">✅ <strong>Week 15 Practice Checklist</strong></h2>
+<p class="slide-text">1. - [ ] Create folder <code class="inline-code">mcp_demo/</code>, install <code class="inline-code">mcp[cli]</code></p>
+<p class="slide-text">2. - [ ] Write <code class="inline-code">server.py</code> with the 2 example tools</p>
+<p class="slide-text">3. - [ ] Run <code class="inline-code">mcp dev server.py</code> and verify both tools work in the inspector</p>
+<p class="slide-text">4. - [ ] Write <code class="inline-code">client.py</code></p>
+<p class="slide-text">5. - [ ] Run <code class="inline-code">python client.py</code> — see tools listed and called via the protocol</p>
+<p class="slide-text">6. - [ ] <strong>Modify</strong>: add a third tool of your choice (related to your research) and re-run</p>
+<p class="slide-text">7. - [ ] Bonus: configure Claude Desktop with your server</p>
+<p class="slide-text">8. - [ ] Ask Claude a question that triggers your tool — verify the call shows up</p>
+<p class="slide-text">9. - [ ] What's one tool in your own midterm/capstone you'd publish as MCP, and why?</p>
+<p class="slide-text">10. - [ ] What's one community MCP server (filesystem, github, etc.) you'd add to your workflow?</p>
+</div>
+</section>
+<section class="slide title-slide" id="slide-22">
+<div class="slide-content">
+<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+<p class="slide-subtitle">Week 14 Recap + Sustainability of the Research Ecosystem</p>
+</div>
+</section>
+<section class="slide" id="slide-23">
+<div class="slide-content">
+<h2 class="slide-title">Week 14 — <strong>The Gatekeeper: Filtering Villain or Biased Agents</strong></h2>
+<p class="slide-subtitle">10 responses — students keep responding to EACH OTHER, not just the personas</p>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">📊</span> The Vote Pattern</div>
+<div class="card-body"><ul><li><strong>None / new framework</strong>: Huy (Tiered Defensive Sandbox), Seher (Recursive Integrity) — <strong>2</strong></li><li><strong>Hulk only (3)</strong>: Yadanar, Ly, Hyunwoo — <strong>3</strong></li><li><strong>Cap + Hulk (2,3)</strong>: Waad, Minh — <strong>2</strong></li><li><strong>Iron Man + Hulk (1,3)</strong>: Irfan — <strong>1</strong></li><li><strong>Cap only (2)</strong>: DongYun — <strong>1</strong></li><li><strong>Cap-primary, blends all three</strong>: Rupam — <strong>1</strong></li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🤝</span> Two Continuing Trends</div>
+<div class="card-body"><ul><li><strong>No vote for Iron Man alone</strong> — full automation has zero supporters now</li><li><strong>Multi-week dialogue</strong>: Waad explicitly endorses Huy's Tiered Sandbox; Seher writes a direct critique of Huy</li><li>The class is debating at <strong>framework level</strong>, not opinion level</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">🔥</span> The Three Frames Worth Studying</div>
+<div class="card-body"><ul><li><strong>Huy</strong>: gatekeeping is a SECURITY ARCHITECTURE problem (zero-trust networking)</li><li><strong>Seher</strong>: "Who watches the watchmen?" — every gatekeeper is itself untrusted</li><li><strong>Yadanar</strong>: detection through PRESSURE — stress agents until they reveal bias</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-24">
+<div class="slide-content">
+<h2 class="slide-title">Theme 1 — <strong>Huy's Tiered Defensive Sandbox</strong></h2>
+<p class="slide-subtitle">Gatekeeping as security architecture, not ethics committee</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🏛️</span> The Core Reframe</div>
+<div class="card-body"><ul><li>"Not an ethics problem, not a QA problem — a <strong>security architecture problem</strong>"</li><li>Apply the same rigor as defending core network infrastructure</li><li>Borrow directly from zero-trust security principles</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🛡️</span> The Architecture</div>
+<div class="card-body"><ul><li><strong>No agent trusted by default</strong> (zero-trust)</li><li><strong>Behavioral anomaly detection</strong> (not signature matching — catches novel attacks)</li><li><strong>Canary inputs</strong> embedded in production workloads to detect drift</li><li><strong>Formal verification</strong> of high-stakes outputs</li><li><strong>Adversarial red-teaming of the gatekeeper itself</strong></li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚠️</span> The Sharp Insight</div>
+<div class="card-body"><ul><li>"The components you trust most must be the least autonomous and most formally verified"</li><li>Iron Man's "self-evolving oversight AI" is the WORST possible gatekeeper</li><li>The gatekeeper hunts <strong>statistical ghosts</strong> — drift just subtle enough to matter</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"The most dangerous compromises look normal until they don't." — Huy</div>
+</div>
+</section>
+<section class="slide" id="slide-25">
+<div class="slide-content">
+<h2 class="slide-title">Theme 2 — <strong>Seher: "Who Watches the Watchmen?"</strong></h2>
+<p class="slide-subtitle">A direct critique of every other proposal in the thread</p>
+<div class="cards-grid">
+<div class="card card-purple">
+<div class="card-header"><span class="icon">💎</span> The Meta-Question (Juvenal, ~AD 100)</div>
+<div class="card-body"><ul><li>Every proposal builds a better catching system</li><li><strong>Nobody asks whether the catching system itself could be wrong</strong></li><li>"Hiring a security guard to catch thieves — but never checking whether the guard is corrupt"</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔁</span> The Recursive Integrity Framework</div>
+<div class="card-body"><ul><li><strong>Explainability</strong>: every flagging decision must be in plain language a human can verify</li><li><strong>Rule rotation</strong>: detection rules change periodically so agents can't memorize and game them</li><li><strong>Self-testing</strong>: the gatekeeper is periodically tested with known cases — does it still catch what it was built for?</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> Direct Response to Huy</div>
+<div class="card-body"><ul><li>Huy's Tiered Sandbox assumes the framework's RULES are trustworthy</li><li>But rules built on biased data → biased gatekeeper</li><li>Static security architectures = "false confidence instead of real protection"</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"The real gatekeeper is not the one that catches bias in others. It is the one that never stops questioning its own judgment." — Seher</div>
+</div>
+</section>
+<section class="slide" id="slide-26">
+<div class="slide-content">
+<h2 class="slide-title">Theme 3 — <strong>Yadanar: Detection Through Pressure</strong> + Domain Examples</h2>
+<p class="slide-subtitle">Don't just check — stress-test until they break</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔥</span> Yadanar's Reframe</div>
+<div class="card-body"><ul><li>Most proposals focus on <strong>checking</strong> agents passively</li><li>Better: <strong>stress them</strong> with unusual inputs and watch how they behave</li><li>"Good agents stay stable under strange or unfair inputs. Bad ones reveal bias when pushed."</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🩻</span> Concrete Examples</div>
+<div class="card-body"><ul><li><strong>Medical imaging</strong>: feed unusual cases, low-quality scans, rare conditions → biased model breaks</li><li><strong>Chatbots</strong>: normal questions look fine; tricky/sensitive questions expose bias</li><li>Same idea as software security fuzzing — applied to agent behavior</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🌐</span> Domain Grounding Continues</div>
+<div class="card-body"><ul><li><strong>Hyunwoo (robotics)</strong>: biased control parameter → physical hardware damage; no automated gatekeeper has "physical intuition"</li><li><strong>Waad (nuclear)</strong>: explicit endorsement of Huy's Tiered Sandbox + Captain America's accountability</li><li><strong>Minh</strong>: warns of "adversarial echo chamber" when AI polices AI</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Instead of only filtering agents, expose them to hard tests and watch how they behave." — Yadanar</div>
+</div>
+</section>
+<section class="slide" id="slide-27">
+<div class="slide-content">
+<h2 class="slide-title">Bridge — <strong>From Week 14 to This Week</strong></h2>
+<p class="slide-subtitle">Today's MCP lecture makes the gatekeeping question harder</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔗</span> What Today's Practice Just Demonstrated</div>
+<div class="card-body"><ul><li>You built an MCP server in 20 lines</li><li>Anyone can connect to it via the standard protocol</li><li><strong>Anyone can also publish a server you might connect to</strong> — and you don't write their code</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The Gatekeeping Problem Just Got Bigger</div>
+<div class="card-body"><ul><li>Week 14: "how do I filter biased agents I built?"</li><li>Week 15: "how do I filter biased agents <strong>I downloaded from the community</strong>?"</li><li>The MCP ecosystem ships gatekeeping debt with every server you install</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> Today's Discussion Adds the Sustainability Layer</div>
+<div class="card-body"><ul><li>Week 14: protect against villains AT runtime</li><li>Week 15: protect against ecosystem collapse OVER time</li><li>Same skill (architectural skepticism) applied at different timescales</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-28">
+<div class="slide-content">
+<h2 class="slide-title">Setting Up the Question — <strong>Why Now?</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📚</span> Where We've Been</div>
+<div class="card-body"><ul><li>14 weeks of building agents on commercial AI APIs (Gemini)</li><li>Last week: deciding where humans should be in the loop</li><li>This week: agents can plug into each other via MCP</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The Quiet Dependency</div>
+<div class="card-body"><ul><li>Your entire research workflow now sits on top of:</li><li>One vendor's API (Gemini / OpenAI / Anthropic)</li><li>One vendor's model (which gets deprecated every ~12 months)</li><li>One vendor's pricing (which can change overnight)</li><li>If the vendor changes its policy → <strong>your research is affected</strong></li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🌐</span> The Sustainability Question</div>
+<div class="card-body"><ul><li>What does "sustainable" research mean when the tools change so fast?</li><li>Should public-funded research depend on private AI vendors?</li><li>Does MCP — an open standard — actually fix this, or just delay the problem?</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-29">
+<div class="slide-content">
+<h2 class="slide-title">This Week's Three Voices</h2>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">🚀</span> 1. Iron Man — Move Fast, Pick the Best</div>
+<div class="card-body"><ul><li>"Open standards slow down innovation — proprietary is faster"</li><li>"The best AI wins; ecosystems follow the winner"</li><li>"Researchers should pick the best tool TODAY, not wait for committees"</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🛡️</span> 2. Captain America — Open or Compromised</div>
+<div class="card-body"><ul><li>"Public-funded research must use open standards"</li><li>"Vendor lock-in is a betrayal of academic freedom and reproducibility"</li><li>"Sustainability comes from open communities, not corporate APIs"</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🧠</span> 3. Hulk — Build Redundancy Before You Depend</div>
+<div class="card-body"><ul><li>"If a vendor disappears, your entire research pipeline collapses with it"</li><li>"We MUST have backup options before locking in"</li><li>"MCP is good, but only if multiple vendors actually implement it"</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-30">
+<div class="slide-content">
+<h2 class="slide-title">One Specific Lens — <strong>Reproducibility</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🔬</span> The Old Standard</div>
+<div class="card-body"><ul><li>"Your paper's results should be reproducible from the methods section"</li><li>Code, data, environment → all preserved</li><li>This worked when "the tools" were Matlab / Python libraries</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The New Problem</div>
+<div class="card-body"><ul><li>Your paper says "we used Gemini 2.5 Flash"</li><li>18 months later → that model is deprecated, replaced by Gemini 4</li><li><strong>Nobody can reproduce your results</strong> even with your code intact</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🤔</span> What Could Help</div>
+<div class="card-body"><ul><li><strong>Open weight models</strong> (LLaMA, Mistral) — you can preserve the exact weights</li><li><strong>MCP servers</strong> — preserve the tool layer even if the AI vendor changes</li><li><strong>Detailed evaluation harnesses</strong> (Week 10) — at least show how good "good" was</li><li>But none of these solve the problem completely</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-31">
+<div class="slide-content">
+<h2 class="slide-title">Another Angle — <strong>The Ecological Cost</strong></h2>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚡</span> The Number Most People Don't See</div>
+<div class="card-body"><ul><li>Training GPT-4-class models: ~50 GWh (= small city for a year)</li><li>Inference per query: small, but BILLIONS of queries per day</li><li>Your iterative loops from Week 10 (4 iterations × 5 agents × per request) → scales fast</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">💧</span> Hidden Costs</div>
+<div class="card-body"><ul><li>Water for cooling data centers (gallons per million queries)</li><li>Rare earth materials for chips</li><li>Concentrated electricity demand on local grids</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> What Researchers Can Do</div>
+<div class="card-body"><ul><li><strong>Measure</strong>: track the API calls in your workflows (Week 10 logging applies here)</li><li><strong>Be selective</strong>: not every step needs the biggest model (Week 10: pick model per task)</li><li><strong>Cache aggressively</strong>: don't re-embed papers every session (Week 12 persistence)</li><li><strong>Share infrastructure</strong> (MCP): one server serves many researchers</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-32">
+<div class="slide-content">
+<h2 class="slide-title">The Third Angle — <strong>Who Gets Left Out?</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🌍</span> The Access Gap</div>
+<div class="card-body"><ul><li>English-language research dominates training data</li><li>Costs of API access vary wildly by region</li><li>Best models often unavailable in certain countries (legal / pricing barriers)</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The Compounding Problem</div>
+<div class="card-body"><ul><li>If only wealthy labs use the best AI → they publish faster → get more funding → buy more AI</li><li>Smaller labs / lower-income regions fall further behind</li><li>"Agentic AI literacy" becomes a privilege, not a baseline</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🤔</span> What Could Help (Reasonable Disagreement)</div>
+<div class="card-body"><ul><li>Open-weight models that run on cheaper hardware (LLaMA, Mistral, Qwen)</li><li>Free academic API tiers — but who funds them long-term?</li><li>International collaborations sharing inference infrastructure</li><li><strong>This is genuinely unsolved</strong> — your generation will navigate it</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-33">
+<div class="slide-content">
+<h2 class="slide-title">🗣️ <strong>Week 15 Discussion Questions</strong> (UST LMS)</h2>
+<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+<p class="slide-text">1. After 14 weeks of building on commercial APIs, <strong>which dependency worries you the most</strong> for your research — and what concrete step would you take to reduce that risk? (Open weights? MCP? Local inference? Documentation?)</p>
+<p class="slide-text">2. Iron Man, Captain America, and Hulk represent <strong>speed</strong>, <strong>principles</strong>, and <strong>caution</strong>. For the question "should publicly funded research use open standards exclusively", which voice resonates most with YOUR field's reality? Be specific about your field's constraints.</p>
+</div>
+</section>
+<section class="slide" id="slide-34">
+<div class="slide-content">
+<h2 class="slide-title">Want to Learn More?</h2>
+<p class="slide-text">MCP Foundations</p>
+<a href="https://modelcontextprotocol.io/" target="_blank" class="reference-link">📚 Model Context Protocol Spec</a>
+<a href="https://docs.anthropic.com/en/docs/build-with-claude/mcp" target="_blank" class="reference-link">📚 Anthropic: Introduction to MCP</a>
+<div class="highlight-quote">🎓 [Anthropic: Introduction to MCP (free course)](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Open-Weight Models (Reducing Vendor Lock-in)</p>
+<a href="https://huggingface.co/models" target="_blank" class="reference-link">📚 Hugging Face — Open Model Hub</a>
+<a href="https://ollama.com/" target="_blank" class="reference-link">📚 Ollama — Run LLMs Locally</a>
+<div class="highlight-quote">📄 [On the Dangers of Stochastic Parrots (Bender et al., 2021)](https://dl.acm.org/doi/10.1145/3442188.3445922)</div>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Sustainability & Equity</p>
+<div class="highlight-quote">📄 [Green AI (Schwartz et al., 2020)](https://arxiv.org/abs/1907.10597)</div>
+<div class="highlight-quote">📄 [Sustainable AI: Environmental Implications, Challenges and Opportunities (Wu et al., 2022)](https://arxiv.org/abs/2111.00364)</div>
+</div>
+</section>
+<section class="slide" id="slide-35">
+<div class="slide-content">
+<h2 class="slide-title">Wrap-Up of <strong>Week 15</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> Lecture</div>
+<div class="card-body"><ul><li>MCP = USB-C for AI tools; tools / resources / prompts are the three "socket types"; standardization unlocks the ecosystem effect — write once, plug in anywhere</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> Practice</div>
+<div class="card-body"><ul><li>Built a <strong>20-line MCP server</strong> with 2 tools + a <strong>15-line client</strong>; verified interoperability — same server works from your client AND Claude Desktop</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+<div class="card-body"><ul><li>Week 14 review (10 responses): Huy's Tiered Defensive Sandbox (security architecture), Seher's Recursive Integrity ("who watches the watchmen?"), Yadanar's pressure testing; <strong>today's sustainability question</strong> has three angles — reproducibility, ecological cost, equity; MCP and open weights help but don't fully solve vendor dependency</li></ul></div>
+</div>
+</div>
+<p class="slide-text"><strong>Next week:</strong> Course finale — final showcase + the road ahead.</p>
+</div>
+</section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">35</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(13)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(22)">Discussion</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 35;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+      
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+      
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+      
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if(currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if(currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if(newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+           currentSlide = newSlide;
+           pageInput.value = currentSlide;
+           updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if(e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: -100, behavior: 'smooth'});
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: 100, behavior: 'smooth'});
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+         const pageNum = parseInt(hash.replace('#slide-', ''));
+         if(!isNaN(pageNum)) {
+           setTimeout(() => goToSlide(pageNum), 100);
+         }
+      }
+    });
+  </script>
+</body>
+</html>
