@@ -494,25 +494,27 @@ python client.py
 ## Slide: Week 14 Discussion Recap
 - type: cards
 - title: Week 14 — **The Gatekeeper: Filtering Villain or Biased Agents**
-- subtitle: 10 responses — students keep responding to EACH OTHER, not just the personas
+- subtitle: 13 responses — frameworks, history, and industry grounding
 
 - card(green, 📊): The Vote Pattern
   - **None / new framework**: Huy (Tiered Defensive Sandbox), Seher (Recursive Integrity) — **2**
-  - **Hulk only (3)**: Yadanar, Ly, Hyunwoo — **3**
-  - **Cap + Hulk (2,3)**: Waad, Minh — **2**
+  - **Hulk only (3)**: Yadanar, Ly, Hyunwoo, Namcheol — **4**
+  - **Cap + Hulk (2,3)**: Waad, Minh, Jaewhoon — **3**
   - **Iron Man + Hulk (1,3)**: Irfan — **1**
+  - **Iron Man + Cap (1,2)**: Nazhiefah — **1**
   - **Cap only (2)**: DongYun — **1**
-  - **Cap-primary, blends all three**: Rupam — **1**
+  - **Cap-primary, blends all**: Rupam — **1**
 
-- card(blue, 🤝): Two Continuing Trends
-  - **No vote for Iron Man alone** — full automation has zero supporters now
-  - **Multi-week dialogue**: Waad explicitly endorses Huy's Tiered Sandbox; Seher writes a direct critique of Huy
-  - The class is debating at **framework level**, not opinion level
+- card(blue, 🤝): Three Continuing Trends
+  - **No vote for Iron Man alone** — full automation has zero supporters
+  - **Multi-week dialogue**: Waad explicitly endorses Huy's Sandbox; Seher writes a direct critique of Huy
+  - **Class debates at framework level**, not opinion level
 
-- card(red, 🔥): The Three Frames Worth Studying
+- card(red, 🔥): The Frames Worth Studying
   - **Huy**: gatekeeping is a SECURITY ARCHITECTURE problem (zero-trust networking)
   - **Seher**: "Who watches the watchmen?" — every gatekeeper is itself untrusted
   - **Yadanar**: detection through PRESSURE — stress agents until they reveal bias
+  - **Jaewhoon**: HISTORICAL grounding — 2004 stem-cell fraud as the warning case
 
 =====
 
@@ -568,25 +570,28 @@ python client.py
 
 ## Slide: Theme 3
 - type: cards
-- title: Theme 3 — **Yadanar: Detection Through Pressure** + Domain Examples
-- subtitle: Don't just check — stress-test until they break
+- title: Theme 3 — **Real-World Grounding** — Why Frameworks Matter
+- subtitle: Beyond theory: history, domains, and industry guidance
 
-- card(blue, 🔥): Yadanar's Reframe
-  - Most proposals focus on **checking** agents passively
-  - Better: **stress them** with unusual inputs and watch how they behave
-  - "Good agents stay stable under strange or unfair inputs. Bad ones reveal bias when pushed."
+- card(red, 📜): Jaewhoon — The Historical Warning Case
+  - 2004 Korean stem-cell fraud (Hwang Woo-suk)
+  - Fabricated results → many downstream papers based on those findings became contaminated
+  - Years of follow-up funding and time **wasted**
+  - "When such AI systems are trained on biased or incorrect information, they could seriously damage people's personal lives as well as the work of companies and institutions"
 
-- card(green, 🩻): Concrete Examples
-  - **Medical imaging**: feed unusual cases, low-quality scans, rare conditions → biased model breaks
-  - **Chatbots**: normal questions look fine; tricky/sensitive questions expose bias
-  - Same idea as software security fuzzing — applied to agent behavior
+- card(blue, 🔥): Yadanar — Detection Through Pressure
+  - "Good agents stay stable under strange inputs. Bad ones reveal bias when pushed"
+  - Medical imaging: rare conditions, low-quality scans → biased model breaks
+  - Chatbots: tricky/sensitive questions expose harmful patterns
+  - Same idea as security **fuzzing**, applied to agent behavior
 
 - card(orange, 🌐): Domain Grounding Continues
   - **Hyunwoo (robotics)**: biased control parameter → physical hardware damage; no automated gatekeeper has "physical intuition"
-  - **Waad (nuclear)**: explicit endorsement of Huy's Tiered Sandbox + Captain America's accountability
-  - **Minh**: warns of "adversarial echo chamber" when AI polices AI
+  - **Waad (nuclear)**: explicit endorsement of Huy's Tiered Sandbox + accountability
+  - **Minh**: "adversarial echo chamber" when AI polices AI
+  - **Namcheol**: cites IBM AI security guidance — "treat agents as risky actors, continuous monitoring, human review for high-stakes"
 
-- highlight-quote: "Instead of only filtering agents, expose them to hard tests and watch how they behave." — Yadanar
+- highlight-quote: "We must always be prepared to intervene, review, and take responsibility when necessary." — Jaewhoon
 
 =====
 
@@ -603,6 +608,7 @@ python client.py
 - card(red, ⚠️): The Gatekeeping Problem Just Got Bigger
   - Week 14: "how do I filter biased agents I built?"
   - Week 15: "how do I filter biased agents **I downloaded from the community**?"
+  - Jaewhoon's stem-cell case at ecosystem scale: ONE contaminated server → downstream apps inherit the bias
   - The MCP ecosystem ships gatekeeping debt with every server you install
 
 - card(green, 🎯): Today's Discussion Adds the Sustainability Layer
@@ -766,6 +772,6 @@ Sustainability & Equity
   - Built a **20-line MCP server** with 2 tools + a **15-line client**; verified interoperability — same server works from your client AND Claude Desktop
 
 - card(orange, 🗣️): Discussion
-  - Week 14 review (10 responses): Huy's Tiered Defensive Sandbox (security architecture), Seher's Recursive Integrity ("who watches the watchmen?"), Yadanar's pressure testing; **today's sustainability question** has three angles — reproducibility, ecological cost, equity; MCP and open weights help but don't fully solve vendor dependency
+  - Week 14 review (13 responses): Huy's Tiered Defensive Sandbox (security architecture), Seher's Recursive Integrity ("who watches the watchmen?"), Yadanar's pressure testing, Jaewhoon's 2004 stem-cell fraud as historical warning; **today's sustainability question** has three angles — reproducibility, ecological cost, equity; MCP and open weights help but don't fully solve vendor dependency
 
 **Next week:** Course finale — final showcase + the road ahead.
