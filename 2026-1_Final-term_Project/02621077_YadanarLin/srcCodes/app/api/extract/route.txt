@@ -1,0 +1,134 @@
+import { NextResponse } from "next/server";
+import { store } from "@/utils/store";
+import { searchVectorDB } from "@/utils/rag";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "dummy_key");
+
+/**
+ * POST handler for the extraction process.
+ * This file implements the core "Multi-Agent Reflexion Loop" architecture.
+ * It uses an Extractor agent to draft data and a Judge agent to critique it,
+ * looping until the Judge is satisfied or max attempts are reached.
+ */
+export async function POST(req) {
+  try {
+    const { documentId, query } = await req.json();
+    const docData = store[documentId];
+    
+    if (!docData) {
+      return NextResponse.json({ success: false, error: "Document not found in memory store." });
+    }
+
+    // Helper to maintain an audit trail of agent thoughts and actions
+    const logs = [];
+    const addLog = (step, message) => logs.push({ step, message });
+
+    // Instantiating the digital workforce: 
+    // We use gemini-2.5-flash for both the Extractor and the Judge to maintain 
+    // high speed and stay within free-tier API quota limits.
+    const extractorModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const judgeModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+    addLog("Search", "Searching Vector DB for relevant context...");
+    
+    // RAG Step: Retrieve the top 5 most relevant semantic chunks from the vector DB
+    const relevantChunks = await searchVectorDB(query, docData.chunks, 5);
+    const context = relevantChunks.join("\n\n---\n\n");
+
+    let extractedData = null;
+    let judgeScore = 0;
+    let critiqueHistory = [];
+    let attempts = 0;
+    const MAX_ATTEMPTS = 3;
+
+    // THE REFLEXION LOOP
+    // Iterates until the Judge scores the extraction >= 8, or we hit the retry limit.
+    while (judgeScore < 8 && attempts < MAX_ATTEMPTS) {
+      attempts++;
+      addLog(`Attempt ${attempts}`, "Generator is drafting extraction...");
+      
+      // 1. Extractor Prompt
+      // Includes the query, context, and importantly, any previous critiques from the Judge
+      const prompt = `
+        You are a medical data extraction assistant.
+        Extract information based on the following query: "${query}"
+        
+        Use the following context from the paper:
+        ${context}
+        
+        Previous Critiques to address:
+        ${critiqueHistory.join("\n")}
+        
+        Return ONLY valid JSON. Your response must be parseable by JSON.parse().
+      `;
+
+      // 2. Extractor generates the draft
+      const response = await extractorModel.generateContent(prompt);
+      const textResponse = response.response.text().replace(/```json/g, "").replace(/```/g, "").trim();
+      
+      try {
+        extractedData = JSON.parse(textResponse);
+      } catch (e) {
+        // Handle hallucinated JSON structures gracefully
+        addLog(`Attempt ${attempts} Failed`, "Generator produced invalid JSON.");
+        critiqueHistory.push("Critique: Your output was not valid JSON. Please fix the formatting.");
+        continue;
+      }
+
+      addLog(`Attempt ${attempts}`, "Draft complete. Judge is evaluating...");
+
+      // 3. Judge Prompt
+      // The Judge reviews the Extractor's output against the exact same context chunks.
+      const judgePrompt = `
+        You are an evaluator. Review the following extracted data against the source context and the user query.
+        
+        User Query: ${query}
+        Extracted Data: ${JSON.stringify(extractedData, null, 2)}
+        Source Context: ${context}
+        
+        Evaluate based on this Rubric:
+        1. Accuracy (Is the data factually present in the context?)
+        2. Completeness (Did it answer all parts of the query?)
+        3. Formatting (Are numbers formatted as numbers, etc?)
+        
+        Return a JSON object with:
+        {
+          "score": <number 0-10>,
+          "critique": "<string, write WHY the output is weak and how to improve>"
+        }
+      `;
+
+      // 4. Judge generates the critique
+      const judgeRes = await judgeModel.generateContent(judgePrompt);
+      const judgeText = judgeRes.response.text().replace(/```json/g, "").replace(/```/g, "").trim();
+      
+      try {
+        const evaluation = JSON.parse(judgeText);
+        judgeScore = evaluation.score;
+        addLog(`Judge Score`, `Score: ${judgeScore}/10. Critique: ${evaluation.critique}`);
+        
+        if (judgeScore < 8) {
+          critiqueHistory.push(`Judge Critique: ${evaluation.critique}`);
+        }
+      } catch (e) {
+        addLog(`Judge Error`, "Judge failed to return valid JSON. Assuming low score.");
+      }
+    } // End of Reflexion Loop
+
+    addLog("Complete", judgeScore >= 8 ? "Threshold reached." : "Max attempts reached.");
+
+    // 5. Return the final draft to the frontend for the Human-in-the-Loop checkpoint
+    return NextResponse.json({ 
+      success: true, 
+      result: {
+        extractedData,
+        judgeScore,
+        evidence: relevantChunks // Returning evidence so the human can verify
+      },
+      logs 
+    });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: String(error) });
+  }
+}

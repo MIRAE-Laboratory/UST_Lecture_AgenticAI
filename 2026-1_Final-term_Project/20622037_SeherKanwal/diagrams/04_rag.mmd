@@ -1,0 +1,35 @@
+flowchart TD
+    subgraph INGEST ["Step 1 — Upload a Document"]
+        I1(["User uploads a file
+PDF, Text, or Markdown"]) --> I2["Read the Document
+Extract all text content"]
+        I2 --> I3["Split into Sections
+800-character pieces with overlap
+to avoid cutting ideas mid-sentence"]
+        I3 --> I4["Convert Sections to Numbers
+Each section gets a unique
+numeric fingerprint (vector)"]
+        I4 --> I5[("Knowledge Database
+All sections stored with
+their numeric fingerprints")]
+    end
+    subgraph RETRIEVE ["Step 2 — Answer a Question"]
+        Q1(["User asks a question"]) --> Q2["Convert Question to Numbers
+Same method as document sections"]
+        Q2 --> Q3["Find Most Similar Sections
+Compare question fingerprint
+to all stored section fingerprints"]
+        Q3 -->|"If AI offline"| Q4["Keyword Search Fallback
+Match based on shared
+words instead of meaning"]
+        Q3 & Q4 --> Q5["Select Top 4 Sections
+Most relevant parts
+of the document"]
+        Q5 --> Q6["Build Context Block
+Source name + section content
+clearly labelled"]
+        Q6 --> Q7["Added to AI Prompt
+AI answers based on
+your actual documents"]
+    end
+    I5 -->|"Searched at question time"| Q3

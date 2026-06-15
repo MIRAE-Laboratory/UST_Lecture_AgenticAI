@@ -1,0 +1,64 @@
+{
+  "ml_pipeline_version": "1.0.1",
+  "stage": "filtering",
+  "written_at": "2026-06-05T12:11:59",
+  "n_files": 14,
+  "files": {
+    "6.Filtering/ai_driven/merged_z1d1u0/Filtered_merged_z1d1u0.csv": {
+      "sha256": "1f498c6e687c5aa621b0571d72b7069ebe3042f036ba45f993a368191fff4b55",
+      "lines": 5757
+    },
+    "6.Filtering/ai_driven/merged_z1d1u0/hard_filter_report.csv": {
+      "sha256": "a5fb1370a2049fc58317ef08e50a0e17029aa2939dc9715b887797a5ccc2f239",
+      "lines": 79
+    },
+    "6.Filtering/ai_driven/merged_z3d0u1/Filtered_merged_z3d0u1.csv": {
+      "sha256": "8f3f0f2a0a3315678c945064957e1109a5c90be8bf5c5c6bedb523937c910556",
+      "lines": 160
+    },
+    "6.Filtering/ai_driven/merged_z3d0u1/hard_filter_report.csv": {
+      "sha256": "a34389a4343ad918573091082c64489af0d95c3382b377e17f1b07fdb93cb322",
+      "lines": 89
+    },
+    "6.Filtering/ai_driven/merged_z3d1u0/Filtered_merged_z3d1u0.csv": {
+      "sha256": "ab47ef3918f47067abf53ec4126daef3dad0713ff7686b6583503d6d5e5a2022",
+      "lines": 279
+    },
+    "6.Filtering/ai_driven/merged_z3d1u0/hard_filter_report.csv": {
+      "sha256": "58d1c1d5d31afb00afb24c6904ca7291cc7b8f883f89b202e70590152f59476d",
+      "lines": 84
+    },
+    "6.Filtering/ai_driven/merged_z3d1u1/Filtered_merged_z3d1u1.csv": {
+      "sha256": "e3a1794c02067640c1a1dfe2a7775276d64cb35656517466b81109d8afc37b52",
+      "lines": 5338
+    },
+    "6.Filtering/ai_driven/merged_z3d1u1/hard_filter_report.csv": {
+      "sha256": "db45fbfe67974003b2ec20d018c737452d2b825c2aec74a4fc765d40e4870623",
+      "lines": 80
+    },
+    "6.Filtering/ai_driven/merged_z4d0u1/Filtered_merged_z4d0u1.csv": {
+      "sha256": "998a1c43ad3f713e7905bde3494db67548246fd08e122fa31548a86d12d5454c",
+      "lines": 41
+    },
+    "6.Filtering/ai_driven/merged_z4d0u1/hard_filter_report.csv": {
+      "sha256": "11236653781af8aa4daa799f1d212ca42e35a261f0d25801358a0a3f56e3d451",
+      "lines": 101
+    },
+    "6.Filtering/ai_driven/merged_z4d1u0/Filtered_merged_z4d1u0.csv": {
+      "sha256": "fe35ef5abe634adcf1d6fec829568f1749606068eca53ec17f34797d7c65f58b",
+      "lines": 576
+    },
+    "6.Filtering/ai_driven/merged_z4d1u0/hard_filter_report.csv": {
+      "sha256": "a6b725608fe4669f79d3a60842be502e2fd18aeb55b2207e6aaf98959081b301",
+      "lines": 82
+    },
+    "6.Filtering/ai_driven/merged_z4d1u1/Filtered_merged_z4d1u1.csv": {
+      "sha256": "722340498761147f76f24aaa76714beb62c4f031c27f7a08c3b6afbacbe1effb",
+      "lines": 12075
+    },
+    "6.Filtering/ai_driven/merged_z4d1u1/hard_filter_report.csv": {
+      "sha256": "fcf2cdd62d8665005b5b1b6c6a0556a28287e7dbb0155ab3d738deb987809100",
+      "lines": 82
+    }
+  }
+}

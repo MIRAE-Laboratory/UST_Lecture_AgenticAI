@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant PAGE as Feature Page
+    participant MENTOR as AI Mentor Engine
+    participant LLM as Ollama (Local)
+
+    PAGE->>MENTOR: Request explanation\n(context type + data summary)
+    MENTOR->>MENTOR: Build prompt with:\n• User mode (Beginner/Advanced)\n• Current context\n• Data summary
+    MENTOR->>LLM: POST /api/generate\n{model, prompt, system_prompt}
+    LLM-->>MENTOR: Response text
+    MENTOR->>PAGE: Render info box + popover chat
+    PAGE->>PAGE: User types follow-up
+
+    PAGE->>LLM: POST /api/generate\n(conversation history formatted as text)
+    LLM-->>PAGE: Contextual reply
+    PAGE->>MENTOR: Log behavior action

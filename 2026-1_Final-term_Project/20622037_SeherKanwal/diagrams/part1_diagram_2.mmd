@@ -1,0 +1,8 @@
+graph LR
+    USER["👤 User"]
+    USER -->|"Visits any page"| CTX["Context is set\n(page + data being viewed)"]
+    CTX --> SIDEBAR_CHAT["Sidebar chat\nAlways available"]
+    USER -->|"Clicks Explain button"| INLINE["Inline explanation\n+ popover chat"]
+    USER -->|"Takes any action"| LOG["Action logged\nto behavior history"]
+    LOG --> PERSONALIZE["Mentor personalizes\nfuture guidance"]
+    SIDEBAR_CHAT --> RESPONSE["AI responds in context\nof current page"]

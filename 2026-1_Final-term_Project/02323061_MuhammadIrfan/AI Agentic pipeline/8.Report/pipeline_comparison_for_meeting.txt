@@ -1,0 +1,411 @@
+R2R Pipeline Comparison: Base Code vs Agentic AI
+For weekly meeting presentation
+=================================================================
+
+
+WHAT ARE WE TRYING TO DO? (Simple explanation)
+-----------------------------------------------
+We have a roll-to-roll (R2R) coating machine that applies a thin film onto a
+moving substrate. Sensors along the machine record hundreds of measurements every
+second: temperatures, pressures, motor speeds, gap widths, and more. We want to
+predict the coating quality (measured at three fixed points along the machine)
+using those sensor readings, so that operators can understand which controls matter
+most and catch quality problems early. The pipeline reads the raw sensor data,
+cleans and aligns it, selects the most physically meaningful sensors as model
+inputs, and then trains and compares machine learning models to find the best
+predictor for each operating condition.
+
+
+PIPELINE OVERVIEW
+-----------------
+Base code:   Transforming -> Synchronize -> Partitioning -> Fusion ->
+             Filtering -> InputSelection -> AI Modeling
+
+Agentic AI:  Transform -> Sync+Schema -> Partition+AutoTune ->
+             Fusion+Manifest -> Filter+AgentChecks ->
+             PhysCheck+4-Stage-Select -> 7-Model Compare+HoldoutEval
+
+Both pipelines process the same physical stages in the same order. The agentic
+version adds safety checks, reproducibility verification, and a more rigorous ML
+approach at every step.
+
+
+STAGE-BY-STAGE COMPARISON
+--------------------------
+
+STAGE 1: Data Transformation (Raw PLC data -> standard column names)
+---------------------------------------------------------------------
+What this stage does:
+  The coating machine's control system stores sensor data under cryptic address
+  codes (e.g. D305001). This step reads those files and renames every column to
+  a human-readable name (e.g. Address1_zone_data_4), so downstream steps and
+  humans can understand what each column means.
+
+Base code approach:
+  - Reads raw CSV files from 0.Transforming/Target/
+  - Loads a mapping.csv lookup table (PLC address -> semantic name)
+  - Applies longest-prefix-first rename to avoid partial matches
+  - Writes renamed files to 1.Rawdata/
+  - Handles InfluxDB Flux long-format export (pivot from long to wide table)
+
+Agentic AI approach:
+  - Identical rename logic, frozen verbatim in r2r_pipeline_frozen.py
+  - Added: skips non-PLC files and meniscus files by filename keyword filter
+  - Added: pivot_table with sorted column order -- stable and reproducible
+  - Added: SHA-256 manifest (manifest_transform.json) written after every run;
+    second run verifies byte-for-byte identity
+
+Key difference:
+  BETTER -- agentic AI adds SHA-256 manifest verification so that any accidental
+  re-run or file modification is immediately flagged.
+
+Result (numbers):
+  Base code: writes J1_dataset_MMDD.csv files to 1.Rawdata/ (4 files x 226 cols)
+  Agentic AI: same output + manifest_transform.json (hash of each output file)
+
+
+STAGE 2: Synchronization (Time alignment of sensors)
+-----------------------------------------------------
+What this stage does:
+  Sensors closer to the start of the machine record data earlier than sensors at
+  the end, because the film takes time to travel between them. This step shifts
+  each sensor's readings forward in time by the exact delay it takes for the film
+  to travel from the start to that sensor's position.
+
+Base code approach:
+  - Uses DIST dictionary mapping each sensor column to physical distance (metres)
+  - Calculates delay: delay_rows = round((distance / web_speed) * 60)
+  - Shifts each column: df[col].shift(-delay_rows)
+  - Trims result to shortest valid length to remove NaN tails
+  - Writes synchronize_final_MMDD.csv to 2.Synchronize/
+
+Agentic AI approach:
+  - Identical shift algorithm and DIST values, frozen in r2r_pipeline_frozen.py
+  - Added: schema validation gate -- checks every file against canonical_schema.json
+    (226 columns, 11 required); blocks run if any required column is missing
+  - Added: two auxiliary outputs per file -- pre-trim shift and delay metadata
+  - Added: SHA-256 manifest for all sync outputs
+
+Key difference:
+  BETTER -- agentic AI adds a schema validation gate that catches missing sensors
+  before the sync runs, preventing cryptic failures deep in the pipeline.
+
+Result (numbers):
+  Both: 4 source files -> 4 synchronize_final_*.csv outputs
+  Agentic AI: additionally writes 8 auxiliary files and validates 226 columns
+
+
+STAGE 3: Partitioning (Finding steady-state coating segments)
+-------------------------------------------------------------
+What this stage does:
+  The coating machine is not always running at the correct speed. During startup
+  and shutdown, the data is not useful. This step extracts only "steady-state"
+  windows -- periods where GSM is stable, above a minimum level, and the machine
+  runs at target speed -- and saves each as a separate file.
+
+Base code approach:
+  - Sliding window: window_size=20 rows, step_size=20 rows (non-overlapping)
+  - Valid window: std(window) < 400.0 AND min(window) > 5000.0 AND speed ~= 10.0 m/min
+  - Groups consecutive valid rows: min_continuous_len=30
+  - Labels: 13000->d1u1, 9000->d0u1, 6000->d1u0
+  - Skips segments where std=0 (stuck sensor)
+
+Agentic AI approach:
+  - All parameters identical and frozen
+  - Added: auto-tuning when zero segments produced (derives data-driven thresholds)
+  - Added: chosen_params.json sidecar per zone (records exact thresholds used)
+  - Added: partition_zero_std_segments.csv log of every skipped segment
+  - Added: SHA-256 manifest
+
+Key difference:
+  BETTER -- agentic AI adds one-shot data-driven auto-tuning so that a new
+  coating recipe does not silently produce zero segments.
+
+Result (numbers):
+  Both: 28 segment files produced from 4 source files across 7 conditions
+  Auto-tuning did not fire (nominal parameters worked for this dataset)
+
+
+STAGE 4: Fusion (Combining segments into one dataset per zone)
+--------------------------------------------------------------
+What this stage does:
+  Multiple coating runs produce many small segment files for the same operating
+  condition. This step collects all segments for the same condition and stacks
+  them into a single dataset per condition, ready for machine learning.
+
+Base code approach:
+  - Groups segment files by zone-condition label (e.g. z3d1u0)
+  - Concatenates all matching segments row-by-row
+  - Writes merged_z*.csv to 4.Fusioning/
+
+Agentic AI approach:
+  - Identical grouping and concatenation logic, frozen
+  - Added: SHA-256 manifest verification (manifest_fusion.json)
+
+Key difference:
+  SAME -- both pipelines perform the same segment stacking.
+
+Result (numbers):
+  Both: 7 merged files (z1d1u0, z3d0u1, z3d1u0, z3d1u1, z4d0u1, z4d1u0, z4d1u1)
+  Row counts confirmed identical between old and new versions
+
+
+STAGE 5: Filtering (Removing bad or useless columns)
+-----------------------------------------------------
+What this stage does:
+  After merging, datasets still contain many columns that cannot help prediction:
+  columns with mostly missing values, stuck sensors (same value always),
+  "cheating" columns (copies of the target), and ID-like columns. This step
+  removes all of them.
+
+Base code approach (Updated version):
+  - Pass 1 -- Name filter: drops columns matching rw1, sec, _time
+  - Pass 2 -- Leakage filter: drops columns with target/label/answer/future in name
+  - Pass 3 -- High missing: drops columns with >= 70% NaN values
+  - Pass 4 -- Near-zero variance: drops columns where std <= 1e-12 or one value
+               dominates >= 99.5% of rows
+  - Pass 5 -- Identifier-like: drops columns with >= 99.5% unique values
+  (Demo version: only passes 1 and 3, missing threshold = 90%)
+
+Agentic AI approach:
+  - Same 5-pass frozen hard filter (identical thresholds)
+  - Added 4 agentic checks after frozen passes:
+    * Adaptive missing: tightens threshold to 50% (n<200) or 60% (n<500 rows)
+    * Correlation redundancy: removes lower-variance member of corr>0.95 pairs
+    * Target leakage: removes features correlating >0.98 with any Address sensor
+    * VIF multicollinearity: removes features with Variance Inflation Factor >10
+  - Writes agent_filter_params.json sidecar
+  - SHA-256 manifest (manifest_filtering.json)
+
+Key difference:
+  BETTER -- agentic AI adds 4 data-aware checks; adaptive missing threshold
+  protects small cases from keeping near-missing columns.
+
+
+STAGE 6: Input / Feature Selection (Choosing which sensors to use as inputs)
+-----------------------------------------------------------------------------
+What this stage does:
+  After filtering we still have 60-120 candidate sensors per zone. This step
+  uses statistical and machine learning tests to narrow down to just 2-10 sensors
+  that genuinely predict coating quality.
+
+Base code approach (Updated version):
+  - Candidate pool: all upstream sensors (distance < target distance)
+  - Batch Refresh multi-score consensus:
+    * 4 scores: redundancy, univariate (Pearson+MI), model (RF+SHAP), subset (fwd CV)
+    * Weighted consensus: 0.15 redundancy + 0.25 univariate + 0.30 model + 0.30 subset
+    * 50 Optuna trials in 5 batches of 10; feature scores refreshed after each batch
+    * Up to 15 features selected
+  (Demo: SHAP Top-K=10 from one RF pass)
+
+Agentic AI approach:
+  - Physical Eligibility Check (5 rules):
+    * Rule 1: numeric columns only
+    * Rule 2: remove the target column itself
+    * Rule 3: remove ALL same-zone Address sensors (24 columns per case)
+    * Rule 4: remove sensors physically downstream of the target zone
+              (101 removed for Zone 1, 50-53 for Zone 3, 1-2 for Zone 4)
+    * Rule 5: sort remaining candidates upstream-first
+  - 4-Stage AI funnel:
+    * Stage A: Pearson |r|>0.02, Spearman |rho|>0.02, MI>0.0005 (any threshold)
+    * Stage B: RF Importance via Optuna 15 trials (NopPruner, seed=42), top-30
+    * Stage C: Redundancy removal (|r|>0.92, drop lower-importance member)
+    * Stage D: Forward selection (gain threshold=0.003, max 20 features)
+
+Key difference:
+  DIFFERENT -- base code filters upstream by distance, but does NOT hard-block
+  sensors from OTHER zone families that are physically downstream. Agentic AI
+  Rule 4 blocked 101 sensors for Zone 1 that base code allowed in (including
+  sensors at 62.8m predicting a 10.1m target -- causally impossible).
+
+Result (numbers):
+  Case      | Agentic candidates | Selected features | CV R2
+  ----------|--------------------|-------------------|------
+  z1d1u0    | 22                 | 2                 | 0.858
+  z3d0u1    | 60                 | 2                 | 0.911
+  z3d1u0    | 68                 | 5                 | 0.887
+  z3d1u1    | 72                 | 8                 | 0.859
+  z4d0u1    | 100                | 3                 | 0.570
+  z4d1u0    | 119                | 8                 | 0.949
+  z4d1u1    | 118                | 7                 | 0.850
+
+
+STAGE 7: Modeling (Training and choosing the best prediction model)
+-------------------------------------------------------------------
+What this stage does:
+  We train a prediction model on the clean, selected sensor inputs. Multiple
+  model types are tried, each tuned to its best settings, then the winner is
+  tested on data it has never seen (30% holdout) to get an honest score.
+
+Base code approach:
+  - Single model type: RandomForest ONLY (sklearn RandomForestRegressor)
+  - Optuna tunes RF hyperparameters: 50 trials
+  - Cross-validation: KFold(5 folds, shuffle=True, random_state=42)
+  - No genuine holdout -- earlier version reported CV R2 as test R2 (bug)
+  - No GPU acceleration
+
+Agentic AI approach:
+  - 7 model types: Ridge, ElasticNet, SVR (n_train<=200), RandomForest,
+    XGBoost (GPU-cuda), LightGBM (GPU), KNN (n_train<200)
+  - Phase 1: 30 Optuna trials per model, TPESampler(seed=42), NopPruner
+  - Phase 2: Extended winner tuning (50 trials, expanded search space)
+  - Phase 3: Genuine holdout -- final model trained on 70%, evaluated ONCE on 30%
+  - CV: KFold(shuffle=True, random_state=42) -- 5-fold, 3-fold, or LOO by n_train
+  - Early stopping for XGBoost and LightGBM (20 rounds on validation set)
+  - Writes: winner model (.joblib), SHAP values, predictions, plots, summary JSON
+
+Key difference:
+  BETTER -- agentic AI tries 7 model families (XGBoost beats RF for Zone 3,
+  LightGBM beats RF for Zone 4) and reports a genuine 30% holdout test score.
+
+
+STAGE 8: Reproducibility (Making sure results are the same every run)
+----------------------------------------------------------------------
+What this stage does:
+  A result is only trustworthy if you can get the exact same answer by running
+  the analysis again. This stage describes how each pipeline ensures that.
+
+Base code approach:
+  - RANDOM_SEED=42 passed to all RF, KFold, SHAP, and Optuna calls
+  - No file-level verification -- no system to detect if a file changed
+  - Results depend on the user running notebook cells in order
+
+Agentic AI approach:
+  - Regime A (Stages 0-4): SHA-256 hash of every output file in manifest_*.json
+    Second run must produce byte-identical files; any change = DRIFT DETECTED
+  - Regime B (Stages 5-8): RANDOM_SEED=42, n_jobs=1 for RF, NopPruner for Optuna
+  - Schema validation gate ensures correct input columns before sync runs
+  - CLI --check flag makes manifest verification mandatory
+
+Key difference:
+  BETTER -- agentic AI provides mathematical proof of reproducibility for stages
+  0-4 and controlled determinism for stages 5-8.
+
+
+WHERE AGENTIC AI IS CLEARLY BETTER
+------------------------------------
+1. Physical correctness (no downstream leakage): Rule 4 blocks sensors downstream
+   of the target zone. Without this, a Zone 1 model received suggestions from
+   sensors at 62.8m -- measuring film AFTER it passes the Zone 1 point at 10.1m.
+   101 such sensors were blocked for Zone 1, 50-53 for Zone 3.
+
+2. Genuine holdout evaluation: The base code's "test R2" was the same as CV R2.
+   The agentic pipeline reserves 30% before any training, then evaluates once,
+   giving a score that reflects real-world generalization.
+
+3. Multi-model competition: The base code always uses RandomForest. The agentic
+   pipeline found XGBoost wins for Zone 3 (0.960 vs 0.955 base) and LightGBM
+   wins for Zone 4 (0.966 vs 0.949 base). Locking in one model leaves
+   performance on the table.
+
+4. Reproducibility contract: SHA-256 manifests for stages 0-4 mean results can
+   be audited at any time. The notebook has no such guarantee.
+
+5. Auto-tuning for new recipes: New coating recipes with different GSM ranges
+   trigger data-driven threshold adjustment with full audit trail. No manual
+   threshold tuning needed.
+
+
+WHERE BASE CODE IS STILL COMPETITIVE
+--------------------------------------
+1. Simpler to understand and modify: Jupyter notebook structure lets researchers
+   run individual steps interactively and see intermediate results without
+   learning the full CLI pipeline.
+
+2. Batch-refresh consensus scoring: The updated base code's four-component
+   consensus score gives every feature a continuous score (not binary pass/fail).
+   This is more nuanced than the agentic funnel approach.
+
+3. No distance metadata gaps: Both pipelines lack DIST entries for Valve_Exhaust
+   sensors (dry1-8), so both allow them as Zone 1 candidates even though some
+   are physically past Zone 1. This shared limitation exists in both approaches.
+
+
+TWO CASES THAT NEED FIXING
+---------------------------
+
+z3d1u0 -- test R2 dropped from 0.92 to 0.75
+============================================
+What happened:
+  During model comparison, KNN with n_neighbors=1 was selected as winner.
+  With n_neighbors=1, the model predicts each new point by finding the single
+  most similar training example and returning that exact value -- essentially
+  memorizing the training data. On CV folds this appears excellent (R2=0.893)
+  because validation points always have near-identical neighbors in the training
+  portion. But on the genuine 30% holdout (data never seen during training),
+  the model fails to generalize because it memorized rather than learned.
+
+Simple analogy: Memorizing last year's exact exam answers scores perfectly on
+practice but poorly on new (similar but not identical) exam questions.
+
+Fix needed: Add minimum n_neighbors >= 3 constraint to KNN Optuna search space,
+or penalize n_neighbors=1 during model winner comparison.
+
+Numbers: Base code RF R2 = 0.921 | Agentic KNN test R2 = 0.745 (drop of 0.176)
+
+
+z4d0u1 -- negative test R2
+============================
+What happened:
+  Only 40 total rows exist (28 train, 12 test). The coating quality signal has
+  mean ~6240, standard deviation 26, and range of only 109 units (6185-6294).
+  The coating thickness barely changed at all -- it was essentially flat.
+  A negative test R2 means the model is worse than predicting the mean every time.
+  With 12 test points on a near-constant signal, any small test fluctuation
+  produces a very poor fit.
+
+Simple analogy: Trying to predict the height of a wall that is uniformly flat.
+Your training says "always 2 metres +/- 2cm." Your test points vary +/- 3cm.
+Your model is worse than just saying "2 metres every time."
+
+Why this is a data problem not a pipeline problem: The base code also showed
+near-zero R2 (0.097) for this case. Less than 2% variation in the target means
+no model can learn a relationship from 28 rows where the target barely moves.
+Fix: Collect more data with greater GSM variation in Zone 4/Slot-Die-off
+conditions, or exclude this partition from model targets.
+
+Numbers: Base code R2 = 0.097 | Agentic test R2 = -0.718
+
+
+FINAL TEST R2 RESULTS TABLE
+-----------------------------
+
+Case         | Zone / Condition              | Base code R2 | Agentic CV R2 | Agentic Test R2 | Better?         | Winner model
+-------------|-------------------------------|--------------|---------------|-----------------|-----------------|-------------
+z1d1u0       | Zone 1, Slot-Die A, uw off    | 0.864        | 0.861         | 0.862           | MATCHED         | RandomForest
+z3d0u1       | Zone 3, Slot-Die B off, uw on | 0.955        | 0.928         | 0.960           | BETTER (+0.005) | XGBoost
+z3d1u0       | Zone 3, Slot-Die A, uw off    | 0.921        | 0.893         | 0.745           | WORSE (-0.176)  | KNN (fix needed)
+z3d1u1       | Zone 3, both Slot-Dies, uw on | 0.888        | 0.919         | 0.895           | MATCHED         | XGBoost
+z4d0u1       | Zone 4, Slot-Die B off, uw on | 0.097        | 0.661         | -0.718          | DATA PROBLEM    | SVR (reject)
+z4d1u0       | Zone 4, Slot-Die A, uw off    | 0.949        | 0.952         | 0.966           | BETTER (+0.017) | LightGBM
+z4d1u1       | Zone 4, both Slot-Dies, uw on | 0.883        | 0.859         | 0.895           | BETTER (+0.012) | RandomForest
+
+Notes:
+  - Base code R2 = KFold CV R2 from Jupyter notebook (RandomForest in all cases)
+  - Agentic Test R2 = genuine 30% holdout score (more conservative, more honest)
+  - z4d0u1 excluded from performance comparisons (near-constant target, insufficient data)
+  - z3d1u0 winner KNN n=1 shows overfitting -- scheduled for fix
+  - Counting only 5 reliable cases: agentic matches or beats base code in 4/5
+
+
+ONE-PARAGRAPH CONCLUSION FOR THE PROFESSOR
+------------------------------------------
+The agentic R2R pipeline delivers consistently competitive or better coating
+quality prediction compared to the base Jupyter notebook code, with genuine 30%
+holdout test R2 of 0.86-0.97 across five of seven operating conditions, compared
+to the base code's 0.86-0.95 KFold CV R2 (which is a more optimistic metric).
+The most important scientific improvement is the Physical Eligibility Check
+(Rule 4): by enforcing that features used to predict Zone 1 coating quality
+cannot come from sensors physically located past Zone 1, the pipeline eliminates
+causal inversion -- the previous version had selected a Zone 4 sensor (at 62.8
+metres) as a top feature for the Zone 1 target (at 10.1 metres), which is
+physically impossible to use in real-time control. Multi-model competition further
+revealed that XGBoost and LightGBM outperform RandomForest for certain operating
+conditions, something the base code could never discover by design. Looking
+forward, the agentic architecture is designed for autonomous operation on any R2R
+machine: new recipes trigger data-driven auto-tuning of partition thresholds, and
+SHA-256 manifests guarantee that results can be re-verified at any time without
+re-running the full pipeline. Two items remain to be fixed before the pipeline is
+production-ready: the z3d1u0 KNN overfitting (add minimum n_neighbors >= 3
+constraint) and the z4d0u1 near-constant target (collect more Zone 4 data with
+greater GSM variation or exclude this condition from model targets).

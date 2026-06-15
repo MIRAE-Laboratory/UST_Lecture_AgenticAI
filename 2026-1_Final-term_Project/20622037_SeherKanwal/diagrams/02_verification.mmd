@@ -1,0 +1,29 @@
+flowchart TD
+    A(["User asks a question"]) --> B["Fetch Live Market Data
+Automatically finds relevant
+prices, news, or portfolio info"]
+    B --> C["Enriched Question
+Original question + live market data
++ recent chat history"]
+    C --> D["AI Writer
+Generates a first-draft answer
+based on all available context"]
+    D --> E["First Draft Answer"]
+    E --> F["AI Safety Checker
+Reads the draft against
+all active safety rules"]
+    F --> G{"How risky
+is the answer?"}
+    G -->|"Safe or minor issue"| H["AI Editor
+Refines the answer
+for clarity and tone"]
+    G -->|"Risky or alarming"| I["Flag for Admin Review
+Full record saved:
+question, draft, issues found"]
+    I --> J[("Flagged Responses Store
+Awaiting human review")]
+    I --> H
+    H --> K["Final answer streamed
+word-by-word to the user"]
+    K --> L["Save to Conversation Memory
+Available in next session"]

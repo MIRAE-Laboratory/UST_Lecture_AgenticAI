@@ -1,0 +1,10 @@
+graph TD
+    LMT["📈 Live Market Terminal"]
+    LMT --> T1["Tab 1: US Stocks\nDropdown of 7 major stocks\n+ custom ticker input\n+ interval selector"]
+    LMT --> T2["Tab 2: Crypto Assets\nDropdown of 7 major crypto\n+ custom ticker input\n+ interval selector"]
+    LMT --> T3["Tab 3: My Holdings\nAuto-loads from saved portfolio\nP&L Summary card\nBuy price line on chart"]
+
+    T1 --> CHART["Adaptive Chart\n(Beginner: line / Advanced: candlestick)"]
+    T2 --> CHART
+    T3 --> CHART
+    CHART --> EXPLAIN["🦉 Explain Chart\n→ AI analysis + popover chat"]

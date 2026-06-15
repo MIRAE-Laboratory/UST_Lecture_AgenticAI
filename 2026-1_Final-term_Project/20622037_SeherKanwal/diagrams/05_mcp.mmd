@@ -1,0 +1,35 @@
+flowchart TD
+    Q(["User asks a question"]) --> IC["Smart Intent Detector
+Reads the question to decide
+which live data tools to call"]
+    IC -->|"Stock or crypto name found
+e.g. Tesla, Bitcoin, AAPL"| T1["Stock or Crypto Detected"]
+    IC -->|"Words like 'my portfolio'
+'should I sell' found"| T2["Portfolio Question Detected"]
+    IC -->|"Words like 'how is the market'
+'stock market today' found"| T3["Market Overview Detected"]
+    IC -->|"Two or more assets
+mentioned together"| T4["Comparison Detected"]
+    T1 -->|Yes| TOOL1["Fetch Live Price
+Current price, daily change,
+P/E ratio, 52-week range"]
+    T1 -->|Yes| TOOL2["Fetch Recent News
+Latest headlines
+for that asset"]
+    T2 -->|Yes| TOOL3["Fetch Your Portfolio
+All your holdings,
+current value, gains/losses"]
+    T3 -->|Yes| TOOL4["Fetch Market Overview
+S&P 500, Nasdaq, Dow Jones,
+Bitcoin, Gold — live"]
+    T4 -->|Yes| TOOL5["Compare Assets Side-by-Side
+Key metrics for up to
+4 stocks or cryptos"]
+    TOOL1 & TOOL2 & TOOL3 & TOOL4 & TOOL5 -->|"All live data collected"| CTX["Live Context Block
+Assembled and added to
+the AI prompt automatically"]
+    CTX --> LLM["AI generates a grounded answer
+based on real, current data"]
+    TOOL1 & TOOL2 & TOOL3 & TOOL4 & TOOL5 --> AUDIT["Tool Usage Log
+Records which data sources
+were used for this answer"]

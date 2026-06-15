@@ -1,0 +1,43 @@
+flowchart LR
+    subgraph ADMIN ["Admin Risk Monitor"]
+        A1["Safety Rules Manager
+Add, edit, or disable rules.
+Set severity level per rule."]
+        A2["Flagged Responses Log
+View every AI response
+that was flagged as risky"]
+        A3["Mark as Reviewed
+Admin adds notes and
+clears the flag"]
+    end
+    subgraph DB ["Stored Data"]
+        C1[("Safety Rules
+What counts as risky,
+warning, or alarming")]
+        C2[("Flagged Responses
+Full record: question,
+draft, issues, final answer")]
+    end
+    subgraph RUNTIME ["Runs automatically on every message"]
+        R1["Load Active Safety Rules
+Read all enabled rules
+from the database"]
+        R2["Rules given to
+Safety Checker AI
+before it evaluates the draft"]
+        R3{"What is the
+highest risk level
+found in the draft?"}
+        R4["Safe or Warning
+Refine the answer only
+No record saved"]
+        R5["Risky or Alarming
+Save full record
++ refine the answer"]
+    end
+    A1 -->|"Admin saves changes"| C1
+    C1 -->|"Loaded before each check"| R1
+    R1 --> R2 --> R3
+    R3 --> R4
+    R3 --> R5 --> C2
+    C2 --> A2 --> A3

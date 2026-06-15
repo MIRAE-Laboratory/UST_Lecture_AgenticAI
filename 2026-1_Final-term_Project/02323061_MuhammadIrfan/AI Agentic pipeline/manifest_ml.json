@@ -1,0 +1,129 @@
+{
+  "ml_pipeline_version": "1.0.1",
+  "stage": "model",
+  "written_at": "2026-06-05T22:05:44",
+  "gpu_mode": {
+    "xgboost_device": "cuda",
+    "lightgbm_device": "gpu"
+  },
+  "cases": {
+    "merged_z1d1u0": {
+      "selected_feature_list": [
+        "Dia_rw2 (mm)",
+        "Valve_Exhaust_dry4 (deg)"
+      ],
+      "n_features": 2,
+      "stage_a_survivors_count": 22,
+      "stage_b_top30_count": 22,
+      "winner_model_name": "RandomForest",
+      "test_r2_baseline": 0.862054,
+      "test_rmse_baseline": 112.029693,
+      "gpu_used": false
+    },
+    "merged_z3d0u1": {
+      "selected_feature_list": [
+        "TEMP_Ktype_dry3 (deg)",
+        "TEMP_Ktype_dry4 (deg)"
+      ],
+      "n_features": 2,
+      "stage_a_survivors_count": 60,
+      "stage_b_top30_count": 60,
+      "winner_model_name": "XGBoost",
+      "test_r2_baseline": 0.960331,
+      "test_rmse_baseline": 18.093784,
+      "gpu_used": true
+    },
+    "merged_z3d1u0": {
+      "selected_feature_list": [
+        "Motor_Torque_uw (percent)",
+        "TEMP_Inside_dry1 (deg)",
+        "TEMP_Inside_dry3 (deg)",
+        "TEMP_Ktype_dry2 (deg)",
+        "TEMP_Ktype_dry3 (deg)"
+      ],
+      "n_features": 5,
+      "stage_a_survivors_count": 68,
+      "stage_b_top30_count": 68,
+      "winner_model_name": "KNN",
+      "test_r2_baseline": 0.745248,
+      "test_rmse_baseline": 114.388592,
+      "gpu_used": false
+    },
+    "merged_z3d1u1": {
+      "selected_feature_list": [
+        "Dia_rw2 (mm)",
+        "Loadcell_slot_dia_b (N)",
+        "SlotDie_A_gap_ds (um)",
+        "SlotDie_A_gap_os (um)",
+        "SlotDie_B_gap_os (um)",
+        "TEMP_Inside_dry1 (deg)",
+        "TEMP_Inside_dry4 (deg)",
+        "TEMP_TrunkUP_dry1 (deg)"
+      ],
+      "n_features": 8,
+      "stage_a_survivors_count": 72,
+      "stage_b_top30_count": 72,
+      "winner_model_name": "XGBoost",
+      "test_r2_baseline": 0.895209,
+      "test_rmse_baseline": 40.321028,
+      "gpu_used": true
+    },
+    "merged_z4d0u1": {
+      "selected_feature_list": [
+        "TEMP_Inside_dry4 (deg)",
+        "TEMP_PT100_dry6 (deg)",
+        "TEMP_PT100_dry8 (deg)"
+      ],
+      "n_features": 3,
+      "stage_a_survivors_count": 100,
+      "stage_b_top30_count": 100,
+      "winner_model_name": "SVR",
+      "test_r2_baseline": -0.718001,
+      "test_rmse_baseline": 27.997106,
+      "gpu_used": false
+    },
+    "merged_z4d1u0": {
+      "selected_feature_list": [
+        "D305788_dry8",
+        "Motor_SPD_infd (m/min)",
+        "TEMP_Inside_dry2 (deg)",
+        "TEMP_Inside_dry3 (deg)",
+        "TEMP_Ktype_dry4 (deg)",
+        "TEMP_TrunkDN_dry6 (deg)",
+        "TEMP_TrunkUP_dry1 (deg)",
+        "TEMP_TrunkUP_dry5 (deg)"
+      ],
+      "n_features": 8,
+      "stage_a_survivors_count": 119,
+      "stage_b_top30_count": 119,
+      "winner_model_name": "LightGBM",
+      "test_r2_baseline": 0.966246,
+      "test_rmse_baseline": 52.307245,
+      "gpu_used": true
+    },
+    "merged_z4d1u1": {
+      "selected_feature_list": [
+        "Dia_uw (mm)",
+        "Motor_Torque_uw (percent)",
+        "TEMP_Inside_dry1 (deg)",
+        "TEMP_Inside_dry3 (deg)",
+        "TEMP_Inside_dry4 (deg)",
+        "TEMP_Ktype_dry2 (deg)",
+        "TEMP_TrunkDN_dry3 (deg)"
+      ],
+      "n_features": 7,
+      "stage_a_survivors_count": 118,
+      "stage_b_top30_count": 118,
+      "winner_model_name": "RandomForest",
+      "test_r2_baseline": 0.895354,
+      "test_rmse_baseline": 24.323175,
+      "gpu_used": false
+    }
+  },
+  "tolerances": {
+    "selected_feature_list": "exact_set_match",
+    "winner_model_name": "exact_match",
+    "r2": 0.001,
+    "rmse_pct": 0.01
+  }
+}

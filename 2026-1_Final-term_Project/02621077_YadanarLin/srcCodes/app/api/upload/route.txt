@@ -1,0 +1,53 @@
+import { NextResponse } from "next/server";
+import { store } from "@/utils/store";
+import { chunkText, getEmbedding } from "@/utils/rag";
+
+/**
+ * POST handler for document ingestion.
+ * Receives a PDF file, extracts its text, chunks it, generates embeddings, 
+ * and stores it in the in-memory vector DB.
+ */
+export async function POST(req) {
+  try {
+    // 1. Extract the uploaded file from the form data
+    const formData = await req.formData();
+    const file = formData.get("file");
+    
+    if (!file) {
+      return NextResponse.json({ success: false, error: "No file provided" });
+    }
+
+    // 2. Dynamically import pdf-parse to avoid Next.js serverless/webpack issues
+    //    (Addressing the "Library Versioning Collapse" lesson)
+    const { createRequire } = require("module");
+    const dynamicRequire = createRequire(import.meta.url);
+    const pdfParse = dynamicRequire("pdf-parse/lib/pdf-parse.js");
+
+    // 3. Read the file buffer and parse the PDF text
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const data = await pdfParse(buffer);
+    const text = data.text;
+
+    // 4. Chunk the extracted text (1000 chars per chunk, 200 char overlap)
+    const chunksText = chunkText(text, 1000, 200);
+    const chunks = [];
+    
+    // 5. Generate embeddings for each chunk using gemini-embedding-2
+    // Note: In a production app, we would parallelize this with Promise.all 
+    // while respecting API rate limits.
+    for (const chunk of chunksText) {
+      const embedding = await getEmbedding(chunk);
+      chunks.push({ text: chunk, embedding });
+    }
+
+    // 6. Store the processed data in the in-memory store tagged with a unique ID
+    const documentId = Date.now().toString();
+    store[documentId] = { text, chunks };
+
+    // Return the unique documentId to the frontend
+    return NextResponse.json({ success: true, documentId });
+  } catch (error) {
+    console.error("UPLOAD ERROR:", error);
+    return NextResponse.json({ success: false, error: String(error) });
+  }
+}

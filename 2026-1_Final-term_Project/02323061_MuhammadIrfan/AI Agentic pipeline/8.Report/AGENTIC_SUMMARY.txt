@@ -1,0 +1,30 @@
+========================================================================
+  R2R ML PIPELINE -- STAGE 8 SUMMARY
+  Generated : 2026-06-12 09:37:15
+  Runtime   : 918.0 min
+========================================================================
+
+GOAL : test R2 > 0.90 on all 7 cases (genuine 30% holdout)
+RESULT: 2/7 cases achieved test_R2>=0.90
+
+Case                   Base R2    CV R2      Test R2    ΔTest     Model          n_tr   n_te  Status
+------------------------------------------------------------------------------------------
+merged_z1d1u0          0.8636     0.8609     0.8621     -0.0015     RandomForest   4029   1727  MATCHED
+merged_z3d0u1          0.955      0.9283     0.9603     +0.0053     XGBoost        111    48    EXCELLENT
+merged_z3d1u0          0.9209     0.8887     0.8983     -0.0226     KNN            194    84    DEGRADED
+merged_z3d1u1          0.8875     0.9185     0.8952     +0.0077     XGBoost        3735   1602  MATCHED
+merged_z4d0u1          0.0971     0.6613     -0.718     -0.8151     SVR            28     12    DEGRADED
+merged_z4d1u0          0.9485     0.9553     0.9676     +0.0191     LightGBM       402    173   EXCELLENT
+merged_z4d1u1          0.8834     0.8594     0.8954     +0.0120     RandomForest   8451   3623  IMPROVED
+
+CASES STILL BELOW 0.90:
+  merged_z1d1u0: test_R2=0.8621  cv_R2=0.8609
+  merged_z3d1u0: test_R2=0.8983  cv_R2=0.8887
+  merged_z3d1u1: test_R2=0.8952  cv_R2=0.9185
+  merged_z4d0u1: test_R2=-0.718  cv_R2=0.6613
+    DIAGNOSIS: target std=25.99 (range 6185-6294) -- near-constant. R2>0.90 is physically impossible for this partition.
+  merged_z4d1u1: test_R2=0.8954  cv_R2=0.8594
+
+GPU CONFIGURATION:
+  xgboost_device: cuda
+  lightgbm_device: gpu

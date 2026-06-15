@@ -1,6 +1,7 @@
 *.py
 *.env
 .claude/
+.venv/
 keep/
 practices/
 __pycache__/

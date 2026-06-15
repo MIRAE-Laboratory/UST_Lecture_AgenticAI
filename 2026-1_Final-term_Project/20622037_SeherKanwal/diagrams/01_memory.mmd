@@ -1,0 +1,28 @@
+flowchart TD
+    A(["User Opens App"]) --> B["Load User Profile
+Name, risk level, mode,
+learning progress"]
+    A --> C["Load Saved Conversations
+Restore previous chat history"]
+    B --> D["Profile Memory Active
+AI knows who you are"]
+    C --> E["Chat Memory Active
+AI remembers past messages"]
+    D --> F["Every AI Response
+Tailored to your profile
+and conversation context"]
+    E --> F
+    F --> G["User Takes an Action"]
+    G --> H{"What did
+the user do?"}
+    H -->|"Sent a message"| I["Save Chat Message
+Added to conversation history"]
+    H -->|"Learned a concept,
+took a quiz, did roleplay"| J["Record User Behaviour
+Timestamped activity log"]
+    H -->|"Updated profile
+or settings"| K["Save Profile Changes
+Risk level, name, progress"]
+    I & J & K --> L[("Persistent Storage
+Saved across all sessions")]
+    L -->|"Next time user opens app"| A

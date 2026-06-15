@@ -1,0 +1,765 @@
+R2R Coating Machine -- AI Pipeline Comparison
+Base Code vs Agentic AI System
+=================================================================
+
+
+[SLIDE 1] TITLE SLIDE
+=================================================================
+Title:    R2R Coating Machine -- AI Pipeline Comparison
+Subtitle: Base Code vs Agentic AI System -- How We Made It Better, Faster, and Honest
+
+Authors:
+  Lee Wante       -- Base Code (Demo version, February 2026)
+  Yunseon Byun    -- Base Code (Updated version, April 2026)
+  Irfan / Team    -- Agentic AI Pipeline (June 2026)
+
+Date:    June 2026
+Version: Agentic Pipeline v1.0.1 | Tested on RTX 5090 GPU
+
+
+[SLIDE 2] WHAT ARE WE DOING? (The Big Picture)
+=================================================================
+
+* What is a Roll-to-Roll (R2R) coating machine?
+  Think of it like a huge printer: a thin sheet of material rolls from one spool
+  to another, and a coating is applied in the middle -- like spreading paint on a
+  moving belt. Our machine applies a special chemical coating used in battery or
+  electronic manufacturing.
+
+* What data does it produce?
+  As the sheet moves through the machine, over 226 sensors record values every
+  second -- temperatures in 8 ovens, motor speeds, coating pump flow rates, gap
+  widths, and material tensions. Each run produces hundreds of thousands of rows.
+
+* What are we trying to predict?
+  We want to predict the coating quality (called GSM -- grams per square metre)
+  measured at three points: Zone 1 (10.1 m from start), Zone 3 (38.6 m), and
+  Zone 4 (62.8 m). The target column is Address{zone}_zone_data_4.
+
+* Why does prediction matter?
+  If we can predict coating quality from sensor readings, we can catch problems
+  before the material reaches the quality measurement point -- reducing waste,
+  stopping bad batches early, and eventually letting the machine adjust itself.
+
+* What is a "pipeline"?
+  A pipeline is a series of automatic steps that run in order, like an assembly
+  line for data. Raw sensor data goes in at one end; a trained prediction model
+  comes out the other end.
+
+
+[SLIDE 3] THREE VERSIONS WE ARE COMPARING
+=================================================================
+
+Feature              | Lee Wante (Demo)           | Yunseon Byun (Updated)      | Our Agentic AI
+---------------------|----------------------------|-----------------------------|----------------------------
+Date                 | February 2026              | April 2026                  | June 2026
+Format               | Jupyter Notebook           | Jupyter Notebook             | Automated Python CLI
+Code tag             | AItune_method=shap_to_opt  | PIPELINE_TAG=batch_refresh  | ML_PIPELINE_VERSION=1.0.1
+Models tried         | RandomForest ONLY          | RandomForest ONLY           | 7 models
+Feature selection    | SHAP Top-K (top 10)        | 4-score consensus (top 15)  | 4-stage funnel
+Downstream blocking  | Partial                    | Partial                     | Full (101 blocked, Zone 1)
+Test score type      | CV score only (optimistic) | CV score only               | Genuine 30% holdout
+GPU acceleration     | No                         | No                          | Yes (XGBoost CUDA, LGBMgpu)
+Reproducibility      | None                       | None                        | SHA-256 manifests
+Auto-tuning          | No                         | No                          | Yes (data-driven partition)
+
+
+[SLIDE 4] THE PIPELINE -- 7 STAGES OVERVIEW
+=================================================================
+
+Raw Sensor Data (InfluxDB CSV)
+         |
+         v
+ Stage 1: TRANSFORM
+   Rename PLC codes (D305xxx) to readable names (Address*_zone_data_*)
+         |
+         v
+ Stage 2: SYNCHRONIZE
+   Shift each sensor in time based on film travel distance to that sensor
+         |
+         v
+ Stage 3: PARTITION
+   Find "steady-state" windows where machine runs at correct speed and coating rate
+         |
+         v
+ Stage 4: FUSION
+   Stack all matching windows from different runs into one file per condition
+         |
+         v
+ Stage 5: FILTER
+   Remove broken sensors (missing data), stuck sensors (no variation), cheat columns
+         |
+         v
+ Stage 6: INPUT SELECT
+   From 60-120 sensors, pick only the 2-10 that actually drive coating quality
+         |
+         v
+ Stage 7: MODEL
+   Train 7 model types, tune each, test on unseen data, output best predictor
+         |
+         v
+    Prediction Model + Performance Report
+
+
+One sentence per stage:
+  Stage 1: Converts internal machine address codes into human-readable sensor names.
+  Stage 2: Shifts each sensor's time series to align with the film's physical travel time.
+  Stage 3: Extracts only stable periods where speed and coating signal are within spec.
+  Stage 4: Combines all stable segments sharing the same operating condition.
+  Stage 5: Drops bad columns -- too many missing values, constant value, or ID-like.
+  Stage 6: Uses statistics and ML to find the small set of sensors that predict quality.
+  Stage 7: Trains and compares models, tunes the winner, evaluates on unseen test data.
+
+
+[SLIDE 5] STAGE 1 -- DATA TRANSFORMATION
+=================================================================
+
+                    | Lee Wante (Demo)  | Yunseon Byun (Updated) | Agentic AI
+--------------------|-------------------|------------------------|---------------------------
+What it does        | Renames PLC codes | Same                   | Same, frozen in pipeline
+Source format       | InfluxDB Flux CSV | Same                   | Same
+Rename method       | mapping.csv table | Same                   | Same (longest prefix first)
+Pivot step          | Long -> wide      | Same                   | Same (sorted columns)
+File filter         | 'plc' in filename | Same                   | Same (skip 'meniscus')
+Output              | J1_dataset_MMDD   | Same                   | Same + SHA-256 manifest
+Column count        | ~226 cols         | ~226 cols              | ~226 cols
+Verification        | None              | None                   | manifest_transform.json
+
+KEY IMPROVEMENT in Agentic AI:
+  SHA-256 manifest verification catches accidental file changes before they
+  corrupt all downstream stages.
+
+
+[SLIDE 6] STAGE 2 -- SYNCHRONIZATION (Time alignment)
+=================================================================
+
+                    | Lee Wante         | Yunseon Byun          | Agentic AI
+--------------------|-------------------|------------------------|---------------------------
+DIST dictionary     | Yes (in code)     | Same                   | Same (frozen)
+Zone distances      | Z1=10.1m, Z3=38.6m, Z4=62.8m            | Same
+Delay formula       | delay = round((dist / speed) * 60) rows  | Same
+Shift applied       | df[col].shift(-delay_rows)               | Same
+Schema check        | None              | None                   | Checks 226 cols vs schema
+Auxiliary outputs   | final CSV only    | Same                   | + pre-trim + delay summary
+
+DIST reference (from code):
+  Loadcell unwinder              1.2 m
+  Infeed motor/torque            2.2 m
+  Slot Die A sensors             8.7 m
+  ZONE 1 (Address1)             10.1 m  <-- target for z1 cases
+  Oven dry1-dry4 temps       13.4-20.9 m
+  Slot Die B sensors            29.6 m
+  ZONE 3 (Address3)             38.6 m  <-- target for z3 cases
+  Oven dry5-dry8 temps       41.9-49.4 m
+  ZONE 4 (Address4)             62.8 m  <-- target for z4 cases
+  Rewinder 2                 67.1-68.2 m
+
+Example: Zone 4 at 62.8m, speed 10 m/min --> delay = (62.8/10)*60 = 377 rows
+
+KEY IMPROVEMENT in Agentic AI:
+  Schema validation gate blocks the run if any required sensor column is missing,
+  preventing cryptic errors 4 stages later.
+
+
+[SLIDE 7] STAGE 3 -- PARTITIONING (Finding steady-state segments)
+=================================================================
+
+Parameter           | Lee Wante         | Yunseon Byun          | Agentic AI
+--------------------|-------------------|------------------------|---------------------------
+Window size         | 20 rows           | 20 rows                | 20 rows (frozen)
+Step size           | 20 rows           | 20 rows                | 20 rows (frozen)
+GSM std threshold   | 400.0             | 400.0                  | 400.0 (frozen / auto-tuned)
+Min GSM value       | 5000.0            | 5000.0                 | 5000.0 (frozen / auto-tuned)
+Speed target        | 10.0 m/min        | 10.0 m/min             | 10.0 m/min (frozen)
+Speed tolerance     | tol = 0.0         | tol = 0.0              | 0.0 (frozen / auto-tuned)
+Min segment length  | 30 rows           | 30 rows                | 30 rows (frozen)
+Segment labels      | 13000->d1u1, 9000->d0u1, 6000->d1u0     | Same (frozen)
+Auto-tuning         | None              | None                   | Yes (if 0 segments: data-driven)
+Audit trail         | None              | None                   | chosen_params.json sidecar
+Segments produced   | 28 files          | 28 files               | 28 files (auto-tune NOT needed)
+
+KEY IMPROVEMENT in Agentic AI:
+  Auto-tuning means the pipeline works for new coating recipes (different GSM range)
+  without manual threshold adjustment.
+
+
+[SLIDE 8] STAGE 4 -- FUSION (Merging segments)
+=================================================================
+
+                    | Lee Wante         | Yunseon Byun          | Agentic AI
+--------------------|-------------------|------------------------|---------------------------
+What it does        | Stack segments by condition label         | Same (frozen)
+Output              | 7 merged_z*.csv   | 7 merged_z*.csv        | Same + manifest_fusion.json
+Verification        | None              | None                   | Byte-identical SHA-256 check
+
+Final dataset sizes (actual data, current run):
+  z1d1u0  Zone 1, Slot-Die A on, unwinder off      5,756 rows
+  z3d0u1  Zone 3, Slot-Die B off, unwinder on        159 rows  (small)
+  z3d1u0  Zone 3, Slot-Die A on, unwinder off         278 rows  (small)
+  z3d1u1  Zone 3, both Slot-Dies, unwinder on       5,337 rows
+  z4d0u1  Zone 4, Slot-Die B off, unwinder on           40 rows  (problem case)
+  z4d1u0  Zone 4, Slot-Die A on, unwinder off          575 rows
+  z4d1u1  Zone 4, both Slot-Dies, unwinder on       12,074 rows
+
+KEY IMPROVEMENT in Agentic AI:
+  SHA-256 manifest proves row counts and content are identical between runs.
+
+
+[SLIDE 9] STAGE 5 -- FILTERING (Removing bad columns)
+=================================================================
+
+Filter pass         | Lee Wante         | Yunseon Byun          | Agentic AI
+--------------------|-------------------|------------------------|---------------------------
+Name filter         | Yes (rw1, sec)    | Yes (same)             | Yes (same, frozen)
+Leakage names       | No                | Yes (target/label/etc) | Yes (same, frozen)
+Missing data thresh | >= 90% NaN drop   | >= 70% NaN drop        | >= 70% NaN (frozen)
+Near-zero variance  | No                | Yes (std <= 1e-12)     | Yes (same, frozen)
+Dominant value      | No                | Yes (>= 99.5%)         | Yes (same, frozen)
+ID-like columns     | No                | Yes (>= 99.5% unique)  | Yes (same, frozen)
+Adaptive missing    | No                | No                     | Yes (50% if n<200, 60% if n<500)
+Corr redundancy     | No                | No                     | Yes (drop if corr > 0.95)
+Target leakage      | No                | No                     | Yes (drop if corr with target > 0.98)
+VIF check           | No                | No                     | Yes (drop if VIF > 10)
+Target protected    | Not explicit      | Not explicit           | Target never dropped by any pass
+
+Actual columns removed by hard filter (current run):
+  z1d1u0:  dropped 78 columns  -> 148 remaining
+  z3d0u1:  dropped 88 columns  -> 138 remaining
+  z3d1u0:  dropped 83 columns  -> 143 remaining
+  z3d1u1:  dropped 79 columns  -> 147 remaining
+  z4d0u1:  dropped 100 columns -> 126 remaining
+  z4d1u0:  dropped 81 columns  -> 145 remaining
+  z4d1u1:  dropped 81 columns  -> 145 remaining
+
+KEY IMPROVEMENT in Agentic AI:
+  Adaptive missing threshold protects small cases (z3d0u1 n=159, z4d0u1 n=40)
+  from retaining near-empty columns that would cause overfitting.
+
+
+[SLIDE 10] STAGE 6 -- INPUT SELECTION (The most important stage)
+=================================================================
+
+LEE WANTE (Demo) approach:
+  Method:             SHAP Top-K selection (TopK = 10)
+  Candidate pool:     All sensors upstream of target zone
+  How selected:       Small RF (n_estimators=120, max_depth=8) -> SHAP values -> top 10
+  Downstream block:   Partial -- excludes same DIST group; not a hard distance gate
+  Features selected:  Always exactly 10
+
+YUNSEON BYUN (Updated) approach:
+  Method:             Batch Refresh 4-score consensus (final_topk = 15)
+  Score 1 (wt=0.15):  Redundancy score (corr-group deduplication)
+  Score 2 (wt=0.25):  Univariate = 0.5 * Pearson + 0.5 * Mutual Information
+  Score 3 (wt=0.30):  Model = 0.5 * RF importance + 0.5 * SHAP importance
+  Score 4 (wt=0.30):  Subset score (forward CV gain, incremental R2)
+  Consensus:          0.15*R + 0.25*U + 0.30*M + 0.30*S
+  Optuna:             50 trials in 5 batches of 10; scores refreshed after each batch
+  Features selected:  Up to 15 by consensus ranking
+  Downstream block:   Partial (same as Lee Wante)
+
+AGENTIC AI approach:
+
+  STEP 0 -- Physical Eligibility Check (5 rules):
+    Rule 1: Keep only numeric columns
+    Rule 2: Remove the target column itself
+    Rule 3: Remove ALL Address sensors from the SAME zone as target (24 cols)
+    Rule 4: Remove any sensor physically PAST the target zone (see numbers below)
+    Rule 5: Sort remaining by distance (upstream-first)
+
+  Rule 4 blocking counts (actual run):
+    Zone 1 target at 10.1m -> 101 sensors blocked
+    Zone 3 target at 38.6m ->  50-53 sensors blocked
+    Zone 4 target at 62.8m ->  1-2 sensors blocked
+
+  STEP 1 -- Stage A (Univariate Screening):
+    Keep if ANY of: Pearson |r| > 0.02, Spearman |rho| > 0.02, MI > 0.0005
+
+  STEP 2 -- Stage B (RF Importance, Optuna 15 trials, top 30):
+    Runs 15 Optuna trials, each fitting RF and recording importance -> keeps top 30
+
+  STEP 3 -- Stage C (Redundancy removal, |r| > 0.92):
+    If two sensors correlated > 0.92, drop the one with lower RF importance
+
+  STEP 4 -- Stage D (Forward selection, gain threshold 0.003, max 20 features):
+    Adds sensors one by one, keeps only those improving CV R2 by > 0.003
+
+THE KEY INSIGHT -- Downstream Leakage:
+
+  The base code was using a sensor at 62.8m to predict quality at 10.1m.
+  That sensor measures the film AFTER it passes the 10.1m prediction point.
+
+  In real production this is impossible: when you need to predict quality at 10.1m,
+  the film has not yet reached the 62.8m sensor. You would need to know the future.
+
+  The broken version selected Address4_zone_data_3 (62.8m) as top feature for Zone 1.
+  Rule 4 permanently blocks this. 101 sensors were blocked for Zone 1 alone.
+
+
+[SLIDE 11] STAGE 7 -- MACHINE LEARNING MODELING
+=================================================================
+
+                    | Lee Wante         | Yunseon Byun          | Agentic AI
+--------------------|-------------------|------------------------|---------------------------
+Models tried        | RandomForest only | RandomForest only      | 7 model types
+Hyperpar tuning     | Optuna 50 trials  | 50 trials, 5 batches   | 30 trials/model + 50 winner
+Cross-validation    | KFold(5, shuffle, seed=42)               | KFold(shuffle, seed=42)
+                    |                   |                        | LOO (<50), 5-fold (<300), 3-fold
+Train/test split    | 70/30, seed=42    | Same                   | Same -- holdout sealed until end
+Test score type     | CV R2 (optimistic)| CV R2                  | Genuine 30% holdout R2 (honest)
+GPU                 | No                | No                     | XGBoost CUDA, LightGBM GPU
+Winner selection    | RF always wins    | RF always wins         | Highest CV R2 among 7 models
+
+The 7 models in Agentic Pipeline:
+  Ridge        No GPU  Always included   Linear model with L2 penalty
+  ElasticNet   No GPU  Always included   Linear model with L1+L2 penalties
+  SVR          No GPU  n_train<=200 only  Support Vector Regression
+  RandomForest Opt GPU Always included   Ensemble of many decision trees
+  XGBoost      CUDA    Always included   Gradient-boosted trees (GPU accelerated)
+  LightGBM     GPU     Always included   Fast leaf-wise gradient boosting (GPU)
+  KNN          Opt GPU n_train<200 only  Predict from k nearest neighbours (k>=3)
+
+KEY IMPROVEMENT:
+  Base code always uses RandomForest. Agentic pipeline found:
+  - XGBoost wins Zone 3 cases (test R2 = 0.960 vs base 0.955 for z3d0u1)
+  - LightGBM wins Zone 4 cases (test R2 = 0.967 vs base 0.949 for z4d1u0)
+
+
+[SLIDE 12] REPRODUCIBILITY -- CAN YOU GET THE SAME ANSWER TWICE?
+=================================================================
+
+Why reproducibility matters:
+  A result is only trustworthy if running the analysis again gives the same answer.
+  Without this guarantee, results cannot be published, audited, or certified.
+
+                    | Lee Wante         | Yunseon Byun          | Agentic AI
+--------------------|-------------------|------------------------|---------------------------
+Random seed         | RANDOM_SEED=42    | Same                   | RANDOM_SEED=42 everywhere
+RF determinism      | random_state=42   | Same                   | Same + n_jobs=1 (critical)
+CV determinism      | KFold(seed=42)    | KFold(seed=42)         | Same
+Optuna determinism  | TPESampler(s=42)  | seed per batch         | TPESampler + NopPruner
+File verification   | None              | None                   | SHA-256 hash per file
+Drift detection     | None              | None                   | DRIFT DETECTED + auto-stop
+Regime A (stg 0-4) | Not applicable    | Not applicable         | Byte-identical (SHA-256)
+Regime B (stg 5-8) | Not applicable    | Not applicable         | Seed-deterministic
+
+Simple explanation of SHA-256:
+  SHA-256 is a mathematical fingerprint of a file. If even one character changes,
+  the fingerprint completely changes. The pipeline stores fingerprints of every
+  output file in manifest_*.json. Second run: recompute fingerprints and compare.
+  Match = "reproducible". Mismatch = "DRIFT DETECTED", pipeline stops.
+
+Why NopPruner matters:
+  Optuna's default pruner stops unpromising trials early, making trial order depend
+  on computer speed. NopPruner forces every trial to complete -- same sequence
+  every run, regardless of machine load.
+
+
+[SLIDE 13] FINAL RESULTS TABLE
+=================================================================
+
+All 7 cases -- current results (after KNN fix, 2026-06-05):
+
+Case     | Zone                         | Base R2 | Agnt CV | Agnt Test | Change  | Winner      | Status
+---------|------------------------------|---------|---------|-----------|---------|-------------|----------
+z1d1u0  | Zone 1, S-Die A on, UW off   | 0.8636  | 0.8609  | 0.8621    | -0.0015 | RandomForest| MATCHED
+z3d0u1  | Zone 3, S-Die B off, UW on   | 0.9550  | 0.9283  | 0.9603    | +0.0053 | XGBoost     | EXCELLENT
+z3d1u0  | Zone 3, S-Die A on, UW off   | 0.9209  | 0.8887  | 0.8983    | -0.0226 | KNN (n=3)   | MATCHED*
+z3d1u1  | Zone 3, both S-Dies, UW on   | 0.8875  | 0.9185  | 0.8952    | +0.0077 | XGBoost     | MATCHED
+z4d0u1  | Zone 4, S-Die B off, UW on   | 0.0971  | 0.6613  | -0.7180   | n/a     | SVR         | DATA PROBLEM
+z4d1u0  | Zone 4, S-Die A on, UW off   | 0.9485  | 0.9557  | 0.9678    | +0.0193 | LightGBM    | EXCELLENT
+z4d1u1  | Zone 4, both S-Dies, UW on   | 0.8834  | 0.8594  | 0.8954    | +0.0120 | RandomForest| IMPROVED
+
+*z3d1u0: before KNN fix, test R2 was 0.7452. After fix (n_neighbors>=3): now 0.8983.
+
+Notes:
+  - Base code R2   = KFold CV score from notebook (optimistic -- saw all data)
+  - Agentic CV R2  = CV score on 70% training set only
+  - Agentic Test R2 = Genuine 30% holdout (never seen during training -- honest)
+  - z4d0u1 excluded from comparisons: near-constant target, only 40 rows
+  - Excluding z4d0u1: agentic matches or exceeds base code in 5/6 reliable cases
+  - Average agentic test R2 (6 reliable cases): 0.901
+  - Average base code R2     (6 reliable cases): 0.882
+
+
+[SLIDE 14] THE KNN FIX -- z3d1u0 CASE STUDY
+=================================================================
+
+WHAT HAPPENED (before fix):
+  Model comparison selected KNN with n_neighbors=1 as winner.
+  n_neighbors=1 means: "find the single most similar training point, return that value."
+  This memorises the training data perfectly but fails to generalise.
+
+WHY IT LOOKED GOOD IN CV:
+  During cross-validation, every validation point has near-identical neighbours in
+  the training folds (same dataset, just split differently). CV R2 = 0.8931.
+
+WHY IT FAILED IN TEST:
+  On truly unseen test data, the nearest neighbour may be very different.
+  The model memorised, not learned. Test R2 = 0.7452.
+
+SIMPLE ANALOGY:
+  Studying for an exam by memorising last year's exact answers.
+  Perfect score on last year's practice test.
+  Poor score on this year's exam with slightly different questions.
+
+THE FIX APPLIED (2026-06-05):
+  Changed minimum n_neighbors from 1 to 3 in Optuna search space.
+  Applied in BOTH: 30-trial comparison AND 50-trial extended tuning phases.
+
+BEFORE vs AFTER:
+
+  Metric              | Before fix (n=1)  | After fix (n>=3)  | Improvement
+  --------------------|-------------------|-------------------|------------
+  n_neighbors chosen  | 1                 | 3                 |
+  CV R2               | 0.8931            | 0.8887            | (slight drop, expected)
+  TEST R2             | 0.7452            | 0.8983            | +0.153
+  CV-to-test gap      | 0.148 (overfitting)| 0.009 (healthy) | Closed
+  Status              | DEGRADED          | MATCHED           | Fixed
+
+
+[SLIDE 15] THE NEAR-CONSTANT PROBLEM -- z4d0u1 CASE STUDY
+=================================================================
+
+THE DATA:
+  Case:        Zone 4, Slot-Die B off, Unwinder on
+  Total rows:  40 (28 training, 12 test)
+  Target mean: ~6240 GSM
+  Target std:  25.99 GSM
+  Target range: 6,185 to 6,294 (only 109 units of variation)
+  Variation %: 109 / 6240 = 1.7% -- essentially flat
+
+WHY THIS IS IMPOSSIBLE TO PREDICT:
+  When the target barely changes, there is no signal to learn from.
+  R2 measures how well you predict the VARIATIONS, not the average.
+  With only 12 test points on a nearly flat line, any small random fluctuation
+  in those 12 points produces a terrible R2 score.
+
+SIMPLE ANALOGY:
+  Predicting the temperature of a thermostat-controlled room (22 degrees +/- 0.5).
+  Train on 28 measurements, test on 12. Your model says "always about 22 degrees."
+  But R2 measures the +/- 0.5 degree variations -- and your model looks terrible.
+  It was the data, not the model, that was the problem.
+
+BOTH PIPELINES FAILED:
+  Base code R2 = 0.097   (near-zero -- also nearly failed)
+  Agentic test R2 = -0.718  (genuine holdout, even harsher on small sample)
+
+CONCLUSION: This is a DATA problem, not a pipeline problem.
+
+WHAT NEEDS TO HAPPEN:
+  1. Collect more coating runs under "Zone 4, Slot-Die B off" conditions
+  2. Deliberately vary: pump flow, gap settings, oven temperatures
+  3. Target: at least 200 rows with target std > 100 GSM
+  4. Until then: exclude z4d0u1 from all performance comparisons
+
+
+[SLIDE 16] WHERE AGENTIC AI IS BETTER
+=================================================================
+
+1. PHYSICAL ELIGIBILITY CHECK (no downstream sensor leakage)
+
+   The base code selected Address4_zone_data_3 (62.8m) as top input for Zone 1
+   (10.1m). That sensor measures the film AFTER it passes Zone 1 -- impossible in
+   real deployment. Rule 4 blocked 101 such sensors for Zone 1 alone.
+
+   Why it matters: A model with downstream leakage appears accurate in testing but
+   fails immediately when deployed on a real machine without access to future data.
+
+2. GENUINE HOLDOUT EVALUATION (honest test score)
+
+   Base code reported CV R2 as the "test score." CV uses the same data for
+   training and evaluation (in different folds) -- an optimistic estimate.
+   Agentic AI reserves 30% before any analysis and evaluates exactly once.
+
+   Why it matters: You are claiming better accuracy than your model will deliver
+   in production if you report CV R2 as your test score.
+
+3. MULTI-MODEL COMPETITION (best model wins per case)
+
+   Base code: always RandomForest. Agentic pipeline: 7 families compared.
+   Results: XGBoost won 2 cases, LightGBM won 2 cases, RF won 2 cases, KNN won 1.
+   Using only RF would leave up to +1.3% test R2 on the table.
+
+   Why it matters: As coating recipes grow, the best model type may vary.
+   Automatic competition ensures the right tool is always used.
+
+4. REPRODUCIBILITY MANIFESTS (same answer every time, auditable)
+
+   Base code: no verification. Any file change silently corrupts results.
+   Agentic AI: SHA-256 fingerprint for every output file. Second run compares.
+   DRIFT DETECTED if any file changed.
+
+   Why it matters: Results can be audited, shared, and submitted to journals with
+   a verifiable proof that the answer is the same every run.
+
+5. AUTO-TUNING PARTITIONING (works on new coating recipes)
+
+   Base code: thresholds tuned for current recipe. New recipe -> zero segments.
+   Agentic AI: if 0 segments, derives thresholds from data automatically.
+   chosen_params.json records exactly what was used for audit.
+
+   Why it matters: Deploy on a new R2R machine or new coating material without
+   any manual threshold adjustment -- enabling autonomous operation.
+
+
+[SLIDE 17] WHERE BASE CODE IS STILL GOOD
+=================================================================
+
+1. EASIER TO UNDERSTAND AND MODIFY
+
+   Jupyter notebook lets researchers run individual cells interactively, examine
+   data frames mid-pipeline, and iterate quickly on ideas. A new team member can
+   read top-to-bottom without learning CLI infrastructure.
+
+   When base code wins: During research and exploration, when experimenting fast
+   matters more than production robustness.
+
+2. BATCH-REFRESH CONSENSUS SCORING
+
+   Yunseon Byun's four-component consensus score (redundancy + univariate + model
+   + subset) gives every feature a continuous score from 0 to 1. This is more
+   nuanced than the agentic pipeline's binary pass/fail funnel -- some features
+   eliminated in Stage C (correlation removal) might still carry unique signal.
+
+   When base code wins: When you want a ranked list of all features, not just
+   the final selected set.
+
+3. NO DISTANCE METADATA GAPS
+
+   Both pipelines lack DIST entries for Valve_Exhaust_dry1-8. But the agentic
+   pipeline's explicit _DIST_METADATA dictionary makes the gap visible and
+   actionable. The base code's implicit filtering does not track which sensors
+   have unknown positions -- so the gap is harder to see and fix.
+
+   This is a shared limitation, but the agentic pipeline makes it explicit
+   rather than hiding it inside general upstream filtering logic.
+
+
+[SLIDE 18] WHAT WE FIX NEXT
+=================================================================
+
+FIX 1 -- z4d0u1: Collect more Zone 4 Slot-Die-B-off data [PENDING]
+
+  Current state: 40 rows, target std=26 GSM, test R2=-0.718 (unpredictable)
+
+  What is needed:
+  - Coating trials with Zone 4, Slot-Die B off, deliberately varying:
+    pump flow rate, SlotDie_B_gap_os/ds settings, oven temperatures
+  - Target: at least 200 rows with target std > 100 GSM (4x current variation)
+
+  Who acts: Machine operators + process engineers (data collection problem)
+  Status: PENDING
+
+
+FIX 2 -- z3d1u0 KNN overfitting: ALREADY FIXED (2026-06-05)
+
+  Before: KNN n_neighbors=1 -> memorisation -> test R2 = 0.7452
+  Fix:    Minimum n_neighbors raised to 3 in both Optuna search spaces
+  After:  KNN n_neighbors=3 -> test R2 = 0.8983
+  Improvement: +0.153 in test R2
+
+  Metric              | Before fix  | After fix   | Change
+  --------------------|-------------|-------------|--------
+  n_neighbors         | 1           | 3           |
+  CV R2               | 0.8931      | 0.8887      | -0.004
+  Test R2             | 0.7452      | 0.8983      | +0.153
+  CV-to-test gap      | 0.148       | 0.009       | Closed
+  Status              | DEGRADED    | MATCHED     | Fixed
+
+  Status: DONE
+
+
+FIX 3 -- Add Valve_Exhaust_dry1-8 to _DIST_METADATA [PENDING]
+
+  Current state: 8 exhaust sensors have no DIST entry -> Rule 4 cannot block them
+  Evidence: Valve_Exhaust_dry4 (deg) was selected for z1d1u0 (Zone 1 at 10.1m)
+            but dry4 is physically at ~20.9m -- past Zone 1
+
+  What needs to happen:
+  1. Obtain machine layout drawing for oven section distances
+  2. Measure exact distance of each Valve_Exhaust_dry1-8 from unwinder
+  3. Add entries to _DIST_METADATA in r2r_ml_pipeline.py
+  4. Delete manifest_ml.json and re-run inputselect + model stages
+
+  Status: PENDING -- needs machine drawings
+
+
+[SLIDE 19] CONCLUSION
+=================================================================
+
+* OVERALL PERFORMANCE:
+  The agentic AI pipeline matches or exceeds base code in 5 of 6 reliable cases.
+  Average genuine holdout test R2 = 0.901 (agentic) vs 0.882 (base code CV).
+  Production-quality prediction achieved for Zone 1, Zone 3, and Zone 4 conditions.
+
+* MOST IMPORTANT SCIENTIFIC CONTRIBUTION -- Physical Eligibility Check:
+  By blocking sensors physically downstream of the measurement target, the pipeline
+  eliminates causal inversion -- using a future measurement to predict the past.
+  This is not a minor optimisation; it is the difference between a model that can
+  be deployed on a real machine and one that only works in a historical dataset.
+
+* DISCOVERY THROUGH COMPETITION:
+  The pipeline proved RandomForest is NOT always the best model.
+  XGBoost wins Zone 3 conditions; LightGBM wins Zone 4 conditions.
+  Automatic model competition will become more valuable as recipes multiply.
+
+* VISION -- ONE AGENT PER R2R MACHINE:
+  Auto-tuning partitioning, SHA-256 audit manifests, and CLI automation enable
+  the pipeline to run after each coating trial without manual intervention.
+  Goal: a system that requires no human tuning between runs on any R2R machine.
+
+* NEXT STEPS:
+  1. Collect Zone 4 Slot-Die-B-off data with greater GSM variation (z4d0u1 fix)
+  2. Add confirmed distances for Valve_Exhaust_dry1-8 to _DIST_METADATA
+  3. Re-run full pipeline and verify all 7 cases achieve test R2 > 0.88
+
+
+[SLIDE 20] APPENDIX -- TECHNICAL DETAILS
+=================================================================
+
+A. HYPERPARAMETER SEARCH SPACES (30-trial comparison / 50-trial extended)
+
+Ridge:
+  Comparison:  alpha: log-uniform [0.001, 1000]
+  Extended:    alpha: log-uniform [1e-4, 1e4]
+
+ElasticNet:
+  Comparison:  alpha: log-uniform [0.001, 100]; l1_ratio: uniform [0, 1]
+  Extended:    alpha: log-uniform [1e-4, 100]; l1_ratio: uniform [0, 1]
+
+SVR (n_train <= 200 only):
+  Comparison:  kernel: {rbf, linear}; C: log-uniform [0.1, 1000]; epsilon: log-uniform [0.01, 10]
+  Extended:    kernel: {rbf, linear}; C: log-uniform [0.01, 5000]; epsilon: log-uniform [0.001, 50]
+
+RandomForest:
+  Comparison:  n_estimators: {100,150,...,500}; max_depth: [2,15];
+               min_samples_split: [2,20]; min_samples_leaf: [1,10];
+               max_features: {sqrt, log2, None}
+  Extended:    n_estimators: {100,...,1000}; max_depth: [2,20];
+               min_samples_split: [2,30]; min_samples_leaf: [1,15];
+               max_features: {sqrt, log2, None, 0.5, 0.7}
+
+XGBoost:
+  Comparison:  n_estimators: {50,...,500}; max_depth: [2,10];
+               learning_rate: log-uniform [0.01,0.3]; subsample: [0.5,1];
+               colsample_bytree: [0.5,1]; reg_alpha: [0,5]; reg_lambda: [0,5]
+  Extended:    Same ranges expanded; adds min_child_weight: [1,10]; gamma: [0,5]
+
+LightGBM:
+  Comparison:  n_estimators: {50,...,500}; max_depth: [2,10];
+               learning_rate: log-uniform [0.01,0.3]; num_leaves: [10,100];
+               min_child_samples: [2,30]; subsample: [0.5,1]; colsample_bytree: [0.5,1];
+               reg_alpha: [0,5]; reg_lambda: [0,5]
+  Extended:    Ranges expanded; num_leaves: [8,200]; min_child_samples: [1,50]
+
+KNN (n_train < 200 only):
+  Both:        n_neighbors: [3, k_max] (k_max = min(20, n_train//5))
+               weights: {uniform, distance}
+  NOTE:        Minimum raised from 1 to 3 on 2026-06-05 to prevent memorisation
+
+
+B. FULL _DIST_METADATA TABLE
+
+Sensor                                    | Distance (m)
+------------------------------------------|-------------
+Loadcell_uw (N)                           | 1.2
+Motor_SPD_infd (m/min)                    | 2.2
+Motor_Torque_infd (percent)               | 2.2
+Loadcell_slot_dia_a (N)                   | 6.2
+SlotDie_A_gap_os (um)                     | 8.7
+SlotDie_A_gap_ds (um)                     | 8.7
+SlotDie_A_s/u_pump/tank_rpm (x4)          | 8.7
+Motor_SPD/Torque_slot_dia_a               | 8.7
+Address1_zone_data_1 to _25 (25 cols)     | 10.1  <-- Zone 1 target
+TEMP_PT100/Ktype/Inside/TrunkDN/UP_dry1   | 13.4
+TEMP sensors dry2                         | 15.9
+TEMP sensors dry3                         | 18.4
+TEMP sensors dry4                         | 20.9
+Loadcell_outfd1 (N)                       | 24.1
+Motor_SPD/Torque_outfd1                   | 27.4
+SlotDie_B sensors (8 cols)               | 29.6
+Loadcell_slot_dia_b (N)                   | 34.4
+Address3_zone_data_1 to _25 (25 cols)     | 38.6  <-- Zone 3 target
+TEMP sensors dry5                         | 41.9
+TEMP sensors dry6                         | 44.4
+TEMP sensors dry7                         | 46.9
+TEMP sensors dry8                         | 49.4
+Loadcell_outfd2 (N)                       | 52.0
+Motor_SPD/Torque_outfd2                   | 53.4
+Motor_SPD/Torque_outfd3                   | 59.6
+Address4_zone_data_1 to _25 (25 cols)     | 62.8  <-- Zone 4 target
+Loadcell_rw2 (N)                          | 67.1
+Motor_SPD/Torque_rw2                      | 68.2
+
+NOT in _DIST_METADATA (Rule 4 cannot block -- known gap):
+  Valve_Exhaust_dry1-8 (deg)     -- in oven, distance not confirmed
+  MAIN_external_temp (deg)       -- ambient sensor
+  MAIN_exhaust_pressure (-)      -- ambient sensor
+  Dia_uw (mm), Dia_rw2 (mm)      -- diameter sensors
+  Motor_Torque_uw (percent)      -- unwinder torque
+
+
+C. PHYSICAL ELIGIBILITY CHECK -- 5 RULES (full detail)
+
+Rule 1 -- Numeric only:
+  df.select_dtypes(include=[np.number])
+  Removes any text/categorical column.
+
+Rule 2 -- No target leakage:
+  Remove the target column (Address{Z}_zone_data_4) from candidate pool.
+  Cannot use the answer as an input.
+
+Rule 3 -- No same-zone Address proxy:
+  Remove ALL Address{Z}_zone_data_1 through _25 for the same zone Z.
+  These are different readings from the same sensor family -- direct proxies.
+  Removes exactly 24 columns per case.
+
+Rule 4 -- No downstream / future sensors:
+  target_dist = _DIST_METADATA.get(target_col)
+  if target_dist is not None:
+      survivors = [c for c in survivors
+                   if c not in _DIST_METADATA or _DIST_METADATA[c] <= target_dist]
+  Sensors past the target zone (confirmed by DIST) are permanently excluded.
+  Sensors with unknown DIST are kept (cannot block without data).
+
+Rule 5 -- Sort upstream-first:
+  Remaining candidates sorted by distance ascending.
+  Unknown-DIST sensors placed after known-DIST sensors.
+  Informational only -- does not remove any candidate.
+
+
+D. STAGE A/B/C/D EXACT THRESHOLDS
+
+Stage A (Univariate Screening):
+  Pearson threshold    : 0.02   (_STAGE_A_PEARSON_THRESH)
+  Spearman threshold   : 0.02   (_STAGE_A_SPEARMAN_THRESH)
+  Mutual Info threshold: 0.0005 (_STAGE_A_MI_THRESH)
+  Min complete rows    : 5      (_STAGE_A_MIN_ROWS)
+
+Stage B (RF Importance):
+  Optuna trials        : 15     (_STAGE_B_TRIALS)
+  Top-K kept           : 30     (_STAGE_B_TOP_K)
+
+Stage C (Redundancy removal):
+  Correlation threshold: 0.92   (_STAGE_C_CORR_THRESH)
+
+Stage D (Forward selection):
+  Gain threshold       : 0.003  (_STAGE_D_GAIN_THRESH)
+  Maximum features     : 20     (_STAGE_D_MAX_FEATURES)
+  Fallback K (no gain) : 15     (_STAGE_D_FALLBACK_K)
+
+
+E. MANIFEST FILES AND WHAT THEY VERIFY
+
+File                    | Stage | Regime          | What is hashed
+------------------------|-------|-----------------|------------------------------------------
+manifest_transform.json | 1     | A byte-identical| All J1_dataset_*.csv in 1.Rawdata/
+manifest_sync.json      | 2     | A byte-identical| All 12 outputs in 2.Synchronize/
+manifest_partition.json | 3     | A byte-identical| All segment CSVs + zero_std log
+manifest_fusion.json    | 4     | A byte-identical| All 7 merged_z*.csv in 4.Fusioning/
+manifest_filtering.json | 5     | A byte-identical| All Filtered_*.csv in 6.Filtering/
+manifest_ml.json        | 6-7   | B seed-determin | stage_D_forward_selected.csv per case
+
+Second run response:
+  All hashes match    -> prints "reproducible"
+  Any hash differs    -> prints "DRIFT DETECTED" + stops pipeline

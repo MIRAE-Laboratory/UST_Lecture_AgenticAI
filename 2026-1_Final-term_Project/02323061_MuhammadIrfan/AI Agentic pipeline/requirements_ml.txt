@@ -1,0 +1,20 @@
+# requirements_ml.txt — pinned versions for r2r_ml_pipeline.py (stages 5-8)
+#
+# Install AFTER requirements.txt (which pins numpy==1.26.4 and pandas==2.2.3).
+# These version pins were recorded from the environment where the frozen module
+# was developed and verified. Wrong versions may produce different Optuna trial
+# outcomes or different SHAP values even with seed=42.
+#
+# Usage:
+#   pip install -r requirements.txt
+#   pip install -r requirements_ml.txt
+#
+# Note: xgboost and lightgbm GPU support requires a CUDA-capable GPU and
+# matching CUDA drivers. The pipeline auto-detects and falls back to CPU.
+
+scikit-learn==1.6.1
+scipy==1.15.2
+optuna==4.5.0
+xgboost==3.0.2
+lightgbm==4.6.0
+shap==0.48.0

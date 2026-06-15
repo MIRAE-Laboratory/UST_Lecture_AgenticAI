@@ -1,0 +1,6 @@
+# R2R Pipeline — pinned dependencies (stages 0-4)
+# Identical numeric output requires matching these exact versions.
+# Run: pip install -r requirements.txt
+# before running the pipeline on any machine.
+numpy==1.26.4
+pandas==2.2.3

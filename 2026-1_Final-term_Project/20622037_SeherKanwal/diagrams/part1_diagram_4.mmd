@@ -1,0 +1,10 @@
+flowchart TD
+    START(["User selects a Learning Path"])
+    START --> LESSON["Lesson card expands\n(concept + description)"]
+    LESSON --> MASTER["Master this Concept\n→ marks complete\n→ updates progress score"]
+    LESSON --> QUIZ["Quiz Me\n→ AI generates MCQ"]
+    QUIZ --> ANSWER["User selects answer\n+ submits"]
+    ANSWER --> FEEDBACK["AI explains answer\n+ opens follow-up chat"]
+    FEEDBACK --> LESSON
+    MASTER --> PROGRESS["Progress tracked\nacross all sessions"]
+    PROGRESS --> UNLOCK["5+ concepts mastered\n→ Advanced Roleplay unlocked"]

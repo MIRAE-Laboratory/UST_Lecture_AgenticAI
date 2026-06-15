@@ -1,0 +1,16 @@
+{"ts": "2026-06-11 15:55:15", "type": "meeting_started", "topic": "anisotropic cmm", "style": "Rigorous & Unpredictable"}
+{"ts": "2026-06-11 15:57:00", "type": "supervisor_question", "turn": 1, "preview": "Why does the Jacobian matrix in the mathematical formulation (equation 3) enable"}
+{"ts": "2026-06-11 16:02:24", "type": "meeting_ended", "turns_completed": 3, "topic": "anisotropic cmm"}
+{"ts": "2026-06-11 16:07:12", "type": "report_generated", "topic": "", "gaps": 1}
+{"ts": "2026-06-11 16:15:44", "type": "meeting_started", "topic": "a paper about triple-negative complementary metamaterial", "style": "Rigorous & Unpredictable"}
+{"ts": "2026-06-11 16:24:56", "type": "meeting_ended", "turns_completed": 0, "topic": "a paper about triple-negative complementary metamaterial"}
+{"ts": "2026-06-11 16:26:44", "type": "meeting_started", "topic": "I want to discuss a paper about anisotropic complementary metamaterial", "style": "Rigorous & Unpredictable"}
+{"ts": "2026-06-11 16:37:11", "type": "supervisor_question", "turn": 1, "preview": "What would happen if your assumption is wrong?"}
+{"ts": "2026-06-11 16:40:48", "type": "meeting_started", "topic": "anisotropic complementary metamaterial for cancelling out aberrating layers", "style": "Rigorous & Unpredictable"}
+{"ts": "2026-06-11 16:49:53", "type": "meeting_started", "topic": "anisotropic complementary metamaterial", "style": "Rigorous & Unpredictable"}
+{"ts": "2026-06-11 16:51:59", "type": "supervisor_question", "turn": 1, "preview": "Why is the anisotropic and negative density achieved by varying membrane thickne"}
+{"ts": "2026-06-11 16:55:48", "type": "meeting_ended", "turns_completed": 3, "topic": "anisotropic complementary metamaterial"}
+{"ts": "2026-06-11 16:58:02", "type": "report_generated", "topic": "", "gaps": 2}
+{"ts": "2026-06-12 17:43:19", "type": "meeting_started", "topic": "my reading regarding anisotropic CMM for aberrating layer", "style": "Rigorous & Unpredictable"}
+{"ts": "2026-06-12 17:45:05", "type": "supervisor_question", "turn": 1, "preview": "Why is the anisotropic density and compressibility in the CMM specifically desig"}
+{"ts": "2026-06-12 17:45:11", "type": "meeting_ended", "turns_completed": 1, "topic": "my reading regarding anisotropic CMM for aberrating layer"}

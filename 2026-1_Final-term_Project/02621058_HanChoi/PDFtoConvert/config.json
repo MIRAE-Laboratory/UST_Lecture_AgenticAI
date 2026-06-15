@@ -1,0 +1,8 @@
+{
+    "root_folder": "C:/Users/andre/내 드라이브(andrew3870@ust.ac.kr)/UST_GoogleDrive/AgenticAIClass/PDFtoConvert",
+    "global_pdf_selector": "HoffmannCFD.pdf",
+    "llm_provider": "Gemini",
+    "gemini_key_type": "Paid Plan Key",
+    "llm_model": "gemini-3.1-flash-lite",
+    "app_theme": "System"
+}

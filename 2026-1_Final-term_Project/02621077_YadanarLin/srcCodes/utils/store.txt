@@ -1,0 +1,14 @@
+/**
+ * Simple in-memory global store to hold document texts and their embeddings.
+ * In a production environment, this would be replaced by a dedicated Vector Database
+ * like Pinecone, Milvus, or pgvector.
+ * 
+ * Structure:
+ * Key: documentId (string)
+ * Value: { 
+ *   text: string, // the raw text of the document
+ *   chunks: [{ text: string, embedding: number[] }] // vectorized chunks
+ * }
+ */
+global.documentStore = global.documentStore || {};
+export const store = global.documentStore;

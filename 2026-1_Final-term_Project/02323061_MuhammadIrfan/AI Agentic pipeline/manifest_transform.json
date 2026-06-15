@@ -1,0 +1,24 @@
+{
+  "pipeline_version": "1.0.4",
+  "stage": "transform",
+  "output_dir": "1.Rawdata",
+  "n_files": 4,
+  "files": {
+    "J1_dataset_0218-plc.csv": {
+      "sha256": "89d4ec316ac439ad2ed05c22aea0f7c9a25a51f8a01244fe257c0e190b92101f",
+      "lines": 7201
+    },
+    "J1_dataset_0219-plc.csv": {
+      "sha256": "d09303e1983c2666197d7379b01293f269960344e6057f046353c816c56378ea",
+      "lines": 10800
+    },
+    "J1_dataset_0220-plc.csv": {
+      "sha256": "763a26e90e6ef2ae7696e64b9d793de4f21a14f35b03901efd2a9e327cfdf822",
+      "lines": 10801
+    },
+    "J1_dataset_0305-plc.csv": {
+      "sha256": "f3f68c057f5188255fd34d185eb2190d47c9690ba25492afdf83d02294de292f",
+      "lines": 5101
+    }
+  }
+}

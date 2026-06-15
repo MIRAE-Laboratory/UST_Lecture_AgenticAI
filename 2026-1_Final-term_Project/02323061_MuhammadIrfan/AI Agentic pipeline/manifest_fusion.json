@@ -1,0 +1,36 @@
+{
+  "pipeline_version": "1.0.4",
+  "stage": "fusion",
+  "output_dir": "4.Fusioning",
+  "n_files": 7,
+  "files": {
+    "merged_z1d1u0.csv": {
+      "sha256": "ace07f7e1f70996f61aa091653839d873ba2e333f006280b7f82532cd3292b88",
+      "lines": 5757
+    },
+    "merged_z3d0u1.csv": {
+      "sha256": "e78c3484fa693272744b17ae4b98cac0e7222ae93db3aa641c0bc12798cae7a4",
+      "lines": 160
+    },
+    "merged_z3d1u0.csv": {
+      "sha256": "bffb7c0035960e00f2e83df31d6ce6c6d5b0bf69e314ec1b6654074d4100217d",
+      "lines": 279
+    },
+    "merged_z3d1u1.csv": {
+      "sha256": "b8df99e5b23718dbfbad519b35b4b885b23e95d788c69016c7ea477a73bde266",
+      "lines": 5338
+    },
+    "merged_z4d0u1.csv": {
+      "sha256": "66a97cd190f16db5afc269732c7bc8369c624e2eee025e61c7bcc11dd7bfd821",
+      "lines": 41
+    },
+    "merged_z4d1u0.csv": {
+      "sha256": "442c553c44a527c8f74a70d12dbe036e96212de49116bf612499195ab1197736",
+      "lines": 576
+    },
+    "merged_z4d1u1.csv": {
+      "sha256": "6fc34274a6852a228b7bcaf07f304681765bfb021034bcc195b349e9099cf1e6",
+      "lines": 12075
+    }
+  }
+}

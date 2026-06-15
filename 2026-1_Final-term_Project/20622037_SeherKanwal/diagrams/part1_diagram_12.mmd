@@ -1,0 +1,15 @@
+graph LR
+    subgraph Persisted["💾 Persisted Across Sessions"]
+        US["user_state.json\n───────────────\nuser_name\napp_mode (Beginner/Advanced)\nrisk_profile\nlearning_progress scores\ncompleted_lessons list\nbehavior_history log\nlast_daily_briefing date"]
+        PF["portfolio.json\n───────────────\nList of holdings:\n• ticker symbol\n• quantity\n• average buy price\n• date added"]
+    end
+
+    subgraph Session["🔁 Session Only (resets on refresh)"]
+        BAL["Virtual cash balance\n($10,000 default)"]
+        HOLD["Virtual holdings\n{ticker → qty}"]
+        TCHAT["Personal Tutor\nchat history"]
+        RPHIST["Roleplay\nconversation history"]
+        MCHAT["Mentor sidebar\nchat history"]
+        CONCEPTS["Concepts checklist\nselections"]
+        QUIZ["Active quiz state\nper lesson"]
+    end

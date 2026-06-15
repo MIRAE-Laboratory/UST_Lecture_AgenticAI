@@ -1,0 +1,67 @@
+flowchart TD
+    USER(["User asks a question"])
+
+    subgraph MCP_LAYER ["Layer 1 — Live Data Tools"]
+        MCP["Smart Intent Detector
+Reads the question"]
+        YF["Yahoo Finance API
+Live market data"]
+        MCP --> YF
+        YF -->|"Prices, news,
+portfolio, overview"| CTX["Live Market Context
+Ready to use"]
+    end
+
+    subgraph RAG_LAYER ["Layer 2 — Knowledge Search"]
+        RAG["Search Knowledge Base
+Find relevant document sections"]
+        RAGDB[("Uploaded Documents
+Stored as searchable sections")]
+        RAG --> RAGDB
+        RAGDB -->|"Top 4 most relevant
+document sections"| DOCCTX["Document Context
+Ready to use"]
+    end
+
+    subgraph AGENT_LAYER ["Layer 3 — AI Response Pipeline"]
+        BASE["AI Writer
+Generates a first-draft answer
+using all context"]
+        CRITIC["AI Safety Checker
+Checks the draft against
+all active safety rules"]
+        REFINE["AI Editor
+Corrects and improves
+the answer for the user"]
+        CRITDB[("Safety Rules
+Loaded fresh every time")]
+        CRITIC --> CRITDB
+        CRITDB --> CRITIC
+        BASE --> CRITIC
+        CRITIC --> REFINE
+    end
+
+    subgraph HITL_LAYER ["Layer 4 — Human Oversight"]
+        ALERTDB[("Flagged Responses
+Stored for review")]
+        ADMIN["Admin Risk Monitor
+Human reviews flagged answers
+and updates safety rules"]
+        ALERTDB --> ADMIN
+        ADMIN -->|"Updated safety rules"| CRITDB
+    end
+
+    subgraph MEMORY_LAYER ["Layer 5 — Memory"]
+        MEMDB[("Saved Data
+Chat history
+User behaviour log
+User profile & progress")]
+    end
+
+    USER --> MCP_LAYER
+    USER --> RAG_LAYER
+    CTX & DOCCTX --> BASE
+    CRITIC -->|"Risky or Alarming"| ALERTDB
+    REFINE --> MEMDB
+    REFINE --> FINAL(["User sees a verified,
+grounded, personalised answer"])

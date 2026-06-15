@@ -1,0 +1,18 @@
+stateDiagram-v2
+    [*] --> ScenarioSelection
+    ScenarioSelection --> SceneIntro: Scenario confirmed + Start
+    SceneIntro: AI narrates the opening scene
+    SceneIntro --> DecisionLoop
+
+    state DecisionLoop {
+        [*] --> UserDecision
+        UserDecision: User types their action
+        UserDecision --> AIReaction
+        AIReaction: AI narrates consequence\nChallenges reasoning\nAsks follow-up
+        AIReaction --> UserDecision
+    }
+
+    DecisionLoop --> FeedbackReport: User ends session
+    FeedbackReport: Behavioral analysis\nStrengths + Risk-blindness\nEmotional Discipline score /10
+    FeedbackReport --> [*]
+    DecisionLoop --> ScenarioSelection: Reset scene

@@ -1,0 +1,124 @@
+{
+  "pipeline_version": "1.0.4",
+  "stage": "partition",
+  "output_dir": "3.Partitioning",
+  "n_files": 29,
+  "files": {
+    "0218_z1d1u0_1.csv": {
+      "sha256": "e45e8c803ee238a3104747d764dc7213f2e268b2641742fd983cc7258ba165af",
+      "lines": 581
+    },
+    "0218_z1d1u0_2.csv": {
+      "sha256": "94421fd4a2d12c8db2b064fc0431e4fbcdcd70df9c61ac0181f2e1cfb877f35c",
+      "lines": 241
+    },
+    "0218_z1d1u0_3.csv": {
+      "sha256": "9ee09978048e55615b528ac611ad6f42f599dd0b8f0e539f0ab4f334dd6ca096",
+      "lines": 321
+    },
+    "0218_z3d0u1_7.csv": {
+      "sha256": "8f4dec7587d228017bbc0c7f5e213109fda8db66ccfeb0bc6b576929af5308bc",
+      "lines": 101
+    },
+    "0218_z3d0u1_8.csv": {
+      "sha256": "272b640339c11a19cfa530acc0858ddd0c9fb64632d8b8ac49ae87a9936c5429",
+      "lines": 61
+    },
+    "0218_z3d1u0_1.csv": {
+      "sha256": "1c075d5c195bf9a4d56c968dd256fafaf5175e62a2d8a357588dbb28ae8485af",
+      "lines": 201
+    },
+    "0218_z3d1u0_3.csv": {
+      "sha256": "1f97864c0701bfc33727abd972cbba3153ffa2a6b733b4e64438ba18a3e74f51",
+      "lines": 41
+    },
+    "0218_z3d1u0_5.csv": {
+      "sha256": "b3eaedb9c1f0aea72f4c9d5c2c72d7a3e212384b1a093f6cca07335866341592",
+      "lines": 41
+    },
+    "0218_z3d1u1_2.csv": {
+      "sha256": "465723c648cc89bede9e9a73cd2e71a457ee1444a4e012e07736aa4265417f35",
+      "lines": 381
+    },
+    "0218_z3d1u1_4.csv": {
+      "sha256": "25e50d837abf7e1d48e407651a0038842612b3e0c6757718dc699f5cbfc7b6d8",
+      "lines": 181
+    },
+    "0218_z3d1u1_6.csv": {
+      "sha256": "1d39919118a70463c527c49ee00adf21851eca5e14b03e053bbd5be60b1b3641",
+      "lines": 161
+    },
+    "0218_z4d0u1_8.csv": {
+      "sha256": "66a97cd190f16db5afc269732c7bc8369c624e2eee025e61c7bcc11dd7bfd821",
+      "lines": 41
+    },
+    "0218_z4d1u0_1.csv": {
+      "sha256": "1c075d5c195bf9a4d56c968dd256fafaf5175e62a2d8a357588dbb28ae8485af",
+      "lines": 201
+    },
+    "0218_z4d1u0_3.csv": {
+      "sha256": "927d3feb079ba3ea2198c5b2cbfb8734ced0863a8960d87bc13492da459003a6",
+      "lines": 61
+    },
+    "0218_z4d1u0_5.csv": {
+      "sha256": "221491a868295e75ffe83a2d63659d1eaa81a5809e322c26791b28465924b28e",
+      "lines": 41
+    },
+    "0218_z4d1u0_6.csv": {
+      "sha256": "17db1558daf5e0ff22c639e5c8ef64854dab11a8221fa2532a594b8bda254603",
+      "lines": 61
+    },
+    "0218_z4d1u1_2.csv": {
+      "sha256": "465723c648cc89bede9e9a73cd2e71a457ee1444a4e012e07736aa4265417f35",
+      "lines": 381
+    },
+    "0218_z4d1u1_4.csv": {
+      "sha256": "25e50d837abf7e1d48e407651a0038842612b3e0c6757718dc699f5cbfc7b6d8",
+      "lines": 181
+    },
+    "0218_z4d1u1_7.csv": {
+      "sha256": "1d39919118a70463c527c49ee00adf21851eca5e14b03e053bbd5be60b1b3641",
+      "lines": 161
+    },
+    "0219_z4d1u0_2.csv": {
+      "sha256": "f8a74a8f4399e20db0f1b603fb97387bec931399fedc8921ce8a1831a3963876",
+      "lines": 81
+    },
+    "0219_z4d1u1_1.csv": {
+      "sha256": "37a3a904ae0b799d9323d6f72bd33f498719d59508e0b8e777bdb0012d999cba",
+      "lines": 601
+    },
+    "0219_z4d1u1_3.csv": {
+      "sha256": "da11d88af4d8f706287697d68d892a17e4134fd7dd4be28f13abc119da14ad3c",
+      "lines": 3661
+    },
+    "0219_z4d1u1_4.csv": {
+      "sha256": "780fdb34f7d6eb7cae9a50d451e1e0d3498e54652d18d7c4e62a9f912d1d0e5a",
+      "lines": 1261
+    },
+    "0220_z4d1u0_1.csv": {
+      "sha256": "4935eee31fcf1aeb5e70d47733594eb232cd9411bd0c1b4b976de81c24869426",
+      "lines": 141
+    },
+    "0220_z4d1u1_2.csv": {
+      "sha256": "7940b596d2f86bc2faead713018a2e339b1ba007d863cb7cfb594ab892772b00",
+      "lines": 5841
+    },
+    "0305_z1d1u0_1.csv": {
+      "sha256": "40bffb775b8c37a249ded4fe963b79f5cd2d1b43f02afd5adc29fa9195b6e0b7",
+      "lines": 1621
+    },
+    "0305_z1d1u0_2.csv": {
+      "sha256": "c6c4b0769d811bf62bbf2fb70d4080408e0d316d2e239eaab145c6df5c0e4efc",
+      "lines": 3001
+    },
+    "0305_z3d1u1_1.csv": {
+      "sha256": "3df9616366181ff9a1b4b1943199d340528360034b9101c56431b14c2880efbf",
+      "lines": 4621
+    },
+    "partition_zero_std_segments.csv": {
+      "sha256": "3407ddd0dc5cbb8e1dee0f6951b4c025ecabdf775ce2c074c2ea83af650e7f60",
+      "lines": 2
+    }
+  }
+}

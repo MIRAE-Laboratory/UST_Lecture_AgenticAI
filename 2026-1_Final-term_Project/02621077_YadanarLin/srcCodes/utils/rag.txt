@@ -1,0 +1,82 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+// Initialize Gemini API for embedding generation
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "dummy_key");
+
+/**
+ * Splits a large text document into smaller, overlapping chunks.
+ * This ensures that context isn't lost at the boundaries of the chunks.
+ * 
+ * @param {string} text - The full text of the document
+ * @param {number} chunkSize - Maximum characters per chunk
+ * @param {number} overlap - Number of characters to overlap between adjacent chunks
+ * @returns {string[]} Array of text chunks
+ */
+export function chunkText(text, chunkSize = 1500, overlap = 200) {
+  const chunks = [];
+  let i = 0;
+  while (i < text.length) {
+    chunks.push(text.slice(i, i + chunkSize));
+    i += chunkSize - overlap; // Move forward, keeping 'overlap' characters from the previous chunk
+  }
+  return chunks;
+}
+
+/**
+ * Generates vector embeddings for a given text using Gemini's embedding model.
+ * 
+ * @param {string} text - The text to vectorize
+ * @returns {Promise<number[]>} The vector embedding array
+ */
+export async function getEmbedding(text) {
+  // We use gemini-embedding-2 for fast and accurate semantic vectorization
+  const model = genAI.getGenerativeModel({ model: "gemini-embedding-2" });
+  const result = await model.embedContent(text);
+  return result.embedding.values;
+}
+
+/**
+ * Calculates the cosine similarity between two vector embeddings.
+ * A score closer to 1 means the vectors are semantically similar.
+ * 
+ * @param {number[]} vecA - First vector
+ * @param {number[]} vecB - Second vector
+ * @returns {number} Cosine similarity score [-1 to 1]
+ */
+export function cosineSimilarity(vecA, vecB) {
+  let dotProduct = 0;
+  let normA = 0;
+  let normB = 0;
+  for (let i = 0; i < vecA.length; i++) {
+    dotProduct += vecA[i] * vecB[i];
+    normA += vecA[i] * vecA[i];
+    normB += vecB[i] * vecB[i];
+  }
+  if (normA === 0 || normB === 0) return 0;
+  return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+}
+
+/**
+ * Searches the vectorized document chunks for the most relevant matches to a user query.
+ * 
+ * @param {string} query - The user's extraction query
+ * @param {Array} documentChunks - Array of objects containing { text, embedding }
+ * @param {number} topK - Number of top results to return
+ * @returns {Promise<string[]>} Array of the most relevant text chunks
+ */
+export async function searchVectorDB(query, documentChunks, topK = 3) {
+  // 1. Embed the search query
+  const queryEmbedding = await getEmbedding(query);
+  
+  // 2. Score all document chunks against the query using cosine similarity
+  const scoredChunks = documentChunks.map(chunk => ({
+    text: chunk.text,
+    score: cosineSimilarity(queryEmbedding, chunk.embedding)
+  }));
+  
+  // 3. Sort by descending score (highest similarity first)
+  scoredChunks.sort((a, b) => b.score - a.score);
+  
+  // 4. Return only the text of the top K results
+  return scoredChunks.slice(0, topK).map(c => c.text);
+}
