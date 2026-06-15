@@ -29,7 +29,7 @@
 
 ### 📂 02523033_VuThiLy
 - ⭐ **[02523033_VuThiLy.md](02523033_VuThiLy/02523033_VuThiLy.md)**
-- 📄 [architecture notes.md](02523033_VuThiLy/architecture notes.md)
+- 📄 [architecture notes.md](02523033_VuThiLy/architecture%20notes.md)
 
 ### 📂 02523035_NguyenKhacBaoMinh
 - ⭐ **[02523035_NguyenKhacBaoMinh.md](02523035_NguyenKhacBaoMinh/02523035_NguyenKhacBaoMinh.md)**
