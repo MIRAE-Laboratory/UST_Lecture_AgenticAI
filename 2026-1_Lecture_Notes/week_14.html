@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<!-- Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --text-main: #1e293b;
+    --accent: #0f4c81;
+    --card-blue: #eff6ff;
+    --border-blue: #bfdbfe;
+    --card-green: #f0fdf4;
+    --border-green: #bbf7d0;
+    --card-orange: #fff7ed;
+    --border-orange: #fed7aa;
+    --card-pink: #fdf2f8;
+    --border-pink: #fbcfe8;
+    --card-purple: #faf5ff;
+    --border-purple: #e9d5ff;
+    --card-yellow: #fefce8;
+    --border-yellow: #fef08a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    overflow: hidden; /* Hide scrollbars, use custom navigation */
+    font-size: 1.8rem;
+  }
+  .presentation {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    width: 100vw;
+  }
+  .presentation::-webkit-scrollbar { display: none; }
+  .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 60px 80px; /* Top/Bottom 60px, Left/Right 80px for margins */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-content {
+    background: var(--bg-main);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    font-size: 1rem; /* 1.5x of original */
+  }
+  .slide-title {
+    font-size: 2rem; /* 1.5x of original */
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    border-bottom: 5px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: 1rem; /* 1.5x of original */
+    color: #64748b;    
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  /* Title Slide Variations */
+  .title-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  }
+  .title-slide .slide-title { font-size: 2.5rem; border: none; margin-bottom: 1.5rem; color: var(--accent); }
+  .title-slide .slide-subtitle { font-size: 1.5rem; font-weight: 600; color: #334155; }
+  
+  /* Title Emphasis Variations */
+  .title-emphasis-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+  .title-emphasis-slide .slide-title {
+    font-size: 3rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-emphasis-slide .slide-subtitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+  
+  /* Layouts */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased min-width to prevent 4 columns on wide screens */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+  .card-header { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.4rem; }
+  .card-header .icon { font-size: 1.3rem; margin-right: 0.5rem; }
+  .card-body ul { list-style-type: none; padding-left: 0; }
+  .card-body li { margin-bottom: 0.5rem; position: relative; padding-left: 1.2rem; line-height: 1.4; font-size: 0.95rem; }
+  .card-body li::before { content: "•"; color: #94a3b8; font-weight: bold; position: absolute; left: 0; top: 0; }
+  .plain-bullets li { position: relative; padding-left: 1.2rem; list-style-type: none; }
+  .plain-bullets li::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: 0; top: 0; }
+  
+  .slide-text {
+    font-size: 1.6rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  .card-blue { background: var(--card-blue); border-color: var(--border-blue); color: #1e3a8a; }
+  .card-green { background: var(--card-green); border-color: var(--border-green); color: #14532d; }
+  .card-orange { background: var(--card-orange); border-color: var(--border-orange); color: #7c2d12; }
+  .card-pink { background: var(--card-pink); border-color: var(--border-pink); color: #831843; }
+  .card-purple { background: var(--card-purple); border-color: var(--border-purple); color: #4c1d95; }
+  .card-yellow { background: var(--card-yellow); border-color: var(--border-yellow); color: #713f12; }
+  
+  .highlight-quote {
+    background: #f8fafc;
+    border-left: 5px solid var(--accent);
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .image-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    margin: 0.5rem 0;
+  }
+  .img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .image-container {
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .slide-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .slide-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Modal Overlay */
+  .image-modal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .image-modal.active {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 9999;
+  }
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .image-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: #94a3b8;
+  }
+  .img-caption {
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .mermaid-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+  }
+  .mermaid-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .mermaid-group .mermaid-container {
+    margin: 0;
+    flex: 1;
+    min-height: auto;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Consolas', monospace;
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  .mermaid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .reference-link {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .inline-code {
+    background: #e2e8f0;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .styled-table th { background: #334155; color: white; text-align: left; padding: 1rem; }
+  .styled-table td { padding: 1rem; background: white; border-bottom: 1px solid #f1f5f9; }
+  .styled-table tr:hover td { background: #f8fafc; }
+  
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .flow-step {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #cbd5e1;
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin: 0 1rem;
+  }
+  
+  .slide-number {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .plain-bullets {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+  .plain-bullets li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Fixed Layout Elements */
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: #0f172a;
+    color: #94a3b8;
+    z-index: 2000;
+    border-bottom: 1px solid #1e293b;
+  }
+  .header-logo { color: white; margin-right: 1.5rem; letter-spacing: -0.5px; font-size: 0.75rem; }
+  .header-sep { color: #334155; margin: 0 1rem; }
+  .header-subtitle { font-size: 0.75rem; }
+
+  .side-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* 2/3 of 50px approx */
+    height: 70px; /* 2/3 of 100px approx */
+    background: rgba(30, 41, 59, 0.4);
+    border: none;
+    color: white;
+    font-size: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: background 0.2s, width 0.2s;
+    border-radius: 6px;
+  }
+  .side-nav-btn:hover { background: rgba(37, 99, 235, 0.8); width: 45px; }
+  .prev-side { left: 10px; }
+  .next-side { right: 10px; }
+
+  /* Navigation Bar (Fixed Bottom) */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    height: 50px;
+    z-index: 2000;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .nav-main-btn {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 20px;
+  }
+  .btn-nav {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover {
+    background: #1e293b;
+    color: white;
+  }
+  .page-input-wrapper {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin: 0 8px;
+    font-family: monospace;
+  }
+  .page-input {
+    background: transparent;
+    border: 1px solid #334155;
+    color: white;
+    width: 32px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    padding: 1px;
+    margin-right: 4px;
+  }
+  .section-links {
+    display: flex;
+    gap: 16px;
+    border-left: 1px solid #1e293b;
+    padding-left: 20px;
+  }
+  .nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <header class="global-header">
+    <span class="header-logo">Human in the Loop (HITL)</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">Safety, Audit, and the "Stop" Button</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+<div class="slide-content">
+<h1 class="slide-title">Human in the Loop (HITL)</h1>
+<p class="slide-subtitle">Safety, Audit, and the "Stop" Button</p>
+<div class="highlight-quote">Week 14 of Phase 4: Composition and Leadership (Weeks 13-14)</div>
+</div>
+</section>
+<section class="slide" id="slide-2">
+<div class="slide-content">
+<h2 class="slide-title">Contents</h2>
+<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 14</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+<div class="card-body"><ul><li>The autonomy spectrum — when humans must be in the loop</li><li>Three checkpoint patterns: approval, review, intervention</li><li>Designing "Stop" buttons, audit logs, and approval UX</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+<div class="card-body"><ul><li>Add a <strong>human approval gate</strong> to the Week 13 team workflow</li><li>Audit log + stop button + resume from checkpoint</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+<div class="card-body"><ul><li>Week 13 — Leadership of conflicting agents (12 responses)</li><li>Course reflection + path forward</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-3">
+<div class="slide-content">
+<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+<p class="slide-subtitle">Safety & Audit — Designing the "Stop" Button</p>
+</div>
+</section>
+<section class="slide" id="slide-4">
+<div class="slide-content">
+<h2 class="slide-title">Why <strong>Human in the Loop</strong> Now?</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🚗</span> An Everyday Story First</div>
+<div class="card-body"><ul><li>Imagine self-driving cars with NO brake pedal — would you ride in one?</li><li>Probably not. Even if the AI is 99% safe, the <strong>1% needs a human override</strong></li><li>Your AI agents are the same: at some point, <strong>somebody needs a brake pedal</strong></li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📚</span> The Story So Far in This Course</div>
+<div class="card-body"><ul><li>Week 9: agent acts via tools</li><li>Week 11: agent reflects on itself</li><li>Week 12-13: agents remember and form teams</li><li>Each addition gave more autonomy — at some point YOU stop being supervisor and start being a passenger</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The Week 13 Class Consensus</div>
+<div class="card-body"><ul><li>12 out of 12 responses agreed: humans MUST be in the loop somewhere</li><li>The real disagreement was about <strong>WHERE</strong> (Gyeongsu vs Hulk)</li><li>This week: actually build the checkpoints you argued about</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> The Practical Question</div>
+<div class="card-body"><ul><li>Make every step require approval → cost + speed explode</li><li>Remove all approval → irreversible mistakes become invisible</li><li><strong>HITL design = picking the RIGHT checkpoints, not adding all or none</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-5">
+<div class="slide-content">
+<h2 class="slide-title">The <strong>Autonomy Spectrum</strong> — Think of Driving a Car</h2>
+<div class="mermaid-container"><div class="mermaid">graph LR
+    A[🚗 Manual<br/>You drive everything<br/>every turn, every brake] --> B[👨‍🏫 In the Loop<br/>Driving instructor<br/>OKs every move] --> C[🛞 On the Loop<br/>Cruise control<br/>you watch, take over if needed] --> D[🛣️ Over the Loop<br/>Highway autopilot<br/>you check in occasionally] --> E[🤖 Full Auto<br/>Robotaxi<br/>no human in vehicle]
+
+    style A fill:#fff3cd
+    style B fill:#cce5ff
+    style C fill:#d4edda
+    style D fill:#ffe5cc
+    style E fill:#f8d7da</div></div>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> The Driving Analogy in One Line Each</div>
+<div class="card-body"><ul><li><strong>In the loop</strong> = student driver with instructor (slowest, safest)</li><li><strong>On the loop</strong> = cruise control (you're watching, ready to brake)</li><li><strong>Over the loop</strong> = you set the destination, autopilot drives (you check periodically)</li><li><strong>Full auto</strong> = robotaxi (you're a passenger, no controls)</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> The Key Insight — Mix Modes Per Action</div>
+<div class="card-body"><ul><li>Same trip can be: cruise control on highway + manual in parking lot</li><li>Your AI app: <strong>strict approval for "send email" / autopilot for "search papers"</strong></li><li>HITL isn't ONE setting for the whole app — it's a choice <strong>per action type</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-6">
+<div class="slide-content">
+<h2 class="slide-title">Where You've Already Lived on This Spectrum</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">💳</span> "In the Loop" — Bank Transfer Over $1,000</div>
+<div class="card-body"><ul><li>Bank app asks: "Confirm: send $5,000 to John Doe?"</li><li>Nothing happens until you click YES</li><li>High stakes + irreversible → approve every single one</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📺</span> "On the Loop" — Netflix Autoplay</div>
+<div class="card-body"><ul><li>Next episode starts automatically (10-sec countdown)</li><li>You can hit "Cancel" — but if you do nothing, it plays</li><li>Low stakes + reversible → default to action, give you override</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🌡️</span> "Over the Loop" — Home Thermostat</div>
+<div class="card-body"><ul><li>You set "keep room at 22°C"</li><li>System runs heating/cooling automatically all day</li><li>You only check the temperature occasionally; intervene only on weird readings</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">🤖</span> "Full Auto" — Spam Filter</div>
+<div class="card-body"><ul><li>You never see spam emails to approve their deletion</li><li>Mistakes happen (real mail in spam folder), but cost is low</li><li>Reviewing each one would defeat the entire purpose</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-7">
+<div class="slide-content">
+<h2 class="slide-title">Three Kinds of Human Checkpoint — <strong>The Restaurant Analogy</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">✋</span> 1. Approval Gate — <strong>Before the chef cooks</strong></div>
+<div class="card-body"><ul><li>Waiter reads your order back: "Steak, medium-rare, no garlic — correct?"</li><li>Kitchen doesn't start until you confirm</li><li>For AI: "Agent wants to send this email — Send / Cancel / Edit?"</li><li><strong>Use when</strong>: action is irreversible OR expensive (sending money, deleting files)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">👁️</span> 2. Review — <strong>After the meal arrives</strong></div>
+<div class="card-body"><ul><li>You eat → you check the bill → "wait, I didn't order this dessert"</li><li>The action already happened, but you can complain / correct / refund</li><li>For AI: agent runs, you read logs later, flag mistakes for next run</li><li><strong>Use when</strong>: action is cheap and reversible (search a paper, draft a summary)</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⛔</span> 3. Intervention — <strong>Mid-cooking, you smell burning</strong></div>
+<div class="card-body"><ul><li>Chef is in the middle of preparing → you run in and yell "STOP!"</li><li>Whatever was being made gets halted; you decide if it's salvageable</li><li>For AI: long task is running → user clicks "Stop" → it pauses cleanly</li><li><strong>Use when</strong>: tasks take a long time and conditions might change mid-way</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Before / After / During — every real system uses all three at different points. The skill is matching the right one to the right action."</div>
+</div>
+</section>
+<section class="slide" id="slide-8">
+<div class="slide-content">
+<h2 class="slide-title">Designing Stop Buttons — <strong>The Elevator vs The Plug</strong></h2>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">❌</span> Bad Stop Button — <strong>Pulling the Plug</strong></div>
+<div class="card-body"><ul><li>Imagine yanking your laptop's power cord mid-write</li><li>You lose your document; the file is corrupted; restart from scratch</li><li>In AI: kills the call mid-stream, leaves half-written outputs, no record</li><li>Worse: next run has no idea what happened</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✅</span> Good Stop Button — <strong>The Elevator Emergency Stop</strong></div>
+<div class="card-body"><ul><li>Elevator finishes reaching the next floor, THEN stops safely</li><li>Doors open, you can step out, system knows exactly where it is</li><li>Anyone can press "Resume" and the elevator continues normally</li><li>In AI: <strong>stop at the next safe boundary</strong> (end of current step, not mid-step)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🔑</span> Four Properties of a Good Stop Button</div>
+<div class="card-body"><ul><li><strong>Safe boundary</strong>: finishes the current step, then halts (no orphaned state)</li><li><strong>State-saved</strong>: remembers what was done — like a video game save point</li><li><strong>Resumable</strong>: a "Resume" button picks up where you stopped</li><li><strong>Logged</strong>: the stop itself is recorded (when + who + why)</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"Pulling the plug is fast. Pressing the elevator stop button is safe. Build the second one."</div>
+</div>
+</section>
+<section class="slide" id="slide-9">
+<div class="slide-content">
+<h2 class="slide-title">The Audit Log — <strong>The Airplane Black Box</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">✈️</span> The Analogy</div>
+<div class="card-body"><ul><li>Every commercial flight has a "black box" that records EVERYTHING</li><li>Pilot inputs, sensor readings, every alarm, every decision</li><li><strong>When something goes wrong</strong>, investigators replay it</li><li>Same for AI agents: log what happened so you can replay it later</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📓</span> What to Record (the 5 W's)</div>
+<div class="card-body"><ul><li><strong>What</strong> did the agent do or propose?</li><li><strong>When</strong> did it happen? (timestamp)</li><li><strong>Who</strong> decided? (agent X, or human Y who approved)</li><li><strong>Why</strong>: what inputs led to this action? (prompt, retrieved context)</li><li><strong>Outcome</strong>: what was produced or what did the human decide?</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🎯</span> What the Log Buys You</div>
+<div class="card-body"><ul><li><strong>"Why did it do that last Tuesday?"</strong> → you can actually answer</li><li><strong>Pattern spotting</strong>: "I rejected this kind of suggestion 5 times" → fix the prompt</li><li><strong>Trust</strong>: users believe the system because they can SEE the history</li><li><strong>Compliance</strong>: collaborators / regulators can verify the process</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> What NOT to Log</div>
+<div class="card-body"><ul><li>Passwords, API keys, personal info — sanitize before writing</li><li>Avoid logging gigabytes of redundant context — store references instead</li><li>The log itself needs a retention policy (delete after N days)</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-10">
+<div class="slide-content">
+<h2 class="slide-title">How to Ask the Human — <strong>Three Familiar UI Patterns</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">⏸️</span> Inline (blocking) — <strong>Like a Pop-up Confirmation</strong></div>
+<div class="card-body"><ul><li>"Are you sure you want to delete this file?"</li><li>You can't continue until you click Yes or No</li><li>Best for: <strong>rare, important decisions</strong> (1-2 per session)</li><li>Bad for: every search query (you'd quit the app in frustration)</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📬</span> Async (queue) — <strong>Like Your Email Inbox</strong></div>
+<div class="card-body"><ul><li>Requests pile up in a list; you review when convenient</li><li>Maybe a notification: "5 items waiting for your approval"</li><li>Best for: <strong>flows that take hours/days</strong>, multi-person teams</li><li>Example: code reviewers approving pull requests overnight</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📊</span> Batch (dashboard) — <strong>Like Grading Assignments</strong></div>
+<div class="card-body"><ul><li>"Here are 50 things to approve. Approve all / reject 3 / edit 2"</li><li>You see them side-by-side, spot patterns quickly</li><li>Best for: <strong>routine high-volume</strong> (50+ similar decisions at once)</li><li>Example: moderating social media posts</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">💸</span> The Hidden Cost of Asking</div>
+<div class="card-body"><ul><li>Every approval click = ~30 seconds of human attention</li><li>100 approvals/day = ~50 minutes of focused work</li><li><strong>Pick the cheapest UI for the decision</strong> — but don't skip the decision</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-11">
+<div class="slide-content">
+<h2 class="slide-title">The Tradeoff — <strong>More Safety Costs More Speed</strong></h2>
+<div class="cards-grid">
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚖️</span> Gyeongsu's Critique (from Week 12)</div>
+<div class="card-body"><ul><li>"If we have to babysit the system at every step, we lose all the benefits of automation"</li><li>Too many checkpoints → app becomes useless (you'd just do it yourself)</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🪧</span> "Approval Theater" — The Trap to Avoid</div>
+<div class="card-body"><ul><li>This is when users <strong>click "approve" without reading</strong></li><li>Like quickly clicking "Accept Cookies" on every website without thinking</li><li>The checkpoint exists on paper, but nobody actually checks anything</li><li><strong>Result</strong>: you pay the speed cost AND get no safety benefit</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🎯</span> Four Questions to Decide Where Checkpoints Go</div>
+<div class="card-body"><ul><li><strong>Can you undo it?</strong> No → approval needed (sending email, deleting data)</li><li><strong>What's the cost if wrong?</strong> High → approval; low → maybe auto</li><li><strong>Is the AI confident?</strong> Routine task it's seen 1,000 times → auto; novel → human</li><li><strong>Will you check the log later?</strong> If yes, you can let it run and review</li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">👍</span> A Reasonable Default Rule</div>
+<div class="card-body"><ul><li>Routine, reversible actions → <strong>on the loop</strong> (review samples)</li><li>Irreversible or novel actions → <strong>in the loop</strong> (approval before)</li><li>Physical or financial real-world consequences → <strong>never fully auto</strong></li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-12">
+<div class="slide-content">
+<h2 class="slide-title">HITL <strong>in the Wild</strong> — Patterns You've Already Used</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">💳</span> Online Shopping Checkout</div>
+<div class="card-body"><ul><li>Browse + add to cart → automatic (no approval needed)</li><li>Final payment step → <strong>always asks you to confirm</strong></li><li>Irreversible (charging the card) gets the approval gate</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🏥</span> Medical AI for Tumor Screening</div>
+<div class="card-body"><ul><li>AI scans 1,000 X-rays overnight, flags 20 as suspicious (auto)</li><li>Radiologist reviews ONLY the 20 flagged ones the next morning (in the loop)</li><li>Final diagnosis decision = always human</li><li>Yadanar's Week 13 example, applied at hospital scale</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔬</span> Lab Experiments (Your Field!)</div>
+<div class="card-body"><ul><li>AI suggests an experimental setup → you double-check before running</li><li>Experiment runs autonomously → you review the data afterward</li><li>If results look weird → you intervene (re-run, adjust, debug)</li><li><strong>All three checkpoint types in ONE workflow</strong></li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚛️</span> Nuclear Plant Operations (Waad's example)</div>
+<div class="card-body"><ul><li>Monitors run automatically, dashboards show health</li><li>Routine adjustments → automated</li><li>Anything affecting reactor → requires multiple human signoffs</li><li><strong>Same plant uses ALL FOUR levels</strong> of the autonomy spectrum</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-13">
+<div class="slide-content">
+<h2 class="slide-title">Lecture Summary — <strong>HITL</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎚️</span> The Spectrum</div>
+<div class="card-body"><ul><li>Full manual ↔ in-the-loop ↔ on-the-loop ↔ over-the-loop ↔ full auto</li><li>Pick a different point per action, not per system</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">✋</span> Three Checkpoint Types</div>
+<div class="card-body"><ul><li><strong>Approval gate</strong> (before), <strong>Review</strong> (after), <strong>Intervention</strong> (during)</li><li>Designed correctly, each adds safety without killing speed</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">📓</span> The Plumbing</div>
+<div class="card-body"><ul><li>Stop button = checkpoint-aware + state-preserving + resumable + auditable</li><li>Audit log = action / inputs / output / decision / actor / time</li><li>These are the <strong>engineering</strong> that makes "humans in the loop" actually work</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide title-slide" id="slide-14">
+<div class="slide-content">
+<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+<p class="slide-subtitle">Add a Human Approval Gate to the Week 13 Team</p>
+</div>
+</section>
+<section class="slide" id="slide-15">
+<div class="slide-content">
+<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎯</span> The Goal — Adding a "Confirm Order" Step</div>
+<div class="card-body"><ul><li>Remember the restaurant analogy? We'll add the waiter's confirmation</li><li>Take Week 13's Proposer-Reviewer pipeline</li><li>After the Reviewer critiques → <strong>pause and ask the human</strong></li><li>"Should we revise based on this critique, or is the critique wrong?"</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">📁</span> Files</div>
+<div class="card-body"><ul><li><code class="inline-code">hitl.py</code> — audit log + state machine (the "kitchen status board")</li><li><code class="inline-code">app.py</code> — add a new HITL section with 3 buttons (Approve / Reject / Stop)</li><li>Reuses <code class="inline-code">team.py</code> from Week 13</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">⚡</span> Why THIS Specific Spot?</div>
+<div class="card-body"><ul><li>The critique → revise boundary is <strong>short</strong> but <strong>high-value</strong></li><li>User reads ONE critique → makes ONE decision → big effect on the final answer</li><li><strong>Best ratio of approval cost vs decision impact</strong> in the whole stack</li><li>You don't want to approve every word — but this one is worth it</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-16">
+<div class="slide-content">
+<h2 class="slide-title">Step 1 — <strong>Audit Log Module</strong> (<code class="inline-code">hitl.py</code>)</h2>
+<p class="slide-subtitle">Append-only record of every action + decision</p>
+<pre class="code-block"><code class="language-python"># hitl.py
+import json, time
+from pathlib import Path
+
+LOG_PATH = Path("hitl_audit.jsonl")
+
+
+def log_event(event_type, **fields):
+    """Append one event to the audit log (JSON Lines format)."""
+    record = {"ts": time.time(), "type": event_type, **fields}
+    with LOG_PATH.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(record, ensure_ascii=False) + "\n")
+    return record
+
+
+def load_log(limit=50):
+    """Read the most recent N events (newest first)."""
+    if not LOG_PATH.exists():
+        return []
+    lines = LOG_PATH.read_text(encoding="utf-8").splitlines()
+    return [json.loads(line) for line in lines[-limit:][::-1]]</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Why JSON Lines (<code class="inline-code">.jsonl</code>)?</div>
+<div class="card-body"><ul><li>Append-only — safe to write while reading</li><li>One event per line — easy to grep, tail, parse</li><li>Industry standard for audit trails / structured logs</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-17">
+<div class="slide-content">
+<h2 class="slide-title">Step 2 — <strong>Approval States</strong> (<code class="inline-code">hitl.py</code>)</h2>
+<p class="slide-subtitle">Track where the flow is + what the user decided</p>
+<pre class="code-block"><code class="language-python"># Add to hitl.py
+from enum import Enum
+
+class FlowState(str, Enum):
+    IDLE = "idle"
+    PROPOSED = "proposed"           # Round 1 done, waiting for nothing
+    CRITIQUED = "critiqued"         # Round 2 done, waiting for human decision
+    APPROVED_REVISION = "approved"  # Human said "go ahead and revise"
+    REJECTED = "rejected"           # Human said "stop, this critique is wrong"
+    REVISED = "revised"             # Round 3 done
+    STOPPED = "stopped"             # User clicked Stop
+
+
+def init_state():
+    """Initialize a fresh flow state dict."""
+    return {
+        "state": FlowState.IDLE,
+        "topic": "",
+        "proposal": "",
+        "critique": "",
+        "revision": "",
+        "human_note": "",
+    }</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Why an Explicit State Machine?</div>
+<div class="card-body"><ul><li>Streamlit reruns the whole script on every click — you need persistent state</li><li>The states give the UI a clear "what should I show / which buttons are enabled"</li><li>This is the core pattern for ANY interactive multi-step agent UI</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-18">
+<div class="slide-content">
+<h2 class="slide-title">Step 3 — <strong>UI: Gated Workflow</strong> (append to <code class="inline-code">app.py</code>)</h2>
+<p class="slide-subtitle">Run Round 1+2 automatically; pause; resume after human decision</p>
+<pre class="code-block"><code class="language-python">from team import run_role
+from hitl import log_event, load_log, init_state, FlowState
+
+if "hitl" not in st.session_state:
+    st.session_state.hitl = init_state()
+flow = st.session_state.hitl
+
+st.divider()
+st.header("🛂 HITL Team — Human Approval Gate")
+
+topic = st.text_input("Research topic", value=flow["topic"], key="hitl_topic")
+
+# === Stage A: Start (Round 1 + Round 2 auto-run) ===
+if flow["state"] == FlowState.IDLE:
+    if st.button("▶️ Start (Propose + Critique)", disabled=not topic):
+        flow["topic"] = topic
+        flow["proposal"] = run_role(client, model, "proposer",
+                                    task=f"Propose a hypothesis about: {topic}")
+        log_event("propose", text=flow["proposal"])
+
+        flow["critique"] = run_role(client, model, "reviewer",
+                                    task="Review the hypothesis above.",
+                                    history=f"[Proposer]: {flow['proposal']}")
+        log_event("critique", text=flow["critique"])
+
+        flow["state"] = FlowState.CRITIQUED
+        st.rerun()</code></pre>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-19">
+<div class="slide-content">
+<h2 class="slide-title">Step 4 — <strong>Approval Gate UI</strong> (continue in <code class="inline-code">app.py</code>)</h2>
+<p class="slide-subtitle">Show proposal + critique, wait for human decision</p>
+<pre class="code-block"><code class="language-python"># === Stage B: Show critique, wait for human decision ===
+if flow["state"] == FlowState.CRITIQUED:
+    st.subheader("🟦 Proposal")
+    st.write(flow["proposal"])
+    st.subheader("🟧 Critique")
+    st.info(flow["critique"])
+
+    flow["human_note"] = st.text_area(
+        "Optional note to the Proposer (will be passed to Round 3)",
+        value=flow["human_note"],
+    )
+
+    col1, col2, col3 = st.columns(3)
+    if col1.button("✅ Approve — proceed to revise"):
+        log_event("decision", choice="approve", note=flow["human_note"])
+        flow["state"] = FlowState.APPROVED_REVISION
+        st.rerun()
+    if col2.button("❌ Reject — discard critique"):
+        log_event("decision", choice="reject", note=flow["human_note"])
+        flow["state"] = FlowState.REJECTED
+        st.rerun()
+    if col3.button("⛔ Stop"):
+        log_event("decision", choice="stop")
+        flow["state"] = FlowState.STOPPED
+        st.rerun()</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> Three Buttons = Three Decisions</div>
+<div class="card-body"><ul><li><strong>Approve</strong>: critique is useful, run Round 3 with it</li><li><strong>Reject</strong>: critique is wrong, stop here (or restart)</li><li><strong>Stop</strong>: I'm done, save the audit trail and exit cleanly</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide practice-slide" id="slide-20">
+<div class="slide-content">
+<h2 class="slide-title">Step 5 — <strong>Resume, Show Final, View Audit Log</strong></h2>
+<pre class="code-block"><code class="language-python"># === Stage C: Apply human decision ===
+if flow["state"] == FlowState.APPROVED_REVISION:
+    history = (f"[Proposer]: {flow['proposal']}\n"
+               f"[Reviewer]: {flow['critique']}\n"
+               f"[Human note]: {flow['human_note']}")
+    flow["revision"] = run_role(client, model, "proposer",
+        task="Revise your hypothesis using the critique + human note. 2-3 sentences.",
+        history=history)
+    log_event("revise", text=flow["revision"])
+    flow["state"] = FlowState.REVISED
+    st.rerun()
+
+if flow["state"] in (FlowState.REVISED, FlowState.REJECTED, FlowState.STOPPED):
+    st.subheader(f"Final state: {flow['state'].value}")
+    if flow["revision"]:
+        st.success(flow["revision"])
+    if st.button("🔄 New Run"):
+        st.session_state.hitl = init_state()
+        st.rerun()
+
+# === Audit log viewer (always visible) ===
+with st.expander("📓 Audit Log (recent 50 events)"):
+    for ev in load_log():
+        st.markdown(
+            f"`{time.strftime('%H:%M:%S', time.localtime(ev['ts']))}` "
+            f"**{ev['type']}** — {ev.get('choice', ev.get('text', ''))[:120]}"
+        )</code></pre>
+<div class="cards-grid">
+<div class="card card-yellow">
+<div class="card-header"><span class="icon">💡</span> The Resume Pattern</div>
+<div class="card-body"><ul><li>State is stored in <code class="inline-code">session_state</code> → Streamlit reruns don't lose progress</li><li>Each button click changes state + calls <code class="inline-code">st.rerun()</code></li><li>For multi-session resume, swap <code class="inline-code">session_state</code> for a database — same pattern</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-21">
+<div class="slide-content">
+<h2 class="slide-title">✅ <strong>Week 14 Practice Checklist</strong></h2>
+<p class="slide-text">1. - [ ] Create <code class="inline-code">hitl.py</code> with <code class="inline-code">log_event()</code>, <code class="inline-code">load_log()</code>, <code class="inline-code">FlowState</code>, <code class="inline-code">init_state()</code></p>
+<p class="slide-text">2. - [ ] Test logging by calling <code class="inline-code">log_event("test", x=1)</code> → check <code class="inline-code">hitl_audit.jsonl</code> was created</p>
+<p class="slide-text">3. - [ ] Make sure the file appends (run twice — should have 2 lines)</p>
+<p class="slide-text">4. - [ ] Append the HITL section to <code class="inline-code">app.py</code> (Steps 3, 4, 5 above)</p>
+<p class="slide-text">5. - [ ] Run end-to-end: enter topic → see proposal + critique → click Approve → see revision</p>
+<p class="slide-text">6. - [ ] Open the audit log expander — are all events recorded?</p>
+<p class="slide-text">7. - [ ] Run the flow, click <strong>Approve</strong> → does the human note actually appear in the revision?</p>
+<p class="slide-text">8. - [ ] Run again, click <strong>Reject</strong> → does the flow stop cleanly without running Round 3?</p>
+<p class="slide-text">9. - [ ] Run again, click <strong>Stop</strong> mid-flow → does the audit log capture the stop event?</p>
+<p class="slide-text">10. - [ ] Look at your audit log after 3-4 runs. Could you reconstruct what happened without your memory?</p>
+<p class="slide-text">11. - [ ] Where else in your capstone (Week 12 + 13) would an approval gate matter most? Why?</p>
+</div>
+</section>
+<section class="slide title-slide" id="slide-22">
+<div class="slide-content">
+<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+<p class="slide-subtitle">Leadership Frameworks + Course Reflection</p>
+</div>
+</section>
+<section class="slide" id="slide-23">
+<div class="slide-content">
+<h2 class="slide-title">Week 13 — <strong>Leadership of Conflicting Agents</strong></h2>
+<p class="slide-subtitle">12 responses — the class is now responding to each other, not just to the personas</p>
+<div class="cards-grid">
+<div class="card card-green">
+<div class="card-header"><span class="icon">📊</span> The Vote Pattern</div>
+<div class="card-body"><ul><li><strong>None / new framework</strong>: Huy, Seher — <strong>2</strong> (the architects)</li><li><strong>Hulk only (3)</strong>: Yadanar, Hyunwoo — <strong>2</strong></li><li><strong>Cap + Hulk (2,3)</strong>: Manuella, Waad — <strong>2</strong></li><li><strong>Iron Man + Hulk (1,3)</strong>: DongYun, Irfan — <strong>2</strong></li><li><strong>All three (1,2,3)</strong>: Minh — <strong>1</strong></li><li><strong>Mostly Iron Man, pushes back on hierarchy</strong>: Margareth — <strong>1</strong></li><li><strong>Hulk-leaning, moderate</strong>: Ly, Rupam — <strong>2</strong></li></ul></div>
+</div>
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🆕</span> What's New This Week</div>
+<div class="card-body"><ul><li><strong>Students respond to each other</strong> — Seher critiques Huy's framework; Waad critiques both</li><li>The discussion has become a multi-round dialogue</li><li>The class is evolving into a real intellectual community</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">🔥</span> The Real Debate Now</div>
+<div class="card-body"><ul><li>It's not Iron Man vs Cap vs Hulk anymore</li><li>It's <strong>Huy's Tripartite</strong> vs <strong>Seher's Evolutionary</strong> vs <strong>Waad's Reversibility Constraint</strong></li><li>Three serious architectural proposals from your classmates</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-24">
+<div class="slide-content">
+<h2 class="slide-title">Theme 1 — <strong>The Two Architectures: Huy vs Seher</strong></h2>
+<p class="slide-subtitle">The most sophisticated proposals — and where they disagree</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🏛️</span> Huy — Tripartite Orchestration</div>
+<div class="card-body"><ul><li><strong>Layer 1</strong>: pre-specified objective hierarchy (cost vs security vs ... decided upfront)</li><li><strong>Layer 2</strong>: tiered escalation (severity + irreversibility → auto / orchestrator / human)</li><li><strong>Layer 3</strong>: hard split — <strong>coordination conflicts</strong> (algorithmic) vs <strong>epistemic conflicts</strong> (must go to humans)</li><li>Director's job: design the constitution, not arbitrate every dispute</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🌱</span> Seher — Evolutionary Conflict Governance</div>
+<div class="card-body"><ul><li>Huy's framework "assumes it is correctly designed from the start"</li><li>But "the most dangerous conflicts are precisely the ones nobody predicted"</li><li><strong>Proposal</strong>: every conflict logged; recurring conflicts auto-flag for governance update</li><li>Humans are <strong>architects of evolving rules</strong>, not arbitrators of daily conflicts</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🤝</span> The Real Disagreement</div>
+<div class="card-body"><ul><li>Huy: get the framework right upfront → operations run smoothly</li><li>Seher: no framework is right upfront → build one that <strong>rewrites itself</strong></li><li>Same goal (scalable + safe), opposite epistemology (designed vs evolved)</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"This approach builds a constitution that rewrites itself when reality proves it incomplete." — Seher</div>
+</div>
+</section>
+<section class="slide" id="slide-25">
+<div class="slide-content">
+<h2 class="slide-title">Theme 2 — <strong>Waad's Reversibility Constraint</strong></h2>
+<p class="slide-subtitle">The nuclear-safety counter to both architectures</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">☢️</span> The Field Argument</div>
+<div class="card-body"><ul><li>Both Huy and Seher "assume governance failures are recoverable"</li><li>In nuclear: "some autonomous errors may lead to irreversible consequences"</li><li>Therefore: defense-in-depth, conservative decision-making, strong human authority on high-consequence calls</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⏸️</span> The Added Constraint</div>
+<div class="card-body"><ul><li>"Not every conflict should be optimized for speed or efficiency"</li><li><strong>Some decisions must intentionally remain slow, conservative, human-centered</strong></li><li>Safety, accountability, public trust > operational velocity in high-stakes domains</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🌐</span> Why This Matters Beyond Nuclear</div>
+<div class="card-body"><ul><li>Medical (Yadanar's tumor diagnosis example)</li><li>Robotics (Hyunwoo's collision parameters)</li><li>Any domain where rollback isn't possible</li><li><strong>Architectures should encode irreversibility as a first-class concept</strong></li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"The goal is not to eliminate human involvement, but to ensure that automation enhances human judgment rather than replaces it." — Waad</div>
+</div>
+</section>
+<section class="slide" id="slide-26">
+<div class="slide-content">
+<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+<p class="slide-subtitle">The approval gate IS where the architectures meet code</p>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🛂</span> Huy's Tripartite, In Three Buttons</div>
+<div class="card-body"><ul><li><strong>Approve</strong>: this is a coordination call → automatic (orchestrator-mediated)</li><li><strong>Reject</strong>: this is an epistemic disagreement → human judgment overrides</li><li><strong>Stop</strong>: this is irreversibility kicking in → halt cleanly</li><li>Your 3 buttons are a tiny instance of Huy's tiered escalation</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🌱</span> Seher's Evolution, In the Audit Log</div>
+<div class="card-body"><ul><li>Every approval / rejection / stop is logged with context</li><li>When you see "I rejected the same kind of critique 5 times this week" → that's a signal to UPDATE the Reviewer's prompt</li><li>The audit log enables Seher's "rewrites itself" pattern</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⏸️</span> Waad's Reversibility, In the Stop Button</div>
+<div class="card-body"><ul><li>The stop button is a checkpoint that preserves state — you can't lose work</li><li>For irreversible actions (e.g., publishing, sending), you'd put approval BEFORE the action, not after</li><li>Apply per-action — exactly Waad's "conservative for high-consequence"</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-27">
+<div class="slide-content">
+<h2 class="slide-title">Looking Back — <strong>What Changed?</strong></h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📅</span> Where You Started (Week 1)</div>
+<div class="card-body"><ul><li>"What is agentic AI? How is it different from ChatGPT?"</li><li>Mostly conceptual; you'd never built one</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🛠️</span> Where You Are Now (Week 14)</div>
+<div class="card-body"><ul><li>You can build: RAG systems, multi-agent teams, self-evaluating pipelines, HITL gates</li><li>You can DEBATE: architectures, evaluation, leadership, oversight tradeoffs</li><li>You have working code you wrote yourself across 14 weeks</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🧭</span> The Real Skill You Acquired</div>
+<div class="card-body"><ul><li>Not the specific code patterns (those will be obsolete in 18 months)</li><li>But the <strong>disposition</strong>: decompose tasks, measure quality, design tradeoffs, place humans where they matter</li><li>And the <strong>vocabulary</strong> to discuss these systems with rigor</li></ul></div>
+</div>
+</div>
+<div class="highlight-quote">"The patterns will change. The way of thinking won't."</div>
+</div>
+</section>
+<section class="slide" id="slide-28">
+<div class="slide-content">
+<h2 class="slide-title"><strong>Path Forward</strong> — Where to Go Next</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">🎓</span> If You Want to Go Deeper</div>
+<div class="card-body"><ul><li><strong>Anthropic's Building Effective Agents</strong> — the most practical overview in the field</li><li><strong>MCP (Model Context Protocol)</strong> — connect agents to external tools cleanly</li><li><strong>Agent Skills</strong> — reusable, shareable agent capabilities</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">🔬</span> For Your Research</div>
+<div class="card-body"><ul><li>Take ONE pattern from the course → apply to ONE recurring task in your lab</li><li>Add an approval gate at the riskiest step</li><li>Measure: did it actually save time AND maintain quality?</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">👥</span> Keep the Discussion Going</div>
+<div class="card-body"><ul><li>The level of dialogue you reached in Weeks 11-13 is the goal — keep it up</li><li>Find or build a small community to debate architectural decisions</li><li>The patterns you've learned are starting points, not destinations</li></ul></div>
+</div>
+<div class="card card-red">
+<div class="card-header"><span class="icon">⚠️</span> The Trap to Avoid</div>
+<div class="card-body"><ul><li>"I'll wait until the perfect framework / model / tool exists"</li><li>The framework you build for YOUR problem will always beat the generic one</li><li>Start small. Ship something. Iterate.</li></ul></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide" id="slide-29">
+<div class="slide-content">
+<h2 class="slide-title">🗣️ <strong>Week 14 Discussion Questions</strong> (UST LMS)</h2>
+<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+<p class="slide-text">1. After building today's approval gate, <strong>where in your own midterm/capstone project</strong> would you add an approval step — and where would adding one be approval theater? Be specific about the boundary.</p>
+<p class="slide-text">2. Looking back at the <strong>whole semester</strong>, which week's pattern do you think you'll actually USE in your research, and which one was interesting but you won't reach for? Honest reflection — no wrong answers.</p>
+</div>
+</section>
+<section class="slide" id="slide-30">
+<div class="slide-content">
+<h2 class="slide-title">Where to Go Next</h2>
+<p class="slide-text">HITL & Audit</p>
+<a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" class="reference-link">📚 Anthropic: Building Effective Agents</a>
+<a href="https://langchain-ai.github.io/langgraph/concepts/human_in_the_loop/" target="_blank" class="reference-link">📚 LangGraph — Human-in-the-Loop Workflows</a>
+<div class="highlight-quote">📄 [Constitutional AI — Self-Critique with Human-Defined Rules (2022)](https://arxiv.org/abs/2212.08073)</div>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Production Patterns</p>
+<a href="https://temporal.io/" target="_blank" class="reference-link">📚 Temporal — Durable Workflow Orchestration</a>
+<a href="https://modelcontextprotocol.io/" target="_blank" class="reference-link">📚 Model Context Protocol (MCP)</a>
+<p class="slide-text">&nbsp;</p>
+<p class="slide-text">Anthropic Free Online Courses</p>
+<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)</div>
+<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
+<div class="highlight-quote">🎓 [Introduction to Agent Skills](https://anthropic.skilljar.com/introduction-to-agent-skills)</div>
+</div>
+</section>
+<section class="slide" id="slide-31">
+<div class="slide-content">
+<h2 class="slide-title">Wrap-Up of <strong>Week 14</strong> — and the Course</h2>
+<div class="cards-grid">
+<div class="card card-blue">
+<div class="card-header"><span class="icon">📖</span> Lecture</div>
+<div class="card-body"><ul><li>Autonomy spectrum (manual ↔ auto); three checkpoint types (approval / review / intervention); stop buttons need checkpoint-aware + state-preserving + auditable design; audit log captures what / when / by whom / decision</li></ul></div>
+</div>
+<div class="card card-green">
+<div class="card-header"><span class="icon">💻</span> Practice</div>
+<div class="card-body"><ul><li>Added a <strong>human approval gate</strong> to the Week 13 team: after critique, user clicks Approve / Reject / Stop, with a note channel; audit log records every event in JSONL</li></ul></div>
+</div>
+<div class="card card-orange">
+<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+<div class="card-body"><ul><li>Week 13 (12 responses): Huy's Tripartite vs Seher's Evolutionary vs Waad's Reversibility — the class debating at the level of architectures; today's three-button gate is a tiny instance of these frameworks</li></ul></div>
+</div>
+</div>
+<p class="slide-text"><strong>Thank you for a great semester. Now go build something — and put the humans where they matter.</strong></p>
+</div>
+</section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">31</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(14)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(22)">Discussion</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 31;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+      
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+      
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+      
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if(currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if(currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if(newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+           currentSlide = newSlide;
+           pageInput.value = currentSlide;
+           updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if(e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: -100, behavior: 'smooth'});
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: 100, behavior: 'smooth'});
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+         const pageNum = parseInt(hash.replace('#slide-', ''));
+         if(!isNaN(pageNum)) {
+           setTimeout(() => goToSlide(pageNum), 100);
+         }
+      }
+    });
+  </script>
+</body>
+</html>
