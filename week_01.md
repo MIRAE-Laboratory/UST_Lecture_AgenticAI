@@ -688,7 +688,7 @@ Created code and plot created by the code
 - highlight-quote: Is AI a research assistant or a crutch? Let's define the boundary!
 
 **Action Required**: Go to `Week 1: ~` on UST LMS and let the debate begin!
-> 📚 [UST LMS → This Course → Discussion → Week 1](https://class.ust.ac.kr/mod/forum/view.php?id=17610)
+> 📚 [UST LMS → This Course → Discussion → Week 1](https://class.ust.ac.kr/mod/forum/view.php?id=20450)
 ```mermaid
 graph LR
     Step1[1. Go to Discussion Forum in UST LMS] --> Step2[2. Read AI Panel<br>Opinions: Iron Man, Captain America, Hulk]
