@@ -110,18 +110,18 @@ print(f"Tokens: {[enc.decode([t]) for t in tokens]}")
 
 ## Slide: Model Landscape
 - type: compare-table
-- title: Scaling Laws & the **Model Landscape** (2025)
+- title: Scaling Laws & the **Model Landscape** (2025–2026)
 - subtitle: Not all LLMs are equal — match the model to the task
 
 | Model | Provider | Parameters | Context | Best For |
 |-------|----------|-----------|---------|----------|
-| **GPT-4o** | OpenAI | ~200B (est.) | 128K | General reasoning, code, multimodal |
-| **Claude 3.5 Sonnet** | Anthropic | undisclosed | 200K | Long documents, analysis, safety |
-| **Gemini 1.5 Pro** | Google | undisclosed | 1M | Massive context, multimodal |
-| **Llama 3.2 8B** | Meta (open) | 8B | 128K | Local use, fine-tuning, privacy |
-| **Mistral 7B** | Mistral (open) | 7B | 32K | Fast local inference, lightweight |
+| **GPT-4o / o3-mini** | OpenAI | ~200B / MoE | 128K–200K | General reasoning, STEM, code generation |
+| **Claude 3.5 / 3.7 Sonnet** | Anthropic | Undisclosed | 200K | Deep analysis, long documents, coding |
+| **Gemini 2.0 Flash / 2.5 Pro** | Google | Undisclosed | 1M–2M | Massive context, multimodal, speed (practice default) |
+| **Llama 3.3 70B / 3.2 8B** | Meta (open) | 70B / 8B | 128K | Local use, privacy, fine-tuning |
+| **DeepSeek-V3 / R1** | DeepSeek (open) | 671B (37B act.) | 64K–128K | Advanced math/reasoning, open-weights efficiency |
 
-- highlight-quote: "Bigger is not always better — match the model to the task and budget."
+- highlight-quote: "Bigger is not always better — match the model to the task, privacy requirement, and compute budget."
 
 > 📚 [Scaling Laws for Neural Language Models — Kaplan et al. 2020 (arXiv)](https://arxiv.org/abs/2001.08361)
 
@@ -607,258 +607,171 @@ print(chat("Hello!", backend="ollama"))
 ## Slide: Week 1 Discussion Review — Your Votes
 - type: cards
 - title: How Did You Vote?
-- subtitle: Clear consensus — but with nuance
+- subtitle: Clear consensus on verification — with creative coalitions
 
-- card(green, 📊): Voting Results
-  - **Hulk (Option 3)** was the most popular — pragmatic verification resonated most
-  - **Captain America (Option 2)** was second — principled integrity matters
-  - **Iron Man (Option 1)** had supporters — but always with caveats about verification
-  - Several students agreed with **multiple perspectives** — showing mature, nuanced thinking
+- card(green, 📊): Voting Results (6 Responses)
+  - **Hulk (Option 3)** was the overwhelming foundation: **5 of 6** students insisted on strict verification (Nurul, Jeonghyeon, Khine Wai Zin, Minh Le Tran, Firman)
+  - **Captain America (Option 2)**: **2 votes** (Minh Le Tran, Firman) — ethical stewardship, human moral compass, scientific labor
+  - **Iron Man (Option 1)**: **2 votes** (Khine Wai Zin, Firman) — automation speed, breaking boundaries with Jarvis
+  - **None / Transcending Frame**: **1 vote** (Rustam Yuldashev) — challenged persona boundaries & analyzed "assistant" vs "crutch"
 
-- card(purple, 💡): Key Observation
-  - **Nobody** advocated for fully unchecked AI usage
-  - Even Iron Man supporters insisted on human oversight
-  - The class converged on: **AI is powerful but the researcher remains accountable**
+- card(purple, 💡): Key Takeaway & Coalitions
+  - **Zero students** advocated for unmonitored AI — 100% agreed human judgment is non-negotiable
+  - **Khine Wai Zin (3, 1)**: "The Efficient Middle" — Iron Man's speed + Hulk's checkpoints
+  - **Minh Le Tran (2, 3)**: United Cap's ethical stewardship with Hulk's technical vigilance
+  - **Firman (1, 2, 3)**: Synthesized all three under the researcher as **Nick Fury & S.H.I.E.L.D.**!
 
 =====
 
 ## Slide: Week 1 Discussion Review — Key Themes
 - type: cards
 - title: Key Themes from **Your Responses**
-- subtitle: Five ideas that emerged across the class
+- subtitle: Five powerful insights directly from your Week 1 discussion
 
-- card(blue, 🎯): 1. The Director Metaphor
-  - AI is a tool — its value depends on **the mind directing it**
-  - "Without you, there is no direction, no integrity, and nothing worth building"
-  - The researcher is the **architect**; AI executes the vision
+- card(blue, 🎯): 1. The Director as "Nick Fury" & Principal Architect
+  - **Firman**: The researcher acts as **Nick Fury / S.H.I.E.L.D.**, balancing Iron Man's innovation, Bruce Banner's self-questioning anxiety, and Cap's moral compass
+  - **Minh Le Tran**: Humans must remain the "principal architects and final arbiters of scientific accountability"
 
-- card(orange, ⚠️): 2. Hallucination Is a Real Threat
-  - Multiple students shared personal experiences with AI generating **non-existent papers** or incorrect information
-  - Verification is not optional — it's the researcher's core responsibility
-  - "If I can't audit it, I can't cite it; if I can't reproduce it, I won't publish it"
+- card(orange, ⚡): 2. "The Efficient Middle" — Risk-Tiered Checkpoints
+  - **Khine Wai Zin**: Full AI speed on low-risk tasks (literature search, screening, formatting, drafts — cheap errors)
+  - Mandatory verification at high-risk checkpoints (every citation before draft, data transformations before analysis, interpretive claims)
 
-- card(green, 🧠): 3. Critical Thinking Must Be Preserved
-  - Over-reliance on AI may **erode** the very skills that define a researcher
-  - The process of reading, struggling, and thinking is itself valuable
-  - Some drew parallels to calculators: useful, but we still need to understand math
+- card(green, 🩺): 3. Assistant vs. Crutch: The Dimension of TIME
+  - **Rustam**: A crutch supports mobility in weakness, but AI operates on the very sense of life: **TIME**
+  - Rather than passive dependence, we must build a proactive **corridor** of ethics and protocols *in advance*
 
-- card(pink, ⚖️): 4. Context-Dependent Boundaries
-  - AI's role should vary by **task and risk level**
-  - Brainstorming and drafts → more AI autonomy
-  - Final conclusions and publications → strict human verification
-  - In robotics and physical systems, errors can cause **hardware damage**
+- card(pink, 🔬): 4. Empirical Rigor & Threat to Reproducibility
+  - **Minh Le Tran**: Unverified AI leads to hallucinations, subtle data leakage, and ethical breaches that threaten empirical reproducibility
+  - **Nurul & Jeonghyeon**: AI can make mistakes or provide incorrect info; it must support researchers, not replace critical thinking and final judgment
 
-- card(purple, 🤝): 5. From Tool to Partner?
-  - Some argued AI is evolving beyond "tool" toward **collaborative partner**
-  - But partnership still requires the human to **understand and validate**
-  - The boundary: can you **explain the reasoning** behind the result?
+- card(purple, 🧪): 5. "Bruce Banner's Anxiety" as a Safety Asset
+  - **Firman**: We need Banner's internal anxiety to continuously question and evaluate ourselves so we harness immense computational power without losing control
 
 =====
 
 ## Slide: Week 1 Review — The Boundary We Defined
 - type: card-single
 - title: The Boundary **We Defined Together**
-- subtitle: A working definition from the class
+- subtitle: A synthesis of your Week 1 principles
 
-- highlight-quote: "AI is an assistant when the researcher can explain, verify, and take responsibility for the output. AI becomes a crutch when the researcher passively accepts results they cannot audit or reproduce."
+- highlight-quote: "AI is an auxiliary assistant when humans direct the vision and verify high-risk checkpoints. AI becomes a crutch when automated acceleration compromises scientific rigor, epistemic integrity, or human accountability." — Class Consensus
 
-- card(yellow, 💡): The Accountability Test
-  - Before using any AI-generated output, ask yourself:
-  - **Can I explain** the logic behind this result?
-  - **Can I verify** it against independent sources?
-  - **Would I stake my name** on this in a publication?
-  - If the answer to any is "no" → you need to dig deeper before using it
+- card(yellow, 💡): The 4-Question Accountability Test
+  - Before relying on any AI output in your research, ask yourself:
+  - **1. Risk Level (Khine Wai Zin)**: Is this a low-risk drafting task or a high-risk checkpoint (citations, data transformation, interpretation)?
+  - **2. Epistemic Audit (Minh)**: Can I verify this against primary sources, or does it risk hallucination and data leakage?
+  - **3. Banner's Check (Firman)**: Am I actively questioning the output, or blindly letting go of the leash?
+  - **4. Proactive Corridor (Rustam)**: Does using AI here save valuable time while keeping human judgment and ethics firmly at the helm?
 
 =====
 
-## Slide: Debate Point 1 — Skill Erosion vs Skill Evolution
+## Slide: Debate Point 1 — Assistant vs. Crutch: Speed vs. Judgment
 - type: cards
-- title: Debate Point 1 — **Skill Erosion vs Skill Evolution**
-- subtitle: Does using AI make researchers weaker or stronger?
+- title: Debate Point 1 — **Assistant vs. Crutch: Speed vs. Judgment**
+- subtitle: Does AI support mobility or lead to intellectual dependency?
 
-- card(pink, 📉): "AI Erodes Skills"
-  - Reading lit reviews one by one is what **defines a researcher** (Nazhiefah)
-  - Like short videos eroding attention spans, AI may erode **deep thinking** (Jaewhoon)
-  - If you skip the struggle, you skip the learning
+- card(pink, 🩺): The "Crutch" Dimension (Rustam & Minh)
+  - **Rustam**: A crutch compensates for physical limitation and weakness; AI similarly covers **TIME**, but passive reliance creates permanent dependency
+  - **Minh Le Tran**: Treating AI strictly as an "auxiliary assistant" ensures humans remain principal architects and critical thinking is never outsourced
+  - If we surrender our analytical grit to algorithms, we lose what makes discovery meaningful
 
-- card(green, 📈): "AI Evolves Skills"
-  - Calculators didn't make mathematicians worse — they freed them for **harder problems** (Gyeongsu)
-  - Does "integrity" only come from the traditional, **analog way** of working? (Gyeongsu)
-  - AI lets researchers focus on **higher-level thinking** — design, interpretation, creativity (Tran)
+- card(green, 🚀): The "Assistant" Engine (Khine Wai Zin & Firman)
+  - **Khine Wai Zin**: Speed is AI's greatest value — automating screening, formatting, and drafting frees researchers for actual judgment
+  - **Firman**: Iron Man with Jarvis breaks boundaries, thinks outside the box, and brings science into new frontiers
+  - Acceleration is legitimate — provided a human moral compass guides the trajectory
 
-- highlight-quote: "Does learning require suffering? Or can we learn differently with better tools?"
-
-=====
-
-## Slide: Debate Point 1 — Discussion Activity
-- type: card-single
-- title: 🗣️ **Live Discussion** — Skill Erosion vs Skill Evolution
-- subtitle: 10 minutes — Defend your position
-
-- card(yellow, 💡): Discussion Prompt
-  - Think of a specific skill in your research field (e.g., literature reading, data analysis, experiment design)
-  - **Scenario A**: A junior researcher uses AI for this skill from Day 1 — never learns to do it manually
-  - **Scenario B**: A senior researcher who mastered it manually now uses AI to accelerate it
-  - Are the outcomes different? Does the **order** matter (learn first, then automate)?
-  - Is there a **minimum skill level** before AI assistance becomes productive rather than harmful?
+- highlight-quote: "Scrutiny where an error would cost you, speed everywhere else." — Khine Wai Zin
 
 =====
 
 ## Slide: Debate Point 2 — How Much Verification Is Enough?
 - type: cards
 - title: Debate Point 2 — **How Much Verification Is Enough?**
-- subtitle: The cost of checking everything vs the cost of missing errors
+- subtitle: Constant scrutiny vs. "The Efficient Middle"
 
-- card(orange, 🔍): "Check Everything" (Jaewhoon)
-  - Found AI errors at a **non-negligible rate** when verifying paper references
-  - Asked for page numbers and direct quotes to cross-check — still found hallucinations
-  - Our civilization is **built on trust** — contaminated knowledge is catastrophic
+- card(orange, 🔍): "Constant Scrutiny" (Nurul & Jeonghyeon)
+  - AI is a powerful tool, but it can always make mistakes or generate unverified claims
+  - Researchers must **always check and double-check**; critical thinking and final judgment must remain 100% human
+  - Unchecked outputs corrupt downstream conclusions
 
-- card(blue, ⚡): "Strategic Verification" (Irfan)
-  - Checking **every minor step** becomes excessive and defeats the purpose of using AI
-  - Focus on verifying **methodological logic, dataset integrity, and reproducibility**
-  - Implement a **structured verification layer** — not blanket skepticism
+- card(blue, ⚡): "The Efficient Middle" (Khine Wai Zin)
+  - Iron Man skips verification to save time → dangerous hallucinations slip through
+  - Hulk demands constant scrutiny → **kills the speed advantage entirely**
+  - **Rule**: Full speed on low-risk tasks (errors are cheap to catch later); strict verification only at high-risk checkpoints
 
-- card(purple, 🎯): The Tension
-  - Verify too little → **hallucinations slip through** and damage credibility
-  - Verify too much → **no time savings** and you might as well do it yourself
-  - Where is the **optimal point**?
-
-=====
-
-## Slide: Debate Point 2 — Discussion Activity
-- type: card-single
-- title: 🗣️ **Live Discussion** — The Verification Spectrum
-- subtitle: 10 minutes — Where do you draw the line?
-
-- card(yellow, 💡): Design a Verification Protocol
-  - Your AI agent produced a 20-page literature review with 50 citations.
-  - **Option A**: Verify every single citation (3 hours — same as doing it yourself)
-  - **Option B**: Spot-check 20% randomly (30 min — but 80% unchecked)
-  - **Option C**: Verify only citations used in key arguments (1 hour)
-  - **Option D**: Use a second AI to cross-check the first AI's output
-  - Which do you choose? What factors influence your decision (deadline, stakes, field)?
+- card(purple, 🛡️): "Technical Vigilance" (Minh Le Tran)
+  - In empirical research, strict **human-in-the-loop verification protocols** are non-negotiable
+  - Automated acceleration must never come at the expense of scientific rigor and epistemic integrity
 
 =====
 
-## Slide: Debate Point 3 — The Calculator Analogy
+## Slide: Debate Point 3 — Beyond the Calculator: Metaphors for AI
 - type: cards
-- title: Debate Point 3 — **Is AI Like a Calculator?**
-- subtitle: Multiple students made this comparison — but is it valid?
+- title: Debate Point 3 — **Beyond the Calculator: Metaphors for AI**
+- subtitle: Multiple students proposed new ways to frame the human-AI dynamic
 
-- card(blue, 🧮): The Analogy
-  - Calculators freed us from manual arithmetic → we focus on higher math
-  - AI frees us from manual text processing → we focus on higher thinking
-  - Both are tools that **augment** human capability
+- card(blue, 🩺): The Crutch & Time (Rustam)
+  - A crutch supports mobility during physical limitation or recovery; AI covers the dimension of **TIME**
+  - But AI is developing toward deeper understanding of language and meaning; traditional "tool" definitions are too narrow
+  - We must build a proactive governance **corridor** rather than passively leaning on it
 
-- card(pink, ❌): Why It Might Be Wrong
-  - Calculators are **deterministic** — same input always gives same output
-  - LLMs are **stochastic** — same prompt can give different (sometimes wrong) answers
-  - Calculators don't **hallucinate** — they never invent a fake answer confidently
-  - You can **prove** a calculator is correct; can you prove an LLM summary is accurate?
+- card(orange, 🦸): S.H.I.E.L.D. & Nick Fury (Firman)
+  - AI isn't a single hammer — it's a superhuman team:
+  - **Iron Man + Jarvis**: breaking boundaries & thinking outside the box
+  - **Bruce Banner's anxiety**: continuous self-evaluation to prevent Hulk from running wild
+  - **Captain America**: moral compass and genuine human integrity
+  - **You (Director)**: Nick Fury coordinating the ensemble
 
-- card(orange, 🤔): The Deeper Question
-  - A calculator error is immediately obvious (wrong number)
-  - An LLM error can be **beautifully written nonsense** — much harder to detect
-  - This difference changes the **trust model** fundamentally
+- card(pink, ❌): Why Deterministic Tools Differ
+  - Calculators never hallucinate or persuade you of false facts
+  - LLMs are **stochastic** — they produce beautifully written, confident illusions
+  - You cannot treat a probabilistic agent like an arithmetic calculator
 
-- highlight-quote: "A calculator that is wrong 1% of the time is broken. An LLM that is wrong 1% of the time is considered impressive."
-
-=====
-
-## Slide: Debate Point 3 — Discussion Activity
-- type: card-single
-- title: 🗣️ **Live Discussion** — Find a Better Analogy
-- subtitle: 5 minutes
-
-- card(yellow, 💡): Challenge
-  - If the calculator analogy doesn't hold, **what IS a better analogy** for AI in research?
-  - A **research intern** who is eager but sometimes makes things up?
-  - A **ghostwriter** who captures your style but may not understand the content?
-  - A **co-pilot** who assists but the pilot must always be ready to take over?
-  - A **translation service** — useful, but you should check if you know the language?
-  - **Propose an analogy** and explain why it captures both AI's strengths and risks
+- highlight-quote: "We need Bruce Banner's anxiety to continuously question and evaluate ourselves, so we can gain full control of Hulk's power without losing control." — Firman Trisasongko
 
 =====
 
-## Slide: Debate Point 4 — Physical World Stakes
+## Slide: Debate Point 4 — High Stakes in Empirical Research
 - type: cards
-- title: Debate Point 4 — **When AI Errors Have Physical Consequences**
-- subtitle: Not all research domains carry the same risk
+- title: Debate Point 4 — **When Errors Corrupt: Empirical Rigor & Safety**
+- subtitle: Why verification intensity depends on domain consequences
 
-- card(pink, 🤖): Robotics (Hyunwoo)
-  - A hallucination in an AI-generated control script → **actual hardware damage**
-  - The cost of error is not a bad paragraph — it's a **broken machine** or safety hazard
-  - The boundary must be drawn where digital meets physical
+- card(pink, 🔬): Empirical Research & Reproducibility (Minh)
+  - Vulnerabilities like hallucinations, subtle data leakage, and ethical breaches pose severe systemic threats to reproducibility
+  - In empirical science, a flawed data transformation or invented baseline invalidates entire experiments
 
-- card(orange, 💊): Medical / Pharmaceutical
-  - Wrong drug interaction information → **patient harm**
-  - AI-suggested synthesis routes → potential safety hazards if unverified
-  - Regulatory bodies do not accept "the AI said so" as justification
+- card(orange, 📊): Mandatory Checkpoints (Khine Wai Zin)
+  - **Low-risk**: Literature search, screening, formatting, drafting — errors here are cheap to catch later
+  - **High-risk**: Every citation before it enters a draft, every data transformation before analysis, every interpretive claim — stays human, always
 
-- card(blue, 🔬): Pure Research (Lower Stakes?)
-  - Wrong literature summary → wasted time but recoverable
-  - But: if a hallucinated finding enters the **publication record** → trust contamination
+- card(green, 🧭): Advance Containment Protocols (Rustam)
+  - Ethics, accountability, and containment protocols must be constructed *in advance*, not after problems become uncontrollable
+  - High stakes demand proactive architecture, not post-mortem regrets
 
-- card(green, ⚖️): The Spectrum
-  - Higher physical/human stakes → more verification required
-  - But even "low-stakes" errors can **compound** over time
+- highlight-quote: "Automated acceleration must never come at the expense of scientific rigor and epistemic integrity." — Minh Le Tran
 
 =====
 
-## Slide: Debate Point 4 — Discussion Activity
-- type: card-single
-- title: 🗣️ **Live Discussion** — Risk-Based AI Policy
-- subtitle: 10 minutes — Design a policy for your lab
-
-- card(yellow, 💡): Scenario
-  - Your lab has 5 researchers and uses AI agents for various tasks.
-  - Design a **3-tier AI usage policy** for your research domain:
-  - **Green Zone** (AI works autonomously): What tasks go here?
-  - **Yellow Zone** (AI produces, human reviews before use): What tasks go here?
-  - **Red Zone** (AI prohibited or heavily restricted): What tasks go here?
-  - Share your policy — do different fields produce different policies?
-
-=====
-
-## Slide: Debate Point 5 — Knowledge Contamination
+## Slide: Debate Point 5 — Knowledge Contamination & Proactive Governance
 - type: cards
-- title: Debate Point 5 — **The Knowledge Contamination Problem**
+- title: Debate Point 5 — **Knowledge Contamination & Proactive Governance**
 - subtitle: What happens when AI-generated errors enter the scientific record?
 
 - card(orange, 🦠): The Contamination Cycle
-  - Step 1: AI generates plausible but **incorrect information**
-  - Step 2: Researcher publishes it **without adequate verification**
-  - Step 3: Other AIs are trained on this **published (but wrong) data**
-  - Step 4: Future AI outputs are **even less reliable** — a vicious cycle
+  - Step 1: Unverified AI outputs produce plausible hallucinations or silent data errors
+  - Step 2: Researchers publish without rigorous audits (Minh's reproducibility threat)
+  - Step 3: Next-generation models train on published, contaminated literature
+  - Step 4: Systemic degradation of scientific truth across the research ecosystem
 
-- card(pink, 📰): Already Happening
-  - Fake papers with AI-generated references appearing in academic databases
-  - Peer reviewers struggling to distinguish AI-generated nonsense from genuine work
-  - Some journals now require **AI usage disclosure** — but enforcement is hard
+- card(green, 🛡️): Constructing the Corridor in Advance (Rustam)
+  - "Ethics, accountability, and other necessary protocols should be constructed in advance, rather than only after AI reaches a level where problems become difficult to control"
+  - We have a narrow window to define the corridor while human society and AI co-evolve
 
-- card(green, 🛡️): How Do We Prevent It?
-  - Is **individual vigilance** enough?
-  - Do we need **institutional safeguards** (mandatory verification checklists)?
-  - Should there be **AI-detection tools** for academic publishing?
-  - Or must we **maintain human expertise** so we can spot errors?
+- card(purple, ⚖️): The Principal Architect's Duty (Minh, Nurul, Jeonghyeon)
+  - Researchers must stand as final arbiters of scientific accountability
+  - Human critical thinking and ethical stewardship cannot be automated away
 
-- highlight-quote: "Our civilization is built on trust. If we stop verifying, the entire body of knowledge could become contaminated." — from your Week 1 responses
-
-=====
-
-## Slide: Debate Point 5 — Discussion Activity
-- type: card-single
-- title: 🗣️ **Live Discussion** — Academic Integrity 2.0
-- subtitle: 10 minutes — Propose a solution
-
-- card(yellow, 💡): Prompt
-  - You are on a committee updating your university's **academic integrity policy** for AI.
-  - Draft **3 rules** that balance:
-  - Allowing researchers to **benefit from AI efficiency**
-  - Preventing **contamination** of the scientific record
-  - Not creating so much **bureaucratic overhead** that nobody follows the rules
-  - Think about: disclosure requirements, verification mandates, liability
+- highlight-quote: "We are getting closer to an era where AI develops toward deeper meaning... we should think about these boundaries now, while we still have the opportunity." — Rustam Yuldashev
 
 =====
 
@@ -976,23 +889,22 @@ print(chat("Hello!", backend="ollama"))
 ## Slide: Connecting Parrot Theory to Your Practice
 - type: cards
 - title: What the **Stochastic Parrot** Means for Your Debates
-- subtitle: Linking theory to the debate points you just discussed
+- subtitle: Linking Bender's theory directly back to your Week 1 positions
 
-- card(pink, 🤔): If LLMs Are Parrots...
-  - Their **confidence** tells you nothing — a parrot sounds sure even when wrong
-  - Your verification protocols from Debate Point 2 become even more critical
-  - **Fluent nonsense** is the greatest risk — it passes casual inspection
+- card(pink, 🤔): If LLMs Are Stochastic Parrots...
+  - A parrot predicts tokens probabilistically without grounding, world models, or moral accountability
+  - Its **confidence** tells you nothing — fluent nonsense sounds identical to truth
+  - This is why **Minh Le Tran** warned that hallucinations pose systemic threats to empirical reproducibility
 
-- card(blue, 🔄): Your Week 1 Responses, Revisited
-  - You said "verify AI output" — but a parrot can produce **internally consistent** nonsense
-  - Cross-checking against **external sources** is the only real defense
-  - The "Accountability Test" you defined works — but requires **domain expertise** to apply
+- card(blue, 🔄): Your Week 1 Insights, Validated by Theory
+  - **Khine Wai Zin's Checkpoints**: Parrots are great at low-risk pattern work (formatting, screening), but must NEVER be trusted unchecked on data transformations or citations
+  - **Nurul & Jeonghyeon's Double-Check**: Because parrots have no fact-checking mechanism, external source verification is mathematically necessary
+  - **Firman's "Banner Anxiety"**: Approaching the model with healthy, vigilant skepticism prevents being seduced by fluent output
 
-- card(green, ❓): The Open Question
-  - If AI becomes so good that you **can't tell** parrot from understanding — does it matter?
-  - Gyeongsu argued: "moving beyond mere assistant to become a true partner"
-  - Margareth countered: AI still can't do "truly logical reasoning"
-  - **This tension will define the next decade of AI in research**
+- card(green, ❓): The Open Horizon (Rustam's Challenge)
+  - **Rustam** observed AI advancing toward deeper linguistic meaning and the sense of "self"
+  - Is next-token prediction merely a "stochastic parrot", or is emergent cognition appearing at scale?
+  - As research directors, you must navigate this boundary every day in your lab!
 
 =====
 
