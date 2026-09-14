@@ -76,6 +76,8 @@ graph LR
     style F fill:#e8f5e9,stroke:#388e3c
 ```
 
+![self-attention](image/week_02/self-attention.png)
+
 ![1773026292248](image/week_02/1773026292248.png)
 
 > 📚 [Attention Is All You Need — Vaswani et al. 2017 (arXiv)](https://arxiv.org/abs/1706.03762)
@@ -88,6 +90,8 @@ graph LR
 - subtitle: Text in, numbers out — every character costs money
 
 - highlight-quote: "LLMs don't read words — they read tokens. Token count determines cost, speed, and context limits."
+
+![tokenizer](image/week_02/tokenizer.png)
 
 ```text
 Input:  "Understanding AI agents is essential"
@@ -789,122 +793,6 @@ print(chat("Hello!", backend="ollama"))
   - You said: "verify AI output" — but what exactly are you verifying **against**?
   - If the AI **doesn't understand** what it produces, its confidence tells you **nothing**
   - As research directors, you need to understand what the "brain" of your agent actually does
-
-=====
-
-## Slide: What Is the Stochastic Parrot
-- type: cards
-- title: What Is the **"Stochastic Parrot"**?
-- subtitle: A critical perspective on what LLMs actually do
-
-- card(blue, 📄): Source
-  - From the paper **"On the Dangers of Stochastic Parrots"** (Bender et al., 2021)
-  - Idea: LLMs may **imitate** patterns in data without **understanding** or **grounding** in the world
-
-- card(orange, 🦜): The Metaphor
-  - **"Stochastic"** = random (sampling from probability distributions)
-  - **"Parrot"** = repeating / recombining what was seen in training data
-  - Raises the question: Do LLMs *understand*? Or only *reproduce* statistics?
-
-> 📚 [On the Dangers of Stochastic Parrots — Bender et al. 2021 (ACM)](https://dl.acm.org/doi/10.1145/3442188.3445922)
-
-=====
-
-## Slide: Philosophical Frameworks
-- type: cards
-- title: Three Frameworks for **"Understanding"**
-- subtitle: How do we even define understanding? Philosophy has debated this for decades
-
-- card(blue, 🏠): Chinese Room (Searle, 1980)
-  - A person in a room follows **rules to manipulate Chinese symbols** without understanding Chinese
-  - Argument: **Symbol manipulation ≠ understanding**
-  - Applied to LLMs: Processing tokens according to learned patterns may not constitute understanding
-
-- card(orange, 🖥️): Turing Test (Turing, 1950)
-  - If a machine is **indistinguishable** from a human in conversation, does the difference matter?
-  - Argument: **Behavioral equivalence may be sufficient** for practical purposes
-  - Applied to LLMs: If the output is useful and correct, does "true understanding" matter?
-
-- card(green, 🧬): Embodied Cognition
-  - Understanding requires **grounding in physical experience** — seeing, touching, acting
-  - Language alone may not be enough for real-world understanding
-  - Applied to LLMs: Text-only models lack sensory grounding — can they truly "understand" physics or chemistry?
-
-> **Image Prompt**: "Three philosophical perspectives on AI understanding shown as three illuminated doorways: (1) Chinese Room — a scholar manipulating symbol cards in an isolated room, (2) Turing Test — a human and computer behind a screen with a judge, (3) Embodied Cognition — a brain connected to sensory organs and hands. Academic illustration style, warm muted colors, thoughtful mood."
-
-=====
-
-## Slide: Evidence For and Against
-- type: compare-table
-- title: **"Parrot"** vs **"Understanding"** — Evidence
-- subtitle: Both sides have compelling arguments
-
-| Evidence | "Stochastic Parrot" (Imitation) | "Emergent Understanding" |
-|----------|--------------------------------|--------------------------|
-| **Novel combinations** | Recombines training data patterns | Generates code/solutions **never seen** in training |
-| **Reasoning** | Pattern matching, not true logic | Chain-of-thought solves **multi-step math** correctly |
-| **Failures** | Confidently wrong on simple logic puzzles | But humans also make systematic errors |
-| **Generalization** | Fails on out-of-distribution tasks | Shows **transfer learning** to new domains |
-| **Grounding** | No physical experience, no real "meaning" | Multimodal models (vision+language) show grounding |
-
-- highlight-quote: "The question is not whether LLMs 'truly understand' — it's whether the distinction matters for your research workflow."
-
-=====
-
-## Slide: Why It Matters for Research Directors
-- type: cards
-- title: Why It Matters for **Research Directors**
-- subtitle: If the agent's "brain" is a stochastic parrot, what are we directing?
-
-- card(pink, 🤔): Trust & Verification
-  - Can we trust summaries, literature reviews, or code that might be fluent but ungrounded?
-  - **Fluent ≠ factual** — always verify claims against primary sources
-
-- card(green, 👤): Human-in-the-Loop
-  - Your role as director includes checking facts, logic, and ethics — not just accepting output
-  - "The AI said so" is never enough; the director is accountable
-
-- card(blue, 🎯): Practical Guideline
-  - **Acceptable to delegate**: Formatting, translation, code boilerplate, initial drafts
-  - **Requires verification**: Facts, citations, statistical claims, experimental conclusions
-  - **Never delegate**: Ethical judgments, final sign-off, accountability
-
-=====
-
-## Slide: Case Study
-- type: card-single
-- title: 🔬 **Case Study** — LLM in Your Research Domain
-- subtitle: Think about your own field
-
-- card(yellow, 💡): Consider Your Domain
-  - **Chemistry**: LLM predicts molecular properties — is it "understanding" chemistry or matching patterns?
-  - **Biology**: LLM summarizes papers on gene function — what if it halluccinates a mechanism?
-  - **Materials Science**: LLM suggests synthesis parameters — would you trust it without experimental validation?
-  - **Physics**: LLM derives an equation — is it doing math or pattern-matching LaTeX?
-
-- highlight-quote: "In your specific research field, where does 'parrot-like' fluency become dangerous? Where is it still useful?"
-
-=====
-
-## Slide: Connecting Parrot Theory to Your Practice
-- type: cards
-- title: What the **Stochastic Parrot** Means for Your Debates
-- subtitle: Linking Bender's theory directly back to your Week 1 positions
-
-- card(pink, 🤔): If LLMs Are Stochastic Parrots...
-  - A parrot predicts tokens probabilistically without grounding, world models, or moral accountability
-  - Its **confidence** tells you nothing — fluent nonsense sounds identical to truth
-  - This is why **Minh Le Tran** warned that hallucinations pose systemic threats to empirical reproducibility
-
-- card(blue, 🔄): Your Week 1 Insights, Validated by Theory
-  - **Khine Wai Zin's Checkpoints**: Parrots are great at low-risk pattern work (formatting, screening), but must NEVER be trusted unchecked on data transformations or citations
-  - **Nurul & Jeonghyeon's Double-Check**: Because parrots have no fact-checking mechanism, external source verification is mathematically necessary
-  - **Firman's "Banner Anxiety"**: Approaching the model with healthy, vigilant skepticism prevents being seduced by fluent output
-
-- card(green, ❓): The Open Horizon (Rustam's Challenge)
-  - **Rustam** observed AI advancing toward deeper linguistic meaning and the sense of "self"
-  - Is next-token prediction merely a "stochastic parrot", or is emergent cognition appearing at scale?
-  - As research directors, you must navigate this boundary every day in your lab!
 
 =====
 

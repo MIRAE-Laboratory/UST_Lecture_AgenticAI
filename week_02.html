@@ -816,6 +816,8 @@
             style D fill:#fff3e0,stroke:#f57c00
             style F fill:#e8f5e9,stroke:#388e3c</div>
         </div>
+        <div class="image-container"><img src="image/week_02/self-attention.png" alt="self-attention" class="slide-img"
+            onclick="openModal('image/week_02/self-attention.png')"></div>
         <div class="image-container"><img src="image/week_02/1773026292248.png" alt="1773026292248" class="slide-img"
             onclick="openModal('image/week_02/1773026292248.png')"></div>
         <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="reference-link">📚 Attention Is All You Need —
@@ -828,6 +830,8 @@
         <p class="slide-subtitle">Text in, numbers out — every character costs money</p>
         <div class="highlight-quote">"LLMs don't read words — they read tokens. Token count determines cost, speed, and
           context limits."</div>
+        <div class="image-container"><img src="image/week_02/tokenizer.png" alt="tokenizer" class="slide-img"
+            onclick="openModal('image/week_02/tokenizer.png')"></div>
         <pre class="code-block"><code class="language-text">Input:  "Understanding AI agents is essential"
 Tokens: ["Under", "standing", " AI", " agents", " is", " essential"]
 IDs:    [16, 8714, 15592, 12875, 374, 7718]</code></pre>
@@ -1939,236 +1943,6 @@ print(chat("Hello!", backend="ollama"))</code></pre>
     </section>
     <section class="slide" id="slide-37">
       <div class="slide-content">
-        <h2 class="slide-title">What Is the <strong>"Stochastic Parrot"</strong>?</h2>
-        <p class="slide-subtitle">A critical perspective on what LLMs actually do</p>
-        <div class="cards-grid">
-          <div class="card card-blue">
-            <div class="card-header"><span class="icon">📄</span> Source</div>
-            <div class="card-body">
-              <ul>
-                <li>From the paper <strong>"On the Dangers of Stochastic Parrots"</strong> (Bender et al., 2021)</li>
-                <li>Idea: LLMs may <strong>imitate</strong> patterns in data without <strong>understanding</strong> or
-                  <strong>grounding</strong> in the world
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-orange">
-            <div class="card-header"><span class="icon">🦜</span> The Metaphor</div>
-            <div class="card-body">
-              <ul>
-                <li><strong>"Stochastic"</strong> = random (sampling from probability distributions)</li>
-                <li><strong>"Parrot"</strong> = repeating / recombining what was seen in training data</li>
-                <li>Raises the question: Do LLMs <em>understand</em>? Or only <em>reproduce</em> statistics?</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <a href="https://dl.acm.org/doi/10.1145/3442188.3445922" target="_blank" class="reference-link">📚 On the
-          Dangers of Stochastic Parrots — Bender et al. 2021 (ACM)</a>
-      </div>
-    </section>
-    <section class="slide" id="slide-38">
-      <div class="slide-content">
-        <h2 class="slide-title">Three Frameworks for <strong>"Understanding"</strong></h2>
-        <p class="slide-subtitle">How do we even define understanding? Philosophy has debated this for decades</p>
-        <div class="cards-grid">
-          <div class="card card-blue">
-            <div class="card-header"><span class="icon">🏠</span> Chinese Room (Searle, 1980)</div>
-            <div class="card-body">
-              <ul>
-                <li>A person in a room follows <strong>rules to manipulate Chinese symbols</strong> without
-                  understanding Chinese</li>
-                <li>Argument: <strong>Symbol manipulation ≠ understanding</strong></li>
-                <li>Applied to LLMs: Processing tokens according to learned patterns may not constitute understanding
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-orange">
-            <div class="card-header"><span class="icon">🖥️</span> Turing Test (Turing, 1950)</div>
-            <div class="card-body">
-              <ul>
-                <li>If a machine is <strong>indistinguishable</strong> from a human in conversation, does the difference
-                  matter?</li>
-                <li>Argument: <strong>Behavioral equivalence may be sufficient</strong> for practical purposes</li>
-                <li>Applied to LLMs: If the output is useful and correct, does "true understanding" matter?</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-green">
-            <div class="card-header"><span class="icon">🧬</span> Embodied Cognition</div>
-            <div class="card-body">
-              <ul>
-                <li>Understanding requires <strong>grounding in physical experience</strong> — seeing, touching, acting
-                </li>
-                <li>Language alone may not be enough for real-world understanding</li>
-                <li>Applied to LLMs: Text-only models lack sensory grounding — can they truly "understand" physics or
-                  chemistry?</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="highlight-quote"><strong>Image Prompt</strong>: "Three philosophical perspectives on AI
-          understanding shown as three illuminated doorways: (1) Chinese Room — a scholar manipulating symbol cards in
-          an isolated room, (2) Turing Test — a human and computer behind a screen with a judge, (3) Embodied Cognition
-          — a brain connected to sensory organs and hands. Academic illustration style, warm muted colors, thoughtful
-          mood."</div>
-      </div>
-    </section>
-    <section class="slide" id="slide-39">
-      <div class="slide-content">
-        <h2 class="slide-title"><strong>"Parrot"</strong> vs <strong>"Understanding"</strong> — Evidence</h2>
-        <p class="slide-subtitle">Both sides have compelling arguments</p>
-        <table class="styled-table">
-          <thead>
-            <tr>
-              <th>Evidence</th>
-              <th>"Stochastic Parrot" (Imitation)</th>
-              <th>"Emergent Understanding"</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Novel combinations</strong></td>
-              <td>Recombines training data patterns</td>
-              <td>Generates code/solutions <strong>never seen</strong> in training</td>
-            </tr>
-            <tr>
-              <td><strong>Reasoning</strong></td>
-              <td>Pattern matching, not true logic</td>
-              <td>Chain-of-thought solves <strong>multi-step math</strong> correctly</td>
-            </tr>
-            <tr>
-              <td><strong>Failures</strong></td>
-              <td>Confidently wrong on simple logic puzzles</td>
-              <td>But humans also make systematic errors</td>
-            </tr>
-            <tr>
-              <td><strong>Generalization</strong></td>
-              <td>Fails on out-of-distribution tasks</td>
-              <td>Shows <strong>transfer learning</strong> to new domains</td>
-            </tr>
-            <tr>
-              <td><strong>Grounding</strong></td>
-              <td>No physical experience, no real "meaning"</td>
-              <td>Multimodal models (vision+language) show grounding</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="highlight-quote">"The question is not whether LLMs 'truly understand' — it's whether the distinction
-          matters for your research workflow."</div>
-      </div>
-    </section>
-    <section class="slide" id="slide-40">
-      <div class="slide-content">
-        <h2 class="slide-title">Why It Matters for <strong>Research Directors</strong></h2>
-        <p class="slide-subtitle">If the agent's "brain" is a stochastic parrot, what are we directing?</p>
-        <div class="cards-grid">
-          <div class="card card-pink">
-            <div class="card-header"><span class="icon">🤔</span> Trust & Verification</div>
-            <div class="card-body">
-              <ul>
-                <li>Can we trust summaries, literature reviews, or code that might be fluent but ungrounded?</li>
-                <li><strong>Fluent ≠ factual</strong> — always verify claims against primary sources</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-green">
-            <div class="card-header"><span class="icon">👤</span> Human-in-the-Loop</div>
-            <div class="card-body">
-              <ul>
-                <li>Your role as director includes checking facts, logic, and ethics — not just accepting output</li>
-                <li>"The AI said so" is never enough; the director is accountable</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-blue">
-            <div class="card-header"><span class="icon">🎯</span> Practical Guideline</div>
-            <div class="card-body">
-              <ul>
-                <li><strong>Acceptable to delegate</strong>: Formatting, translation, code boilerplate, initial drafts
-                </li>
-                <li><strong>Requires verification</strong>: Facts, citations, statistical claims, experimental
-                  conclusions</li>
-                <li><strong>Never delegate</strong>: Ethical judgments, final sign-off, accountability</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="slide" id="slide-41">
-      <div class="slide-content">
-        <h2 class="slide-title">🔬 <strong>Case Study</strong> — LLM in Your Research Domain</h2>
-        <p class="slide-subtitle">Think about your own field</p>
-        <div class="cards-grid">
-          <div class="card card-yellow">
-            <div class="card-header"><span class="icon">💡</span> Consider Your Domain</div>
-            <div class="card-body">
-              <ul>
-                <li><strong>Chemistry</strong>: LLM predicts molecular properties — is it "understanding" chemistry or
-                  matching patterns?</li>
-                <li><strong>Biology</strong>: LLM summarizes papers on gene function — what if it halluccinates a
-                  mechanism?</li>
-                <li><strong>Materials Science</strong>: LLM suggests synthesis parameters — would you trust it without
-                  experimental validation?</li>
-                <li><strong>Physics</strong>: LLM derives an equation — is it doing math or pattern-matching LaTeX?</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="highlight-quote">"In your specific research field, where does 'parrot-like' fluency become
-          dangerous? Where is it still useful?"</div>
-      </div>
-    </section>
-    <section class="slide" id="slide-42">
-      <div class="slide-content">
-        <h2 class="slide-title">What the <strong>Stochastic Parrot</strong> Means for Your Debates</h2>
-        <p class="slide-subtitle">Linking Bender's theory directly back to your Week 1 positions</p>
-        <div class="cards-grid">
-          <div class="card card-pink">
-            <div class="card-header"><span class="icon">🤔</span> If LLMs Are Stochastic Parrots...</div>
-            <div class="card-body">
-              <ul>
-                <li>A parrot predicts tokens probabilistically without grounding, world models, or moral accountability
-                </li>
-                <li>Its <strong>confidence</strong> tells you nothing — fluent nonsense sounds identical to truth</li>
-                <li>This is why <strong>Minh Le Tran</strong> warned that hallucinations pose systemic threats to
-                  empirical reproducibility</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-blue">
-            <div class="card-header"><span class="icon">🔄</span> Your Week 1 Insights, Validated by Theory</div>
-            <div class="card-body">
-              <ul>
-                <li><strong>Khine Wai Zin's Checkpoints</strong>: Parrots are great at low-risk pattern work
-                  (formatting, screening), but must NEVER be trusted unchecked on data transformations or citations</li>
-                <li><strong>Nurul & Jeonghyeon's Double-Check</strong>: Because parrots have no fact-checking mechanism,
-                  external source verification is mathematically necessary</li>
-                <li><strong>Firman's "Banner Anxiety"</strong>: Approaching the model with healthy, vigilant skepticism
-                  prevents being seduced by fluent output</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-green">
-            <div class="card-header"><span class="icon">❓</span> The Open Horizon (Rustam's Challenge)</div>
-            <div class="card-body">
-              <ul>
-                <li><strong>Rustam</strong> observed AI advancing toward deeper linguistic meaning and the sense of
-                  "self"</li>
-                <li>Is next-token prediction merely a "stochastic parrot", or is emergent cognition appearing at scale?
-                </li>
-                <li>As research directors, you must navigate this boundary every day in your lab!</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="slide" id="slide-43">
-      <div class="slide-content">
         <h2 class="slide-title">🗣️ <strong>Week 2 Discussion Questions</strong> (UST LMS)</h2>
         <p class="slide-subtitle">Post your response on the forum this week</p>
         <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
@@ -2182,7 +1956,7 @@ print(chat("Hello!", backend="ollama"))</code></pre>
           specific research field. What gets checked? How? By whom?</p>
       </div>
     </section>
-    <section class="slide" id="slide-44">
+    <section class="slide" id="slide-38">
       <div class="slide-content">
         <h2 class="slide-title">Want to Learn More?</h2>
         <p class="slide-text">Key Papers</p>
@@ -2212,7 +1986,7 @@ print(chat("Hello!", backend="ollama"))</code></pre>
           from scratch — Andrej Karpathy (YouTube)</a>
       </div>
     </section>
-    <section class="slide" id="slide-45">
+    <section class="slide" id="slide-39">
       <div class="slide-content">
         <h2 class="slide-title">Wrap-Up of <strong>Week 2</strong></h2>
         <p class="slide-subtitle">Three things to remember</p>
@@ -2262,7 +2036,7 @@ print(chat("Hello!", backend="ollama"))</code></pre>
       <div class="nav-controls">
         <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
         <div class="page-input-wrapper">
-          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">45</span>
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">39</span>
         </div>
         <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
       </div>
@@ -2278,7 +2052,7 @@ print(chat("Hello!", backend="ollama"))</code></pre>
   <script>
     const pres = document.getElementById('presentation');
     const pageInput = document.getElementById('pageInput');
-    const totalSlides = 45;
+    const totalSlides = 39;
     let currentSlide = 1;
 
     // Modal logic
