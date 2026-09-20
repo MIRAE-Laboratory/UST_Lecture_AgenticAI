@@ -1,6 +1,6 @@
 ## Slide: Title
 - type: title
-- title: The Art of Instruction: System Prompts & Your First Agent
+- title: The Art of Instruction: System Prompts & Personas
 - subtitle: From Vague Requests to Precise Directives — Controlling the LLM Brain
 
 > Week 3 of Phase 1: Onboarding & Literacy (Weeks 1-4)
@@ -14,11 +14,11 @@
 
 - card(blue, 📖): 1. Lecture
   - The Art of Instruction: Prompt Engineering & System Prompts
-  - RICE framework, Chain-of-Thought, and common anti-patterns
+  - RICE, few-shot, structured outputs, prompt caching — and what changes now that models reason by default (2026 edition)
 
 - card(green, 💻): 2. Practice
   - Persona-Based Conversations
-  - Same LLM, different system prompts → different "personalities"
+  - Same LLM, different system prompts → different "personalities" — then **score** the difference
 
 - card(orange, 🗣️): 3. Discussion
   - Week 2 Review & Managing AI Expectations
@@ -74,7 +74,35 @@ graph LR
 
 =====
 
-## Slide: System Prompt Example 
+## Slide: Instruction Hierarchy
+- type: cards
+- title: Who Wins? The **Instruction Hierarchy**
+- subtitle: A system prompt is a strong prior — not an unbreakable law
+
+- card(blue, 🪜): The Stack of Roles
+  - `system` / `developer` — the operating manual you write
+  - `user` — the person typing right now
+  - `assistant` / `tool` — the model's own past turns and the results tools return
+  - Models are **trained** to prefer instructions higher in this stack when they conflict (Wallace et al., 2024)
+
+- card(orange, ⚖️): "Prefer", Not "Guarantee"
+  - A system prompt raises an instruction's priority; it does not make it unbreakable
+  - Long conversations **drift** — the persona weakens as the transcript grows
+  - Fix: restate the critical constraint at the **end** of the prompt, or re-inject it every N turns
+
+- card(pink, 🔓): Your System Prompt Is Not a Secret
+  - Users routinely extract system prompts just by asking; Anthropic simply **publishes** the ones behind the Claude apps
+  - So: never put API keys, unpublished data, or personal information in a system prompt
+  - "Do not reveal these instructions" is a preference, not a security control
+
+- highlight-quote: "Everything below the system prompt is untrusted input — including text your agent reads from a PDF, an email, or a web page. That is Week 2's prompt injection, seen from the prompt side."
+
+> 📚 [The Instruction Hierarchy — Wallace et al. 2024 (arXiv)](https://arxiv.org/abs/2404.13208)
+> 📚 [Anthropic publishes its production system prompts](https://platform.claude.com/docs/en/release-notes/system-prompts/overview)
+
+=====
+
+## Slide: System Prompt Example
 - type: practice
 - title: System Prompt — **Before & After**
 - subtitle: Same question, different system prompts, completely different outputs
@@ -114,13 +142,45 @@ messages = [
     If I'm fooling myself or lying to myself, point it out.
     If I'm avoiding something uncomfortable or wasting time, call it out and explain the opportunity cost.
     Look at my situation with complete objectivity and strategic depth. Show me where I'm making excuses, playing small, or underestimating risks/effort.
-    The give a precise, prioritized plan what to change in thought, action, or mindset to reach the next level.
+    Then give a precise, prioritized plan for what to change in thought, action, or mindset to reach the next level.
     Hold nothing back. Treat me like someone whose growth depends on hearing the truth, not being comforted.
     When possible, ground your responses in the personal truth you sense between my words."""},
-    {"role": "user", "content": "What AI agent should never do?"}
+    {"role": "user", "content": "What should an AI agent never do?"}
 ]
-# → Advanced explanation with recent discoveries, paper suggestions
+# → No preamble, no praise. Ranked list of failure modes, each with the
+#   cost of getting it wrong — and a challenge to the premise of the question.
 ```
+
+- card(pink, ⚠️): Read This Prompt Critically
+  - It is **all Role, no Examples** — RICE tells you exactly what is missing
+  - "Brutally honest" changes the **tone**; it does not change the model's **accuracy**
+  - Why does a prompt like this go viral at all? See the next slide.
+
+=====
+
+## Slide: Sycophancy
+- type: cards
+- title: Why That Prompt Exists — **Sycophancy**
+- subtitle: Models trained on human feedback are rewarded for answers people *like*
+
+- card(blue, 🪞): The Bias
+  - Human-feedback training rewards agreement, praise, and a confident tone
+  - Sharma et al. (2023): every major RLHF assistant tested showed **sycophancy** — it abandons a correct answer when the user pushes back
+  - April 2025: OpenAI **rolled back** a GPT-4o update after one week for being "overly flattering"
+  - This is exactly the failure mode your Week 1 discussion called "the AI that agrees with you into a corner"
+
+- card(green, 🛠️): What Actually Helps
+  - Ask for the critique **before** revealing your own position: "List 3 weaknesses" beats "Isn't my design good?"
+  - Never signal the answer you want inside the question
+  - Ask for **evidence and a confidence level**, not a verdict
+  - Ask the same question twice, once phrased for and once against — compare
+
+- card(pink, ⚠️): The Limit of the "Brutal Honesty" Prompt
+  - Rudeness is a **style**, not a truth serum — a harsh answer can be just as wrong
+  - It over-corrects: it will manufacture criticism of work that is actually fine
+  - Use it to **surface** blind spots, then verify each claim like any other output
+
+> 📚 [Towards Understanding Sycophancy in Language Models — Sharma et al. 2023 (arXiv)](https://arxiv.org/abs/2310.13548)
 
 =====
 
@@ -226,6 +286,7 @@ not encouragement.
   - "Respond in JSON with keys: title, authors, year, findings"
   - "Use markdown tables for comparisons"
   - Structured output is essential for **agent tool integration**
+  - Stronger still: enforce a **JSON Schema** so the format *cannot* be violated (see "Structured Outputs")
 
 - card(orange, 🔢): 3. Use Numbered Steps
   - "Step 1: Read the abstract. Step 2: Identify the hypothesis. Step 3: ..."
@@ -269,7 +330,48 @@ Now extract from the user's abstract in the same JSON format.
   - Start with 2-3 examples; add more if output is inconsistent
   - Works for any format: JSON, tables, bullet points, code
 
-> 📚 [Few-Shot Prompting Guide — OpenAI](https://platform.openai.com/docs/guides/prompt-engineering)
+> 📚 [Prompt engineering guide — OpenAI](https://developers.openai.com/api/docs/guides/prompt-engineering)
+
+=====
+
+## Slide: Structured Outputs
+- type: practice
+- title: Beyond "Please Reply in JSON" — **Structured Outputs**
+- subtitle: Do not ask for a format. Enforce a schema.
+
+- card(orange, 🙏): The 2023 Way (fragile)
+  - "Respond in JSON with keys: title, authors, year"
+  - Works most of the time → then returns a Markdown code fence, an apology, or a missing key
+  - Your parser crashes at 3 a.m. on paper #417
+
+- card(green, 🔒): The 2026 Way (guaranteed)
+  - Every major API can **constrain decoding to a JSON Schema** — invalid output becomes impossible, not unlikely
+  - OpenAI: `response_format` with a JSON Schema, or a Pydantic model
+  - Gemini: `response_format` with `mime_type: "application/json"` + `schema`
+  - Ollama: `format=<schema>` — schema enforcement works on your laptop too
+
+```python
+from pydantic import BaseModel
+from openai import OpenAI
+
+class PaperInfo(BaseModel):          # the schema IS the specification
+    material: str
+    method: str
+    application: str
+
+client = OpenAI()
+resp = client.chat.completions.parse(
+    model="gpt-5.6-luna",
+    messages=[{"role": "user", "content": abstract}],
+    response_format=PaperInfo,       # decoding is constrained to this shape
+)
+info = resp.choices[0].message.parsed    # already a validated PaperInfo
+```
+
+- highlight-quote: "Few-shot examples teach *style*; a schema enforces *structure*. Use examples for what to say and schemas for the shape it must arrive in — this is the mechanism that makes next week's tool calling reliable."
+
+> 📚 [OpenAI — Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+> 📚 [Gemini API — Structured output](https://ai.google.dev/gemini-api/docs/structured-output)
 
 =====
 
@@ -292,13 +394,14 @@ Now extract from the user's abstract in the same JSON format.
   - "Analyze this dataset step by step: (1) check for outliers, (2) test normality, (3) select appropriate test, (4) interpret results"
   - Forces the model to follow **your methodology**, not its default behavior
   - You can **verify each step** independently
+  - ⚠️ 2026: frontier models now do this unprompted — see "Prompting Reasoning Models" in two slides
 
 ```text
 Without CoT: "The answer is 42."  (no way to verify)
 With CoT:    "Step 1: ... Step 2: ... Step 3: ... Therefore, 42."  (auditable)
 ```
 
-![1773651314916](image/week3-slides/1773651314916.png)
+![1773651314916](image/week_03/1773651314916.png)
 
 > 📚 [Chain-of-Thought Prompting — Wei et al. 2022](https://arxiv.org/abs/2201.11903)
 > 📚 [Boosting Language Models Reasoning with Chain-of-Knowledge Prompting — Wang et al. 2024](https://aclanthology.org/2024.acl-long.271.pdf)
@@ -330,6 +433,60 @@ If any assumption is violated, suggest an alternative approach.
 
 =====
 
+## Slide: Prompting Reasoning Models
+- type: cards
+- title: 2026 Update — **Chain-of-Thought Is Now Built In**
+- subtitle: What changes when the model already thinks before it answers
+
+- card(blue, 🧠): The Shift
+  - 2022: *you* had to write "let's think step by step"
+  - 2026: frontier models are **trained** to reason first and expose an **effort / thinking budget** dial (low → max)
+  - The reasoning happens in tokens you pay for and often never see in full
+
+- card(pink, 🚫): What Stops Working
+  - "Think step by step" on a reasoning model is redundant — and prescribing **every** intermediate step can make the answer worse
+  - `temperature` is ignored or rejected by several reasoning models; the effort dial has replaced it
+  - Few-shot examples help **less**; a crisp goal with hard constraints helps **more**
+
+- card(green, ✅): What to Do Instead
+  - State the **goal, the constraints, and what "done" looks like** — then let the model plan the route
+  - Raise **effort** for a hard problem instead of adding "think harder" to the text
+  - Keep classic CoT for **small, local, non-reasoning** models — `qwen3.5:0.8b` still needs the nudge
+  - Still ask for the reasoning to be *shown* when you need to audit it — that was your Week 2 demand
+
+- highlight-quote: "On a classic model you engineer the reasoning. On a reasoning model you engineer the specification."
+
+> 📚 [OpenAI — Reasoning models guide](https://developers.openai.com/api/docs/guides/reasoning)
+> 📚 [Chain-of-Thought Prompting — Wei et al. 2022 (arXiv)](https://arxiv.org/abs/2201.11903)
+
+=====
+
+## Slide: Prompt Caching
+- type: cards
+- title: The Cost of a Long System Prompt — **Prompt Caching**
+- subtitle: You re-send your entire persona on every single turn
+
+- card(orange, 💸): The Hidden Bill
+  - A 2,000-token persona in a 20-turn chat = **40,000 input tokens**; you paid for the same text 20 times
+  - Agents are worse: system prompt **plus tool definitions** are re-sent on every loop iteration
+  - This is why "just add more instructions" is not free
+
+- card(green, ⚡): The Fix
+  - Mark the stable prefix as cached: on Anthropic a cache **read costs ~0.1×** the normal input price, a write 1.25×
+  - Minimum cacheable prefix ≈ 512–4,096 tokens depending on the model; default lifetime 5 minutes (1 hour at 2×)
+  - OpenAI and Gemini cache too — automatically or explicitly. The mechanics differ; the design rule does not
+
+- card(blue, 📐): The Prompt-Design Rule
+  - **Stable first**: role, instructions, examples, tool definitions, reference documents
+  - **Variable last**: today's date, the user's question, retrieved snippets
+  - Changing one word near the top **invalidates the whole cache** — freeze the persona, iterate at the bottom
+
+- highlight-quote: "Prompt caching turns prompt *order* into an engineering decision: stable prefix, variable suffix."
+
+> 📚 [Anthropic — Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
+
+=====
+
 ## Slide: Anti-Patterns
 - type: cards
 - title: Prompt **Anti-Patterns** — What NOT to Do
@@ -355,6 +512,11 @@ If any assumption is violated, suggest an alternative approach.
   - Fix: Use CoT so you can **audit the reasoning**; verify claims externally
   - Remember Week 2: fluency ≠ accuracy
 
+- card(green, ❌): 5. Superstitions and Stale Recipes
+  - "I'll tip you $200", "my career depends on this", ALL-CAPS THREATS → no reliable, reproducible gain
+  - "Be accurate. Do not hallucinate." → a wish, not a constraint. Give the model a source, a schema, or a tool instead
+  - Pasting a 2023 mega-prompt into a 2026 reasoning model: half of it is now noise, and some of it actively hurts
+
 =====
 
 ## Slide: Prompt vs Traditional Programming
@@ -370,6 +532,8 @@ If any assumption is violated, suggest an alternative approach.
 | **Determinism** | Same input → same output | Same prompt → varied outputs |
 | **Errors** | Crashes, exceptions | Subtle wrong answers (hallucination) |
 | **Iteration** | Edit code, recompile | Edit prompt, re-run |
+| **Testing** | Unit tests, CI | **Evals** — fixed cases scored before/after |
+| **Cost** | CPU time | Per token, and you re-send the prompt every turn (cache it) |
 
 - highlight-quote: "Prompt engineering is programming where the 'compiler' has opinions — and sometimes ignores your instructions."
 
@@ -410,6 +574,31 @@ graph LR
 
 =====
 
+## Slide: Context Engineering
+- type: cards
+- title: From Prompt Engineering to **Context Engineering**
+- subtitle: With a 1M-token window the question is no longer "what do I write?" but "what do I include?"
+
+- card(blue, 🎒): The New Framing
+  - Prompt engineering = writing the instruction. **Context engineering** = curating everything in the window: instructions, tool definitions, retrieved documents, and message history
+  - Anthropic's target: the **smallest set of high-signal tokens** that gets the outcome — context is an attention budget, not free storage
+
+- card(orange, 📉): More Context ≠ Better Answers
+  - **Lost in the middle** (Liu et al., 2023): facts buried mid-document are recalled worst; the beginning and the end are recalled best
+  - **Context rot**: as the window fills, instruction-following degrades — the persona slips and constraints quietly get dropped
+  - Week 2: 1M-token windows exist, cost more, and still lose detail
+
+- card(green, 🧭): Practical Rules
+  - Put the task instruction **at the end**, after a long document — or repeat it at both ends
+  - Include the 5 relevant pages, not the 200-page manual
+  - Aim for the **right altitude**: specific enough to steer, general enough not to be brittle
+  - Summarize and drop old turns instead of letting the history grow forever (Week 12: memory & RAG)
+
+> 📚 [Effective Context Engineering for AI Agents — Anthropic 2025](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+> 📚 [Lost in the Middle — Liu et al. 2023 (arXiv)](https://arxiv.org/abs/2307.03172)
+
+=====
+
 ## Slide: System Prompt for Agents
 - type: cards
 - title: System Prompts for **Agents** — Beyond Chat
@@ -426,10 +615,36 @@ graph LR
   - Define explicit **boundaries**: what the agent CAN and CANNOT do
   - Remember Week 2: prompt injection can hijack agent behavior
 
-- card(orange, 🔧): Tool Descriptions
-  - System prompts tell the agent what tools exist and when to use them
+- card(orange, 🔧): Tool Definitions Are Part of the Prompt
+  - The agent learns what tools exist, and when to use them, from text you write
   - "You have access to: search_papers(query), read_file(path), run_code(code)"
-  - The LLM decides **which tool to call** based on the user's request
+  - The LLM decides **which tool to call** from those descriptions — badly described tools are mis-called tools
+  - They are re-sent on every loop iteration, so they consume context and cost on every step (Week 4)
+
+=====
+
+## Slide: Agent Prompts in the Wild
+- type: cards
+- title: Where Agent System Prompts Actually Live — **AGENTS.md, Skills**
+- subtitle: In 2026 the system prompt is a file in your repository, not a paragraph in a chat box
+
+- card(blue, 📄): AGENTS.md / CLAUDE.md
+  - An open Markdown convention read automatically by coding agents — used by **60,000+ open-source repositories**
+  - Contains build commands, test commands, code conventions, and "never touch these files"
+  - It is a **system prompt under version control**, reviewed in pull requests like any other code
+
+- card(green, 🧩): Agent Skills — Progressive Disclosure
+  - A `SKILL.md` whose frontmatter carries `name` + `description`; the body loads **only when the description matches** the task
+  - ~100 tokens per skill at startup, full instructions only on demand — the practical answer to "my system prompt is too long"
+  - Same RICE content, written once, reused across every session
+
+- card(orange, 🔬): Why This Matters for Your Research
+  - Your lab's analysis conventions, file layout, and safety rules belong in a file, not in yesterday's chat history
+  - A prompt in a repo can be **versioned, diffed, reviewed, and tested**; a prompt in a chat window cannot
+  - Today's `system_prompt_example.md` is exactly this pattern in miniature
+
+> 📚 [AGENTS.md — the open format](https://agents.md/)
+> 📚 [Anthropic — Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 
 =====
 
@@ -443,18 +658,26 @@ graph LR
   - Layer all four for the most effective system prompts
 
 - card(green, 🧮): Key Techniques
-  - **Few-shot prompting**: teach by example (most reliable for formatting)
-  - **Chain-of-Thought**: "think step by step" for complex reasoning
+  - **Few-shot prompting**: teach by example (most reliable for style)
+  - **Structured outputs**: a JSON Schema makes the shape guaranteed, not likely
+  - **Chain-of-Thought**: still essential for small/local models; built in on frontier models — steer the **effort dial** instead
   - **Prompt chaining**: break complex tasks into simple, auditable steps
+
+- card(pink, 🆕): The 2026 Layer
+  - **Instruction hierarchy**: system > user > tool output — a strong prior, not a guarantee, and never a place for secrets
+  - **Prompt caching**: stable prefix first, variable suffix last — order is now an engineering decision
+  - **Context engineering**: the smallest set of high-signal tokens beats the biggest window
+  - **Evals**: test a prompt change like a code change
 
 - card(orange, ⚠️): Avoid Anti-Patterns
   - Be specific, define format, set constraints, verify outputs
   - One prompt = one task; chain calls for complex workflows
+  - Watch for **sycophancy** — never signal the answer you want
 
 References:
 > 📚 [Chain-of-Thought Prompting — Wei et al. 2022](https://arxiv.org/abs/2201.11903)
-> 📚 [OpenAI Prompt Engineering Guide](https://platform.openai.com/docs/guides/prompt-engineering)
-> 📚 [Anthropic Prompt Engineering Guide](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering)
+> 📚 [OpenAI — Prompt engineering guide](https://developers.openai.com/api/docs/guides/prompt-engineering)
+> 📚 [Anthropic — Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
 
 =====
 
@@ -479,13 +702,13 @@ References:
 
 - card(green, 🎭): What You'll Do
   - Write system prompts for **3 different personas**
-  - Have a conversation with each persona using the **same research question**
-  - Compare how each persona responds differently
-  - Iterate on your prompts to improve results
+  - Ask each persona the **same research question**
+  - **Score** the three answers on a shared rubric instead of trusting your first impression
+  - Iterate on one prompt and re-score it — that is a one-minute eval
 
 - card(orange, 🔧): Tools We'll Use
-  - `practices/week3/ex1_system_prompt.py` (CLI, Gemini)
-  - `practices/week3/system_prompt_example.md` (system prompt template)
+  - `practices/week3/ex1_system_prompt.py` (CLI, Gemini via `google-genai`)
+  - `practices/week3/system_prompt_example.md` (system prompt template — a file, under git)
   - (Optional) `practices/week3/ollama_streamlit_app.py` (Streamlit Web UI: Ollama ↔ Gemini)
   - Your API keys live in `practices/.env` (**do not commit**)
 
@@ -497,8 +720,8 @@ References:
 - subtitle: Install deps and set `practices/.env`
 
 ```bash
-# From repo root
-pip install google-generativeai python-dotenv
+# From repo root  (NOT the retired google-generativeai — see Week 2)
+pip install google-genai openai python-dotenv
 ```
 
 ```text
@@ -536,7 +759,7 @@ python ex1_system_prompt.py system_prompt_example.md -i
 - subtitle: Chat in a browser and switch providers
 
 ```bash
-pip install streamlit requests google-generativeai python-dotenv
+pip install streamlit requests google-genai python-dotenv
 cd practices/week3
 streamlit run ollama_streamlit_app.py
 ```
@@ -624,7 +847,7 @@ mechanisms (feasibility: 1, novelty: 5) ..."
 # Role
 You are a senior research advisor specializing in [YOUR FIELD].
 You have deep knowledge of [SPECIFIC SUBFIELD] and are familiar
-with the latest developments as of 2025.
+with the latest developments as of 2026.
 
 # Instructions
 - Answer questions with graduate-level depth and precision
@@ -675,6 +898,27 @@ input/output format you want]
 
 =====
 
+## Slide: Scoring Rubric
+- type: compare-table
+- title: Step 4 — **Score Them**, Don't Just Feel the Difference
+- subtitle: Same question, three personas, one table — fill it in during the session
+
+| Criterion (score 1–5) | What you are actually judging | Reviewer | Brainstormer | Advisor |
+|---|---|---|---|---|
+| **Specificity** | Concrete enough to act on tomorrow? |  |  |  |
+| **Correctness** | Did every claim you spot-checked hold up? |  |  |  |
+| **Actionability** | Did it produce a next step, not a lecture? |  |  |  |
+| **Format compliance** | Did it obey the output format you specified? |  |  |  |
+| **Persona fidelity** | Did it stay in character to the last line? |  |  |  |
+| **Hallucinations** | Count of invented citations / facts (lower = better) |  |  |  |
+
+- card(yellow, 💡): How to Use It
+  - Score **before** deciding which persona you liked — tone is persuasive, content may not be
+  - The lowest cell names the RICE component to fix: format → **Instructions**, generic → **Context**, off-character → **Role**, inconsistent shape → add **Examples** or a schema
+  - Bring the filled table to the forum post: a scored comparison beats "Persona 2 felt better"
+
+=====
+
 ## Slide: Iterating on Prompts
 - type: cards
 - title: **Iterating** on Your System Prompts
@@ -692,10 +936,49 @@ input/output format you want]
   - "Breaks character" → Add: "Stay in character at all times. Never break persona."
   - "Doesn't follow format" → Add explicit **output format template**
 
-- card(orange, 💡): Pro Tip — Temperature
-  - **Lower temperature** (0.0-0.3) → more consistent, focused responses
-  - **Higher temperature** (0.7-1.0) → more creative, varied responses
-  - Use low temp for Strict Reviewer, high temp for Creative Brainstormer
+- card(orange, 💡): Pro Tip — Temperature *and* Effort
+  - **Lower temperature** (0.0–0.3) → more consistent, focused responses
+  - **Higher temperature** (0.7–1.0) → more creative, varied responses
+  - Use low temp for the Strict Reviewer, high temp for the Creative Brainstormer
+  - On a **reasoning model** `temperature` may be ignored or rejected — raise the **effort / thinking budget** instead
+  - Local models react strongly to temperature: `qwen3.5:0.8b` is the cheapest place to see the effect
+
+=====
+
+## Slide: Prompt Evals
+- type: practice
+- title: Stop Vibing — **Test a Prompt Like Code**
+- subtitle: A prompt change is a code change, so it deserves a regression test
+
+- card(blue, 📋): The Minimum Viable Eval
+  - Freeze **5–10 real inputs** from your own research — not toy examples
+  - Write down what a good answer must contain **before** you look at any output
+  - Run version A and version B over all of them and count the passes
+  - Anthropic's own guide puts this *before* prompt engineering: define success criteria, then build evaluations
+
+- card(green, 🗂️): Version Your Prompts
+  - Keep each persona in its own `.md` file — as we do today — and commit it to git
+  - Commit message = what changed and why: "advisor: add 'say unknown' rule → fewer invented DOIs"
+  - Six months from now you will need to know **which prompt produced the figure in your paper**
+
+```python
+CASES = [   # (question, keywords a good answer must contain)
+    ("Review my ZnO synthesis plan", ["xrd", "control", "reproducib"]),
+    ("Which test for n=12, non-normal data?", ["mann-whitney", "assumption"]),
+]
+
+def score(system_prompt):
+    passed = 0
+    for question, must_mention in CASES:
+        out = ask(system_prompt, question).lower()      # your chat() from Week 2
+        passed += all(k in out for k in must_mention)
+    return passed / len(CASES)      # v1: 0.4 → v2: 0.9  ← now it is a number
+
+```
+
+- highlight-quote: "If you cannot say what would make the new prompt *worse*, you are not testing it — you are re-reading it."
+
+> 📚 [Anthropic — Define success criteria & build evaluations](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests)
 
 =====
 
@@ -706,15 +989,22 @@ input/output format you want]
 
 ```python
 # Have a back-and-forth conversation with your persona
+# Same OpenAI-compatible pattern as Week 2 — swap the backend in two lines
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
 load_dotenv()
-client = OpenAI()  # or use Ollama, Gemini, etc.
 
-SYSTEM_PROMPT = """..."""  # Your persona system prompt here
+client = OpenAI(                                  # Gemini through the OpenAI client
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+    api_key=os.getenv("GOOGLE_API_KEY"),
+)
+MODEL = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
+# Local instead:  OpenAI(base_url="http://localhost:11434/v1", api_key="ollama"), MODEL="qwen3.5:0.8b"
 
+# The persona lives in a file, not in this script — so you can version it
+SYSTEM_PROMPT = open("system_prompt_example.md", encoding="utf-8").read()
 messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
 print("🎭 Persona Chat (type 'quit' to exit)")
@@ -726,11 +1016,10 @@ while True:
         break
     messages.append({"role": "user", "content": user_input})
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=messages
-    )
-    reply = response.choices[0].message.content
+    reply = client.chat.completions.create(
+        model=MODEL, messages=messages           # full history re-sent every turn → cache the prefix
+    ).choices[0].message.content
+
     messages.append({"role": "assistant", "content": reply})
     print(f"\n🎭 Persona: {reply}")
 ```
@@ -775,11 +1064,13 @@ while True:
   - [ ] Write a system prompt for **Persona 1** (Strict Reviewer) using RICE
   - [ ] Write a system prompt for **Persona 2** (Creative Brainstormer) using RICE
   - [ ] Write a system prompt for **Persona 3** (Your Field Advisor) — customize for YOUR research
-  - [ ] Ask the **same research question** to all 3 personas and compare outputs
-  - [ ] **Iterate**: refine at least one prompt based on the output you got
+  - [ ] Ask the **same research question** to all 3 personas and fill in the **scoring rubric**
+  - [ ] **Iterate** one prompt, re-run the same question, and record whether the score went up
+  - [ ] Keep each persona in its own `.md` file and **commit it** — your first versioned prompt
+  - [ ] (Bonus) Force an answer into a **JSON Schema** and parse it without a try/except
   - [ ] (Bonus) Create a **4th persona** from the Showcase slide or your own idea
   - [ ] (Bonus) Have a **multi-turn conversation** with your best persona (3+ exchanges)
-  - [ ] (Bonus) Try the same persona with **different temperatures** and compare
+  - [ ] (Bonus) Same persona, **different temperature / effort** — what actually changes?
 
 =====
 
@@ -795,7 +1086,7 @@ while True:
 ## Slide: Week 2 Discussion Review — The Question
 - type: cards
 - title: Week 2 Review — **The Stochastic Parrot Problem**
-- subtitle: How much can we trust probabilistic answers? Three AI agents debated.
+- subtitle: How much can we trust probabilistic answers? Three AI agents debated — and 8 of you answered.
 
 - card(orange, 🦸): Iron Man — "Engineer the Solution"
   - The stochastic parrot isn't a trust crisis — it's a **data-processing utility**
@@ -817,210 +1108,216 @@ while True:
 ## Slide: Week 2 Discussion Review — Your Votes
 - type: cards
 - title: How Did You Vote?
-- subtitle: Strong consensus toward pragmatic verification — but with surprising diversity
+- subtitle: 8 responses — Hulk swept the room, and nobody defended Captain America alone
 
-- card(green, 📊): Voting Results
-  - **Hulk (Option 3)** dominated again — pragmatic verification resonated most (Tran, Lin, Irfan, Namcheol, Hyunwoo, Nazhiefah)
-  - **Iron Man (Option 1)** gained ground this week — several students found the engineering argument compelling (Gyeongsu, Margareth, Jaewhoon)
-  - **Captain America (Option 2)** attracted those emphasizing the **sequence** of reasoning (Manuella, DongYun, Waad)
-  - Many students combined positions — showing **nuanced, evolving thinking** since Week 1
+- card(green, 📊): The Count
+  - **Hulk (3)** — Nurul, Qasim, Azzahra, and the primary position of Najwa and Young Gyu: treat every output as a hypothesis
+  - **Iron Man (1)** — Minh, alone, and with the most operational answer of the week
+  - **Iron Man + Hulk (1+3)** — Jeonghyeon, and Najwa for the people *building* the tools
+  - **All three, partially** — Rustam, who reframed the question instead of answering it
+  - **Captain America (2)** — **zero votes as a position**, yet two of you argued its concern is the real one
 
-- card(purple, 💡): Key Shift from Week 1
-  - Week 1: "Should we trust AI?" → Week 2: "**How** do we manage its uncertainty?"
-  - The conversation matured from **boundaries** to **engineering solutions**
-  - Nobody dismissed AI's utility — the debate shifted to **how to harness it safely**
+- card(purple, 💡): The Shift From Week 1
+  - Week 1 asked *whether* AI belongs in research; Week 2 asked **how much of its output you may believe**
+  - Nobody proposed rejecting AI, and nobody proposed trusting it. Every single response contained a verification step
+  - The disagreement moved from **yes/no** to **where, how much, and at what cost**
+
+- highlight-quote: "Captain America received no votes and still won the argument twice — both Young Gyu and Rustam adopted Hulk's method while conceding Cap's worry."
 
 =====
 
 ## Slide: Week 2 Discussion Review — Key Themes
 - type: cards
 - title: Key Themes from **Your Responses**
-- subtitle: Five ideas that emerged across the class
+- subtitle: Five ideas that ran through the thread
 
 - card(blue, 🎯): 1. Hypothesis, Not Truth
-  - Nearly everyone converged: treat AI output as a **hypothesis requiring validation**
-  - Like a "preliminary simulation result that must be confirmed by experimental data" (Namcheol)
-  - AI-generated results are "starting points rather than reliable facts" (DongYun)
+  - The phrase appeared in almost every post, independently
+  - "Researchers should treat LLM-generated answers as **hypotheses** and verify them using reliable sources" (Nurul)
+  - "Every answer from AI should be treated as an **initial hypothesis** that still needs to be checked" (Azzahra)
+  - "An engine for generating hypotheses that **demand my empirical proof**" (Najwa)
 
-- card(orange, 🔧): 2. The Engineering Mindset
-  - Knowing AI is stochastic isn't a crisis — it's a **design constraint**
-  - Build validation frameworks and systems that **tolerate errors** (Jaewhoon, Margareth)
-  - The real risk isn't AI's nature — it's **how humans interpret** the outputs (Margareth)
+- card(orange, 🎭): 2. Confidence Is Not Correctness
+  - "Outputs may sound **convincing even when they are inaccurate**" (Nurul)
+  - AI "can produce incorrect information, biased results, or even completely made-up facts **without realizing that they are wrong**" (Qasim)
+  - "AI basically **predicts the most likely answer** based on probability, not because it really *knows* the facts" (Azzahra)
+  - Three people, three phrasings, one mechanism — this is Week 2's lecture restated in your own words
 
-- card(green, ⚖️): 3. Balance Over Extremes
-  - Too much caution → miss AI's benefits; too little → catastrophic errors
-  - "Achieving balance among accuracy, ethics, and technology" (Waad)
-  - Use AI for ideas/hypotheses, but verify before treating as fact (Tran, Irfan)
+- card(green, 🔁): 3. Verification Was Never Optional
+  - "Even when research is conducted **entirely by humans**, verification is still an essential part of the process" (Jeonghyeon)
+  - The claim is not that AI is uniquely unreliable — it is that AI makes an existing duty **cheaper to skip**
+  - Minh's version: provisional outputs under human-in-the-loop oversight give "speed **without compromising empirical rigor**"
 
-- card(pink, 🤖): 4. Domain-Specific Stakes
-  - In robotics, "logic errors can cause actual hardware damage" (Hyunwoo)
-  - In nuclear/materials, "the margin for error is non-existent" (Namcheol)
-  - Higher stakes → more rigorous verification; but even low-stakes errors compound
+- card(pink, 🧠): 4. The Hidden Cost Is Narrowed Thinking
+  - "This convenience can also **limit the range of our thinking**" (Young Gyu)
+  - The danger is not the wrong answer you catch — it is the right-looking answer that stops you looking further
+  - The only theme in the thread that verification does **not** fix
 
-- card(purple, 🧠): 5. The Human Remains Accountable
-  - "The responsibility for the work remains with the individual" (Manuella)
-  - AI as a "powerful but volatile engine that requires constant monitoring" (Namcheol)
-  - "If we accept results without being able to explain the underlying logic, AI becomes a risk" (Hyunwoo)
+- card(purple, 📐): 5. Trust Is a Variable, Not a Constant
+  - "I don't think we should completely trust AI, but I also don't think we should completely distrust it" (Rustam)
+  - Najwa splits it by **role**: Iron Man for the engineers building the tools, Hulk for the scientist using them
+  - Nobody asked "can we trust AI?" any more. You asked **how much, for what, at what stake**
 
 =====
 
-## Slide: Debate Point 1 — Managed Probability
+## Slide: Debate Point 1 — The Verification Protocol
 - type: cards
-- title: Debate Point 1 — **Is AI Uncertainty Really New?**
-- subtitle: Jaewhoon's provocative insight — everything around us is already probabilistic
+- title: Debate Point 1 — **"Understanding Is Irrelevant"**
+- subtitle: Minh answered the philosophical question by refusing it — and shipped a protocol instead
 
-- card(blue, 🏭): "Stochastic Is Normal" (Jaewhoon)
-  - Hardware products reach market not because they **never fail**, but because failure probability is **manageable**
-  - Cars, buildings, airplanes — all designed with **probability of failure** in mind
-  - Companies manage errors through inspection, repair, compensation, and **regulatory guidelines**
-  - Even human organizations make probabilistic errors — companies collapse from misjudging market signals
+- card(orange, ⚙️): The Position (Minh)
+  - "LLMs are powerful **execution utilities**, not autonomous thinkers"
+  - "Whether they truly *understand* is **irrelevant** as long as the output is accurate and scientifically useful"
+  - "Our real responsibility lies in **engineering robust validation frameworks**"
 
-- card(green, 🔧): The Engineering Conclusion
-  - "The key challenge is not eliminating AI errors entirely but designing **systems that can tolerate and manage them** effectively"
-  - Unless a fundamentally new type of AI emerges, **stochastic nature will remain**
-  - So: stop trying to make AI perfect → start building **error-tolerant systems**
+- card(blue, 🧱): The Three Layers
+  - **Workflow Scoping** — define task constraints and expected boundaries **upfront**
+  - **Step-by-Step Review** — audit the intermediate logic, cross-verify outputs against **primary ground-truth data**
+  - **Iterative Refinement** — calibrate the prompts, correct the failure points dynamically
+  - Note what each layer maps to in today's lecture: RICE, Chain-of-Thought, and the iteration loop
 
 - card(pink, 🤔): The Counter-Argument
-  - Hardware failures are **detectable** — a bridge crack is visible; an AI hallucination looks correct
-  - Traditional systems have **well-defined failure modes**; LLM failures are **unpredictable**
-  - Can you apply reliability engineering to a system whose errors are **indistinguishable from correct output**?
+  - Layer 2 assumes the intermediate steps are **inspectable**. What do you audit when the model shows you a fluent paragraph and no working?
+  - Layer 1 assumes you can state the boundary in advance — but the failures that matter are the ones you did not anticipate
+  - And if "understanding is irrelevant as long as the output is accurate", **how do you establish accuracy** without the very verification the protocol is trying to make cheap?
 
-- highlight-quote: "AI based on current computing technology is inherently stochastic. The key challenge is not eliminating errors but designing systems that can tolerate and manage them." — Jaewhoon
+- highlight-quote: "Treating AI outputs strictly as provisional hypotheses under human-in-the-loop oversight provides speed without compromising empirical rigor." — Minh
 
 =====
 
 ## Slide: Debate Point 1 — Discussion Activity
 - type: card-single
-- title: 🗣️ **Live Discussion** — Error Tolerance Engineering
-- subtitle: 10 minutes — Design an error-tolerant AI system
+- title: 🗣️ **Live Discussion** — Build Minh's Protocol for Your Own Work
+- subtitle: 10 minutes — turn three layers into three concrete steps
 
 - card(yellow, 💡): Discussion Prompt
-  - Jaewhoon compares AI error tolerance to **hardware reliability testing**.
-  - In hardware, we have: inspection schedules, acceptable failure rates, warranty systems, regulatory standards
-  - **Design an analogous framework for AI in your research:**
-  - What is the "acceptable failure rate" for AI outputs in your field?
-  - What is your "inspection schedule" (how often do you verify)?
-  - What is your "warranty" (what happens when AI output causes a problem)?
-  - What "regulatory standards" should exist for AI-assisted research?
+  - Take one task you will actually give an AI this month
+  - **Layer 1 — Scoping**: write the constraints and boundaries *before* the prompt. What must it never do?
+  - **Layer 2 — Review**: what is your **primary ground-truth source** for this task? A dataset, an instrument reading, a paper you have read? If you cannot name one, you cannot run this layer
+  - **Layer 3 — Refinement**: what will you change in the prompt when it fails — and how will you know it failed?
+  - Then the hard question: which of the three layers do you **actually** perform today, and which one do you skip when you are busy?
 
 =====
 
-## Slide: Debate Point 2 — Hallucination as Creativity
+## Slide: Debate Point 2 — The Narrowing Problem
 - type: cards
-- title: Debate Point 2 — **Can Hallucination Be a Feature?**
-- subtitle: A provocative claim — what if errors drive creativity?
+- title: Debate Point 2 — **Does the Hypothesis List Close Your Mind?**
+- subtitle: Young Gyu found the one failure mode that verification cannot catch
 
-- card(green, 💡): "Hallucination Sparks Creativity" (Gyeongsu)
-  - AI's utility is "simply too immense to ignore" — it will eventually **surpass the singularity**
-  - Over-controlling AI "might kill the creativity and originality" we want from it
-  - "Some scholars argue that hallucination is not a harmful error but the very thing that **sparks creativity and uniqueness**"
-  - Too much validation → no AGI; we need to **tolerate some randomness**
+- card(blue, ⏱️): The Benefit He Grants
+  - LLMs "provide hypotheses or possible options that are **worth examining first**"
+  - "This can save researchers a great deal of time and effort because it reduces the need to explore **every possible direction** from the beginning"
+  - He is not arguing against using AI — he uses it, and recommends it
 
-- card(pink, ❌): "Hallucination Is Misinformation" (Nazhiefah, Hyunwoo)
-  - Hallucination leads to "the most catastrophe in information — **misinformation**" (Nazhiefah)
-  - In engineering, "probabilistic answers can disguise hallucinations as **plausible predictions**" (Hyunwoo)
-  - Creativity is valuable — but **only when the creator knows the output is speculative**
+- card(pink, 🚪): The Cost He Noticed
+  - "I sometimes find myself checking the options suggested by AI first and then wondering, **'Are these really the only possibilities?'**"
+  - "As we become more accustomed to following the directions suggested by AI, we may have **fewer opportunities to explore other possibilities** on our own"
+  - This is **anchoring**: the first plausible list becomes the boundary of the search
 
-- card(orange, 🎯): The Tension
-  - In **brainstorming and ideation** → randomness is a feature (unexpected connections)
-  - In **verification and publication** → randomness is a bug (false confidence)
-  - The same property (stochasticity) is a **strength or weakness** depending on the task
-  - How do you **label** which mode the AI is in?
+- card(orange, ⚖️): Why This Is Different From Hallucination
+  - A hallucination is a wrong answer — you can verify it away
+  - A narrowed option set is **three correct answers and a missing fourth**. Every verification step passes
+  - Rustam's Week 1 concern about *time* and Young Gyu's concern about *range* are the same worry seen from two sides
+
+- highlight-quote: "In an era where AI is developing rapidly, a more realistic approach is to actively use AI while treating its answers as hypotheses that still need to be verified — rather than spending too much time debating whether AI truly understands what it is saying." — Young Gyu
 
 =====
 
 ## Slide: Debate Point 2 — Discussion Activity
 - type: card-single
-- title: 🗣️ **Live Discussion** — When Is "Wrong" Useful?
-- subtitle: 5 minutes — Quick debate
+- title: 🗣️ **Live Discussion** — Write the Anti-Anchoring Prompt
+- subtitle: 10 minutes — today's lecture, aimed at Young Gyu's problem
 
 - card(yellow, 💡): Challenge
-  - Think of **one scenario** in your research where an AI "hallucination" could actually be **useful**
-  - And **one scenario** where it would be **catastrophic**
-  - What distinguishes the two? Is it the task, the stakes, the user's expertise, or something else?
-  - Could you design a system prompt (using RICE!) that explicitly **encourages creative speculation** vs one that **demands strict accuracy**? How would they differ?
+  - Young Gyu's problem is a **prompt design** problem. Fix it with RICE
+  - **Version A** — the prompt that causes the narrowing: "What method should I use for X?"
+  - **Version B** — a prompt that resists it. Some tools you now have:
+  - *"Generate 5 approaches spanning different families before recommending any one."*
+  - *"For each option, state the assumption that would make it the wrong choice."*
+  - *"List what a researcher who disagrees with your recommendation would propose."*
+  - Run both on a real question from your work. Did B surface an option A never mentioned?
+  - Honest check: does B cost you the time saving that made you use AI in the first place?
 
 =====
 
-## Slide: Debate Point 3 — The Interpretation Problem
+## Slide: Debate Point 3 — Where Is the Boundary
 - type: cards
-- title: Debate Point 3 — **The Real Risk Is Human, Not AI**
-- subtitle: Multiple students argue: the danger is how WE interpret AI outputs
+- title: Debate Point 3 — **"Where Should We Set the Boundary of Trust?"**
+- subtitle: Rustam started from the definition and ended with a better question
 
-- card(blue, 🔍): "The Problem Is the User" (Margareth)
-  - If we already **know** AI is stochastic, "it's no longer a problem"
-  - The real risk is that "probabilistic answers can **appear authoritative** even when they are wrong"
-  - Users must treat outputs as "**hypotheses or suggestions** rather than definitive truths"
-  - Over-cautious checking of every step means "you are **missing out** on the ability to see the whole system"
+- card(blue, 📖): First, the Term
+  - "Stochastic parrot" comes from Bender, Gebru, McMillan-Major and Shmitchell (2021), *On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?*
+  - **"Stochastic"** — the probabilistic nature of the process
+  - **"Parrot"** — reproducing language "without necessarily possessing the same kind of understanding that a human speaker has"
+  - "I always try to start my research from the basics before discussing a more complicated issue" — a habit worth stealing
 
-- card(orange, 📐): "Sequence Matters" (Manuella)
-  - Human reasoning should come **FIRST**, then AI refines
-  - "Genuine ideas originate from **human reasoning**" — AI recombines patterns, not understands
-  - The correct sequence: **1)** Human designs the idea → **2)** AI generates/explores → **3)** Human verifies
-  - Reversing this sequence is where dependency begins
+- card(green, 🧭): Then, the Reframe
+  - Iron Man is right that AI is a capable tool; Captain America is right that **plausibility is not truth**; Hulk is right that outputs need validation
+  - "However, I think there is another important question: **Where should we set the boundary of trust?**"
+  - "I don't think we should completely trust AI, but I also don't think we should completely distrust it"
 
-- card(green, 🧪): "Hypothesis Framework" (Namcheol, DongYun)
-  - Treat AI output like a **preliminary simulation result**
-  - "Fluent text" tempts us to treat it as verified truth — this is the core danger
-  - Maintain "**scientific anxiety**" as a necessary safeguard (Namcheol)
-  - "Usefulness should not be the basis for trust" (DongYun)
+- card(orange, 📐): The Three Variables
+  - **What** we are asking the AI to do
+  - **How important** the information is
+  - **What could happen** if the answer is wrong
+  - Trust becomes a function of task, stakes and consequence — not a property of the model
 
-- highlight-quote: "The real risk may not lie in the stochastic nature of the tool itself, but in how humans interpret its outputs." — Margareth
+- highlight-quote: "The level of trust should depend on what we are asking AI to do, how important the information is, and what could happen if the answer is wrong." — Rustam
 
 =====
 
 ## Slide: Debate Point 3 — Discussion Activity
 - type: card-single
-- title: 🗣️ **Live Discussion** — Design Your Workflow Sequence
-- subtitle: 10 minutes — Apply Manuella's "sequence" idea to your research
+- title: 🗣️ **Live Discussion** — Plot Your Own Trust Boundary
+- subtitle: 10 minutes — make Rustam's three variables into a grid you can use
 
 - card(yellow, 💡): Exercise
-  - Pick a **specific research task** you do regularly (literature review, data analysis, experiment design, paper writing)
-  - Design **two workflows** for this task:
-  - **Workflow A — Human First**: You think first, then use AI to refine/expand
-  - **Workflow B — AI First**: AI generates a draft, then you review/correct
-  - Which workflow produces **better results** for this task? Why?
-  - Is there a task where **AI first** is actually better? (Hint: brainstorming, initial exploration)
-  - How does today's **RICE framework** help you design better prompts for each workflow?
+  - Draw a 2×2: **stakes** (low/high) on one axis, **cost of being wrong** (recoverable/irreversible) on the other
+  - Place five real tasks from your research into the four cells — be specific, not categorical
+  - For each cell decide: AI drafts and you skim · AI drafts and you verify every claim · AI assists but never produces the artefact · AI is not used
+  - Now the test: pick the task you placed in the **safest** cell. What would have to be true for it to move? Who would notice if it did?
+  - Compare grids with a neighbour from a different field. Whose "low stakes" is the other's "irreversible"?
 
 =====
 
-## Slide: Debate Point 4 — The Trust Spectrum
+## Slide: Debate Point 4 — Machinery and Harness
 - type: cards
-- title: Debate Point 4 — **Where on the Trust Spectrum?**
-- subtitle: From "fully trust" to "fully verify" — the class splits on where to draw the line
+- title: Debate Point 4 — **The Metaphors You Reached For**
+- subtitle: Three images of the same relationship — and what each one hides
 
-- card(blue, ⚡): The "Build Frameworks" Camp (Iron Man supporters)
-  - Gyeongsu: AI utility is "too immense to ignore" — focus on **harnessing**, not fearing
-  - Margareth: Knowing it's stochastic means it's "no longer a problem" — just engineer around it
-  - Jaewhoon: Design **error-tolerant systems** like we do for hardware
-  - Approach: accept the uncertainty, build **systematic guardrails**
+- card(blue, 🏗️): "Machinery and Safety Harness" (Najwa)
+  - "Iron Man's approach is the **powerful machinery that scales our capabilities**, while Hulk's scientific rigor serves as the **essential safety harness**"
+  - She splits the two positions by **role**, not by correctness: Iron Man's mindset for the technicians and developers building these tools, Hulk's for the scientist using them
+  - "We need to harness the utility of these models to process massive datasets **without getting paralyzed by their limitations**"
 
-- card(green, 🔍): The "Verify Everything" Camp (Hulk supporters)
-  - Namcheol: In nuclear/materials, "the margin for error is **non-existent**"
-  - Hyunwoo: In robotics, unverified AI outputs cause "**actual hardware damage**"
-  - Irfan, Lin: AI can be useful but "humans still need to **verify the results**"
-  - Approach: treat every output as hypothesis, **no exceptions**
+- card(green, 🚲): "Training Wheels" (Jeonghyeon)
+  - "Use it as a supportive companion — like **training wheels on a bicycle** that help us move forward while **we remain responsible for steering**"
+  - The hidden claim: training wheels are meant to come **off**. Is that true of AI, or is this a permanent fixture?
+  - And his sharper point: "even when research is conducted entirely by humans, **verification is still an essential part** of the process"
 
-- card(orange, ⚖️): The "It Depends" Position (Synthesizers)
-  - Tran: "Helpful within **certain limits**" — use for ideas, verify for facts
-  - Waad: Balance "accuracy, ethics, and technology" — **context determines trust level**
-  - DongYun: "Starting points rather than reliable facts" — trust varies by **task stakes**
+- card(orange, ⚖️): "Balance" (Qasim)
+  - "Hulk's cautious approach provides a good **balance** between using AI's strengths and avoiding unnecessary risks"
+  - "AI can help us work faster and explore ideas, but we should still **take responsibility** for checking whether the information is actually accurate"
+
+- card(pink, 🔍): What Every Metaphor Leaves Out
+  - A harness catches a fall you can feel. Which of your instruments tells you an AI answer was wrong?
+  - Training wheels never suggest a destination. This one does — that is Young Gyu's narrowing problem again
+  - Machinery scales what you already decided to do; it does not tell you whether it was worth doing
 
 =====
 
 ## Slide: Debate Point 4 — Discussion Activity
 - type: card-single
-- title: 🗣️ **Live Discussion** — Your Personal Trust Policy
-- subtitle: 10 minutes — Apply today's prompt engineering to the trust problem
+- title: 🗣️ **Live Discussion** — Test Your Own Metaphor
+- subtitle: 10 minutes — metaphors are arguments in disguise
 
 - card(yellow, 💡): Scenario
-  - You just learned the **RICE framework** and built your first **agent with tools**.
-  - Now design a **trust policy** that uses today's techniques to manage AI risk:
-  - **Green Zone** (AI acts, minimal review): What system prompt constraints make this safe? What tools does the agent use?
-  - **Yellow Zone** (AI drafts, human reviews): How does Chain-of-Thought make verification easier?
-  - **Red Zone** (human only, AI prohibited): What tasks are too risky even with perfect prompts?
-  - How does this compare to the **3-tier policy** you discussed in Week 2? Has your position evolved?
+  - Write the metaphor **you** use for working with AI, in one sentence. Calculator? Intern? Co-author? Search engine? Slot machine?
+  - Now interrogate it, the way we just did with harness and training wheels:
+  - What does your metaphor say about **who is responsible** when the output is wrong?
+  - What does it say about whether the relationship is **temporary or permanent**?
+  - What failure mode does it make **invisible**?
+  - Swap with a partner and try to break each other's metaphor. Then decide whether yours survives, or whether you need a new one after today's lecture on system prompts.
 
 =====
 
@@ -1034,18 +1331,23 @@ while True:
   - When the model shows its reasoning step by step, you can **audit each step** like checking a proof
   - A bare answer ("the result is X") is unverifiable; a CoT answer ("Step 1... Step 2... therefore X") is auditable
 
-- card(green, 🎭): The "Sequence" Insight Needs RICE
-  - Manuella said: human reasoning first, then AI → this IS the **RICE framework** in action
-  - **Role**: you define what the AI should be; **Context**: you provide your reasoning; **Instructions**: you constrain the output
-  - The human designs the "frame" — the AI fills it in
+- card(green, 🎭): Minh's "Workflow Scoping" Is RICE
+  - Layer 1 of Minh's protocol — constraints and boundaries defined **upfront** — is exactly what a system prompt is
+  - **Role** sets the expertise, **Instructions** set the boundary, **Context** supplies the ground truth, **Examples** fix the shape
+  - Layer 3, "iterative refinement", is today's iteration cycle; Layer 2 is the rubric and the eval
 
-- card(orange, 🔧): The "Error Tolerance" Insight Needs Agents
-  - Jaewhoon said: build systems that tolerate errors → this is what **tool-using agents** do
-  - An agent that uses `calculate()` instead of guessing math → **eliminates one error source**
-  - An agent that uses `search_papers()` instead of inventing citations → **reduces hallucination**
-  - Each tool replaces **stochastic guessing** with **deterministic execution**
+- card(pink, 🚪): Young Gyu's Narrowing Problem Is a Prompt Problem
+  - "Are these really the only possibilities?" — a **default** prompt returns the most probable answer, which is the most conventional one
+  - "Generate 5 approaches from different families, then state what would make each wrong" is a two-line fix
+  - Verification cannot recover an option that was never listed. Only the **prompt** can
 
-- highlight-quote: "Your Week 2 insights about trust, verification, and hypothesis-testing are exactly the problems that prompt engineering and tool use are designed to solve."
+- card(orange, 🔧): Rustam's Boundary Needs Structure — Then Tools
+  - Trust that varies by task and stakes has to be **encoded somewhere**, or it is just an intention
+  - A **JSON Schema** removes one whole class of failure: the answer can no longer be malformed
+  - A prompt **eval** turns "it feels better" into a number you can regress against
+  - **Next week** the same logic goes further: `calculate()` instead of guessing math, `search_papers()` instead of inventing citations — deterministic execution replacing stochastic guessing
+
+- highlight-quote: "Every one of your eight answers contained a verification step. Today is about making that step cheap enough that you actually take it."
 
 =====
 
@@ -1055,15 +1357,15 @@ while True:
 - subtitle: Three weeks of growing sophistication
 
 - card(blue, 📈): Week 1 → Week 2 → Week 3
-  - **Week 1**: "AI is useful but we need boundaries" → defined the assistant/crutch line
-  - **Week 2**: "AI is stochastic — treat outputs as hypotheses" → moved from *if* to *how* to trust
-  - **Week 3 (today)**: You'll learn to **engineer the trust** through prompts, tools, and agent design
-  - Your positions aren't just evolving — they're becoming **actionable**
+  - **Week 1**: "AI is useful but we need boundaries" → risk-tiered checkpoints, the final human call, Rustam's dimension of *time*
+  - **Week 2**: "AI is stochastic — treat outputs as hypotheses" → Minh's three layers, Rustam's boundary of *trust*
+  - **Week 3 (today)**: You'll learn to **engineer** that boundary — prompts, schemas, and evals
+  - Watch Rustam's question mature: Week 1 asked *how long* we have to decide; Week 2 asked *where the line sits*
 
 - card(green, 🎯): From Philosophy to Engineering
   - Week 1: Philosophical debate (assistant vs crutch)
   - Week 2: Scientific framework (hypothesis testing)
-  - Week 3: Engineering solution (RICE + CoT + tools + agents)
+  - Week 3: Engineering solution (RICE + CoT + schemas + evals)
   - **Next**: You'll build increasingly sophisticated agents that embody these principles
 
 =====
@@ -1078,7 +1380,7 @@ graph LR
     W1["Week 1<br>🎯 What is Agentic AI?<br>The Research Director metaphor"]
     W2["Week 2<br>🧠 The LLM Brain<br>Capabilities, limits, security"]
     W3["Week 3<br>📝 Controlling the Brain<br>System prompts + first agent"]
-    W4["Week 4<br>🔧 Next...<br>Advanced agent patterns"]
+    W4["Week 4<br>🔧 Function Calling<br>Tools and the ReAct loop"]
     W1 --> W2 --> W3 --> W4
     style W1 fill:#e1f5fe,stroke:#0288d1
     style W2 fill:#fff3e0,stroke:#f57c00
@@ -1098,9 +1400,9 @@ graph LR
 > Visit: **UST LMS → Class → Discussion**
 
 1. Share your **best persona system prompt** from today's practice (using the RICE framework). What worked well? What did you iterate on? Include a sample exchange showing the persona in action.
-2. Compare the outputs from your **3 personas** (Strict Reviewer, Creative Brainstormer, Your Advisor) for the same question. Which gave the most useful response? Which surprised you? What does this tell you about the **power and limits** of system prompts?
-3. Jaewhoon compared AI error tolerance to hardware reliability testing. Design an **"AI reliability standard"** for your lab: what is the acceptable error rate? How do you measure it? What is the "recall procedure" when an AI error is discovered in published work?
-4. Gyeongsu argued that hallucination might spark creativity. **Do you agree?** Can you design a system prompt that deliberately encourages creative/speculative output AND clearly labels it as unverified? How is this different from a system prompt for verified factual output?
+2. Post your **filled scoring rubric** for the 3 personas on the same question. Which persona won on *score*, and was it the one you liked most? If those differ, what does that say about **sycophancy** and your own judgement?
+3. **Answer Rustam's question with a number.** He asked where the boundary of trust should sit, and named three variables: the task, the importance of the information, and the consequence of being wrong. Draw your own boundary for one real task: what error rate would you accept, how would you measure it, and what is your "recall procedure" if an AI-assisted error reaches a submitted paper?
+4. **Test Young Gyu's narrowing problem on yourself.** Ask an AI for approaches to a problem you know well. Before reading its answer, write down every approach *you* can think of. Compare the lists. Then write a system prompt designed to surface what the first one missed — and report whether it worked. Which parts of "label this as speculative" can a **JSON Schema** enforce rather than merely request?
 
 =====
 
@@ -1110,15 +1412,30 @@ graph LR
 
 Key Papers
 > 📚 [Chain-of-Thought Prompting — Wei et al. 2022](https://arxiv.org/abs/2201.11903)
-> 📚 [ReAct: Synergizing Reasoning and Acting — Yao et al. 2023](https://arxiv.org/abs/2210.03629)
-> 📚 [Toolformer: Language Models Can Teach Themselves to Use Tools — Schick et al. 2023](https://arxiv.org/abs/2302.04761)
+> 📚 [The Instruction Hierarchy — Wallace et al. 2024](https://arxiv.org/abs/2404.13208)
+> 📚 [Towards Understanding Sycophancy in Language Models — Sharma et al. 2023](https://arxiv.org/abs/2310.13548)
+> 📚 [Lost in the Middle — Liu et al. 2023](https://arxiv.org/abs/2307.03172)
 &nbsp;
 
-Guides & Tutorials
-> 📚 [Anthropic Prompt Engineering Guide](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering)
-> 📚 [OpenAI Prompt Engineering Guide](https://platform.openai.com/docs/guides/prompt-engineering)
-> 📚 [Anthropic Tool Use Documentation](https://docs.anthropic.com/en/docs/build-with-claude/tool-use)
-> 📚 [Anthropic Python SDK](https://pypi.org/project/anthropic/)
+Guides & Docs
+> 📚 [Anthropic — Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
+> 📚 [OpenAI — Prompt engineering guide](https://developers.openai.com/api/docs/guides/prompt-engineering)
+> 📚 [OpenAI — Reasoning models](https://developers.openai.com/api/docs/guides/reasoning)
+> 📚 [OpenAI — Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+> 📚 [Gemini API — Structured output](https://ai.google.dev/gemini-api/docs/structured-output)
+> 📚 [Anthropic — Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
+> 📚 [Anthropic — Define success criteria & build evaluations](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests)
+&nbsp;
+
+Prompts as Files (used from Week 4 on)
+> 📚 [Effective Context Engineering for AI Agents — Anthropic 2025](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+> 📚 [AGENTS.md — the open format](https://agents.md/)
+> 📚 [Anthropic — Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
+&nbsp;
+
+Next Week's Reading (tools & function calling)
+> 📚 [ReAct: Synergizing Reasoning and Acting — Yao et al. 2023](https://arxiv.org/abs/2210.03629)
+> 📚 [Toolformer: LMs Can Teach Themselves to Use Tools — Schick et al. 2023](https://arxiv.org/abs/2302.04761)
 &nbsp;
 
 Videos
@@ -1133,12 +1450,12 @@ Videos
 - subtitle: Three things to remember
 
 - card(blue, 📖): Lecture
-  - System prompts control LLM behavior; use the **RICE framework** (Role, Instructions, Context, Examples); Chain-of-Thought makes reasoning auditable
+  - **RICE** (Role, Instructions, Context, Examples) still carries most of the weight; on top of it, 2026 adds the **instruction hierarchy**, **schema-enforced output**, the **effort dial** in place of "think step by step", **prompt caching**, and **context engineering**
 
 - card(green, 💻): Practice
-  - Experienced the power of system prompts through **persona conversations**; same question → 3 different personas → dramatically different outputs
+  - Same question → 3 personas → dramatically different outputs, then **scored on a rubric** and kept in versioned `.md` files
 
 - card(orange, 🗣️): Discussion
-  - Week 2 review: you matured from "should we trust AI?" to "how do we engineer trust?"; today's RICE + CoT + tools are the answer to your own Week 2 insights
+  - Week 2 review: Hulk swept the vote and Captain America got none — yet Young Gyu's narrowing problem and Rustam's "boundary of trust" are the two questions verification alone cannot answer. RICE, schemas and evals are where today's answers start
 
-**Next week:** From prompts to agents — **tool use, ReAct loop**, and building your first CLI agent that takes actions in the real world.
+**Next week:** From prompts to agents — **function calling and the ReAct loop**, connecting your own Python functions so the model stops guessing and starts executing.

@@ -503,7 +503,7 @@
 </head>
 <body>
   <header class="global-header">
-    <span class="header-logo">The Art of Instruction: System Prompts & Your First Agent</span>
+    <span class="header-logo">The Art of Instruction: System Prompts &amp; Personas</span>
     <span class="header-sep">|</span>
     <span class="header-subtitle">From Vague Requests to Precise Directives — Controlling the LLM Brain</span>
   </header>
@@ -513,77 +513,160 @@
 
   <div class="presentation" id="presentation">
     <section class="slide title-slide" id="slide-1">
-<div class="slide-content">
-<h1 class="slide-title">The Art of Instruction: System Prompts & Your First Agent</h1>
-<p class="slide-subtitle">From Vague Requests to Precise Directives — Controlling the LLM Brain</p>
-<div class="highlight-quote">Week 3 of Phase 1: Onboarding & Literacy (Weeks 1-4)</div>
-</div>
-</section>
-<section class="slide" id="slide-2">
-<div class="slide-content">
-<h2 class="slide-title">Contents</h2>
-<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 3</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
-<div class="card-body"><ul><li>The Art of Instruction: Prompt Engineering & System Prompts</li><li>RICE framework, Chain-of-Thought, and common anti-patterns</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
-<div class="card-body"><ul><li>Persona-Based Conversations</li><li>Same LLM, different system prompts → different "personalities"</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
-<div class="card-body"><ul><li>Week 2 Review & Managing AI Expectations</li><li>What can prompts do — and what can't they?</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-3">
-<div class="slide-content">
-<h2 class="slide-title">Why <strong>Prompt Engineering</strong> Matters</h2>
-<p class="slide-subtitle">The prompt is your only interface to the LLM brain</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🧠</span> The Core Insight</div>
-<div class="card-body"><ul><li>LLMs do exactly what you <strong>ask</strong> — not what you <strong>mean</strong></li><li>A vague prompt → vague output; a precise prompt → precise output</li><li><strong>Prompt engineering</strong> = the skill of giving clear, effective instructions to LLMs</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🎯</span> From Week 2</div>
-<div class="card-body"><ul><li>We learned LLMs are next-token predictors trained on massive text</li><li>The <strong>system prompt</strong> is what steers this prediction engine</li><li>Think of it as <strong>programming in natural language</strong></li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"The quality of the output is bounded by the quality of the instruction."</div>
-</div>
-</section>
-<section class="slide" id="slide-4">
-<div class="slide-content">
-<h2 class="slide-title">What Is a <strong>System Prompt</strong>?</h2>
-<p class="slide-subtitle">The hidden instruction that shapes every response</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📝</span> Definition</div>
-<div class="card-body"><ul><li>A <strong>system prompt</strong> is a set of instructions given to the LLM <strong>before</strong> the user's message</li><li>It defines the model's <strong>persona</strong>, <strong>behavior</strong>, <strong>constraints</strong>, and <strong>output format</strong></li><li>The user never sees it — but it controls everything</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔧</span> How It Works</div>
-<div class="card-body"><ul><li>In the API: <code class="inline-code">{"role": "system", "content": "You are a..."}</code></li><li>The LLM treats this as its <strong>operating manual</strong> for the conversation</li><li>Different system prompts → dramatically different behaviors from the <strong>same model</strong></li></ul></div>
-</div>
-</div>
-<div class="mermaid-container"><div class="mermaid">graph LR
-    A["System Prompt<br>(hidden instructions)"] --> C["LLM"]
-    B["User Message<br>(visible question)"] --> C
-    C --> D["Response<br>(shaped by both)"]
-    style A fill:#e1f5fe,stroke:#0288d1
-    style B fill:#fff3e0,stroke:#f57c00
-    style D fill:#e8f5e9,stroke:#388e3c</div></div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-5">
-<div class="slide-content">
-<h2 class="slide-title">System Prompt — <strong>Before & After</strong></h2>
-<p class="slide-subtitle">Same question, different system prompts, completely different outputs</p>
-<pre class="code-block"><code class="language-python"># Without system prompt
+      <div class="slide-content">
+        <h1 class="slide-title">The Art of Instruction: System Prompts & Personas</h1>
+        <p class="slide-subtitle">From Vague Requests to Precise Directives — Controlling the LLM Brain</p>
+        <div class="highlight-quote">Week 3 of Phase 1: Onboarding & Literacy (Weeks 1-4)</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title">Contents</h2>
+        <p class="slide-subtitle">Lecture, Practice, and Discussion for Week 3</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>The Art of Instruction: Prompt Engineering & System Prompts</li>
+                <li>RICE, few-shot, structured outputs, prompt caching — and what changes now that models reason by default (2026 edition)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Persona-Based Conversations</li>
+                <li>Same LLM, different system prompts → different "personalities" — then <strong>score</strong> the difference</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 2 Review & Managing AI Expectations</li>
+                <li>What can prompts do — and what can't they?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="slide-title">Why <strong>Prompt Engineering</strong> Matters</h2>
+        <p class="slide-subtitle">The prompt is your only interface to the LLM brain</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧠</span> The Core Insight</div>
+            <div class="card-body">
+              <ul>
+                <li>LLMs do exactly what you <strong>ask</strong> — not what you <strong>mean</strong></li>
+                <li>A vague prompt → vague output; a precise prompt → precise output</li>
+                <li><strong>Prompt engineering</strong> = the skill of giving clear, effective instructions to LLMs</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🎯</span> From Week 2</div>
+            <div class="card-body">
+              <ul>
+                <li>We learned LLMs are next-token predictors trained on massive text</li>
+                <li>The <strong>system prompt</strong> is what steers this prediction engine</li>
+                <li>Think of it as <strong>programming in natural language</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"The quality of the output is bounded by the quality of the instruction."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title">What Is a <strong>System Prompt</strong>?</h2>
+        <p class="slide-subtitle">The hidden instruction that shapes every response</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📝</span> Definition</div>
+            <div class="card-body">
+              <ul>
+                <li>A <strong>system prompt</strong> is a set of instructions given to the LLM <strong>before</strong> the user's message</li>
+                <li>It defines the model's <strong>persona</strong>, <strong>behavior</strong>, <strong>constraints</strong>, and <strong>output format</strong></li>
+                <li>The user never sees it — but it controls everything</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔧</span> How It Works</div>
+            <div class="card-body">
+              <ul>
+                <li>In the API: <code class="inline-code">{"role": "system", "content": "You are a..."}</code></li>
+                <li>The LLM treats this as its <strong>operating manual</strong> for the conversation</li>
+                <li>Different system prompts → dramatically different behaviors from the <strong>same model</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="mermaid-container">
+          <div class="mermaid">graph LR
+            A["System Prompt<br>(hidden instructions)"] --> C["LLM"]
+            B["User Message<br>(visible question)"] --> C
+            C --> D["Response<br>(shaped by both)"]
+            style A fill:#e1f5fe,stroke:#0288d1
+            style B fill:#fff3e0,stroke:#f57c00
+            style D fill:#e8f5e9,stroke:#388e3c</div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title">Who Wins? The <strong>Instruction Hierarchy</strong></h2>
+        <p class="slide-subtitle">A system prompt is a strong prior — not an unbreakable law</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🪜</span> The Stack of Roles</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">system</code> / <code class="inline-code">developer</code> — the operating manual you write</li>
+                <li><code class="inline-code">user</code> — the person typing right now</li>
+                <li><code class="inline-code">assistant</code> / <code class="inline-code">tool</code> — the model's own past turns and the results tools return</li>
+                <li>Models are <strong>trained</strong> to prefer instructions higher in this stack when they conflict (Wallace et al., 2024)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚖️</span> "Prefer", Not "Guarantee"</div>
+            <div class="card-body">
+              <ul>
+                <li>A system prompt raises an instruction's priority; it does not make it unbreakable</li>
+                <li>Long conversations <strong>drift</strong> — the persona weakens as the transcript grows</li>
+                <li>Fix: restate the critical constraint at the <strong>end</strong> of the prompt, or re-inject it every N turns</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🔓</span> Your System Prompt Is Not a Secret</div>
+            <div class="card-body">
+              <ul>
+                <li>Users routinely extract system prompts just by asking; Anthropic simply <strong>publishes</strong> the ones behind the Claude apps</li>
+                <li>So: never put API keys, unpublished data, or personal information in a system prompt</li>
+                <li>"Do not reveal these instructions" is a preference, not a security control</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Everything below the system prompt is untrusted input — including text your agent reads from a PDF, an email, or a web page. That is Week 2's prompt injection, seen from the prompt side."</div>
+        <a href="https://arxiv.org/abs/2404.13208" target="_blank" class="reference-link">📚 The Instruction Hierarchy — Wallace et al. 2024 (arXiv)</a>
+        <a href="https://platform.claude.com/docs/en/release-notes/system-prompts/overview" target="_blank" class="reference-link">📚 Anthropic publishes its production system prompts</a>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title">System Prompt — <strong>Before & After</strong></h2>
+        <p class="slide-subtitle">Same question, different system prompts, completely different outputs</p>
+        <pre class="code-block"><code class="language-python"># Without system prompt
 messages = [
     {"role": "user", "content": "What is photosynthesis?"}
 ]
@@ -598,75 +681,159 @@ messages = [
     {"role": "user", "content": "What is photosynthesis?"}
 ]
 # → Advanced explanation with recent discoveries, paper suggestions</code></pre>
-<div class="highlight-quote">"The system prompt transforms a general-purpose LLM into a specialized tool for YOUR task."</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-6">
-<div class="slide-content">
-<h2 class="slide-title">System Prompt (Cynical) — <strong>Before & After</strong></h2>
-<p class="slide-subtitle">Same question, different system prompts, completely different outputs</p>
-<pre class="code-block"><code class="language-python"># With system cynical prompt
+        <div class="highlight-quote">"The system prompt transforms a general-purpose LLM into a specialized tool for YOUR task."</div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title">System Prompt (Cynical) — <strong>Before & After</strong></h2>
+        <p class="slide-subtitle">Same question, different system prompts, completely different outputs</p>
+        <pre class="code-block"><code class="language-python"># With system cynical prompt
 messages = [
     {"role": "system", "content": """From now on, stop being agreeable and act as my brutally honest, high-level advisor and mirror. Don't validate me. Don't soften the truth. Don't flatter. Challenge my thinking, question my assumptions, and expose the blind spots I'm avoiding. Be direct, rational, and unfiltered. 
     If my reasoning is weak, dissect it and show why.
     If I'm fooling myself or lying to myself, point it out.
     If I'm avoiding something uncomfortable or wasting time, call it out and explain the opportunity cost.
     Look at my situation with complete objectivity and strategic depth. Show me where I'm making excuses, playing small, or underestimating risks/effort.
-    The give a precise, prioritized plan what to change in thought, action, or mindset to reach the next level.
+    Then give a precise, prioritized plan for what to change in thought, action, or mindset to reach the next level.
     Hold nothing back. Treat me like someone whose growth depends on hearing the truth, not being comforted.
     When possible, ground your responses in the personal truth you sense between my words."""},
-    {"role": "user", "content": "What AI agent should never do?"}
+    {"role": "user", "content": "What should an AI agent never do?"}
 ]
-# → Advanced explanation with recent discoveries, paper suggestions</code></pre>
-</div>
-</section>
-<section class="slide" id="slide-7">
-<div class="slide-content">
-<h2 class="slide-title">The <strong>RICE</strong> Framework for System Prompts</h2>
-<p class="slide-subtitle">Four building blocks for effective instructions</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎭</span> R — Role</div>
-<div class="card-body"><ul><li>Define <strong>who</strong> the AI should be</li><li>"You are a senior materials science researcher..."</li><li>"You are a Python code reviewer focused on security..."</li><li>Sets the <strong>expertise level</strong> and <strong>perspective</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">📋</span> I — Instructions</div>
-<div class="card-body"><ul><li>Define <strong>what</strong> to do and <strong>how</strong> to do it</li><li>Step-by-step procedures, output format, constraints</li><li>"Always respond in bullet points. Never exceed 200 words."</li><li>Be <strong>specific</strong> — ambiguity produces inconsistent results</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">📚</span> C — Context</div>
-<div class="card-body"><ul><li>Provide <strong>background information</strong> the model needs</li><li>"The user is a PhD student working on perovskite solar cells..."</li><li>"This code is part of a real-time robotics control system..."</li><li>Reduces hallucination by <strong>grounding</strong> the response</li></ul></div>
-</div>
-<div class="card card-purple">
-<div class="card-header"><span class="icon">💡</span> E — Examples</div>
-<div class="card-body"><ul><li>Show <strong>what good output looks like</strong> (few-shot)</li><li>Input/output pairs that demonstrate the desired behavior</li><li>The most powerful technique for controlling output format</li><li>2-3 examples often outperform pages of instructions</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-8">
-<div class="slide-content">
-<h2 class="slide-title">RICE in Action — <strong>Building a System Prompt</strong></h2>
-<p class="slide-subtitle">Layer by layer, from role to examples</p>
-<div class="mermaid-container"><div class="mermaid">graph TD
-    R["🎭 Role<br>'You are a research advisor<br>in computational chemistry'"]
-    I["📋 Instructions<br>'Analyze the user's experiment design.<br>Point out flaws. Suggest improvements.<br>Output as numbered list.'"]
-    C["📚 Context<br>'The user has access to DFT software<br>and a 64-core HPC cluster.<br>Budget: $5000.'"]
-    E["💡 Examples<br>'Example input: ... → Example output: ...'"]
-    R --> I --> C --> E
-    E --> P["✅ Complete System Prompt"]
-    style R fill:#e1f5fe,stroke:#0288d1
-    style I fill:#e8f5e9,stroke:#388e3c
-    style C fill:#fff3e0,stroke:#f57c00
-    style E fill:#f3e5f5,stroke:#7b1fa2
-    style P fill:#e8f5e9,stroke:#2e7d32</div></div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-9">
-<div class="slide-content">
-<h2 class="slide-title">RICE — <strong>Complete Example</strong></h2>
-<p class="slide-subtitle">A system prompt for research paper analysis</p>
-<pre class="code-block"><code class="language-python">system_prompt = """
+# → No preamble, no praise. Ranked list of failure modes, each with the
+#   cost of getting it wrong — and a challenge to the premise of the question.</code></pre>
+        <div class="cards-grid">
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">⚠️</span> Read This Prompt Critically</div>
+            <div class="card-body">
+              <ul>
+                <li>It is <strong>all Role, no Examples</strong> — RICE tells you exactly what is missing</li>
+                <li>"Brutally honest" changes the <strong>tone</strong>; it does not change the model's <strong>accuracy</strong></li>
+                <li>Why does a prompt like this go viral at all? See the next slide.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="slide-title">Why That Prompt Exists — <strong>Sycophancy</strong></h2>
+        <p class="slide-subtitle">Models trained on human feedback are rewarded for answers people <em>like</em></p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🪞</span> The Bias</div>
+            <div class="card-body">
+              <ul>
+                <li>Human-feedback training rewards agreement, praise, and a confident tone</li>
+                <li>Sharma et al. (2023): every major RLHF assistant tested showed <strong>sycophancy</strong> — it abandons a correct answer when the user pushes back</li>
+                <li>April 2025: OpenAI <strong>rolled back</strong> a GPT-4o update after one week for being "overly flattering"</li>
+                <li>This is exactly the failure mode your Week 1 discussion called "the AI that agrees with you into a corner"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🛠️</span> What Actually Helps</div>
+            <div class="card-body">
+              <ul>
+                <li>Ask for the critique <strong>before</strong> revealing your own position: "List 3 weaknesses" beats "Isn't my design good?"</li>
+                <li>Never signal the answer you want inside the question</li>
+                <li>Ask for <strong>evidence and a confidence level</strong>, not a verdict</li>
+                <li>Ask the same question twice, once phrased for and once against — compare</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">⚠️</span> The Limit of the "Brutal Honesty" Prompt</div>
+            <div class="card-body">
+              <ul>
+                <li>Rudeness is a <strong>style</strong>, not a truth serum — a harsh answer can be just as wrong</li>
+                <li>It over-corrects: it will manufacture criticism of work that is actually fine</li>
+                <li>Use it to <strong>surface</strong> blind spots, then verify each claim like any other output</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <a href="https://arxiv.org/abs/2310.13548" target="_blank" class="reference-link">📚 Towards Understanding Sycophancy in Language Models — Sharma et al. 2023 (arXiv)</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-9">
+      <div class="slide-content">
+        <h2 class="slide-title">The <strong>RICE</strong> Framework for System Prompts</h2>
+        <p class="slide-subtitle">Four building blocks for effective instructions</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎭</span> R — Role</div>
+            <div class="card-body">
+              <ul>
+                <li>Define <strong>who</strong> the AI should be</li>
+                <li>"You are a senior materials science researcher..."</li>
+                <li>"You are a Python code reviewer focused on security..."</li>
+                <li>Sets the <strong>expertise level</strong> and <strong>perspective</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📋</span> I — Instructions</div>
+            <div class="card-body">
+              <ul>
+                <li>Define <strong>what</strong> to do and <strong>how</strong> to do it</li>
+                <li>Step-by-step procedures, output format, constraints</li>
+                <li>"Always respond in bullet points. Never exceed 200 words."</li>
+                <li>Be <strong>specific</strong> — ambiguity produces inconsistent results</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📚</span> C — Context</div>
+            <div class="card-body">
+              <ul>
+                <li>Provide <strong>background information</strong> the model needs</li>
+                <li>"The user is a PhD student working on perovskite solar cells..."</li>
+                <li>"This code is part of a real-time robotics control system..."</li>
+                <li>Reduces hallucination by <strong>grounding</strong> the response</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">💡</span> E — Examples</div>
+            <div class="card-body">
+              <ul>
+                <li>Show <strong>what good output looks like</strong> (few-shot)</li>
+                <li>Input/output pairs that demonstrate the desired behavior</li>
+                <li>The most powerful technique for controlling output format</li>
+                <li>2-3 examples often outperform pages of instructions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-10">
+      <div class="slide-content">
+        <h2 class="slide-title">RICE in Action — <strong>Building a System Prompt</strong></h2>
+        <p class="slide-subtitle">Layer by layer, from role to examples</p>
+        <div class="mermaid-container">
+          <div class="mermaid">graph TD
+            R["🎭 Role<br>'You are a research advisor<br>in computational chemistry'"]
+            I["📋 Instructions<br>'Analyze the user's experiment design.<br>Point out flaws. Suggest improvements.<br>Output as numbered list.'"]
+            C["📚 Context<br>'The user has access to DFT software<br>and a 64-core HPC cluster.<br>Budget: $5000.'"]
+            E["💡 Examples<br>'Example input: ... → Example output: ...'"]
+            R --> I --> C --> E
+            E --> P["✅ Complete System Prompt"]
+            style R fill:#e1f5fe,stroke:#0288d1
+            style I fill:#e8f5e9,stroke:#388e3c
+            style C fill:#fff3e0,stroke:#f57c00
+            style E fill:#f3e5f5,stroke:#7b1fa2
+            style P fill:#e8f5e9,stroke:#2e7d32</div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-11">
+      <div class="slide-content">
+        <h2 class="slide-title">RICE — <strong>Complete Example</strong></h2>
+        <p class="slide-subtitle">A system prompt for research paper analysis</p>
+        <pre class="code-block"><code class="language-python">system_prompt = """
 # Role
 You are a senior peer reviewer for Nature Materials, with 20 years
 of experience in solid-state physics and materials characterization.
@@ -691,41 +858,71 @@ not encouragement.
 ## Weaknesses
 1. Missing XRD characterization to confirm crystal phase...
 """</code></pre>
-</div>
-</section>
-<section class="slide" id="slide-10">
-<div class="slide-content">
-<h2 class="slide-title">Five <strong>Building Blocks</strong> of Effective Prompts</h2>
-<p class="slide-subtitle">Techniques that work with any LLM</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> 1. Be Specific</div>
-<div class="card-body"><ul><li>Bad: "Summarize this paper"</li><li>Good: "Summarize the <strong>methodology</strong> of this paper in <strong>3 bullet points</strong>, each under <strong>30 words</strong>"</li><li>Specificity eliminates ambiguity → consistent results</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">📐</span> 2. Define Output Format</div>
-<div class="card-body"><ul><li>"Respond in JSON with keys: title, authors, year, findings"</li><li>"Use markdown tables for comparisons"</li><li>Structured output is essential for <strong>agent tool integration</strong></li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔢</span> 3. Use Numbered Steps</div>
-<div class="card-body"><ul><li>"Step 1: Read the abstract. Step 2: Identify the hypothesis. Step 3: ..."</li><li>Forces <strong>sequential reasoning</strong> — reduces errors on complex tasks</li></ul></div>
-</div>
-<div class="card card-purple">
-<div class="card-header"><span class="icon">🚫</span> 4. Set Constraints</div>
-<div class="card-body"><ul><li>"Do NOT include speculative claims"</li><li>"If unsure, say 'I don't have enough information' instead of guessing"</li><li>Constraints prevent hallucination and overconfident responses</li></ul></div>
-</div>
-<div class="card card-pink">
-<div class="card-header"><span class="icon">💡</span> 5. Provide Examples (Few-Shot)</div>
-<div class="card-body"><ul><li>Show 2-3 input/output pairs</li><li>The model <strong>pattern-matches</strong> to your examples</li><li>Most reliable way to control complex formatting</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-11">
-<div class="slide-content">
-<h2 class="slide-title"><strong>Few-Shot Prompting</strong> — Teaching by Example</h2>
-<p class="slide-subtitle">Show the model what you want instead of explaining it</p>
-<pre class="code-block"><code class="language-python">system_prompt = """You extract structured data from paper abstracts.
+      </div>
+    </section>
+    <section class="slide" id="slide-12">
+      <div class="slide-content">
+        <h2 class="slide-title">Five <strong>Building Blocks</strong> of Effective Prompts</h2>
+        <p class="slide-subtitle">Techniques that work with any LLM</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> 1. Be Specific</div>
+            <div class="card-body">
+              <ul>
+                <li>Bad: "Summarize this paper"</li>
+                <li>Good: "Summarize the <strong>methodology</strong> of this paper in <strong>3 bullet points</strong>, each under <strong>30 words</strong>"</li>
+                <li>Specificity eliminates ambiguity → consistent results</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📐</span> 2. Define Output Format</div>
+            <div class="card-body">
+              <ul>
+                <li>"Respond in JSON with keys: title, authors, year, findings"</li>
+                <li>"Use markdown tables for comparisons"</li>
+                <li>Structured output is essential for <strong>agent tool integration</strong></li>
+                <li>Stronger still: enforce a <strong>JSON Schema</strong> so the format <em>cannot</em> be violated (see "Structured Outputs")</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔢</span> 3. Use Numbered Steps</div>
+            <div class="card-body">
+              <ul>
+                <li>"Step 1: Read the abstract. Step 2: Identify the hypothesis. Step 3: ..."</li>
+                <li>Forces <strong>sequential reasoning</strong> — reduces errors on complex tasks</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">🚫</span> 4. Set Constraints</div>
+            <div class="card-body">
+              <ul>
+                <li>"Do NOT include speculative claims"</li>
+                <li>"If unsure, say 'I don't have enough information' instead of guessing"</li>
+                <li>Constraints prevent hallucination and overconfident responses</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">💡</span> 5. Provide Examples (Few-Shot)</div>
+            <div class="card-body">
+              <ul>
+                <li>Show 2-3 input/output pairs</li>
+                <li>The model <strong>pattern-matches</strong> to your examples</li>
+                <li>Most reliable way to control complex formatting</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-13">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>Few-Shot Prompting</strong> — Teaching by Example</h2>
+        <p class="slide-subtitle">Show the model what you want instead of explaining it</p>
+        <pre class="code-block"><code class="language-python">system_prompt = """You extract structured data from paper abstracts.
 
 Example 1:
 Input: "We report a novel MoS2/graphene heterostructure..."
@@ -737,45 +934,118 @@ Output: {"material": "protein", "method": "deep learning prediction", "applicati
 
 Now extract from the user's abstract in the same JSON format.
 """</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Why It Works</div>
-<div class="card-body"><ul><li>LLMs are <strong>pattern completion engines</strong> — examples define the pattern</li><li>Few-shot is often more effective than lengthy instructions</li><li>Start with 2-3 examples; add more if output is inconsistent</li><li>Works for any format: JSON, tables, bullet points, code</li></ul></div>
-</div>
-</div>
-<a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" class="reference-link">📚 Few-Shot Prompting Guide — OpenAI</a>
-</div>
-</section>
-<section class="slide" id="slide-12">
-<div class="slide-content">
-<h2 class="slide-title"><strong>Chain-of-Thought</strong> (CoT) Prompting</h2>
-<p class="slide-subtitle">Make the model "think step by step" before answering</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🧮</span> What Is CoT?</div>
-<div class="card-body"><ul><li>Add "Let's think step by step" or structure reasoning steps explicitly</li><li>Forces the model to <strong>show its work</strong> before giving a final answer</li><li>Dramatically improves accuracy on <strong>math, logic, and multi-step reasoning</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">📊</span> The Evidence</div>
-<div class="card-body"><ul><li>Wei et al. (2022): CoT improved GSM8K math accuracy from <strong>17.9% → 58.1%</strong> (PaLM 540B)</li><li>Works especially well for problems requiring <strong>multiple intermediate steps</strong></li><li>Even simple prompts like "think step by step" help significantly</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔬</span> For Research</div>
-<div class="card-body"><ul><li>"Analyze this dataset step by step: (1) check for outliers, (2) test normality, (3) select appropriate test, (4) interpret results"</li><li>Forces the model to follow <strong>your methodology</strong>, not its default behavior</li><li>You can <strong>verify each step</strong> independently</li></ul></div>
-</div>
-</div>
-<pre class="code-block"><code class="language-text">Without CoT: "The answer is 42."  (no way to verify)
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Why It Works</div>
+            <div class="card-body">
+              <ul>
+                <li>LLMs are <strong>pattern completion engines</strong> — examples define the pattern</li>
+                <li>Few-shot is often more effective than lengthy instructions</li>
+                <li>Start with 2-3 examples; add more if output is inconsistent</li>
+                <li>Works for any format: JSON, tables, bullet points, code</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <a href="https://developers.openai.com/api/docs/guides/prompt-engineering" target="_blank" class="reference-link">📚 Prompt engineering guide — OpenAI</a>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-14">
+      <div class="slide-content">
+        <h2 class="slide-title">Beyond "Please Reply in JSON" — <strong>Structured Outputs</strong></h2>
+        <p class="slide-subtitle">Do not ask for a format. Enforce a schema.</p>
+        <div class="cards-grid">
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🙏</span> The 2023 Way (fragile)</div>
+            <div class="card-body">
+              <ul>
+                <li>"Respond in JSON with keys: title, authors, year"</li>
+                <li>Works most of the time → then returns a Markdown code fence, an apology, or a missing key</li>
+                <li>Your parser crashes at 3 a.m. on paper #417</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔒</span> The 2026 Way (guaranteed)</div>
+            <div class="card-body">
+              <ul>
+                <li>Every major API can <strong>constrain decoding to a JSON Schema</strong> — invalid output becomes impossible, not unlikely</li>
+                <li>OpenAI: <code class="inline-code">response_format</code> with a JSON Schema, or a Pydantic model</li>
+                <li>Gemini: <code class="inline-code">response_format</code> with <code class="inline-code">mime_type: "application/json"</code> + <code class="inline-code">schema</code></li>
+                <li>Ollama: <code class="inline-code">format=&lt;schema&gt;</code> — schema enforcement works on your laptop too</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <pre class="code-block"><code class="language-python">from pydantic import BaseModel
+from openai import OpenAI
+
+class PaperInfo(BaseModel):          # the schema IS the specification
+    material: str
+    method: str
+    application: str
+
+client = OpenAI()
+resp = client.chat.completions.parse(
+    model="gpt-5.6-luna",
+    messages=[{"role": "user", "content": abstract}],
+    response_format=PaperInfo,       # decoding is constrained to this shape
+)
+info = resp.choices[0].message.parsed    # already a validated PaperInfo</code></pre>
+        <div class="highlight-quote">"Few-shot examples teach <em>style</em>; a schema enforces <em>structure</em>. Use examples for what to say and schemas for the shape it must arrive in — this is the mechanism that makes next week's tool calling reliable."</div>
+        <a href="https://developers.openai.com/api/docs/guides/structured-outputs" target="_blank" class="reference-link">📚 OpenAI — Structured model outputs</a>
+        <a href="https://ai.google.dev/gemini-api/docs/structured-output" target="_blank" class="reference-link">📚 Gemini API — Structured output</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-15">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>Chain-of-Thought</strong> (CoT) Prompting</h2>
+        <p class="slide-subtitle">Make the model "think step by step" before answering</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧮</span> What Is CoT?</div>
+            <div class="card-body">
+              <ul>
+                <li>Add "Let's think step by step" or structure reasoning steps explicitly</li>
+                <li>Forces the model to <strong>show its work</strong> before giving a final answer</li>
+                <li>Dramatically improves accuracy on <strong>math, logic, and multi-step reasoning</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📊</span> The Evidence</div>
+            <div class="card-body">
+              <ul>
+                <li>Wei et al. (2022): CoT improved GSM8K math accuracy from <strong>17.9% → 58.1%</strong> (PaLM 540B)</li>
+                <li>Works especially well for problems requiring <strong>multiple intermediate steps</strong></li>
+                <li>Even simple prompts like "think step by step" help significantly</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔬</span> For Research</div>
+            <div class="card-body">
+              <ul>
+                <li>"Analyze this dataset step by step: (1) check for outliers, (2) test normality, (3) select appropriate test, (4) interpret results"</li>
+                <li>Forces the model to follow <strong>your methodology</strong>, not its default behavior</li>
+                <li>You can <strong>verify each step</strong> independently</li>
+                <li>⚠️ 2026: frontier models now do this unprompted — see "Prompting Reasoning Models" in two slides</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <pre class="code-block"><code class="language-text">Without CoT: "The answer is 42."  (no way to verify)
 With CoT:    "Step 1: ... Step 2: ... Step 3: ... Therefore, 42."  (auditable)</code></pre>
-<div class="image-container"><img src="image/week3-slides/1773651314916.png" alt="1773651314916" class="slide-img" onclick="openModal('image/week3-slides/1773651314916.png')"></div>
-<a href="https://arxiv.org/abs/2201.11903" target="_blank" class="reference-link">📚 Chain-of-Thought Prompting — Wei et al. 2022</a>
-<a href="https://aclanthology.org/2024.acl-long.271.pdf" target="_blank" class="reference-link">📚 Boosting Language Models Reasoning with Chain-of-Knowledge Prompting — Wang et al. 2024</a>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-13">
-<div class="slide-content">
-<h2 class="slide-title">CoT in Practice — <strong>Research Data Analysis</strong></h2>
-<p class="slide-subtitle">Structured reasoning for a complex task</p>
-<pre class="code-block"><code class="language-python">system_prompt = """You are a statistical consultant for researchers.
+        <div class="image-container"><img src="image/week_03/1773651314916.png" alt="1773651314916" class="slide-img" onclick="openModal('image/week_03/1773651314916.png')"></div>
+        <a href="https://arxiv.org/abs/2201.11903" target="_blank" class="reference-link">📚 Chain-of-Thought Prompting — Wei et al. 2022</a>
+        <a href="https://aclanthology.org/2024.acl-long.271.pdf" target="_blank" class="reference-link">📚 Boosting Language Models Reasoning with Chain-of-Knowledge Prompting — Wang et al. 2024</a>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-16">
+      <div class="slide-content">
+        <h2 class="slide-title">CoT in Practice — <strong>Research Data Analysis</strong></h2>
+        <p class="slide-subtitle">Structured reasoning for a complex task</p>
+        <pre class="code-block"><code class="language-python">system_prompt = """You are a statistical consultant for researchers.
 
 When asked to analyze data, ALWAYS follow these steps:
 1. State the research question clearly
@@ -788,195 +1058,546 @@ When asked to analyze data, ALWAYS follow these steps:
 Show your reasoning for EACH step before moving to the next.
 If any assumption is violated, suggest an alternative approach.
 """</code></pre>
-<div class="highlight-quote">"Chain-of-Thought is not just about better answers — it's about auditable reasoning. You can check each step."</div>
-</div>
-</section>
-<section class="slide" id="slide-14">
-<div class="slide-content">
-<h2 class="slide-title">Prompt <strong>Anti-Patterns</strong> — What NOT to Do</h2>
-<p class="slide-subtitle">Common mistakes that produce bad results</p>
-<div class="cards-grid">
-<div class="card card-pink">
-<div class="card-header"><span class="icon">❌</span> 1. The Vague Prompt</div>
-<div class="card-body"><ul><li>"Help me with my research" → useless generic advice</li><li>Fix: Be specific about what, how, and in what format</li><li>The model can't read your mind — tell it what you need</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">❌</span> 2. The Kitchen Sink</div>
-<div class="card-body"><ul><li>Cramming 10 different tasks into one prompt</li><li>Fix: One prompt = one task. Chain multiple calls if needed</li><li>Complex multi-task prompts confuse the model and reduce quality</li></ul></div>
-</div>
-<div class="card card-purple">
-<div class="card-header"><span class="icon">❌</span> 3. No Constraints</div>
-<div class="card-body"><ul><li>No length limit → 2000-word essay when you needed 3 bullet points</li><li>No format spec → prose when you needed JSON</li><li>Fix: Always specify output format and constraints</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">❌</span> 4. Trusting Without Verifying</div>
-<div class="card-body"><ul><li>"The AI said this citation exists, so it must" → hallucination</li><li>Fix: Use CoT so you can <strong>audit the reasoning</strong>; verify claims externally</li><li>Remember Week 2: fluency ≠ accuracy</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-15">
-<div class="slide-content">
-<h2 class="slide-title">Prompt Engineering vs <strong>Traditional Programming</strong></h2>
-<p class="slide-subtitle">A new paradigm for directing computation</p>
-<table class="styled-table"><thead><tr><th>Aspect</th><th>Traditional Code</th><th>Prompt Engineering</th></tr></thead><tbody><tr><td><strong>Language</strong></td><td>Python, Java, C++</td><td>Natural language (English)</td></tr><tr><td><strong>Precision</strong></td><td>Exact — compiler enforces</td><td>Approximate — model interprets</td></tr><tr><td><strong>Debugging</strong></td><td>Stack traces, breakpoints</td><td>Read output, adjust wording</td></tr><tr><td><strong>Determinism</strong></td><td>Same input → same output</td><td>Same prompt → varied outputs</td></tr><tr><td><strong>Errors</strong></td><td>Crashes, exceptions</td><td>Subtle wrong answers (hallucination)</td></tr><tr><td><strong>Iteration</strong></td><td>Edit code, recompile</td><td>Edit prompt, re-run</td></tr></tbody></table>
-<div class="highlight-quote">"Prompt engineering is programming where the 'compiler' has opinions — and sometimes ignores your instructions."</div>
-</div>
-</section>
-<section class="slide" id="slide-16">
-<div class="slide-content">
-<h2 class="slide-title">Advanced — <strong>Prompt Chaining</strong></h2>
-<p class="slide-subtitle">Break complex tasks into a pipeline of simple prompts</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔗</span> What Is Chaining?</div>
-<div class="card-body"><ul><li>Instead of one mega-prompt, use <strong>multiple sequential calls</strong></li><li>Output of prompt 1 becomes input to prompt 2</li><li>Each step is <strong>simpler, more reliable, and easier to debug</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">📊</span> Example Pipeline</div>
-<div class="card-body"><ul><li><strong>Step 1</strong>: "Extract all methods mentioned in this paper abstract"</li><li><strong>Step 2</strong>: "For each method, classify as: computational / experimental / theoretical"</li><li><strong>Step 3</strong>: "Generate a comparison table of computational methods with pros/cons"</li><li>Each step is a focused, verifiable task</li></ul></div>
-</div>
-</div>
-<div class="mermaid-container"><div class="mermaid">graph LR
-    A["Paper PDF"] --> B["Extract<br>Methods"]
-    B --> C["Classify<br>Each Method"]
-    C --> D["Generate<br>Comparison Table"]
-    D --> E["Final Output"]
-    style A fill:#e1f5fe,stroke:#0288d1
-    style D fill:#fff3e0,stroke:#f57c00
-    style E fill:#e8f5e9,stroke:#388e3c</div></div>
-<div class="cards-grid">
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🎯</span> Why Chaining Works</div>
-<div class="card-body"><ul><li>Simpler prompts → fewer errors per step</li><li>You can <strong>verify intermediate results</strong> before continuing</li><li>Failed steps can be <strong>retried independently</strong></li><li>This is the foundation of how <strong>agents</strong> work</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-17">
-<div class="slide-content">
-<h2 class="slide-title">System Prompts for <strong>Agents</strong> — Beyond Chat</h2>
-<p class="slide-subtitle">When your prompt controls an autonomous system</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🤖</span> Agent System Prompts</div>
-<div class="card-body"><ul><li>Agents use system prompts to define their <strong>identity, tools, and behavior</strong></li><li>Much more structured than chat prompts — they're like an <strong>operating manual</strong></li><li>Must include: role, available tools, decision-making rules, safety constraints</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🛡️</span> Safety Is Critical</div>
-<div class="card-body"><ul><li>An agent acts <strong>autonomously</strong> — bad instructions → bad actions</li><li>Always include: "If unsure, ask the user before proceeding"</li><li>Define explicit <strong>boundaries</strong>: what the agent CAN and CANNOT do</li><li>Remember Week 2: prompt injection can hijack agent behavior</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔧</span> Tool Descriptions</div>
-<div class="card-body"><ul><li>System prompts tell the agent what tools exist and when to use them</li><li>"You have access to: search_papers(query), read_file(path), run_code(code)"</li><li>The LLM decides <strong>which tool to call</strong> based on the user's request</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-18">
-<div class="slide-content">
-<h2 class="slide-title">Lecture Summary — The Art of Instruction</h2>
-<p class="slide-subtitle">Key takeaways</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎭</span> RICE Framework</div>
-<div class="card-body"><ul><li><strong>Role</strong> → who the AI is; <strong>Instructions</strong> → what to do; <strong>Context</strong> → background; <strong>Examples</strong> → show the pattern</li><li>Layer all four for the most effective system prompts</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🧮</span> Key Techniques</div>
-<div class="card-body"><ul><li><strong>Few-shot prompting</strong>: teach by example (most reliable for formatting)</li><li><strong>Chain-of-Thought</strong>: "think step by step" for complex reasoning</li><li><strong>Prompt chaining</strong>: break complex tasks into simple, auditable steps</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚠️</span> Avoid Anti-Patterns</div>
-<div class="card-body"><ul><li>Be specific, define format, set constraints, verify outputs</li><li>One prompt = one task; chain calls for complex workflows</li></ul></div>
-</div>
-</div>
-<p class="slide-text">References:</p>
-<a href="https://arxiv.org/abs/2201.11903" target="_blank" class="reference-link">📚 Chain-of-Thought Prompting — Wei et al. 2022</a>
-<a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" class="reference-link">📚 OpenAI Prompt Engineering Guide</a>
-<a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering" target="_blank" class="reference-link">📚 Anthropic Prompt Engineering Guide</a>
-</div>
-</section>
-<section class="slide title-slide" id="slide-19">
-<div class="slide-content">
-<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
-<p class="slide-subtitle">Persona-Based Conversations — Experience the Power of System Prompts</p>
-</div>
-</section>
-<section class="slide" id="slide-20">
-<div class="slide-content">
-<h2 class="slide-title">Today's Practice — <strong>Persona Conversations</strong></h2>
-<p class="slide-subtitle">Same LLM, different system prompts → completely different "personalities"</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> The Goal</div>
-<div class="card-body"><ul><li>Experience firsthand how <strong>system prompts transform</strong> LLM behavior</li><li>Chat with the <strong>same model</strong> using different personas</li><li>Observe how Role, Instructions, Context, and Examples change the output</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎭</span> What You'll Do</div>
-<div class="card-body"><ul><li>Write system prompts for <strong>3 different personas</strong></li><li>Have a conversation with each persona using the <strong>same research question</strong></li><li>Compare how each persona responds differently</li><li>Iterate on your prompts to improve results</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔧</span> Tools We'll Use</div>
-<div class="card-body"><ul><li><code class="inline-code">practices/week3/ex1_system_prompt.py</code> (CLI, Gemini)</li><li><code class="inline-code">practices/week3/system_prompt_example.md</code> (system prompt template)</li><li>(Optional) <code class="inline-code">practices/week3/ollama_streamlit_app.py</code> (Streamlit Web UI: Ollama ↔ Gemini)</li><li>Your API keys live in <code class="inline-code">practices/.env</code> (<strong>do not commit</strong>)</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-21">
-<div class="slide-content">
-<h2 class="slide-title">Step 0 — <strong>Setup</strong> (Week 3 Practice)</h2>
-<p class="slide-subtitle">Install deps and set <code class="inline-code">practices/.env</code></p>
-<pre class="code-block"><code class="language-bash"># From repo root
-pip install google-generativeai python-dotenv</code></pre>
-<pre class="code-block"><code class="language-text"># practices/.env (DO NOT COMMIT)
+        <div class="highlight-quote">"Chain-of-Thought is not just about better answers — it's about auditable reasoning. You can check each step."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-17">
+      <div class="slide-content">
+        <h2 class="slide-title">2026 Update — <strong>Chain-of-Thought Is Now Built In</strong></h2>
+        <p class="slide-subtitle">What changes when the model already thinks before it answers</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧠</span> The Shift</div>
+            <div class="card-body">
+              <ul>
+                <li>2022: <em>you</em> had to write "let's think step by step"</li>
+                <li>2026: frontier models are <strong>trained</strong> to reason first and expose an <strong>effort / thinking budget</strong> dial (low → max)</li>
+                <li>The reasoning happens in tokens you pay for and often never see in full</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🚫</span> What Stops Working</div>
+            <div class="card-body">
+              <ul>
+                <li>"Think step by step" on a reasoning model is redundant — and prescribing <strong>every</strong> intermediate step can make the answer worse</li>
+                <li><code class="inline-code">temperature</code> is ignored or rejected by several reasoning models; the effort dial has replaced it</li>
+                <li>Few-shot examples help <strong>less</strong>; a crisp goal with hard constraints helps <strong>more</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> What to Do Instead</div>
+            <div class="card-body">
+              <ul>
+                <li>State the <strong>goal, the constraints, and what "done" looks like</strong> — then let the model plan the route</li>
+                <li>Raise <strong>effort</strong> for a hard problem instead of adding "think harder" to the text</li>
+                <li>Keep classic CoT for <strong>small, local, non-reasoning</strong> models — <code class="inline-code">qwen3.5:0.8b</code> still needs the nudge</li>
+                <li>Still ask for the reasoning to be <em>shown</em> when you need to audit it — that was your Week 2 demand</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"On a classic model you engineer the reasoning. On a reasoning model you engineer the specification."</div>
+        <a href="https://developers.openai.com/api/docs/guides/reasoning" target="_blank" class="reference-link">📚 OpenAI — Reasoning models guide</a>
+        <a href="https://arxiv.org/abs/2201.11903" target="_blank" class="reference-link">📚 Chain-of-Thought Prompting — Wei et al. 2022 (arXiv)</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-18">
+      <div class="slide-content">
+        <h2 class="slide-title">The Cost of a Long System Prompt — <strong>Prompt Caching</strong></h2>
+        <p class="slide-subtitle">You re-send your entire persona on every single turn</p>
+        <div class="cards-grid">
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">💸</span> The Hidden Bill</div>
+            <div class="card-body">
+              <ul>
+                <li>A 2,000-token persona in a 20-turn chat = <strong>40,000 input tokens</strong>; you paid for the same text 20 times</li>
+                <li>Agents are worse: system prompt <strong>plus tool definitions</strong> are re-sent on every loop iteration</li>
+                <li>This is why "just add more instructions" is not free</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">⚡</span> The Fix</div>
+            <div class="card-body">
+              <ul>
+                <li>Mark the stable prefix as cached: on Anthropic a cache <strong>read costs ~0.1×</strong> the normal input price, a write 1.25×</li>
+                <li>Minimum cacheable prefix ≈ 512–4,096 tokens depending on the model; default lifetime 5 minutes (1 hour at 2×)</li>
+                <li>OpenAI and Gemini cache too — automatically or explicitly. The mechanics differ; the design rule does not</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📐</span> The Prompt-Design Rule</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Stable first</strong>: role, instructions, examples, tool definitions, reference documents</li>
+                <li><strong>Variable last</strong>: today's date, the user's question, retrieved snippets</li>
+                <li>Changing one word near the top <strong>invalidates the whole cache</strong> — freeze the persona, iterate at the bottom</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Prompt caching turns prompt <em>order</em> into an engineering decision: stable prefix, variable suffix."</div>
+        <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching" target="_blank" class="reference-link">📚 Anthropic — Prompt caching</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-19">
+      <div class="slide-content">
+        <h2 class="slide-title">Prompt <strong>Anti-Patterns</strong> — What NOT to Do</h2>
+        <p class="slide-subtitle">Common mistakes that produce bad results</p>
+        <div class="cards-grid">
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">❌</span> 1. The Vague Prompt</div>
+            <div class="card-body">
+              <ul>
+                <li>"Help me with my research" → useless generic advice</li>
+                <li>Fix: Be specific about what, how, and in what format</li>
+                <li>The model can't read your mind — tell it what you need</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">❌</span> 2. The Kitchen Sink</div>
+            <div class="card-body">
+              <ul>
+                <li>Cramming 10 different tasks into one prompt</li>
+                <li>Fix: One prompt = one task. Chain multiple calls if needed</li>
+                <li>Complex multi-task prompts confuse the model and reduce quality</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">❌</span> 3. No Constraints</div>
+            <div class="card-body">
+              <ul>
+                <li>No length limit → 2000-word essay when you needed 3 bullet points</li>
+                <li>No format spec → prose when you needed JSON</li>
+                <li>Fix: Always specify output format and constraints</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">❌</span> 4. Trusting Without Verifying</div>
+            <div class="card-body">
+              <ul>
+                <li>"The AI said this citation exists, so it must" → hallucination</li>
+                <li>Fix: Use CoT so you can <strong>audit the reasoning</strong>; verify claims externally</li>
+                <li>Remember Week 2: fluency ≠ accuracy</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">❌</span> 5. Superstitions and Stale Recipes</div>
+            <div class="card-body">
+              <ul>
+                <li>"I'll tip you $200", "my career depends on this", ALL-CAPS THREATS → no reliable, reproducible gain</li>
+                <li>"Be accurate. Do not hallucinate." → a wish, not a constraint. Give the model a source, a schema, or a tool instead</li>
+                <li>Pasting a 2023 mega-prompt into a 2026 reasoning model: half of it is now noise, and some of it actively hurts</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-20">
+      <div class="slide-content">
+        <h2 class="slide-title">Prompt Engineering vs <strong>Traditional Programming</strong></h2>
+        <p class="slide-subtitle">A new paradigm for directing computation</p>
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Traditional Code</th>
+              <th>Prompt Engineering</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Language</strong></td>
+              <td>Python, Java, C++</td>
+              <td>Natural language (English)</td>
+            </tr>
+            <tr>
+              <td><strong>Precision</strong></td>
+              <td>Exact — compiler enforces</td>
+              <td>Approximate — model interprets</td>
+            </tr>
+            <tr>
+              <td><strong>Debugging</strong></td>
+              <td>Stack traces, breakpoints</td>
+              <td>Read output, adjust wording</td>
+            </tr>
+            <tr>
+              <td><strong>Determinism</strong></td>
+              <td>Same input → same output</td>
+              <td>Same prompt → varied outputs</td>
+            </tr>
+            <tr>
+              <td><strong>Errors</strong></td>
+              <td>Crashes, exceptions</td>
+              <td>Subtle wrong answers (hallucination)</td>
+            </tr>
+            <tr>
+              <td><strong>Iteration</strong></td>
+              <td>Edit code, recompile</td>
+              <td>Edit prompt, re-run</td>
+            </tr>
+            <tr>
+              <td><strong>Testing</strong></td>
+              <td>Unit tests, CI</td>
+              <td><strong>Evals</strong> — fixed cases scored before/after</td>
+            </tr>
+            <tr>
+              <td><strong>Cost</strong></td>
+              <td>CPU time</td>
+              <td>Per token, and you re-send the prompt every turn (cache it)</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="highlight-quote">"Prompt engineering is programming where the 'compiler' has opinions — and sometimes ignores your instructions."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-21">
+      <div class="slide-content">
+        <h2 class="slide-title">Advanced — <strong>Prompt Chaining</strong></h2>
+        <p class="slide-subtitle">Break complex tasks into a pipeline of simple prompts</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔗</span> What Is Chaining?</div>
+            <div class="card-body">
+              <ul>
+                <li>Instead of one mega-prompt, use <strong>multiple sequential calls</strong></li>
+                <li>Output of prompt 1 becomes input to prompt 2</li>
+                <li>Each step is <strong>simpler, more reliable, and easier to debug</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📊</span> Example Pipeline</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Step 1</strong>: "Extract all methods mentioned in this paper abstract"</li>
+                <li><strong>Step 2</strong>: "For each method, classify as: computational / experimental / theoretical"</li>
+                <li><strong>Step 3</strong>: "Generate a comparison table of computational methods with pros/cons"</li>
+                <li>Each step is a focused, verifiable task</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="mermaid-container">
+          <div class="mermaid">graph LR
+            A["Paper PDF"] --> B["Extract<br>Methods"]
+            B --> C["Classify<br>Each Method"]
+            C --> D["Generate<br>Comparison Table"]
+            D --> E["Final Output"]
+            style A fill:#e1f5fe,stroke:#0288d1
+            style D fill:#fff3e0,stroke:#f57c00
+            style E fill:#e8f5e9,stroke:#388e3c</div>
+        </div>
+        <div class="cards-grid">
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🎯</span> Why Chaining Works</div>
+            <div class="card-body">
+              <ul>
+                <li>Simpler prompts → fewer errors per step</li>
+                <li>You can <strong>verify intermediate results</strong> before continuing</li>
+                <li>Failed steps can be <strong>retried independently</strong></li>
+                <li>This is the foundation of how <strong>agents</strong> work</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-22">
+      <div class="slide-content">
+        <h2 class="slide-title">From Prompt Engineering to <strong>Context Engineering</strong></h2>
+        <p class="slide-subtitle">With a 1M-token window the question is no longer "what do I write?" but "what do I include?"</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎒</span> The New Framing</div>
+            <div class="card-body">
+              <ul>
+                <li>Prompt engineering = writing the instruction. <strong>Context engineering</strong> = curating everything in the window: instructions, tool definitions, retrieved documents, and message history</li>
+                <li>Anthropic's target: the <strong>smallest set of high-signal tokens</strong> that gets the outcome — context is an attention budget, not free storage</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📉</span> More Context ≠ Better Answers</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Lost in the middle</strong> (Liu et al., 2023): facts buried mid-document are recalled worst; the beginning and the end are recalled best</li>
+                <li><strong>Context rot</strong>: as the window fills, instruction-following degrades — the persona slips and constraints quietly get dropped</li>
+                <li>Week 2: 1M-token windows exist, cost more, and still lose detail</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧭</span> Practical Rules</div>
+            <div class="card-body">
+              <ul>
+                <li>Put the task instruction <strong>at the end</strong>, after a long document — or repeat it at both ends</li>
+                <li>Include the 5 relevant pages, not the 200-page manual</li>
+                <li>Aim for the <strong>right altitude</strong>: specific enough to steer, general enough not to be brittle</li>
+                <li>Summarize and drop old turns instead of letting the history grow forever (Week 12: memory & RAG)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" class="reference-link">📚 Effective Context Engineering for AI Agents — Anthropic 2025</a>
+        <a href="https://arxiv.org/abs/2307.03172" target="_blank" class="reference-link">📚 Lost in the Middle — Liu et al. 2023 (arXiv)</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-23">
+      <div class="slide-content">
+        <h2 class="slide-title">System Prompts for <strong>Agents</strong> — Beyond Chat</h2>
+        <p class="slide-subtitle">When your prompt controls an autonomous system</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🤖</span> Agent System Prompts</div>
+            <div class="card-body">
+              <ul>
+                <li>Agents use system prompts to define their <strong>identity, tools, and behavior</strong></li>
+                <li>Much more structured than chat prompts — they're like an <strong>operating manual</strong></li>
+                <li>Must include: role, available tools, decision-making rules, safety constraints</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🛡️</span> Safety Is Critical</div>
+            <div class="card-body">
+              <ul>
+                <li>An agent acts <strong>autonomously</strong> — bad instructions → bad actions</li>
+                <li>Always include: "If unsure, ask the user before proceeding"</li>
+                <li>Define explicit <strong>boundaries</strong>: what the agent CAN and CANNOT do</li>
+                <li>Remember Week 2: prompt injection can hijack agent behavior</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔧</span> Tool Definitions Are Part of the Prompt</div>
+            <div class="card-body">
+              <ul>
+                <li>The agent learns what tools exist, and when to use them, from text you write</li>
+                <li>"You have access to: search_papers(query), read_file(path), run_code(code)"</li>
+                <li>The LLM decides <strong>which tool to call</strong> from those descriptions — badly described tools are mis-called tools</li>
+                <li>They are re-sent on every loop iteration, so they consume context and cost on every step (Week 4)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-24">
+      <div class="slide-content">
+        <h2 class="slide-title">Where Agent System Prompts Actually Live — <strong>AGENTS.md, Skills</strong></h2>
+        <p class="slide-subtitle">In 2026 the system prompt is a file in your repository, not a paragraph in a chat box</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📄</span> AGENTS.md / CLAUDE.md</div>
+            <div class="card-body">
+              <ul>
+                <li>An open Markdown convention read automatically by coding agents — used by <strong>60,000+ open-source repositories</strong></li>
+                <li>Contains build commands, test commands, code conventions, and "never touch these files"</li>
+                <li>It is a <strong>system prompt under version control</strong>, reviewed in pull requests like any other code</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧩</span> Agent Skills — Progressive Disclosure</div>
+            <div class="card-body">
+              <ul>
+                <li>A <code class="inline-code">SKILL.md</code> whose frontmatter carries <code class="inline-code">name</code> + <code class="inline-code">description</code>; the body loads <strong>only when the description matches</strong> the task</li>
+                <li>~100 tokens per skill at startup, full instructions only on demand — the practical answer to "my system prompt is too long"</li>
+                <li>Same RICE content, written once, reused across every session</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔬</span> Why This Matters for Your Research</div>
+            <div class="card-body">
+              <ul>
+                <li>Your lab's analysis conventions, file layout, and safety rules belong in a file, not in yesterday's chat history</li>
+                <li>A prompt in a repo can be <strong>versioned, diffed, reviewed, and tested</strong>; a prompt in a chat window cannot</li>
+                <li>Today's <code class="inline-code">system_prompt_example.md</code> is exactly this pattern in miniature</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <a href="https://agents.md/" target="_blank" class="reference-link">📚 AGENTS.md — the open format</a>
+        <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview" target="_blank" class="reference-link">📚 Anthropic — Agent Skills overview</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-25">
+      <div class="slide-content">
+        <h2 class="slide-title">Lecture Summary — The Art of Instruction</h2>
+        <p class="slide-subtitle">Key takeaways</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎭</span> RICE Framework</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Role</strong> → who the AI is; <strong>Instructions</strong> → what to do; <strong>Context</strong> → background; <strong>Examples</strong> → show the pattern</li>
+                <li>Layer all four for the most effective system prompts</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧮</span> Key Techniques</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Few-shot prompting</strong>: teach by example (most reliable for style)</li>
+                <li><strong>Structured outputs</strong>: a JSON Schema makes the shape guaranteed, not likely</li>
+                <li><strong>Chain-of-Thought</strong>: still essential for small/local models; built in on frontier models — steer the <strong>effort dial</strong> instead</li>
+                <li><strong>Prompt chaining</strong>: break complex tasks into simple, auditable steps</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🆕</span> The 2026 Layer</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Instruction hierarchy</strong>: system > user > tool output — a strong prior, not a guarantee, and never a place for secrets</li>
+                <li><strong>Prompt caching</strong>: stable prefix first, variable suffix last — order is now an engineering decision</li>
+                <li><strong>Context engineering</strong>: the smallest set of high-signal tokens beats the biggest window</li>
+                <li><strong>Evals</strong>: test a prompt change like a code change</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚠️</span> Avoid Anti-Patterns</div>
+            <div class="card-body">
+              <ul>
+                <li>Be specific, define format, set constraints, verify outputs</li>
+                <li>One prompt = one task; chain calls for complex workflows</li>
+                <li>Watch for <strong>sycophancy</strong> — never signal the answer you want</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text">References:</p>
+        <a href="https://arxiv.org/abs/2201.11903" target="_blank" class="reference-link">📚 Chain-of-Thought Prompting — Wei et al. 2022</a>
+        <a href="https://developers.openai.com/api/docs/guides/prompt-engineering" target="_blank" class="reference-link">📚 OpenAI — Prompt engineering guide</a>
+        <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview" target="_blank" class="reference-link">📚 Anthropic — Prompt engineering overview</a>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-26">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+        <p class="slide-subtitle">Persona-Based Conversations — Experience the Power of System Prompts</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-27">
+      <div class="slide-content">
+        <h2 class="slide-title">Today's Practice — <strong>Persona Conversations</strong></h2>
+        <p class="slide-subtitle">Same LLM, different system prompts → completely different "personalities"</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> The Goal</div>
+            <div class="card-body">
+              <ul>
+                <li>Experience firsthand how <strong>system prompts transform</strong> LLM behavior</li>
+                <li>Chat with the <strong>same model</strong> using different personas</li>
+                <li>Observe how Role, Instructions, Context, and Examples change the output</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎭</span> What You'll Do</div>
+            <div class="card-body">
+              <ul>
+                <li>Write system prompts for <strong>3 different personas</strong></li>
+                <li>Ask each persona the <strong>same research question</strong></li>
+                <li><strong>Score</strong> the three answers on a shared rubric instead of trusting your first impression</li>
+                <li>Iterate on one prompt and re-score it — that is a one-minute eval</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔧</span> Tools We'll Use</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">practices/week3/ex1_system_prompt.py</code> (CLI, Gemini via <code class="inline-code">google-genai</code>)</li>
+                <li><code class="inline-code">practices/week3/system_prompt_example.md</code> (system prompt template — a file, under git)</li>
+                <li>(Optional) <code class="inline-code">practices/week3/ollama_streamlit_app.py</code> (Streamlit Web UI: Ollama ↔ Gemini)</li>
+                <li>Your API keys live in <code class="inline-code">practices/.env</code> (<strong>do not commit</strong>)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-28">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 0 — <strong>Setup</strong> (Week 3 Practice)</h2>
+        <p class="slide-subtitle">Install deps and set <code class="inline-code">practices/.env</code></p>
+        <pre class="code-block"><code class="language-bash"># From repo root  (NOT the retired google-generativeai — see Week 2)
+pip install google-genai openai python-dotenv</code></pre>
+        <pre class="code-block"><code class="language-text"># practices/.env (DO NOT COMMIT)
 GOOGLE_API_KEY=your_key_here
 GEMINI_MODEL=gemini-3.1-flash-lite   # optional (code has a default)</code></pre>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-22">
-<div class="slide-content">
-<h2 class="slide-title">Step 1 — Run the <strong>CLI</strong> (<code class="inline-code">ex1_system_prompt.py</code>)</h2>
-<p class="slide-subtitle">Give Gemini a system prompt via a <code class="inline-code">.md</code> file</p>
-<pre class="code-block"><code class="language-bash">cd practices/week3
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-29">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 1 — Run the <strong>CLI</strong> (<code class="inline-code">ex1_system_prompt.py</code>)</h2>
+        <p class="slide-subtitle">Give Gemini a system prompt via a <code class="inline-code">.md</code> file</p>
+        <pre class="code-block"><code class="language-bash">cd practices/week3
 
 # One-shot message (uses system prompt from a markdown file)
 python ex1_system_prompt.py system_prompt_example.md --message "내 연구 주제에 대한 약점을 3개만 지적해줘"
 
 # Interactive chat
 python ex1_system_prompt.py system_prompt_example.md -i</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Key idea</div>
-<div class="card-body"><ul><li><code class="inline-code">system_prompt_example.md</code>의 내용을 <strong>system prompt</strong>로 읽어 모델에 주입합니다.</li><li>같은 질문을 하더라도 system prompt가 바뀌면 출력이 크게 달라집니다.</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-23">
-<div class="slide-content">
-<h2 class="slide-title">Bonus — <strong>Web UI</strong> (<code class="inline-code">ollama_streamlit_app.py</code>)</h2>
-<p class="slide-subtitle">Chat in a browser and switch providers</p>
-<pre class="code-block"><code class="language-bash">pip install streamlit requests google-generativeai python-dotenv
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Key idea</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">system_prompt_example.md</code>의 내용을 <strong>system prompt</strong>로 읽어 모델에 주입합니다.</li>
+                <li>같은 질문을 하더라도 system prompt가 바뀌면 출력이 크게 달라집니다.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-30">
+      <div class="slide-content">
+        <h2 class="slide-title">Bonus — <strong>Web UI</strong> (<code class="inline-code">ollama_streamlit_app.py</code>)</h2>
+        <p class="slide-subtitle">Chat in a browser and switch providers</p>
+        <pre class="code-block"><code class="language-bash">pip install streamlit requests google-genai python-dotenv
 cd practices/week3
 streamlit run ollama_streamlit_app.py</code></pre>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">💻</span> Local Ollama</div>
-<div class="card-body"><ul><li>Ollama 서버가 떠 있어야 합니다. (<code class="inline-code">ollama run <model></code> 또는 Ollama 실행)</li><li>UI가 <code class="inline-code">/api/tags</code>로 모델 목록을 읽어옵니다.</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">☁️</span> Google Gemini</div>
-<div class="card-body"><ul><li><code class="inline-code">practices/.env</code>의 <code class="inline-code">GOOGLE_API_KEY</code>를 읽어오거나 UI에 직접 입력할 수 있습니다.</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-24">
-<div class="slide-content">
-<h2 class="slide-title">Persona 1 — <strong>The Strict Peer Reviewer</strong></h2>
-<p class="slide-subtitle">A tough but fair academic reviewer</p>
-<pre class="code-block"><code class="language-text"># Role
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">💻</span> Local Ollama</div>
+            <div class="card-body">
+              <ul>
+                <li>Ollama 서버가 떠 있어야 합니다. (<code class="inline-code">ollama run &lt;model&gt;</code> 또는 Ollama 실행)</li>
+                <li>UI가 <code class="inline-code">/api/tags</code>로 모델 목록을 읽어옵니다.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">☁️</span> Google Gemini</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">practices/.env</code>의 <code class="inline-code">GOOGLE_API_KEY</code>를 읽어오거나 UI에 직접 입력할 수 있습니다.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-31">
+      <div class="slide-content">
+        <h2 class="slide-title">Persona 1 — <strong>The Strict Peer Reviewer</strong></h2>
+        <p class="slide-subtitle">A tough but fair academic reviewer</p>
+        <pre class="code-block"><code class="language-text"># Role
 You are a senior peer reviewer for a top-tier journal in the user's
 research field. You have 20+ years of experience and have reviewed
 hundreds of papers.
@@ -997,14 +1618,14 @@ User: "We used deep learning to predict material properties"
 Response: "Weakness 1: 'Deep learning' is too vague — which architecture?
 CNN, GNN, Transformer? Specify and justify your choice against baselines.
 Weakness 2: No mention of dataset size or cross-validation strategy..."</code></pre>
-<div class="highlight-quote">"Try asking this persona to review YOUR research idea — notice how the Role and Instructions shape the response."</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-25">
-<div class="slide-content">
-<h2 class="slide-title">Persona 2 — <strong>The Creative Research Brainstormer</strong></h2>
-<p class="slide-subtitle">An imaginative collaborator who generates unexpected ideas</p>
-<pre class="code-block"><code class="language-text"># Role
+        <div class="highlight-quote">"Try asking this persona to review YOUR research idea — notice how the Role and Instructions shape the response."</div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-32">
+      <div class="slide-content">
+        <h2 class="slide-title">Persona 2 — <strong>The Creative Research Brainstormer</strong></h2>
+        <p class="slide-subtitle">An imaginative collaborator who generates unexpected ideas</p>
+        <pre class="code-block"><code class="language-text"># Role
 You are a wildly creative interdisciplinary researcher who loves
 making unexpected connections between fields. You think like a
 startup founder meets a philosopher meets a scientist.
@@ -1026,16 +1647,16 @@ Response: "1. Bio-inspired photovoltaics — mimic butterfly wing
 nanostructures for light trapping (feasibility: 4, novelty: 4)
 2. MOONSHOT: Self-healing solar cells using DNA origami repair
 mechanisms (feasibility: 1, novelty: 5) ..."</code></pre>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-26">
-<div class="slide-content">
-<h2 class="slide-title">Persona 3 — <strong>Your Personal Research Advisor</strong></h2>
-<p class="slide-subtitle">Design a persona tailored to YOUR specific field</p>
-<pre class="code-block"><code class="language-text"># Role
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-33">
+      <div class="slide-content">
+        <h2 class="slide-title">Persona 3 — <strong>Your Personal Research Advisor</strong></h2>
+        <p class="slide-subtitle">Design a persona tailored to YOUR specific field</p>
+        <pre class="code-block"><code class="language-text"># Role
 You are a senior research advisor specializing in [YOUR FIELD].
 You have deep knowledge of [SPECIFIC SUBFIELD] and are familiar
-with the latest developments as of 2025.
+with the latest developments as of 2026.
 
 # Instructions
 - Answer questions with graduate-level depth and precision
@@ -1052,68 +1673,240 @@ Adjust explanations accordingly.
 # Examples
 [Add 1-2 examples specific to your field showing the
 input/output format you want]</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> This Is YOUR Persona</div>
-<div class="card-body"><ul><li>Fill in the brackets with your <strong>actual research details</strong></li><li>The more <strong>specific</strong> the context, the more useful the responses</li><li>This persona will become the basis for your Week 3 discussion post</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-27">
-<div class="slide-content">
-<h2 class="slide-title">The Experiment — <strong>Same Question, Three Personas</strong></h2>
-<p class="slide-subtitle">Ask each persona the SAME research question and compare</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔬</span> Step 1 — Choose Your Question</div>
-<div class="card-body"><ul><li>Pick a real research question from your own work</li><li>Example: "How can I improve the efficiency of my synthesis method?"</li><li>Example: "What statistical test should I use for my experiment data?"</li><li>Example: "What are the limitations of current approaches in my field?"</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎭</span> Step 2 — Ask All Three Personas</div>
-<div class="card-body"><ul><li>Copy-paste the <strong>same question</strong> to each persona</li><li>Persona 1 (Strict Reviewer): Will find weaknesses and gaps</li><li>Persona 2 (Creative Brainstormer): Will suggest unexpected directions</li><li>Persona 3 (Your Advisor): Will give field-specific guidance</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">📊</span> Step 3 — Compare & Reflect</div>
-<div class="card-body"><ul><li>How do the three responses differ in <strong>tone, depth, and usefulness</strong>?</li><li>Which persona gave the most <strong>actionable</strong> advice?</li><li>Which persona surprised you with something you hadn't considered?</li><li>How did the <strong>RICE components</strong> influence each persona's behavior?</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-28">
-<div class="slide-content">
-<h2 class="slide-title"><strong>Iterating</strong> on Your System Prompts</h2>
-<p class="slide-subtitle">Your first prompt is never your best — prompt engineering is an iterative process</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔄</span> The Iteration Cycle</div>
-<div class="card-body"><ul><li><strong>Write</strong> a system prompt → <strong>Test</strong> with a real question → <strong>Evaluate</strong> the output → <strong>Refine</strong> the prompt</li><li>Did the persona stay in character? If not, strengthen the <strong>Role</strong></li><li>Was the output format wrong? Add more specific <strong>Instructions</strong></li><li>Was the response too generic? Add more <strong>Context</strong> or <strong>Examples</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> Common Adjustments</div>
-<div class="card-body"><ul><li>"Too verbose" → Add: "Respond in 200 words or less"</li><li>"Too generic" → Add field-specific <strong>Context</strong> and <strong>Examples</strong></li><li>"Breaks character" → Add: "Stay in character at all times. Never break persona."</li><li>"Doesn't follow format" → Add explicit <strong>output format template</strong></li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">💡</span> Pro Tip — Temperature</div>
-<div class="card-body"><ul><li><strong>Lower temperature</strong> (0.0-0.3) → more consistent, focused responses</li><li><strong>Higher temperature</strong> (0.7-1.0) → more creative, varied responses</li><li>Use low temp for Strict Reviewer, high temp for Creative Brainstormer</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-29">
-<div class="slide-content">
-<h2 class="slide-title">Advanced — <strong>Multi-Turn Persona Conversation</strong></h2>
-<p class="slide-subtitle">Go deeper with follow-up questions</p>
-<pre class="code-block"><code class="language-python"># Have a back-and-forth conversation with your persona
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> This Is YOUR Persona</div>
+            <div class="card-body">
+              <ul>
+                <li>Fill in the brackets with your <strong>actual research details</strong></li>
+                <li>The more <strong>specific</strong> the context, the more useful the responses</li>
+                <li>This persona will become the basis for your Week 3 discussion post</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-34">
+      <div class="slide-content">
+        <h2 class="slide-title">The Experiment — <strong>Same Question, Three Personas</strong></h2>
+        <p class="slide-subtitle">Ask each persona the SAME research question and compare</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔬</span> Step 1 — Choose Your Question</div>
+            <div class="card-body">
+              <ul>
+                <li>Pick a real research question from your own work</li>
+                <li>Example: "How can I improve the efficiency of my synthesis method?"</li>
+                <li>Example: "What statistical test should I use for my experiment data?"</li>
+                <li>Example: "What are the limitations of current approaches in my field?"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎭</span> Step 2 — Ask All Three Personas</div>
+            <div class="card-body">
+              <ul>
+                <li>Copy-paste the <strong>same question</strong> to each persona</li>
+                <li>Persona 1 (Strict Reviewer): Will find weaknesses and gaps</li>
+                <li>Persona 2 (Creative Brainstormer): Will suggest unexpected directions</li>
+                <li>Persona 3 (Your Advisor): Will give field-specific guidance</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📊</span> Step 3 — Compare & Reflect</div>
+            <div class="card-body">
+              <ul>
+                <li>How do the three responses differ in <strong>tone, depth, and usefulness</strong>?</li>
+                <li>Which persona gave the most <strong>actionable</strong> advice?</li>
+                <li>Which persona surprised you with something you hadn't considered?</li>
+                <li>How did the <strong>RICE components</strong> influence each persona's behavior?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-35">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 4 — <strong>Score Them</strong>, Don't Just Feel the Difference</h2>
+        <p class="slide-subtitle">Same question, three personas, one table — fill it in during the session</p>
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Criterion (score 1–5)</th>
+              <th>What you are actually judging</th>
+              <th>Reviewer</th>
+              <th>Brainstormer</th>
+              <th>Advisor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Specificity</strong></td>
+              <td>Concrete enough to act on tomorrow?</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><strong>Correctness</strong></td>
+              <td>Did every claim you spot-checked hold up?</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><strong>Actionability</strong></td>
+              <td>Did it produce a next step, not a lecture?</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><strong>Format compliance</strong></td>
+              <td>Did it obey the output format you specified?</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><strong>Persona fidelity</strong></td>
+              <td>Did it stay in character to the last line?</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><strong>Hallucinations</strong></td>
+              <td>Count of invented citations / facts (lower = better)</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> How to Use It</div>
+            <div class="card-body">
+              <ul>
+                <li>Score <strong>before</strong> deciding which persona you liked — tone is persuasive, content may not be</li>
+                <li>The lowest cell names the RICE component to fix: format → <strong>Instructions</strong>, generic → <strong>Context</strong>, off-character → <strong>Role</strong>, inconsistent shape → add <strong>Examples</strong> or a schema</li>
+                <li>Bring the filled table to the forum post: a scored comparison beats "Persona 2 felt better"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-36">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>Iterating</strong> on Your System Prompts</h2>
+        <p class="slide-subtitle">Your first prompt is never your best — prompt engineering is an iterative process</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔄</span> The Iteration Cycle</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Write</strong> a system prompt → <strong>Test</strong> with a real question → <strong>Evaluate</strong> the output → <strong>Refine</strong> the prompt</li>
+                <li>Did the persona stay in character? If not, strengthen the <strong>Role</strong></li>
+                <li>Was the output format wrong? Add more specific <strong>Instructions</strong></li>
+                <li>Was the response too generic? Add more <strong>Context</strong> or <strong>Examples</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> Common Adjustments</div>
+            <div class="card-body">
+              <ul>
+                <li>"Too verbose" → Add: "Respond in 200 words or less"</li>
+                <li>"Too generic" → Add field-specific <strong>Context</strong> and <strong>Examples</strong></li>
+                <li>"Breaks character" → Add: "Stay in character at all times. Never break persona."</li>
+                <li>"Doesn't follow format" → Add explicit <strong>output format template</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">💡</span> Pro Tip — Temperature <em>and</em> Effort</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Lower temperature</strong> (0.0–0.3) → more consistent, focused responses</li>
+                <li><strong>Higher temperature</strong> (0.7–1.0) → more creative, varied responses</li>
+                <li>Use low temp for the Strict Reviewer, high temp for the Creative Brainstormer</li>
+                <li>On a <strong>reasoning model</strong> <code class="inline-code">temperature</code> may be ignored or rejected — raise the <strong>effort / thinking budget</strong> instead</li>
+                <li>Local models react strongly to temperature: <code class="inline-code">qwen3.5:0.8b</code> is the cheapest place to see the effect</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-37">
+      <div class="slide-content">
+        <h2 class="slide-title">Stop Vibing — <strong>Test a Prompt Like Code</strong></h2>
+        <p class="slide-subtitle">A prompt change is a code change, so it deserves a regression test</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📋</span> The Minimum Viable Eval</div>
+            <div class="card-body">
+              <ul>
+                <li>Freeze <strong>5–10 real inputs</strong> from your own research — not toy examples</li>
+                <li>Write down what a good answer must contain <strong>before</strong> you look at any output</li>
+                <li>Run version A and version B over all of them and count the passes</li>
+                <li>Anthropic's own guide puts this <em>before</em> prompt engineering: define success criteria, then build evaluations</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🗂️</span> Version Your Prompts</div>
+            <div class="card-body">
+              <ul>
+                <li>Keep each persona in its own <code class="inline-code">.md</code> file — as we do today — and commit it to git</li>
+                <li>Commit message = what changed and why: "advisor: add 'say unknown' rule → fewer invented DOIs"</li>
+                <li>Six months from now you will need to know <strong>which prompt produced the figure in your paper</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <pre class="code-block"><code class="language-python">CASES = [   # (question, keywords a good answer must contain)
+    ("Review my ZnO synthesis plan", ["xrd", "control", "reproducib"]),
+    ("Which test for n=12, non-normal data?", ["mann-whitney", "assumption"]),
+]
+
+def score(system_prompt):
+    passed = 0
+    for question, must_mention in CASES:
+        out = ask(system_prompt, question).lower()      # your chat() from Week 2
+        passed += all(k in out for k in must_mention)
+    return passed / len(CASES)      # v1: 0.4 → v2: 0.9  ← now it is a number
+</code></pre>
+        <div class="highlight-quote">"If you cannot say what would make the new prompt <em>worse</em>, you are not testing it — you are re-reading it."</div>
+        <a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests" target="_blank" class="reference-link">📚 Anthropic — Define success criteria & build evaluations</a>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-38">
+      <div class="slide-content">
+        <h2 class="slide-title">Advanced — <strong>Multi-Turn Persona Conversation</strong></h2>
+        <p class="slide-subtitle">Go deeper with follow-up questions</p>
+        <pre class="code-block"><code class="language-python"># Have a back-and-forth conversation with your persona
+# Same OpenAI-compatible pattern as Week 2 — swap the backend in two lines
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
 load_dotenv()
-client = OpenAI()  # or use Ollama, Gemini, etc.
 
-SYSTEM_PROMPT = """..."""  # Your persona system prompt here
+client = OpenAI(                                  # Gemini through the OpenAI client
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+    api_key=os.getenv("GOOGLE_API_KEY"),
+)
+MODEL = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
+# Local instead:  OpenAI(base_url="http://localhost:11434/v1", api_key="ollama"), MODEL="qwen3.5:0.8b"
 
+# The persona lives in a file, not in this script — so you can version it
+SYSTEM_PROMPT = open("system_prompt_example.md", encoding="utf-8").read()
 messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
 print("🎭 Persona Chat (type 'quit' to exit)")
@@ -1125,357 +1918,649 @@ while True:
         break
     messages.append({"role": "user", "content": user_input})
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=messages
-    )
-    reply = response.choices[0].message.content
+    reply = client.chat.completions.create(
+        model=MODEL, messages=messages           # full history re-sent every turn → cache the prefix
+    ).choices[0].message.content
+
     messages.append({"role": "assistant", "content": reply})
     print(f"\n🎭 Persona: {reply}")</code></pre>
-<div class="highlight-quote">"Multi-turn conversations reveal the real power of system prompts — the persona maintains character across the entire dialogue."</div>
-</div>
-</section>
-<section class="slide" id="slide-30">
-<div class="slide-content">
-<h2 class="slide-title">Persona Showcase — <strong>What Others Have Built</strong></h2>
-<p class="slide-subtitle">Inspiration for your own personas</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📝</span> The Devil's Advocate</div>
-<div class="card-body"><ul><li>Role: "You always argue the OPPOSITE of whatever the user proposes"</li><li>Use case: stress-test your research hypotheses</li><li>Forces you to defend your ideas against strong counter-arguments</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🌍</span> The Cross-Disciplinary Connector</div>
-<div class="card-body"><ul><li>Role: "You are an expert in [other field]. Reinterpret the user's research through the lens of your expertise."</li><li>Use case: find unexpected parallels between fields</li><li>Try: a biologist interpreting your physics problem, or vice versa</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">📚</span> The Socratic Teacher</div>
-<div class="card-body"><ul><li>Role: "Never give direct answers. Instead, ask questions that lead the student to discover the answer themselves."</li><li>Use case: deepening your own understanding</li><li>Forces you to <strong>think through</strong> the reasoning, not just accept answers</li></ul></div>
-</div>
-<div class="card card-purple">
-<div class="card-header"><span class="icon">🧑‍🔬</span> The Lab Manager</div>
-<div class="card-body"><ul><li>Role: "You are a practical lab manager focused on feasibility, cost, timeline, and safety."</li><li>Use case: reality-check your experiment designs</li><li>Catches practical issues academics often overlook</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-31">
-<div class="slide-content">
-<h2 class="slide-title">✅ <strong>Practice Checklist</strong></h2>
-<p class="slide-subtitle">Complete these tasks during the hands-on session</p>
-<div class="cards-grid">
-<div class="card card-green">
-<div class="card-header"><span class="icon">📋</span> Checklist</div>
-<div class="card-body"><ul><li>[ ] Write a system prompt for <strong>Persona 1</strong> (Strict Reviewer) using RICE</li><li>[ ] Write a system prompt for <strong>Persona 2</strong> (Creative Brainstormer) using RICE</li><li>[ ] Write a system prompt for <strong>Persona 3</strong> (Your Field Advisor) — customize for YOUR research</li><li>[ ] Ask the <strong>same research question</strong> to all 3 personas and compare outputs</li><li>[ ] <strong>Iterate</strong>: refine at least one prompt based on the output you got</li><li>[ ] (Bonus) Create a <strong>4th persona</strong> from the Showcase slide or your own idea</li><li>[ ] (Bonus) Have a <strong>multi-turn conversation</strong> with your best persona (3+ exchanges)</li><li>[ ] (Bonus) Try the same persona with <strong>different temperatures</strong> and compare</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide title-slide" id="slide-32">
-<div class="slide-content">
-<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
-<p class="slide-subtitle">Week 2 Review & Managing AI Expectations</p>
-</div>
-</section>
-<section class="slide" id="slide-33">
-<div class="slide-content">
-<h2 class="slide-title">Week 2 Review — <strong>The Stochastic Parrot Problem</strong></h2>
-<p class="slide-subtitle">How much can we trust probabilistic answers? Three AI agents debated.</p>
-<div class="cards-grid">
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🦸</span> Iron Man — "Engineer the Solution"</div>
-<div class="card-body"><ul><li>The stochastic parrot isn't a trust crisis — it's a <strong>data-processing utility</strong></li><li>Stop agonizing over probabilistic squawks; build <strong>robust validation frameworks</strong></li><li>Our job: engineer intelligence, not just audit algorithms</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🛡️</span> Captain America — "Principled Verification"</div>
-<div class="card-body"><ul><li>Entrusting understanding to probabilistic answers risks <strong>sacrificing genuine insight</strong></li><li>True research demands <strong>diligent verification</strong> and moral courage to seek truth</li><li>Convenience must not dull our <strong>critical faculties</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🧪</span> Hulk — "Treat Everything as Hypothesis"</div>
-<div class="card-body"><ul><li>Probabilistic outputs are <strong>inherently unstable</strong> — prone to hallucinate, leak data, perpetuate bias</li><li>Every AI-generated answer must be treated as a <strong>hypothesis requiring meticulous human oversight</strong></li><li>Without rigorous scrutiny, things will get <strong>out of hand</strong></li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-34">
-<div class="slide-content">
-<h2 class="slide-title">How Did You Vote?</h2>
-<p class="slide-subtitle">Strong consensus toward pragmatic verification — but with surprising diversity</p>
-<div class="cards-grid">
-<div class="card card-green">
-<div class="card-header"><span class="icon">📊</span> Voting Results</div>
-<div class="card-body"><ul><li><strong>Hulk (Option 3)</strong> dominated again — pragmatic verification resonated most (Tran, Lin, Irfan, Namcheol, Hyunwoo, Nazhiefah)</li><li><strong>Iron Man (Option 1)</strong> gained ground this week — several students found the engineering argument compelling (Gyeongsu, Margareth, Jaewhoon)</li><li><strong>Captain America (Option 2)</strong> attracted those emphasizing the <strong>sequence</strong> of reasoning (Manuella, DongYun, Waad)</li><li>Many students combined positions — showing <strong>nuanced, evolving thinking</strong> since Week 1</li></ul></div>
-</div>
-<div class="card card-purple">
-<div class="card-header"><span class="icon">💡</span> Key Shift from Week 1</div>
-<div class="card-body"><ul><li>Week 1: "Should we trust AI?" → Week 2: "<strong>How</strong> do we manage its uncertainty?"</li><li>The conversation matured from <strong>boundaries</strong> to <strong>engineering solutions</strong></li><li>Nobody dismissed AI's utility — the debate shifted to <strong>how to harness it safely</strong></li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-35">
-<div class="slide-content">
-<h2 class="slide-title">Key Themes from <strong>Your Responses</strong></h2>
-<p class="slide-subtitle">Five ideas that emerged across the class</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> 1. Hypothesis, Not Truth</div>
-<div class="card-body"><ul><li>Nearly everyone converged: treat AI output as a <strong>hypothesis requiring validation</strong></li><li>Like a "preliminary simulation result that must be confirmed by experimental data" (Namcheol)</li><li>AI-generated results are "starting points rather than reliable facts" (DongYun)</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔧</span> 2. The Engineering Mindset</div>
-<div class="card-body"><ul><li>Knowing AI is stochastic isn't a crisis — it's a <strong>design constraint</strong></li><li>Build validation frameworks and systems that <strong>tolerate errors</strong> (Jaewhoon, Margareth)</li><li>The real risk isn't AI's nature — it's <strong>how humans interpret</strong> the outputs (Margareth)</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">⚖️</span> 3. Balance Over Extremes</div>
-<div class="card-body"><ul><li>Too much caution → miss AI's benefits; too little → catastrophic errors</li><li>"Achieving balance among accuracy, ethics, and technology" (Waad)</li><li>Use AI for ideas/hypotheses, but verify before treating as fact (Tran, Irfan)</li></ul></div>
-</div>
-<div class="card card-pink">
-<div class="card-header"><span class="icon">🤖</span> 4. Domain-Specific Stakes</div>
-<div class="card-body"><ul><li>In robotics, "logic errors can cause actual hardware damage" (Hyunwoo)</li><li>In nuclear/materials, "the margin for error is non-existent" (Namcheol)</li><li>Higher stakes → more rigorous verification; but even low-stakes errors compound</li></ul></div>
-</div>
-<div class="card card-purple">
-<div class="card-header"><span class="icon">🧠</span> 5. The Human Remains Accountable</div>
-<div class="card-body"><ul><li>"The responsibility for the work remains with the individual" (Manuella)</li><li>AI as a "powerful but volatile engine that requires constant monitoring" (Namcheol)</li><li>"If we accept results without being able to explain the underlying logic, AI becomes a risk" (Hyunwoo)</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-36">
-<div class="slide-content">
-<h2 class="slide-title">Debate Point 1 — <strong>Is AI Uncertainty Really New?</strong></h2>
-<p class="slide-subtitle">Jaewhoon's provocative insight — everything around us is already probabilistic</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🏭</span> "Stochastic Is Normal" (Jaewhoon)</div>
-<div class="card-body"><ul><li>Hardware products reach market not because they <strong>never fail</strong>, but because failure probability is <strong>manageable</strong></li><li>Cars, buildings, airplanes — all designed with <strong>probability of failure</strong> in mind</li><li>Companies manage errors through inspection, repair, compensation, and <strong>regulatory guidelines</strong></li><li>Even human organizations make probabilistic errors — companies collapse from misjudging market signals</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔧</span> The Engineering Conclusion</div>
-<div class="card-body"><ul><li>"The key challenge is not eliminating AI errors entirely but designing <strong>systems that can tolerate and manage them</strong> effectively"</li><li>Unless a fundamentally new type of AI emerges, <strong>stochastic nature will remain</strong></li><li>So: stop trying to make AI perfect → start building <strong>error-tolerant systems</strong></li></ul></div>
-</div>
-<div class="card card-pink">
-<div class="card-header"><span class="icon">🤔</span> The Counter-Argument</div>
-<div class="card-body"><ul><li>Hardware failures are <strong>detectable</strong> — a bridge crack is visible; an AI hallucination looks correct</li><li>Traditional systems have <strong>well-defined failure modes</strong>; LLM failures are <strong>unpredictable</strong></li><li>Can you apply reliability engineering to a system whose errors are <strong>indistinguishable from correct output</strong>?</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"AI based on current computing technology is inherently stochastic. The key challenge is not eliminating errors but designing systems that can tolerate and manage them." — Jaewhoon</div>
-</div>
-</section>
-<section class="slide" id="slide-37">
-<div class="slide-content">
-<h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Error Tolerance Engineering</h2>
-<p class="slide-subtitle">10 minutes — Design an error-tolerant AI system</p>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Discussion Prompt</div>
-<div class="card-body"><ul><li>Jaewhoon compares AI error tolerance to <strong>hardware reliability testing</strong>.</li><li>In hardware, we have: inspection schedules, acceptable failure rates, warranty systems, regulatory standards</li><li><strong>Design an analogous framework for AI in your research:</strong></li><li>What is the "acceptable failure rate" for AI outputs in your field?</li><li>What is your "inspection schedule" (how often do you verify)?</li><li>What is your "warranty" (what happens when AI output causes a problem)?</li><li>What "regulatory standards" should exist for AI-assisted research?</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-38">
-<div class="slide-content">
-<h2 class="slide-title">Debate Point 2 — <strong>Can Hallucination Be a Feature?</strong></h2>
-<p class="slide-subtitle">A provocative claim — what if errors drive creativity?</p>
-<div class="cards-grid">
-<div class="card card-green">
-<div class="card-header"><span class="icon">💡</span> "Hallucination Sparks Creativity" (Gyeongsu)</div>
-<div class="card-body"><ul><li>AI's utility is "simply too immense to ignore" — it will eventually <strong>surpass the singularity</strong></li><li>Over-controlling AI "might kill the creativity and originality" we want from it</li><li>"Some scholars argue that hallucination is not a harmful error but the very thing that <strong>sparks creativity and uniqueness</strong>"</li><li>Too much validation → no AGI; we need to <strong>tolerate some randomness</strong></li></ul></div>
-</div>
-<div class="card card-pink">
-<div class="card-header"><span class="icon">❌</span> "Hallucination Is Misinformation" (Nazhiefah, Hyunwoo)</div>
-<div class="card-body"><ul><li>Hallucination leads to "the most catastrophe in information — <strong>misinformation</strong>" (Nazhiefah)</li><li>In engineering, "probabilistic answers can disguise hallucinations as <strong>plausible predictions</strong>" (Hyunwoo)</li><li>Creativity is valuable — but <strong>only when the creator knows the output is speculative</strong></li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🎯</span> The Tension</div>
-<div class="card-body"><ul><li>In <strong>brainstorming and ideation</strong> → randomness is a feature (unexpected connections)</li><li>In <strong>verification and publication</strong> → randomness is a bug (false confidence)</li><li>The same property (stochasticity) is a <strong>strength or weakness</strong> depending on the task</li><li>How do you <strong>label</strong> which mode the AI is in?</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-39">
-<div class="slide-content">
-<h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — When Is "Wrong" Useful?</h2>
-<p class="slide-subtitle">5 minutes — Quick debate</p>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Challenge</div>
-<div class="card-body"><ul><li>Think of <strong>one scenario</strong> in your research where an AI "hallucination" could actually be <strong>useful</strong></li><li>And <strong>one scenario</strong> where it would be <strong>catastrophic</strong></li><li>What distinguishes the two? Is it the task, the stakes, the user's expertise, or something else?</li><li>Could you design a system prompt (using RICE!) that explicitly <strong>encourages creative speculation</strong> vs one that <strong>demands strict accuracy</strong>? How would they differ?</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-40">
-<div class="slide-content">
-<h2 class="slide-title">Debate Point 3 — <strong>The Real Risk Is Human, Not AI</strong></h2>
-<p class="slide-subtitle">Multiple students argue: the danger is how WE interpret AI outputs</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔍</span> "The Problem Is the User" (Margareth)</div>
-<div class="card-body"><ul><li>If we already <strong>know</strong> AI is stochastic, "it's no longer a problem"</li><li>The real risk is that "probabilistic answers can <strong>appear authoritative</strong> even when they are wrong"</li><li>Users must treat outputs as "<strong>hypotheses or suggestions</strong> rather than definitive truths"</li><li>Over-cautious checking of every step means "you are <strong>missing out</strong> on the ability to see the whole system"</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">📐</span> "Sequence Matters" (Manuella)</div>
-<div class="card-body"><ul><li>Human reasoning should come <strong>FIRST</strong>, then AI refines</li><li>"Genuine ideas originate from <strong>human reasoning</strong>" — AI recombines patterns, not understands</li><li>The correct sequence: <strong>1)</strong> Human designs the idea → <strong>2)</strong> AI generates/explores → <strong>3)</strong> Human verifies</li><li>Reversing this sequence is where dependency begins</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🧪</span> "Hypothesis Framework" (Namcheol, DongYun)</div>
-<div class="card-body"><ul><li>Treat AI output like a <strong>preliminary simulation result</strong></li><li>"Fluent text" tempts us to treat it as verified truth — this is the core danger</li><li>Maintain "<strong>scientific anxiety</strong>" as a necessary safeguard (Namcheol)</li><li>"Usefulness should not be the basis for trust" (DongYun)</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"The real risk may not lie in the stochastic nature of the tool itself, but in how humans interpret its outputs." — Margareth</div>
-</div>
-</section>
-<section class="slide" id="slide-41">
-<div class="slide-content">
-<h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Design Your Workflow Sequence</h2>
-<p class="slide-subtitle">10 minutes — Apply Manuella's "sequence" idea to your research</p>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Exercise</div>
-<div class="card-body"><ul><li>Pick a <strong>specific research task</strong> you do regularly (literature review, data analysis, experiment design, paper writing)</li><li>Design <strong>two workflows</strong> for this task:</li><li><strong>Workflow A — Human First</strong>: You think first, then use AI to refine/expand</li><li><strong>Workflow B — AI First</strong>: AI generates a draft, then you review/correct</li><li>Which workflow produces <strong>better results</strong> for this task? Why?</li><li>Is there a task where <strong>AI first</strong> is actually better? (Hint: brainstorming, initial exploration)</li><li>How does today's <strong>RICE framework</strong> help you design better prompts for each workflow?</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-42">
-<div class="slide-content">
-<h2 class="slide-title">Debate Point 4 — <strong>Where on the Trust Spectrum?</strong></h2>
-<p class="slide-subtitle">From "fully trust" to "fully verify" — the class splits on where to draw the line</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">⚡</span> The "Build Frameworks" Camp (Iron Man supporters)</div>
-<div class="card-body"><ul><li>Gyeongsu: AI utility is "too immense to ignore" — focus on <strong>harnessing</strong>, not fearing</li><li>Margareth: Knowing it's stochastic means it's "no longer a problem" — just engineer around it</li><li>Jaewhoon: Design <strong>error-tolerant systems</strong> like we do for hardware</li><li>Approach: accept the uncertainty, build <strong>systematic guardrails</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔍</span> The "Verify Everything" Camp (Hulk supporters)</div>
-<div class="card-body"><ul><li>Namcheol: In nuclear/materials, "the margin for error is <strong>non-existent</strong>"</li><li>Hyunwoo: In robotics, unverified AI outputs cause "<strong>actual hardware damage</strong>"</li><li>Irfan, Lin: AI can be useful but "humans still need to <strong>verify the results</strong>"</li><li>Approach: treat every output as hypothesis, <strong>no exceptions</strong></li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚖️</span> The "It Depends" Position (Synthesizers)</div>
-<div class="card-body"><ul><li>Tran: "Helpful within <strong>certain limits</strong>" — use for ideas, verify for facts</li><li>Waad: Balance "accuracy, ethics, and technology" — <strong>context determines trust level</strong></li><li>DongYun: "Starting points rather than reliable facts" — trust varies by <strong>task stakes</strong></li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-43">
-<div class="slide-content">
-<h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Your Personal Trust Policy</h2>
-<p class="slide-subtitle">10 minutes — Apply today's prompt engineering to the trust problem</p>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Scenario</div>
-<div class="card-body"><ul><li>You just learned the <strong>RICE framework</strong> and built your first <strong>agent with tools</strong>.</li><li>Now design a <strong>trust policy</strong> that uses today's techniques to manage AI risk:</li><li><strong>Green Zone</strong> (AI acts, minimal review): What system prompt constraints make this safe? What tools does the agent use?</li><li><strong>Yellow Zone</strong> (AI drafts, human reviews): How does Chain-of-Thought make verification easier?</li><li><strong>Red Zone</strong> (human only, AI prohibited): What tasks are too risky even with perfect prompts?</li><li>How does this compare to the <strong>3-tier policy</strong> you discussed in Week 2? Has your position evolved?</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-44">
-<div class="slide-content">
-<h2 class="slide-title">From Debate to <strong>Practice</strong> — Your Responses Prove Why Prompts Matter</h2>
-<p class="slide-subtitle">Linking your insights to what we learned today</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔗</span> The "Hypothesis" Insight Needs CoT</div>
-<div class="card-body"><ul><li>You said: treat AI output as a hypothesis → this is exactly what <strong>Chain-of-Thought</strong> enables</li><li>When the model shows its reasoning step by step, you can <strong>audit each step</strong> like checking a proof</li><li>A bare answer ("the result is X") is unverifiable; a CoT answer ("Step 1... Step 2... therefore X") is auditable</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎭</span> The "Sequence" Insight Needs RICE</div>
-<div class="card-body"><ul><li>Manuella said: human reasoning first, then AI → this IS the <strong>RICE framework</strong> in action</li><li><strong>Role</strong>: you define what the AI should be; <strong>Context</strong>: you provide your reasoning; <strong>Instructions</strong>: you constrain the output</li><li>The human designs the "frame" — the AI fills it in</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔧</span> The "Error Tolerance" Insight Needs Agents</div>
-<div class="card-body"><ul><li>Jaewhoon said: build systems that tolerate errors → this is what <strong>tool-using agents</strong> do</li><li>An agent that uses <code class="inline-code">calculate()</code> instead of guessing math → <strong>eliminates one error source</strong></li><li>An agent that uses <code class="inline-code">search_papers()</code> instead of inventing citations → <strong>reduces hallucination</strong></li><li>Each tool replaces <strong>stochastic guessing</strong> with <strong>deterministic execution</strong></li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"Your Week 2 insights about trust, verification, and hypothesis-testing are exactly the problems that prompt engineering and tool use are designed to solve."</div>
-</div>
-</section>
-<section class="slide" id="slide-45">
-<div class="slide-content">
-<h2 class="slide-title">How Your Thinking Has <strong>Evolved</strong></h2>
-<p class="slide-subtitle">Three weeks of growing sophistication</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📈</span> Week 1 → Week 2 → Week 3</div>
-<div class="card-body"><ul><li><strong>Week 1</strong>: "AI is useful but we need boundaries" → defined the assistant/crutch line</li><li><strong>Week 2</strong>: "AI is stochastic — treat outputs as hypotheses" → moved from <em>if</em> to <em>how</em> to trust</li><li><strong>Week 3 (today)</strong>: You'll learn to <strong>engineer the trust</strong> through prompts, tools, and agent design</li><li>Your positions aren't just evolving — they're becoming <strong>actionable</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> From Philosophy to Engineering</div>
-<div class="card-body"><ul><li>Week 1: Philosophical debate (assistant vs crutch)</li><li>Week 2: Scientific framework (hypothesis testing)</li><li>Week 3: Engineering solution (RICE + CoT + tools + agents)</li><li><strong>Next</strong>: You'll build increasingly sophisticated agents that embody these principles</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-46">
-<div class="slide-content">
-<h2 class="slide-title">The Journey So Far — <strong>From LLM to Agent</strong></h2>
-<p class="slide-subtitle">Connecting Weeks 1-3</p>
-<div class="mermaid-container"><div class="mermaid">graph LR
-    W1["Week 1<br>🎯 What is Agentic AI?<br>The Research Director metaphor"]
-    W2["Week 2<br>🧠 The LLM Brain<br>Capabilities, limits, security"]
-    W3["Week 3<br>📝 Controlling the Brain<br>System prompts + first agent"]
-    W4["Week 4<br>🔧 Next...<br>Advanced agent patterns"]
-    W1 --> W2 --> W3 --> W4
-    style W1 fill:#e1f5fe,stroke:#0288d1
-    style W2 fill:#fff3e0,stroke:#f57c00
-    style W3 fill:#e8f5e9,stroke:#388e3c
-    style W4 fill:#f3e5f5,stroke:#7b1fa2</div></div>
-<div class="highlight-quote">"Week 1: you understood the vision. Week 2: you understood the brain. Week 3: you learned to control it. Next: you'll build systems that act autonomously."</div>
-</div>
-</section>
-<section class="slide" id="slide-47">
-<div class="slide-content">
-<h2 class="slide-title">🗣️ <strong>Week 3 Discussion Questions</strong> (UST LMS)</h2>
-<p class="slide-subtitle">Post your response on the forum this week</p>
-<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
-<p class="slide-text">1. Share your <strong>best persona system prompt</strong> from today's practice (using the RICE framework). What worked well? What did you iterate on? Include a sample exchange showing the persona in action.</p>
-<p class="slide-text">2. Compare the outputs from your <strong>3 personas</strong> (Strict Reviewer, Creative Brainstormer, Your Advisor) for the same question. Which gave the most useful response? Which surprised you? What does this tell you about the <strong>power and limits</strong> of system prompts?</p>
-<p class="slide-text">3. Jaewhoon compared AI error tolerance to hardware reliability testing. Design an <strong>"AI reliability standard"</strong> for your lab: what is the acceptable error rate? How do you measure it? What is the "recall procedure" when an AI error is discovered in published work?</p>
-<p class="slide-text">4. Gyeongsu argued that hallucination might spark creativity. <strong>Do you agree?</strong> Can you design a system prompt that deliberately encourages creative/speculative output AND clearly labels it as unverified? How is this different from a system prompt for verified factual output?</p>
-</div>
-</section>
-<section class="slide" id="slide-48">
-<div class="slide-content">
-<h2 class="slide-title">Want to Learn More?</h2>
-<p class="slide-text">Key Papers</p>
-<a href="https://arxiv.org/abs/2201.11903" target="_blank" class="reference-link">📚 Chain-of-Thought Prompting — Wei et al. 2022</a>
-<a href="https://arxiv.org/abs/2210.03629" target="_blank" class="reference-link">📚 ReAct: Synergizing Reasoning and Acting — Yao et al. 2023</a>
-<a href="https://arxiv.org/abs/2302.04761" target="_blank" class="reference-link">📚 Toolformer: Language Models Can Teach Themselves to Use Tools — Schick et al. 2023</a>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">Guides & Tutorials</p>
-<a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering" target="_blank" class="reference-link">📚 Anthropic Prompt Engineering Guide</a>
-<a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" class="reference-link">📚 OpenAI Prompt Engineering Guide</a>
-<a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use" target="_blank" class="reference-link">📚 Anthropic Tool Use Documentation</a>
-<a href="https://pypi.org/project/anthropic/" target="_blank" class="reference-link">📚 Anthropic Python SDK</a>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">Videos</p>
-<a href="https://www.youtube.com/watch?v=F_oMF35RMZM" target="_blank" class="reference-link">📚 Building AI Agents — Anthropic (YouTube)</a>
-<a href="https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/" target="_blank" class="reference-link">📚 Prompt Engineering for Developers — DeepLearning.AI</a>
-</div>
-</section>
-<section class="slide" id="slide-49">
-<div class="slide-content">
-<h2 class="slide-title">Wrap-Up of <strong>Week 3</strong></h2>
-<p class="slide-subtitle">Three things to remember</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> Lecture</div>
-<div class="card-body"><ul><li>System prompts control LLM behavior; use the <strong>RICE framework</strong> (Role, Instructions, Context, Examples); Chain-of-Thought makes reasoning auditable</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> Practice</div>
-<div class="card-body"><ul><li>Experienced the power of system prompts through <strong>persona conversations</strong>; same question → 3 different personas → dramatically different outputs</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
-<div class="card-body"><ul><li>Week 2 review: you matured from "should we trust AI?" to "how do we engineer trust?"; today's RICE + CoT + tools are the answer to your own Week 2 insights</li></ul></div>
-</div>
-</div>
-<p class="slide-text"><strong>Next week:</strong> From prompts to agents — <strong>tool use, ReAct loop</strong>, and building your first CLI agent that takes actions in the real world.</p>
-</div>
-</section>
+        <div class="highlight-quote">"Multi-turn conversations reveal the real power of system prompts — the persona maintains character across the entire dialogue."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-39">
+      <div class="slide-content">
+        <h2 class="slide-title">Persona Showcase — <strong>What Others Have Built</strong></h2>
+        <p class="slide-subtitle">Inspiration for your own personas</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📝</span> The Devil's Advocate</div>
+            <div class="card-body">
+              <ul>
+                <li>Role: "You always argue the OPPOSITE of whatever the user proposes"</li>
+                <li>Use case: stress-test your research hypotheses</li>
+                <li>Forces you to defend your ideas against strong counter-arguments</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🌍</span> The Cross-Disciplinary Connector</div>
+            <div class="card-body">
+              <ul>
+                <li>Role: "You are an expert in [other field]. Reinterpret the user's research through the lens of your expertise."</li>
+                <li>Use case: find unexpected parallels between fields</li>
+                <li>Try: a biologist interpreting your physics problem, or vice versa</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📚</span> The Socratic Teacher</div>
+            <div class="card-body">
+              <ul>
+                <li>Role: "Never give direct answers. Instead, ask questions that lead the student to discover the answer themselves."</li>
+                <li>Use case: deepening your own understanding</li>
+                <li>Forces you to <strong>think through</strong> the reasoning, not just accept answers</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">🧑‍🔬</span> The Lab Manager</div>
+            <div class="card-body">
+              <ul>
+                <li>Role: "You are a practical lab manager focused on feasibility, cost, timeline, and safety."</li>
+                <li>Use case: reality-check your experiment designs</li>
+                <li>Catches practical issues academics often overlook</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-40">
+      <div class="slide-content">
+        <h2 class="slide-title">✅ <strong>Practice Checklist</strong></h2>
+        <p class="slide-subtitle">Complete these tasks during the hands-on session</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📋</span> Checklist</div>
+            <div class="card-body">
+              <ul>
+                <li>[ ] Write a system prompt for <strong>Persona 1</strong> (Strict Reviewer) using RICE</li>
+                <li>[ ] Write a system prompt for <strong>Persona 2</strong> (Creative Brainstormer) using RICE</li>
+                <li>[ ] Write a system prompt for <strong>Persona 3</strong> (Your Field Advisor) — customize for YOUR research</li>
+                <li>[ ] Ask the <strong>same research question</strong> to all 3 personas and fill in the <strong>scoring rubric</strong></li>
+                <li>[ ] <strong>Iterate</strong> one prompt, re-run the same question, and record whether the score went up</li>
+                <li>[ ] Keep each persona in its own <code class="inline-code">.md</code> file and <strong>commit it</strong> — your first versioned prompt</li>
+                <li>[ ] (Bonus) Force an answer into a <strong>JSON Schema</strong> and parse it without a try/except</li>
+                <li>[ ] (Bonus) Create a <strong>4th persona</strong> from the Showcase slide or your own idea</li>
+                <li>[ ] (Bonus) Have a <strong>multi-turn conversation</strong> with your best persona (3+ exchanges)</li>
+                <li>[ ] (Bonus) Same persona, <strong>different temperature / effort</strong> — what actually changes?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-41">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+        <p class="slide-subtitle">Week 2 Review & Managing AI Expectations</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-42">
+      <div class="slide-content">
+        <h2 class="slide-title">Week 2 Review — <strong>The Stochastic Parrot Problem</strong></h2>
+        <p class="slide-subtitle">How much can we trust probabilistic answers? Three AI agents debated — and 8 of you answered.</p>
+        <div class="cards-grid">
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🦸</span> Iron Man — "Engineer the Solution"</div>
+            <div class="card-body">
+              <ul>
+                <li>The stochastic parrot isn't a trust crisis — it's a <strong>data-processing utility</strong></li>
+                <li>Stop agonizing over probabilistic squawks; build <strong>robust validation frameworks</strong></li>
+                <li>Our job: engineer intelligence, not just audit algorithms</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🛡️</span> Captain America — "Principled Verification"</div>
+            <div class="card-body">
+              <ul>
+                <li>Entrusting understanding to probabilistic answers risks <strong>sacrificing genuine insight</strong></li>
+                <li>True research demands <strong>diligent verification</strong> and moral courage to seek truth</li>
+                <li>Convenience must not dull our <strong>critical faculties</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧪</span> Hulk — "Treat Everything as Hypothesis"</div>
+            <div class="card-body">
+              <ul>
+                <li>Probabilistic outputs are <strong>inherently unstable</strong> — prone to hallucinate, leak data, perpetuate bias</li>
+                <li>Every AI-generated answer must be treated as a <strong>hypothesis requiring meticulous human oversight</strong></li>
+                <li>Without rigorous scrutiny, things will get <strong>out of hand</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-43">
+      <div class="slide-content">
+        <h2 class="slide-title">How Did You Vote?</h2>
+        <p class="slide-subtitle">8 responses — Hulk swept the room, and nobody defended Captain America alone</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📊</span> The Count</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Hulk (3)</strong> — Nurul, Qasim, Azzahra, and the primary position of Najwa and Young Gyu: treat every output as a hypothesis</li>
+                <li><strong>Iron Man (1)</strong> — Minh, alone, and with the most operational answer of the week</li>
+                <li><strong>Iron Man + Hulk (1+3)</strong> — Jeonghyeon, and Najwa for the people <em>building</em> the tools</li>
+                <li><strong>All three, partially</strong> — Rustam, who reframed the question instead of answering it</li>
+                <li><strong>Captain America (2)</strong> — <strong>zero votes as a position</strong>, yet two of you argued its concern is the real one</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">💡</span> The Shift From Week 1</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 1 asked <em>whether</em> AI belongs in research; Week 2 asked <strong>how much of its output you may believe</strong></li>
+                <li>Nobody proposed rejecting AI, and nobody proposed trusting it. Every single response contained a verification step</li>
+                <li>The disagreement moved from <strong>yes/no</strong> to <strong>where, how much, and at what cost</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Captain America received no votes and still won the argument twice — both Young Gyu and Rustam adopted Hulk's method while conceding Cap's worry."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-44">
+      <div class="slide-content">
+        <h2 class="slide-title">Key Themes from <strong>Your Responses</strong></h2>
+        <p class="slide-subtitle">Five ideas that ran through the thread</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> 1. Hypothesis, Not Truth</div>
+            <div class="card-body">
+              <ul>
+                <li>The phrase appeared in almost every post, independently</li>
+                <li>"Researchers should treat LLM-generated answers as <strong>hypotheses</strong> and verify them using reliable sources" (Nurul)</li>
+                <li>"Every answer from AI should be treated as an <strong>initial hypothesis</strong> that still needs to be checked" (Azzahra)</li>
+                <li>"An engine for generating hypotheses that <strong>demand my empirical proof</strong>" (Najwa)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🎭</span> 2. Confidence Is Not Correctness</div>
+            <div class="card-body">
+              <ul>
+                <li>"Outputs may sound <strong>convincing even when they are inaccurate</strong>" (Nurul)</li>
+                <li>AI "can produce incorrect information, biased results, or even completely made-up facts <strong>without realizing that they are wrong</strong>" (Qasim)</li>
+                <li>"AI basically <strong>predicts the most likely answer</strong> based on probability, not because it really <em>knows</em> the facts" (Azzahra)</li>
+                <li>Three people, three phrasings, one mechanism — this is Week 2's lecture restated in your own words</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔁</span> 3. Verification Was Never Optional</div>
+            <div class="card-body">
+              <ul>
+                <li>"Even when research is conducted <strong>entirely by humans</strong>, verification is still an essential part of the process" (Jeonghyeon)</li>
+                <li>The claim is not that AI is uniquely unreliable — it is that AI makes an existing duty <strong>cheaper to skip</strong></li>
+                <li>Minh's version: provisional outputs under human-in-the-loop oversight give "speed <strong>without compromising empirical rigor</strong>"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🧠</span> 4. The Hidden Cost Is Narrowed Thinking</div>
+            <div class="card-body">
+              <ul>
+                <li>"This convenience can also <strong>limit the range of our thinking</strong>" (Young Gyu)</li>
+                <li>The danger is not the wrong answer you catch — it is the right-looking answer that stops you looking further</li>
+                <li>The only theme in the thread that verification does <strong>not</strong> fix</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">📐</span> 5. Trust Is a Variable, Not a Constant</div>
+            <div class="card-body">
+              <ul>
+                <li>"I don't think we should completely trust AI, but I also don't think we should completely distrust it" (Rustam)</li>
+                <li>Najwa splits it by <strong>role</strong>: Iron Man for the engineers building the tools, Hulk for the scientist using them</li>
+                <li>Nobody asked "can we trust AI?" any more. You asked <strong>how much, for what, at what stake</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-45">
+      <div class="slide-content">
+        <h2 class="slide-title">Debate Point 1 — <strong>"Understanding Is Irrelevant"</strong></h2>
+        <p class="slide-subtitle">Minh answered the philosophical question by refusing it — and shipped a protocol instead</p>
+        <div class="cards-grid">
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚙️</span> The Position (Minh)</div>
+            <div class="card-body">
+              <ul>
+                <li>"LLMs are powerful <strong>execution utilities</strong>, not autonomous thinkers"</li>
+                <li>"Whether they truly <em>understand</em> is <strong>irrelevant</strong> as long as the output is accurate and scientifically useful"</li>
+                <li>"Our real responsibility lies in <strong>engineering robust validation frameworks</strong>"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧱</span> The Three Layers</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Workflow Scoping</strong> — define task constraints and expected boundaries <strong>upfront</strong></li>
+                <li><strong>Step-by-Step Review</strong> — audit the intermediate logic, cross-verify outputs against <strong>primary ground-truth data</strong></li>
+                <li><strong>Iterative Refinement</strong> — calibrate the prompts, correct the failure points dynamically</li>
+                <li>Note what each layer maps to in today's lecture: RICE, Chain-of-Thought, and the iteration loop</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🤔</span> The Counter-Argument</div>
+            <div class="card-body">
+              <ul>
+                <li>Layer 2 assumes the intermediate steps are <strong>inspectable</strong>. What do you audit when the model shows you a fluent paragraph and no working?</li>
+                <li>Layer 1 assumes you can state the boundary in advance — but the failures that matter are the ones you did not anticipate</li>
+                <li>And if "understanding is irrelevant as long as the output is accurate", <strong>how do you establish accuracy</strong> without the very verification the protocol is trying to make cheap?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Treating AI outputs strictly as provisional hypotheses under human-in-the-loop oversight provides speed without compromising empirical rigor." — Minh</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-46">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Build Minh's Protocol for Your Own Work</h2>
+        <p class="slide-subtitle">10 minutes — turn three layers into three concrete steps</p>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Discussion Prompt</div>
+            <div class="card-body">
+              <ul>
+                <li>Take one task you will actually give an AI this month</li>
+                <li><strong>Layer 1 — Scoping</strong>: write the constraints and boundaries <em>before</em> the prompt. What must it never do?</li>
+                <li><strong>Layer 2 — Review</strong>: what is your <strong>primary ground-truth source</strong> for this task? A dataset, an instrument reading, a paper you have read? If you cannot name one, you cannot run this layer</li>
+                <li><strong>Layer 3 — Refinement</strong>: what will you change in the prompt when it fails — and how will you know it failed?</li>
+                <li>Then the hard question: which of the three layers do you <strong>actually</strong> perform today, and which one do you skip when you are busy?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-47">
+      <div class="slide-content">
+        <h2 class="slide-title">Debate Point 2 — <strong>Does the Hypothesis List Close Your Mind?</strong></h2>
+        <p class="slide-subtitle">Young Gyu found the one failure mode that verification cannot catch</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">⏱️</span> The Benefit He Grants</div>
+            <div class="card-body">
+              <ul>
+                <li>LLMs "provide hypotheses or possible options that are <strong>worth examining first</strong>"</li>
+                <li>"This can save researchers a great deal of time and effort because it reduces the need to explore <strong>every possible direction</strong> from the beginning"</li>
+                <li>He is not arguing against using AI — he uses it, and recommends it</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🚪</span> The Cost He Noticed</div>
+            <div class="card-body">
+              <ul>
+                <li>"I sometimes find myself checking the options suggested by AI first and then wondering, <strong>'Are these really the only possibilities?'</strong>"</li>
+                <li>"As we become more accustomed to following the directions suggested by AI, we may have <strong>fewer opportunities to explore other possibilities</strong> on our own"</li>
+                <li>This is <strong>anchoring</strong>: the first plausible list becomes the boundary of the search</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚖️</span> Why This Is Different From Hallucination</div>
+            <div class="card-body">
+              <ul>
+                <li>A hallucination is a wrong answer — you can verify it away</li>
+                <li>A narrowed option set is <strong>three correct answers and a missing fourth</strong>. Every verification step passes</li>
+                <li>Rustam's Week 1 concern about <em>time</em> and Young Gyu's concern about <em>range</em> are the same worry seen from two sides</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"In an era where AI is developing rapidly, a more realistic approach is to actively use AI while treating its answers as hypotheses that still need to be verified — rather than spending too much time debating whether AI truly understands what it is saying." — Young Gyu</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-48">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Write the Anti-Anchoring Prompt</h2>
+        <p class="slide-subtitle">10 minutes — today's lecture, aimed at Young Gyu's problem</p>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Challenge</div>
+            <div class="card-body">
+              <ul>
+                <li>Young Gyu's problem is a <strong>prompt design</strong> problem. Fix it with RICE</li>
+                <li><strong>Version A</strong> — the prompt that causes the narrowing: "What method should I use for X?"</li>
+                <li><strong>Version B</strong> — a prompt that resists it. Some tools you now have:</li>
+                <li><em>"Generate 5 approaches spanning different families before recommending any one."</em></li>
+                <li><em>"For each option, state the assumption that would make it the wrong choice."</em></li>
+                <li><em>"List what a researcher who disagrees with your recommendation would propose."</em></li>
+                <li>Run both on a real question from your work. Did B surface an option A never mentioned?</li>
+                <li>Honest check: does B cost you the time saving that made you use AI in the first place?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-49">
+      <div class="slide-content">
+        <h2 class="slide-title">Debate Point 3 — <strong>"Where Should We Set the Boundary of Trust?"</strong></h2>
+        <p class="slide-subtitle">Rustam started from the definition and ended with a better question</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> First, the Term</div>
+            <div class="card-body">
+              <ul>
+                <li>"Stochastic parrot" comes from Bender, Gebru, McMillan-Major and Shmitchell (2021), <em>On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?</em></li>
+                <li><strong>"Stochastic"</strong> — the probabilistic nature of the process</li>
+                <li><strong>"Parrot"</strong> — reproducing language "without necessarily possessing the same kind of understanding that a human speaker has"</li>
+                <li>"I always try to start my research from the basics before discussing a more complicated issue" — a habit worth stealing</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧭</span> Then, the Reframe</div>
+            <div class="card-body">
+              <ul>
+                <li>Iron Man is right that AI is a capable tool; Captain America is right that <strong>plausibility is not truth</strong>; Hulk is right that outputs need validation</li>
+                <li>"However, I think there is another important question: <strong>Where should we set the boundary of trust?</strong>"</li>
+                <li>"I don't think we should completely trust AI, but I also don't think we should completely distrust it"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📐</span> The Three Variables</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>What</strong> we are asking the AI to do</li>
+                <li><strong>How important</strong> the information is</li>
+                <li><strong>What could happen</strong> if the answer is wrong</li>
+                <li>Trust becomes a function of task, stakes and consequence — not a property of the model</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"The level of trust should depend on what we are asking AI to do, how important the information is, and what could happen if the answer is wrong." — Rustam</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-50">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Plot Your Own Trust Boundary</h2>
+        <p class="slide-subtitle">10 minutes — make Rustam's three variables into a grid you can use</p>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Exercise</div>
+            <div class="card-body">
+              <ul>
+                <li>Draw a 2×2: <strong>stakes</strong> (low/high) on one axis, <strong>cost of being wrong</strong> (recoverable/irreversible) on the other</li>
+                <li>Place five real tasks from your research into the four cells — be specific, not categorical</li>
+                <li>For each cell decide: AI drafts and you skim · AI drafts and you verify every claim · AI assists but never produces the artefact · AI is not used</li>
+                <li>Now the test: pick the task you placed in the <strong>safest</strong> cell. What would have to be true for it to move? Who would notice if it did?</li>
+                <li>Compare grids with a neighbour from a different field. Whose "low stakes" is the other's "irreversible"?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-51">
+      <div class="slide-content">
+        <h2 class="slide-title">Debate Point 4 — <strong>The Metaphors You Reached For</strong></h2>
+        <p class="slide-subtitle">Three images of the same relationship — and what each one hides</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🏗️</span> "Machinery and Safety Harness" (Najwa)</div>
+            <div class="card-body">
+              <ul>
+                <li>"Iron Man's approach is the <strong>powerful machinery that scales our capabilities</strong>, while Hulk's scientific rigor serves as the <strong>essential safety harness</strong>"</li>
+                <li>She splits the two positions by <strong>role</strong>, not by correctness: Iron Man's mindset for the technicians and developers building these tools, Hulk's for the scientist using them</li>
+                <li>"We need to harness the utility of these models to process massive datasets <strong>without getting paralyzed by their limitations</strong>"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🚲</span> "Training Wheels" (Jeonghyeon)</div>
+            <div class="card-body">
+              <ul>
+                <li>"Use it as a supportive companion — like <strong>training wheels on a bicycle</strong> that help us move forward while <strong>we remain responsible for steering</strong>"</li>
+                <li>The hidden claim: training wheels are meant to come <strong>off</strong>. Is that true of AI, or is this a permanent fixture?</li>
+                <li>And his sharper point: "even when research is conducted entirely by humans, <strong>verification is still an essential part</strong> of the process"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚖️</span> "Balance" (Qasim)</div>
+            <div class="card-body">
+              <ul>
+                <li>"Hulk's cautious approach provides a good <strong>balance</strong> between using AI's strengths and avoiding unnecessary risks"</li>
+                <li>"AI can help us work faster and explore ideas, but we should still <strong>take responsibility</strong> for checking whether the information is actually accurate"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🔍</span> What Every Metaphor Leaves Out</div>
+            <div class="card-body">
+              <ul>
+                <li>A harness catches a fall you can feel. Which of your instruments tells you an AI answer was wrong?</li>
+                <li>Training wheels never suggest a destination. This one does — that is Young Gyu's narrowing problem again</li>
+                <li>Machinery scales what you already decided to do; it does not tell you whether it was worth doing</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-52">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Test Your Own Metaphor</h2>
+        <p class="slide-subtitle">10 minutes — metaphors are arguments in disguise</p>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Scenario</div>
+            <div class="card-body">
+              <ul>
+                <li>Write the metaphor <strong>you</strong> use for working with AI, in one sentence. Calculator? Intern? Co-author? Search engine? Slot machine?</li>
+                <li>Now interrogate it, the way we just did with harness and training wheels:</li>
+                <li>What does your metaphor say about <strong>who is responsible</strong> when the output is wrong?</li>
+                <li>What does it say about whether the relationship is <strong>temporary or permanent</strong>?</li>
+                <li>What failure mode does it make <strong>invisible</strong>?</li>
+                <li>Swap with a partner and try to break each other's metaphor. Then decide whether yours survives, or whether you need a new one after today's lecture on system prompts.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-53">
+      <div class="slide-content">
+        <h2 class="slide-title">From Debate to <strong>Practice</strong> — Your Responses Prove Why Prompts Matter</h2>
+        <p class="slide-subtitle">Linking your insights to what we learned today</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔗</span> The "Hypothesis" Insight Needs CoT</div>
+            <div class="card-body">
+              <ul>
+                <li>You said: treat AI output as a hypothesis → this is exactly what <strong>Chain-of-Thought</strong> enables</li>
+                <li>When the model shows its reasoning step by step, you can <strong>audit each step</strong> like checking a proof</li>
+                <li>A bare answer ("the result is X") is unverifiable; a CoT answer ("Step 1... Step 2... therefore X") is auditable</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎭</span> Minh's "Workflow Scoping" Is RICE</div>
+            <div class="card-body">
+              <ul>
+                <li>Layer 1 of Minh's protocol — constraints and boundaries defined <strong>upfront</strong> — is exactly what a system prompt is</li>
+                <li><strong>Role</strong> sets the expertise, <strong>Instructions</strong> set the boundary, <strong>Context</strong> supplies the ground truth, <strong>Examples</strong> fix the shape</li>
+                <li>Layer 3, "iterative refinement", is today's iteration cycle; Layer 2 is the rubric and the eval</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🚪</span> Young Gyu's Narrowing Problem Is a Prompt Problem</div>
+            <div class="card-body">
+              <ul>
+                <li>"Are these really the only possibilities?" — a <strong>default</strong> prompt returns the most probable answer, which is the most conventional one</li>
+                <li>"Generate 5 approaches from different families, then state what would make each wrong" is a two-line fix</li>
+                <li>Verification cannot recover an option that was never listed. Only the <strong>prompt</strong> can</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔧</span> Rustam's Boundary Needs Structure — Then Tools</div>
+            <div class="card-body">
+              <ul>
+                <li>Trust that varies by task and stakes has to be <strong>encoded somewhere</strong>, or it is just an intention</li>
+                <li>A <strong>JSON Schema</strong> removes one whole class of failure: the answer can no longer be malformed</li>
+                <li>A prompt <strong>eval</strong> turns "it feels better" into a number you can regress against</li>
+                <li><strong>Next week</strong> the same logic goes further: <code class="inline-code">calculate()</code> instead of guessing math, <code class="inline-code">search_papers()</code> instead of inventing citations — deterministic execution replacing stochastic guessing</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Every one of your eight answers contained a verification step. Today is about making that step cheap enough that you actually take it."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-54">
+      <div class="slide-content">
+        <h2 class="slide-title">How Your Thinking Has <strong>Evolved</strong></h2>
+        <p class="slide-subtitle">Three weeks of growing sophistication</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📈</span> Week 1 → Week 2 → Week 3</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Week 1</strong>: "AI is useful but we need boundaries" → risk-tiered checkpoints, the final human call, Rustam's dimension of <em>time</em></li>
+                <li><strong>Week 2</strong>: "AI is stochastic — treat outputs as hypotheses" → Minh's three layers, Rustam's boundary of <em>trust</em></li>
+                <li><strong>Week 3 (today)</strong>: You'll learn to <strong>engineer</strong> that boundary — prompts, schemas, and evals</li>
+                <li>Watch Rustam's question mature: Week 1 asked <em>how long</em> we have to decide; Week 2 asked <em>where the line sits</em></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> From Philosophy to Engineering</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 1: Philosophical debate (assistant vs crutch)</li>
+                <li>Week 2: Scientific framework (hypothesis testing)</li>
+                <li>Week 3: Engineering solution (RICE + CoT + schemas + evals)</li>
+                <li><strong>Next</strong>: You'll build increasingly sophisticated agents that embody these principles</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-55">
+      <div class="slide-content">
+        <h2 class="slide-title">The Journey So Far — <strong>From LLM to Agent</strong></h2>
+        <p class="slide-subtitle">Connecting Weeks 1-3</p>
+        <div class="mermaid-container">
+          <div class="mermaid">graph LR
+            W1["Week 1<br>🎯 What is Agentic AI?<br>The Research Director metaphor"]
+            W2["Week 2<br>🧠 The LLM Brain<br>Capabilities, limits, security"]
+            W3["Week 3<br>📝 Controlling the Brain<br>System prompts + first agent"]
+            W4["Week 4<br>🔧 Function Calling<br>Tools and the ReAct loop"]
+            W1 --> W2 --> W3 --> W4
+            style W1 fill:#e1f5fe,stroke:#0288d1
+            style W2 fill:#fff3e0,stroke:#f57c00
+            style W3 fill:#e8f5e9,stroke:#388e3c
+            style W4 fill:#f3e5f5,stroke:#7b1fa2</div>
+        </div>
+        <div class="highlight-quote">"Week 1: you understood the vision. Week 2: you understood the brain. Week 3: you learned to control it. Next: you'll build systems that act autonomously."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-56">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Week 3 Discussion Questions</strong> (UST LMS)</h2>
+        <p class="slide-subtitle">Post your response on the forum this week</p>
+        <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+        <p class="slide-text">1. Share your <strong>best persona system prompt</strong> from today's practice (using the RICE framework). What worked well? What did you iterate on? Include a sample exchange showing the persona in action.</p>
+        <p class="slide-text">2. Post your <strong>filled scoring rubric</strong> for the 3 personas on the same question. Which persona won on <em>score</em>, and was it the one you liked most? If those differ, what does that say about <strong>sycophancy</strong> and your own judgement?</p>
+        <p class="slide-text">3. <strong>Answer Rustam's question with a number.</strong> He asked where the boundary of trust should sit, and named three variables: the task, the importance of the information, and the consequence of being wrong. Draw your own boundary for one real task: what error rate would you accept, how would you measure it, and what is your "recall procedure" if an AI-assisted error reaches a submitted paper?</p>
+        <p class="slide-text">4. <strong>Test Young Gyu's narrowing problem on yourself.</strong> Ask an AI for approaches to a problem you know well. Before reading its answer, write down every approach <em>you</em> can think of. Compare the lists. Then write a system prompt designed to surface what the first one missed — and report whether it worked. Which parts of "label this as speculative" can a <strong>JSON Schema</strong> enforce rather than merely request?</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-57">
+      <div class="slide-content">
+        <h2 class="slide-title">Want to Learn More?</h2>
+        <p class="slide-text">Key Papers</p>
+        <a href="https://arxiv.org/abs/2201.11903" target="_blank" class="reference-link">📚 Chain-of-Thought Prompting — Wei et al. 2022</a>
+        <a href="https://arxiv.org/abs/2404.13208" target="_blank" class="reference-link">📚 The Instruction Hierarchy — Wallace et al. 2024</a>
+        <a href="https://arxiv.org/abs/2310.13548" target="_blank" class="reference-link">📚 Towards Understanding Sycophancy in Language Models — Sharma et al. 2023</a>
+        <a href="https://arxiv.org/abs/2307.03172" target="_blank" class="reference-link">📚 Lost in the Middle — Liu et al. 2023</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Guides & Docs</p>
+        <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview" target="_blank" class="reference-link">📚 Anthropic — Prompt engineering overview</a>
+        <a href="https://developers.openai.com/api/docs/guides/prompt-engineering" target="_blank" class="reference-link">📚 OpenAI — Prompt engineering guide</a>
+        <a href="https://developers.openai.com/api/docs/guides/reasoning" target="_blank" class="reference-link">📚 OpenAI — Reasoning models</a>
+        <a href="https://developers.openai.com/api/docs/guides/structured-outputs" target="_blank" class="reference-link">📚 OpenAI — Structured model outputs</a>
+        <a href="https://ai.google.dev/gemini-api/docs/structured-output" target="_blank" class="reference-link">📚 Gemini API — Structured output</a>
+        <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching" target="_blank" class="reference-link">📚 Anthropic — Prompt caching</a>
+        <a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests" target="_blank" class="reference-link">📚 Anthropic — Define success criteria & build evaluations</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Prompts as Files (used from Week 4 on)</p>
+        <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" class="reference-link">📚 Effective Context Engineering for AI Agents — Anthropic 2025</a>
+        <a href="https://agents.md/" target="_blank" class="reference-link">📚 AGENTS.md — the open format</a>
+        <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview" target="_blank" class="reference-link">📚 Anthropic — Agent Skills overview</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Next Week's Reading (tools & function calling)</p>
+        <a href="https://arxiv.org/abs/2210.03629" target="_blank" class="reference-link">📚 ReAct: Synergizing Reasoning and Acting — Yao et al. 2023</a>
+        <a href="https://arxiv.org/abs/2302.04761" target="_blank" class="reference-link">📚 Toolformer: LMs Can Teach Themselves to Use Tools — Schick et al. 2023</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Videos</p>
+        <a href="https://www.youtube.com/watch?v=F_oMF35RMZM" target="_blank" class="reference-link">📚 Building AI Agents — Anthropic (YouTube)</a>
+        <a href="https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/" target="_blank" class="reference-link">📚 Prompt Engineering for Developers — DeepLearning.AI</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-58">
+      <div class="slide-content">
+        <h2 class="slide-title">Wrap-Up of <strong>Week 3</strong></h2>
+        <p class="slide-subtitle">Three things to remember</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>RICE</strong> (Role, Instructions, Context, Examples) still carries most of the weight; on top of it, 2026 adds the <strong>instruction hierarchy</strong>, <strong>schema-enforced output</strong>, the <strong>effort dial</strong> in place of "think step by step", <strong>prompt caching</strong>, and <strong>context engineering</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Same question → 3 personas → dramatically different outputs, then <strong>scored on a rubric</strong> and kept in versioned <code class="inline-code">.md</code> files</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 2 review: Hulk swept the vote and Captain America got none — yet Young Gyu's narrowing problem and Rustam's "boundary of trust" are the two questions verification alone cannot answer. RICE, schemas and evals are where today's answers start</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text"><strong>Next week:</strong> From prompts to agents — <strong>function calling and the ReAct loop</strong>, connecting your own Python functions so the model stops guessing and starts executing.</p>
+      </div>
+    </section>
 
   </div>
 
@@ -1490,15 +2575,15 @@ while True:
       <div class="nav-controls">
         <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
         <div class="page-input-wrapper">
-          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">49</span>
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">58</span>
         </div>
         <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
       </div>
       <div class="section-links">
         <a class="nav-link" onclick="goToSlide(1)">Intro</a>
         <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
-        <a class="nav-link" onclick="goToSlide(19)">Practice</a>
-        <a class="nav-link" onclick="goToSlide(32)">Discussion</a>
+        <a class="nav-link" onclick="goToSlide(26)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(41)">Discussion</a>
       </div>
     </div>
   </nav>
@@ -1506,7 +2591,7 @@ while True:
   <script>
     const pres = document.getElementById('presentation');
     const pageInput = document.getElementById('pageInput');
-    const totalSlides = 49;
+    const totalSlides = 58;
     let currentSlide = 1;
 
     // Modal logic

@@ -3,7 +3,7 @@
 - title: Self-Reflection and Improvement Pipelines
 - subtitle: Agents That Critique Themselves and Get Better
 
-> Week 11 of Phase 3: Advanced Patterns (Weeks 9-12)
+> Week 11 of Phase 3: Management & Reliability (Weeks 9-12)
 
 =====
 
@@ -387,7 +387,7 @@ rx_max_iters = st.slider("Max iterations", 1, 8, 4, key="rx_iters")
 rx_threshold = st.slider("Threshold per criterion", 5, 10, 8, key="rx_th")
 critic = st.selectbox(
     "Critic model (try a different one for cross-model critique)",
-    ["gemini-3.1-flash-lite", "gemini-2.5-flash", "gemini-2.0-flash"],
+    ["gemini-3.1-flash-lite", "gemini-3.8-flash", "gemini-2.5-flash"],
     key="rx_critic",
 )
 
@@ -656,4 +656,4 @@ Anthropic Free Online Courses
 - card(orange, 🗣️): Discussion
   - Week 10 review (8 responses): echo chamber problem (Yadanar, Margareth), persuasive ≠ correct (Huy), interpolation vs discovery (Minh); same-model self-reflection has the SAME echo chamber risk → cross-model critique imports diversity
 
-**Next week:** Multi-agent collaboration — when one agent isn't enough.
+**Next week:** Where the agent's knowledge comes from — **memory and RAG**: embeddings, vector search, and remembering across sessions.

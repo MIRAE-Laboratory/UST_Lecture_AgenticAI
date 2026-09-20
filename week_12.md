@@ -3,7 +3,7 @@
 - title: Memory and Retrieval-Augmented Generation
 - subtitle: Vector Databases — How AI Remembers Across Sessions
 
-> Week 12 of Phase 3: Advanced Patterns (Weeks 9-12)
+> Week 12 of Phase 3: Management & Reliability (Weeks 9-12)
 
 =====
 
@@ -365,7 +365,9 @@ def chunk_text(text, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
 ```python
 import numpy as np
 
-EMBEDDING_MODEL = "gemini-embedding-001"
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "gemini-embedding-001")
+# Newer option: "gemini-embedding-2-preview" (multimodal: text, images, PDFs).
+# Never mix models in one store — vectors from different models are not comparable.
 
 def embed_text(client, text, model=EMBEDDING_MODEL):
     """Get an embedding vector for a single piece of text."""
@@ -770,7 +772,7 @@ Vector Databases & Embeddings
 &nbsp;
 
 RAG Patterns
-> 📚 [Anthropic: Retrieval Augmented Generation Guide](https://docs.anthropic.com/en/docs/build-with-claude/use-cases)
+> 📚 [Anthropic: Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval)
 > 📄 [Retrieval-Augmented Generation for NLP Tasks (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401)
 > 📄 [Lost in the Middle: How Language Models Use Long Contexts (2023)](https://arxiv.org/abs/2307.03172)
 &nbsp;
@@ -794,4 +796,4 @@ Anthropic Free Online Courses
 - card(orange, 🗣️): Discussion
   - Week 11 (9 responses): class rejects the "mentorship" metaphor; emerging consensus = humans architect the value space, not supervise every action; memory architecture = today's concrete example of that authorship
 
-**Next week:** Reflection on the journey — what worked, what didn't, what comes next.
+**Next week:** One agent becomes a team — **multi-agent systems**: roles, orchestration patterns, and who is allowed to see what.

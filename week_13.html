@@ -513,258 +513,438 @@
 
   <div class="presentation" id="presentation">
     <section class="slide title-slide" id="slide-1">
-<div class="slide-content">
-<h1 class="slide-title">Multi-Agent Systems</h1>
-<p class="slide-subtitle">Team Dynamics — Orchestrating Multiple Roles</p>
-<div class="highlight-quote">Week 13 of Phase 4: Composition and Leadership (Weeks 13-14)</div>
-</div>
-</section>
-<section class="slide" id="slide-2">
-<div class="slide-content">
-<h2 class="slide-title">Contents</h2>
-<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 13</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
-<div class="card-body"><ul><li>Roles vs personas — what changes when agents specialize</li><li>Three orchestration patterns: pipeline, manager-worker, round-robin</li><li>Information asymmetry and shared memory</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
-<div class="card-body"><ul><li>Build a <strong>2-agent role-play</strong>: Hypothesis Proposer + Methodologist Reviewer</li><li>3-round orchestrated flow (proposal → critique → revision)</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
-<div class="card-body"><ul><li>Week 12 — Selective Memory: should AI remember failed experiments?</li><li>Leadership: when YOU manage a team of agents</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide title-slide" id="slide-3">
-<div class="slide-content">
-<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
-<p class="slide-subtitle">Team Dynamics — Orchestrating Multiple Roles</p>
-</div>
-</section>
-<section class="slide" id="slide-4">
-<div class="slide-content">
-<h2 class="slide-title">The Story So Far — <strong>Where Multi-Agent Fits</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🧩</span> What We've Already Built</div>
-<div class="card-body"><ul><li>Week 7: Two <strong>personas</strong> debating (user moderates)</li><li>Week 9: Single agent using <strong>tools</strong></li><li>Week 10: Single output, scored by a <strong>judge</strong> model</li><li>Week 11: <strong>Reflexion</strong> — same model critiques itself</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🤔</span> What's Still Missing</div>
-<div class="card-body"><ul><li>A real research team has <strong>specialized members</strong> (not just two opinions)</li><li>Each member sees <strong>different information</strong> and does a <strong>different job</strong></li><li>The team runs by <strong>structured workflow</strong>, not free chat</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> Today's Step Forward</div>
-<div class="card-body"><ul><li>Define agents by <strong>role (function)</strong>, not persona (opinion)</li><li>Use an <strong>orchestrator</strong> to coordinate them programmatically</li><li>Practice with 2 agents → the pattern extends to N agents</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-5">
-<div class="slide-content">
-<h2 class="slide-title"><strong>Role vs Persona</strong> — A Key Distinction</h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎭</span> Persona (Week 7)</div>
-<div class="card-body"><ul><li>A <strong>viewpoint</strong> or character: "Dr. Data, the empiricist"</li><li>Two personas debate the SAME question from different angles</li><li>Output: arguments for comparison; user judges</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔧</span> Role (Week 13)</div>
-<div class="card-body"><ul><li>A <strong>function</strong> with responsibilities: "Hypothesis Proposer", "Methodologist Reviewer"</li><li>Each role does a <strong>different job</strong> in a shared workflow</li><li>Output: a final artifact produced collaboratively</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💡</span> Practical Difference</div>
-<div class="card-body"><ul><li>Personas → adversarial, parallel ("vs")</li><li>Roles → cooperative, sequential ("then")</li><li>Both are useful — but for different goals</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-6">
-<div class="slide-content">
-<h2 class="slide-title">Three <strong>Orchestration Patterns</strong> — How Teams Coordinate</h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">➡️</span> 1. Pipeline (Sequential Handoff)</div>
-<div class="card-body"><ul><li>Agent A finishes → passes result to Agent B → passes to Agent C</li><li>Example: Researcher → Writer → Editor</li><li>Strength: clear flow; Weakness: errors compound downstream</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">👔</span> 2. Manager-Worker (Delegation)</div>
-<div class="card-body"><ul><li>A "manager" agent assigns subtasks to "worker" agents</li><li>Workers return results; manager decides what's next</li><li>Example: Project lead delegating to specialists</li><li>Strength: dynamic, can handle ambiguity; Weakness: manager is bottleneck</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔄</span> 3. Round-Robin (Turn-Taking)</div>
-<div class="card-body"><ul><li>Agents take turns commenting/improving the same artifact</li><li>Example: peer review with 3 reviewers, all see all comments</li><li>Strength: diverse perspectives; Weakness: can stall on disagreement</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-7">
-<div class="slide-content">
-<h2 class="slide-title">Visualizing the <strong>Three Patterns</strong></h2>
-<div class="mermaid-container"><div class="mermaid">graph LR
-    subgraph Pipeline
-      P1[Agent A] --> P2[Agent B] --> P3[Agent C]
-    end
-    subgraph Manager-Worker
-      M[Manager] --> W1[Worker 1]
-      M --> W2[Worker 2]
-      M --> W3[Worker 3]
-      W1 --> M
-      W2 --> M
-      W3 --> M
-    end
-    subgraph Round-Robin
-      R1[Agent 1] --> R2[Agent 2]
-      R2 --> R3[Agent 3]
-      R3 --> R1
-    end
-
-    style P1 fill:#cce5ff
-    style M fill:#ffe5cc
-    style R1 fill:#d4edda</div></div>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Today's Practice Uses Pipeline + Iteration</div>
-<div class="card-body"><ul><li>Proposer → Reviewer → Proposer (3 turns)</li><li>Simplest pattern that shows real role specialization</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-8">
-<div class="slide-content">
-<h2 class="slide-title"><strong>Information Asymmetry</strong> — Each Agent Sees Different Things</h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">👁️</span> What This Means</div>
-<div class="card-body"><ul><li>Different agents have <strong>different system prompts</strong> (different identities and tasks)</li><li>They may see <strong>different context</strong> (e.g., the Reviewer sees the proposal, but not the Proposer's private notes)</li><li>This is FEATURE, not bug — diversity of view drives quality</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> Why It Matters</div>
-<div class="card-body"><ul><li>If every agent sees the same thing → they think alike → no real collaboration</li><li>Asymmetric context forces each role to <strong>contribute something distinct</strong></li><li>Connects to Week 11: cross-model critique = importing different blind spots</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚠️</span> But Be Careful</div>
-<div class="card-body"><ul><li>Too much asymmetry → agents can't communicate (no common ground)</li><li>The orchestrator decides what each agent sees — this is the design lever</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-9">
-<div class="slide-content">
-<h2 class="slide-title"><strong>Shared vs Private</strong> Memory — The Architecture Decision</h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📓</span> Shared Memory</div>
-<div class="card-body"><ul><li>All agents read/write the same conversation log</li><li>Pro: easy alignment, everyone on the same page</li><li>Con: agents can be biased by what others said before them</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔒</span> Private Memory</div>
-<div class="card-body"><ul><li>Each agent has its own context buffer</li><li>Pro: independent perspectives, no anchoring bias</li><li>Con: harder to coordinate, may duplicate work</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">⚖️</span> Hybrid (Most Real Systems)</div>
-<div class="card-body"><ul><li><strong>Shared</strong>: the artifact being built (e.g., current draft)</li><li><strong>Private</strong>: each agent's reasoning trace, notes</li><li>Orchestrator decides what gets promoted from private → shared</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-10">
-<div class="slide-content">
-<h2 class="slide-title">Today's Practice — <strong>2-Agent Role-Play</strong></h2>
-<div class="mermaid-container"><div class="mermaid">sequenceDiagram
-    participant U as 👤 User
-    participant O as 🧭 Orchestrator
-    participant P as 🟦 Proposer
-    participant R as 🟧 Reviewer
-
-    U->>O: Research topic
-    O->>P: "Propose a hypothesis about X"
-    P-->>O: Initial proposal
-    O->>R: "Review this proposal"
-    R-->>O: Critique
-    O->>P: "Revise based on the critique"
-    P-->>O: Revised proposal
-    O-->>U: Conversation log + final hypothesis</div></div>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> What Makes This Multi-Agent (vs Reflexion)</div>
-<div class="card-body"><ul><li><strong>Different roles</strong>: Proposer is creative, Reviewer is rigorous — distinct prompts</li><li><strong>Different jobs</strong>: propose vs critique vs revise — not just "improve yourself"</li><li><strong>Orchestrator-driven</strong>: code decides the flow, not the agents</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-11">
-<div class="slide-content">
-<h2 class="slide-title">When Multi-Agent <strong>Helps</strong> vs <strong>Hurts</strong></h2>
-<div class="cards-grid">
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> Multi-Agent Helps When</div>
-<div class="card-body"><ul><li>Task has clearly distinct sub-roles (write, review, format, fact-check)</li><li>You need diverse perspectives (Week 12: avoid echo chamber)</li><li>Workflow has natural stages with handoffs</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">❌</span> Multi-Agent Hurts When</div>
-<div class="card-body"><ul><li>Task is small enough for one agent to handle well</li><li>Roles are vague — agents end up doing the same thing</li><li>Budget is tight: each role costs more LLM calls</li><li>You're using it to "feel sophisticated" rather than solve a real coordination problem</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">💸</span> The Coordination Tax</div>
-<div class="card-body"><ul><li>2 agents ≠ 2× the cost; closer to 3–4× (system prompts, history, retries)</li><li>Coordination overhead grows quickly with team size</li><li>Start with 2, expand only when the seams between agents become clear</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-12">
-<div class="slide-content">
-<h2 class="slide-title">Lecture Summary — <strong>Multi-Agent Systems</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎭</span> Role-Based Agents</div>
-<div class="card-body"><ul><li>Agents are defined by <strong>function</strong> (role) — Proposer, Reviewer, Editor</li><li>Each role gets a distinct system prompt and a distinct job</li><li>Different from personas (which differ by viewpoint, not function)</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🧭</span> Orchestration Patterns</div>
-<div class="card-body"><ul><li><strong>Pipeline</strong>: A → B → C handoff</li><li><strong>Manager-Worker</strong>: delegation and aggregation</li><li><strong>Round-Robin</strong>: turn-taking peer review</li><li>Today: pipeline + iteration for 2-agent role-play</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🧩</span> Architecture Choices</div>
-<div class="card-body"><ul><li>Shared vs private memory, information asymmetry — these are YOUR design decisions</li><li>"Coordination tax" is real — multi-agent is only worth it for tasks with real role distinction</li><li>Next week's discussion: leadership of a digital workforce</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide title-slide" id="slide-13">
-<div class="slide-content">
-<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
-<p class="slide-subtitle">Build a 2-Agent Hypothesis Refinement Team</p>
-</div>
-</section>
-<section class="slide" id="slide-14">
-<div class="slide-content">
-<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> The Goal</div>
-<div class="card-body"><ul><li>User enters a research topic</li><li><strong>Proposer</strong> drafts a hypothesis (creative, ambitious)</li><li><strong>Reviewer</strong> critiques it (testability, confounders, design)</li><li><strong>Proposer</strong> revises addressing the critique</li><li>UI shows all 3 turns + final hypothesis</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">📁</span> Files</div>
-<div class="card-body"><ul><li><code class="inline-code">team.py</code> — role definitions + orchestrator</li><li><code class="inline-code">app.py</code> — append "👥 Research Team" section</li><li>Reuses <code class="inline-code">llm_call</code> from <code class="inline-code">evaluator.py</code> (Week 10)</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚡</span> Why This Setup?</div>
-<div class="card-body"><ul><li>Concrete role distinction (creative vs rigorous)</li><li>Same conversational context but different roles → see asymmetry in action</li><li>3-round pipeline is small enough to debug, big enough to feel like a team</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-15">
-<div class="slide-content">
-<h2 class="slide-title">Step 1 — <strong>Define the Roles</strong> (<code class="inline-code">team.py</code>)</h2>
-<p class="slide-subtitle">Two distinct system prompts — that's what makes them different</p>
-<pre class="code-block"><code class="language-python"># team.py
+      <div class="slide-content">
+        <h1 class="slide-title">Multi-Agent Systems</h1>
+        <p class="slide-subtitle">Team Dynamics — Orchestrating Multiple Roles</p>
+        <div class="highlight-quote">Week 13 of Phase 4: Collaboration & Future (Weeks 13-16)</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title">Contents</h2>
+        <p class="slide-subtitle">Lecture, Practice, and Discussion for Week 13</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>Roles vs personas — what changes when agents specialize</li>
+                <li>Three orchestration patterns: pipeline, manager-worker, round-robin</li>
+                <li>Information asymmetry and shared memory</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Build a <strong>2-agent role-play</strong>: Hypothesis Proposer + Methodologist Reviewer</li>
+                <li>3-round orchestrated flow (proposal → critique → revision)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 12 — Selective Memory: should AI remember failed experiments?</li>
+                <li>Leadership: when YOU manage a team of agents</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-3">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+        <p class="slide-subtitle">Team Dynamics — Orchestrating Multiple Roles</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title">The Story So Far — <strong>Where Multi-Agent Fits</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧩</span> What We've Already Built</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 3-4: A single agent with a <strong>persona</strong> and <strong>tools</strong></li>
+                <li>Week 9: A <strong>workflow</strong> — named nodes, explicit state, a router you wrote</li>
+                <li>Week 10: Single output, scored by a <strong>judge</strong> model</li>
+                <li>Week 11: <strong>Reflexion</strong> — same model critiques itself</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🤔</span> What's Still Missing</div>
+            <div class="card-body">
+              <ul>
+                <li>A real research team has <strong>specialized members</strong> (not just two opinions)</li>
+                <li>Each member sees <strong>different information</strong> and does a <strong>different job</strong></li>
+                <li>The team runs by <strong>structured workflow</strong>, not free chat</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> Today's Step Forward</div>
+            <div class="card-body">
+              <ul>
+                <li>Define agents by <strong>role (function)</strong>, not persona (opinion)</li>
+                <li>Use an <strong>orchestrator</strong> to coordinate them programmatically</li>
+                <li>Practice with 2 agents → the pattern extends to N agents</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>Role vs Persona</strong> — A Key Distinction</h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎭</span> Persona (Week 3)</div>
+            <div class="card-body">
+              <ul>
+                <li>A <strong>viewpoint</strong> or character: "Dr. Data, the empiricist"</li>
+                <li>Two personas answer the SAME question from different angles</li>
+                <li>Output: arguments for comparison; user judges</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔧</span> Role (Week 13)</div>
+            <div class="card-body">
+              <ul>
+                <li>A <strong>function</strong> with responsibilities: "Hypothesis Proposer", "Methodologist Reviewer"</li>
+                <li>Each role does a <strong>different job</strong> in a shared workflow</li>
+                <li>Output: a final artifact produced collaboratively</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💡</span> Practical Difference</div>
+            <div class="card-body">
+              <ul>
+                <li>Personas → adversarial, parallel ("vs")</li>
+                <li>Roles → cooperative, sequential ("then")</li>
+                <li>Both are useful — but for different goals</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title">Three <strong>Orchestration Patterns</strong> — How Teams Coordinate</h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">➡️</span> 1. Pipeline (Sequential Handoff)</div>
+            <div class="card-body">
+              <ul>
+                <li>Agent A finishes → passes result to Agent B → passes to Agent C</li>
+                <li>Example: Researcher → Writer → Editor</li>
+                <li>Strength: clear flow; Weakness: errors compound downstream</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">👔</span> 2. Manager-Worker (Delegation)</div>
+            <div class="card-body">
+              <ul>
+                <li>A "manager" agent assigns subtasks to "worker" agents</li>
+                <li>Workers return results; manager decides what's next</li>
+                <li>Example: Project lead delegating to specialists</li>
+                <li>Strength: dynamic, can handle ambiguity; Weakness: manager is bottleneck</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔄</span> 3. Round-Robin (Turn-Taking)</div>
+            <div class="card-body">
+              <ul>
+                <li>Agents take turns commenting/improving the same artifact</li>
+                <li>Example: peer review with 3 reviewers, all see all comments</li>
+                <li>Strength: diverse perspectives; Weakness: can stall on disagreement</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title">Visualizing the <strong>Three Patterns</strong></h2>
+        <div class="mermaid-container">
+          <div class="mermaid">graph LR
+            subgraph Pipeline
+            P1[Agent A] --> P2[Agent B] --> P3[Agent C]
+            end
+            subgraph Manager-Worker
+            M[Manager] --> W1[Worker 1]
+            M --> W2[Worker 2]
+            M --> W3[Worker 3]
+            W1 --> M
+            W2 --> M
+            W3 --> M
+            end
+            subgraph Round-Robin
+            R1[Agent 1] --> R2[Agent 2]
+            R2 --> R3[Agent 3]
+            R3 --> R1
+            end
+            
+            style P1 fill:#cce5ff
+            style M fill:#ffe5cc
+            style R1 fill:#d4edda</div>
+        </div>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Today's Practice Uses Pipeline + Iteration</div>
+            <div class="card-body">
+              <ul>
+                <li>Proposer → Reviewer → Proposer (3 turns)</li>
+                <li>Simplest pattern that shows real role specialization</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>Information Asymmetry</strong> — Each Agent Sees Different Things</h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">👁️</span> What This Means</div>
+            <div class="card-body">
+              <ul>
+                <li>Different agents have <strong>different system prompts</strong> (different identities and tasks)</li>
+                <li>They may see <strong>different context</strong> (e.g., the Reviewer sees the proposal, but not the Proposer's private notes)</li>
+                <li>This is FEATURE, not bug — diversity of view drives quality</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> Why It Matters</div>
+            <div class="card-body">
+              <ul>
+                <li>If every agent sees the same thing → they think alike → no real collaboration</li>
+                <li>Asymmetric context forces each role to <strong>contribute something distinct</strong></li>
+                <li>Connects to Week 11: cross-model critique = importing different blind spots</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚠️</span> But Be Careful</div>
+            <div class="card-body">
+              <ul>
+                <li>Too much asymmetry → agents can't communicate (no common ground)</li>
+                <li>The orchestrator decides what each agent sees — this is the design lever</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-9">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>Shared vs Private</strong> Memory — The Architecture Decision</h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📓</span> Shared Memory</div>
+            <div class="card-body">
+              <ul>
+                <li>All agents read/write the same conversation log</li>
+                <li>Pro: easy alignment, everyone on the same page</li>
+                <li>Con: agents can be biased by what others said before them</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔒</span> Private Memory</div>
+            <div class="card-body">
+              <ul>
+                <li>Each agent has its own context buffer</li>
+                <li>Pro: independent perspectives, no anchoring bias</li>
+                <li>Con: harder to coordinate, may duplicate work</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">⚖️</span> Hybrid (Most Real Systems)</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Shared</strong>: the artifact being built (e.g., current draft)</li>
+                <li><strong>Private</strong>: each agent's reasoning trace, notes</li>
+                <li>Orchestrator decides what gets promoted from private → shared</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-10">
+      <div class="slide-content">
+        <h2 class="slide-title">Today's Practice — <strong>2-Agent Role-Play</strong></h2>
+        <div class="mermaid-container">
+          <div class="mermaid">sequenceDiagram
+            participant U as 👤 User
+            participant O as 🧭 Orchestrator
+            participant P as 🟦 Proposer
+            participant R as 🟧 Reviewer
+            
+            U->>O: Research topic
+            O->>P: "Propose a hypothesis about X"
+            P-->>O: Initial proposal
+            O->>R: "Review this proposal"
+            R-->>O: Critique
+            O->>P: "Revise based on the critique"
+            P-->>O: Revised proposal
+            O-->>U: Conversation log + final hypothesis</div>
+        </div>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> What Makes This Multi-Agent (vs Reflexion)</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Different roles</strong>: Proposer is creative, Reviewer is rigorous — distinct prompts</li>
+                <li><strong>Different jobs</strong>: propose vs critique vs revise — not just "improve yourself"</li>
+                <li><strong>Orchestrator-driven</strong>: code decides the flow, not the agents</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-11">
+      <div class="slide-content">
+        <h2 class="slide-title">When Multi-Agent <strong>Helps</strong> vs <strong>Hurts</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> Multi-Agent Helps When</div>
+            <div class="card-body">
+              <ul>
+                <li>Task has clearly distinct sub-roles (write, review, format, fact-check)</li>
+                <li>You need diverse perspectives (Week 12: avoid echo chamber)</li>
+                <li>Workflow has natural stages with handoffs</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">❌</span> Multi-Agent Hurts When</div>
+            <div class="card-body">
+              <ul>
+                <li>Task is small enough for one agent to handle well</li>
+                <li>Roles are vague — agents end up doing the same thing</li>
+                <li>Budget is tight: each role costs more LLM calls</li>
+                <li>You're using it to "feel sophisticated" rather than solve a real coordination problem</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">💸</span> The Coordination Tax</div>
+            <div class="card-body">
+              <ul>
+                <li>2 agents ≠ 2× the cost; closer to 3–4× (system prompts, history, retries)</li>
+                <li>Coordination overhead grows quickly with team size</li>
+                <li>Start with 2, expand only when the seams between agents become clear</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-12">
+      <div class="slide-content">
+        <h2 class="slide-title">Lecture Summary — <strong>Multi-Agent Systems</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎭</span> Role-Based Agents</div>
+            <div class="card-body">
+              <ul>
+                <li>Agents are defined by <strong>function</strong> (role) — Proposer, Reviewer, Editor</li>
+                <li>Each role gets a distinct system prompt and a distinct job</li>
+                <li>Different from personas (which differ by viewpoint, not function)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧭</span> Orchestration Patterns</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Pipeline</strong>: A → B → C handoff</li>
+                <li><strong>Manager-Worker</strong>: delegation and aggregation</li>
+                <li><strong>Round-Robin</strong>: turn-taking peer review</li>
+                <li>Today: pipeline + iteration for 2-agent role-play</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🧩</span> Architecture Choices</div>
+            <div class="card-body">
+              <ul>
+                <li>Shared vs private memory, information asymmetry — these are YOUR design decisions</li>
+                <li>"Coordination tax" is real — multi-agent is only worth it for tasks with real role distinction</li>
+                <li>Next week's discussion: leadership of a digital workforce</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-13">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+        <p class="slide-subtitle">Build a 2-Agent Hypothesis Refinement Team</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-14">
+      <div class="slide-content">
+        <h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> The Goal</div>
+            <div class="card-body">
+              <ul>
+                <li>User enters a research topic</li>
+                <li><strong>Proposer</strong> drafts a hypothesis (creative, ambitious)</li>
+                <li><strong>Reviewer</strong> critiques it (testability, confounders, design)</li>
+                <li><strong>Proposer</strong> revises addressing the critique</li>
+                <li>UI shows all 3 turns + final hypothesis</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📁</span> Files</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">team.py</code> — role definitions + orchestrator</li>
+                <li><code class="inline-code">app.py</code> — append "👥 Research Team" section</li>
+                <li>Reuses <code class="inline-code">llm_call</code> from <code class="inline-code">evaluator.py</code> (Week 10)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚡</span> Why This Setup?</div>
+            <div class="card-body">
+              <ul>
+                <li>Concrete role distinction (creative vs rigorous)</li>
+                <li>Same conversational context but different roles → see asymmetry in action</li>
+                <li>3-round pipeline is small enough to debug, big enough to feel like a team</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-15">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 1 — <strong>Define the Roles</strong> (<code class="inline-code">team.py</code>)</h2>
+        <p class="slide-subtitle">Two distinct system prompts — that's what makes them different</p>
+        <pre class="code-block"><code class="language-python"># team.py
 from evaluator import llm_call   # reuse from Week 10
 
 ROLES = {
@@ -788,19 +968,25 @@ For the hypothesis given, identify:
 Be direct but constructive. Output 3-5 bullet points only. No preamble.""",
     },
 }</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> The Two Roles in One Glance</div>
-<div class="card-body"><ul><li>Proposer: <strong>creative, specific, brief</strong></li><li>Reviewer: <strong>rigorous, structured, concrete</strong></li><li>Same model, totally different behavior — purely from system prompts</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-16">
-<div class="slide-content">
-<h2 class="slide-title">Step 2 — <strong>Run a Single Role</strong> (<code class="inline-code">team.py</code>)</h2>
-<p class="slide-subtitle">Wrapping a role around <code class="inline-code">llm_call</code></p>
-<pre class="code-block"><code class="language-python">def run_role(client, model, role_key, task, history=""):
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> The Two Roles in One Glance</div>
+            <div class="card-body">
+              <ul>
+                <li>Proposer: <strong>creative, specific, brief</strong></li>
+                <li>Reviewer: <strong>rigorous, structured, concrete</strong></li>
+                <li>Same model, totally different behavior — purely from system prompts</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-16">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 2 — <strong>Run a Single Role</strong> (<code class="inline-code">team.py</code>)</h2>
+        <p class="slide-subtitle">Wrapping a role around <code class="inline-code">llm_call</code></p>
+        <pre class="code-block"><code class="language-python">def run_role(client, model, role_key, task, history=""):
     """Execute one agent turn with the role's system prompt + history."""
     role = ROLES[role_key]
     history_block = f"Conversation so far:\n{history}\n\n" if history else ""
@@ -808,19 +994,25 @@ Be direct but constructive. Output 3-5 bullet points only. No preamble.""",
 
 {history_block}Your task: {task}"""
     return llm_call(client, model, prompt)</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Why a Plain Prompt (Not Multi-Turn Messages)?</div>
-<div class="card-body"><ul><li>We're using Gemini's simple <code class="inline-code">generate_content</code> — single prompt per call</li><li>History is <strong>inlined as text</strong> — gives full control over what each role sees</li><li>For multi-turn chat threads, you'd switch to <code class="inline-code">chats.send_message()</code>, but this is clearer for learning</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-17">
-<div class="slide-content">
-<h2 class="slide-title">Step 3 — <strong>The Orchestrator</strong> (<code class="inline-code">team.py</code>)</h2>
-<p class="slide-subtitle">3 turns: propose → critique → revise</p>
-<pre class="code-block"><code class="language-python">def role_play_simulation(client, model, topic):
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Why a Plain Prompt (Not Multi-Turn Messages)?</div>
+            <div class="card-body">
+              <ul>
+                <li>We're using Gemini's simple <code class="inline-code">generate_content</code> — single prompt per call</li>
+                <li>History is <strong>inlined as text</strong> — gives full control over what each role sees</li>
+                <li>For multi-turn chat threads, you'd switch to <code class="inline-code">chats.send_message()</code>, but this is clearer for learning</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-17">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 3 — <strong>The Orchestrator</strong> (<code class="inline-code">team.py</code>)</h2>
+        <p class="slide-subtitle">3 turns: propose → critique → revise</p>
+        <pre class="code-block"><code class="language-python">def role_play_simulation(client, model, topic):
     """Run a 3-round Proposer-Reviewer-Proposer collaboration."""
     log = []
 
@@ -844,19 +1036,26 @@ Be direct but constructive. Output 3-5 bullet points only. No preamble.""",
     log.append({"round": 3, "role": "proposer", "text": revision})
 
     return log</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Notice the Information Asymmetry</div>
-<div class="card-body"><ul><li>Round 1 (Proposer): sees only the topic — must be creative</li><li>Round 2 (Reviewer): sees only the proposal — focuses on critique</li><li>Round 3 (Proposer): sees BOTH — must integrate</li><li>The orchestrator controls what each role sees at each step</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-18">
-<div class="slide-content">
-<h2 class="slide-title">Step 4 — <strong>Streamlit UI</strong> (append to <code class="inline-code">app.py</code>)</h2>
-<p class="slide-subtitle">Run the team, show all 3 rounds</p>
-<pre class="code-block"><code class="language-python"># === Top of app.py — same client setup as Week 10/12 ===
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Notice the Information Asymmetry</div>
+            <div class="card-body">
+              <ul>
+                <li>Round 1 (Proposer): sees only the topic — must be creative</li>
+                <li>Round 2 (Reviewer): sees only the proposal — focuses on critique</li>
+                <li>Round 3 (Proposer): sees BOTH — must integrate</li>
+                <li>The orchestrator controls what each role sees at each step</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-18">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 4 — <strong>Streamlit UI</strong> (append to <code class="inline-code">app.py</code>)</h2>
+        <p class="slide-subtitle">Run the team, show all 3 rounds</p>
+        <pre class="code-block"><code class="language-python"># === Top of app.py — same client setup as Week 10/12 ===
 # (load_dotenv, genai.Client, model = os.environ.get("LLM_MODEL", "gemini-3.1-flash-lite"))
 from team import ROLES, role_play_simulation
 
@@ -880,206 +1079,349 @@ if st.button("▶️ Run Team", disabled=not topic):
         st.write(entry["text"])
 
     st.success("Final hypothesis is the Proposer's revision (Round 3).")</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> What to Watch For</div>
-<div class="card-body"><ul><li>Round 1 hypothesis vs Round 3 hypothesis — did the critique actually improve it?</li><li>Are Reviewer's bullets specific or generic?</li><li>If Reviewer is too soft, sharpen its system prompt and re-run</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-19">
-<div class="slide-content">
-<h2 class="slide-title">✅ <strong>Week 13 Practice Checklist</strong></h2>
-<div class="highlight-quote">Complete these stages in order:</div>
-<p class="slide-text">1. - [ ] Create <code class="inline-code">team.py</code> with the <code class="inline-code">ROLES</code> dictionary (2 roles)</p>
-<p class="slide-text">2. - [ ] Add <code class="inline-code">run_role()</code> and test it alone — does the Reviewer produce 3-5 bullets?</p>
-<p class="slide-text">3. - [ ] Add <code class="inline-code">role_play_simulation()</code> — verify all 3 turns appear in the log</p>
-<p class="slide-text">4. - [ ] Append the Research Team section to <code class="inline-code">app.py</code></p>
-<p class="slide-text">5. - [ ] Run with a topic from your own research field</p>
-<p class="slide-text">6. - [ ] Compare Round 1 vs Round 3 — did the revision actually improve?</p>
-<p class="slide-text">7. - [ ] Change the Reviewer's system prompt to be MORE harsh — does Round 3 change?</p>
-<p class="slide-text">8. - [ ] Add a third turn (Reviewer's final approval) — extend <code class="inline-code">role_play_simulation()</code></p>
-<p class="slide-text">9. - [ ] <strong>Bonus</strong>: add a third role (e.g., "Final Editor") to make a Pipeline of 3</p>
-<p class="slide-text">10. - [ ] Show ONLY the final hypothesis (collapse intermediate turns) — does the user trust it less without seeing the process?</p>
-<p class="slide-text">11. - [ ] Pair this with Week 10 evaluator — score the final hypothesis with the rubric</p>
-</div>
-</section>
-<section class="slide title-slide" id="slide-20">
-<div class="slide-content">
-<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
-<p class="slide-subtitle">Selective Memory + Leadership of a Digital Workforce</p>
-</div>
-</section>
-<section class="slide" id="slide-21">
-<div class="slide-content">
-<h2 class="slide-title">Week 12 — <strong>Should AI Remember Failed Experiments?</strong></h2>
-<p class="slide-subtitle">14 responses — near-universal "yes", but the consensus starts to crack</p>
-<div class="cards-grid">
-<div class="card card-green">
-<div class="card-header"><span class="icon">📊</span> The Vote Pattern</div>
-<div class="card-body"><ul><li><strong>All three (1,2,3)</strong>: Huy, Manuella, Nazhiefah — <strong>3</strong></li><li><strong>Hulk only (3)</strong>: Irfan, Hyunwoo, Ly — <strong>3</strong></li><li><strong>None / reframe</strong>: Margareth, Yadanar, Seher — <strong>3</strong></li><li><strong>Iron Man + Hulk (1,3)</strong>: DongYun — <strong>1</strong></li><li><strong>Cap + Hulk (2,3)</strong>: Waad — <strong>1</strong></li><li><strong>Iron Man + Cap (1,2, anti-Hulk)</strong>: Gyeongsu — <strong>1</strong></li><li><strong>Iron Man only (1)</strong>: Tan — <strong>1</strong></li><li><strong>"It depends" (definition)</strong>: Jaewhoon — <strong>1</strong></li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🤝</span> The (Almost) Universal Yes</div>
-<div class="card-body"><ul><li>13/14 agree failed experiments should be retained in some form</li><li>Backed by <strong>real industry practice</strong>: Waad (nuclear OEF), Hyunwoo (robotics safety)</li><li>The disagreement is about <strong>how to manage</strong> — and now, <strong>what even counts</strong> as a failure</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">🔥</span> The Cracks Appear</div>
-<div class="card-body"><ul><li><strong>Gyeongsu</strong> rejects Hulk: "babysitting the system defeats automation"</li><li><strong>Jaewhoon</strong>: "it depends what we define as 'failed experiment'" — and sometimes delete + reset is right</li><li>Class moves from "should we?" → "how?" → "what counts, and who decides?"</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-22">
-<div class="slide-content">
-<h2 class="slide-title">Theme 1 — <strong>The Reframers</strong></h2>
-<p class="slide-subtitle">Beyond "remember or forget"</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🗂️</span> Margareth — Structured Storage</div>
-<div class="card-body"><ul><li>"Instead of storing everything in the AI's memory or context, maintain a structured history (DB, log) that can be queried"</li><li>Example: Bayesian optimization — past data builds a model, not just recall</li><li><strong>Selective storage AND structured use</strong> of negative data</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔥</span> Yadanar — Lessons, Not Logs</div>
-<div class="card-body"><ul><li>"AI should not just store failed experiments or erase them. It should learn from them."</li><li>"You do not remember every time you got burned, but you learn not to touch fire"</li><li>Transform raw failures into <strong>abstracted principles</strong></li></ul></div>
-</div>
-<div class="card card-purple">
-<div class="card-header"><span class="icon">💎</span> Seher — Living Records</div>
-<div class="card-body"><ul><li>The hidden flaw in "type failures before filing": classification at storage time freezes interpretation</li><li>Chatbot example: frustrating conversations were filed as failures — actually the most valuable signal</li><li><strong>Proposal</strong>: store raw data + versioned interpretation layer that updates over time</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"Don't archive failures. Version them." — Seher</div>
-</div>
-</section>
-<section class="slide" id="slide-23">
-<div class="slide-content">
-<h2 class="slide-title">Theme 2 — <strong>Huy's Infrastructure + Industry Grounding</strong></h2>
-<p class="slide-subtitle">The "yes" is backed by how high-stakes fields already work</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🏗️</span> Huy — Three Conditions for Useful Negative Data</div>
-<div class="card-body"><ul><li><strong>Contextual metadata</strong> — a failure log without parameters/conditions is noise, not signal</li><li><strong>Temporal tagging</strong> — a failed approach in one tech generation may be viable in the next</li><li><strong>Shared infrastructure</strong> — most negative data is locked in proprietary lab notebooks</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">☢️</span> Waad — Nuclear Safety Already Does This</div>
-<div class="card-body"><ul><li>"Every model, calculation, assumption, result — successful or not — is documented"</li><li><strong>Operating Experience Feedback (OEF)</strong>: a formal culture of preserving incidents, errors, near-misses</li><li>"The goal is not to hide mistakes, but to understand them" — real-world proof of the "always retain" view</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🤖</span> Hyunwoo — Robotics Safety</div>
-<div class="card-body"><ul><li>"If a system forgets the parameters that caused a collision, it may suggest the same trajectory again"</li><li>Negative data prevents <strong>physical hardware damage</strong> — concrete, not abstract</li><li>But "human oversight is required to understand WHY the failure occurred"</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"Negative data is the boundary system that defines the safety, integrity, and efficiency of agentic exploration." — Huy</div>
-</div>
-</section>
-<section class="slide" id="slide-24">
-<div class="slide-content">
-<h2 class="slide-title">Theme 3 — <strong>The Cracks in the Consensus</strong></h2>
-<p class="slide-subtitle">Two students push back on the easy "always retain + always oversee" answer</p>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">⚙️</span> Gyeongsu — Anti-Over-Oversight</div>
-<div class="card-body"><ul><li>Agrees with Iron Man (shortcut) and Captain America (integrity)</li><li>But <strong>rejects Hulk</strong>: "micromanaging the AI out of fear defeats the purpose"</li><li>"If we have to babysit the system at every single step, we lose all the benefits of automation"</li><li>A direct challenge to the dominant "human-in-every-loop" stance</li></ul></div>
-</div>
-<div class="card card-purple">
-<div class="card-header"><span class="icon">🔍</span> Jaewhoon — The Definition Problem</div>
-<div class="card-body"><ul><li>"It depends on what we define as a 'failed experiment'"</li><li>Engineering reality: humans must <strong>analyze the failure first</strong>, THEN feed it to AI — "AI cannot find the missing point unless I type every fine detail"</li><li>And the lone deletion case: if AI absorbed <strong>wrong data into its weights</strong>, "it may be better to delete all memories, reset, and re-learn"</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">💎</span> Seher — Why Freezing Labels Fails (recap)</div>
-<div class="card-body"><ul><li>Classifying a failure at storage time freezes interpretation "at the worst possible moment — when you understand the least"</li><li>Chatbot example: suppressed "frustrating" conversations were later the most valuable signal</li><li><strong>"Don't archive failures. Version them."</strong></li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"Babysitting the system at every step loses all the benefits of automation." — Gyeongsu, vs the Hulk majority</div>
-</div>
-</section>
-<section class="slide" id="slide-25">
-<div class="slide-content">
-<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
-<p class="slide-subtitle">Multi-agent systems make Week 12's questions concrete</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">👥</span> Today's Team Already Has This Problem</div>
-<div class="card-body"><ul><li>Round 2 Reviewer critiques the hypothesis — is the critique a "failure log" or a "lesson"?</li><li>If you saved every critique → store grows unbounded</li><li>If you only kept Round 3 → you lose the reasoning</li><li>Same selective memory question, scaled to 1 team</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🧭</span> Now Imagine 10 Agents</div>
-<div class="card-body"><ul><li>10 specialists running in parallel for a week</li><li>Many proposals fail, many critiques get rejected</li><li>WHO decides what's "failure" worth keeping? WHO decides when to revisit old labels?</li><li>That role is <strong>you</strong> — the human leader of the digital workforce</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> Leadership Has Concrete Decisions</div>
-<div class="card-body"><ul><li>Memory policy (Margareth's structured storage)</li><li>Distillation policy (Yadanar's lessons-not-logs)</li><li>Revisit cadence (Seher's living records)</li><li><strong>Checkpoint placement</strong> (Gyeongsu vs Hulk: oversee every step, or only key ones?)</li><li>These ARE leadership decisions — not "soft" management</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-26">
-<div class="slide-content">
-<h2 class="slide-title">Activity — <strong>Design Your Team's Memory Policy</strong></h2>
-<p class="slide-subtitle">10 minutes — pair work</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📋</span> The Task</div>
-<div class="card-body"><ul><li>Imagine your midterm app, but now running with 5 specialized agents instead of 1</li><li>In one year, you've accumulated:</li><li>50,000 proposed hypotheses (5,000 became outputs, 45,000 were dropped)</li><li>200,000 critique comments</li><li>1,000 user corrections</li><li>What do you keep raw? What do you distill? When do you revisit?</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">💭</span> Make 4 Lists</div>
-<div class="card-body"><ul><li><strong>KEEP RAW</strong> (everything, unprocessed)</li><li><strong>DISTILL</strong> (turn into abstracted lessons)</li><li><strong>DISCARD</strong> (not worth storing)</li><li><strong>SCHEDULE TO REVISIT</strong> (labels that may change)</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> The Test</div>
-<div class="card-body"><ul><li>Share with your partner — would they make the same calls?</li><li>Where you disagree = where leadership judgment actually matters</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-27">
-<div class="slide-content">
-<h2 class="slide-title">🗣️ <strong>Week 13 Discussion Questions</strong> (UST LMS)</h2>
-<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
-<p class="slide-text">1. In today's 2-agent practice, the Reviewer's critique often shaped Round 3 more than the original topic. Now imagine <strong>scaling to 10 agents</strong> — what would you do differently when one agent's output strongly biases all the others? Connect to Week 12's echo chamber concerns.</p>
-<p class="slide-text">2. Gyeongsu argued that "babysitting the system at every step loses all the benefits of automation," while the Hulk majority insists on human oversight at each step. After running your 2-agent team today, <strong>where exactly would YOU put the human checkpoint</strong> — every turn, only the final output, or only on disagreement? Defend your choice.</p>
-</div>
-</section>
-<section class="slide" id="slide-28">
-<div class="slide-content">
-<h2 class="slide-title">Want to Learn More?</h2>
-<p class="slide-text">Multi-Agent Frameworks</p>
-<a href="https://microsoft.github.io/autogen/" target="_blank" class="reference-link">📚 Microsoft AutoGen — Conversational Multi-Agent</a>
-<a href="https://www.crewai.com/" target="_blank" class="reference-link">📚 CrewAI — Role-Based Agent Teams</a>
-<a href="https://langchain-ai.github.io/langgraph/" target="_blank" class="reference-link">📚 LangGraph — Stateful Multi-Actor Workflows</a>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">Research Papers</p>
-<div class="highlight-quote">📄 [Generative Agents: Interactive Simulacra of Human Behavior (Park et al., 2023)](https://arxiv.org/abs/2304.03442)</div>
-<div class="highlight-quote">📄 [MetaGPT: Meta Programming for Multi-Agent Collaborative Framework (2023)](https://arxiv.org/abs/2308.00352)</div>
-<div class="highlight-quote">📄 [Improving Factuality via Multiagent Debate (Du et al., 2023)](https://arxiv.org/abs/2305.14325)</div>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">Anthropic Free Online Courses</p>
-<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)</div>
-<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
-</div>
-</section>
-<section class="slide" id="slide-29">
-<div class="slide-content">
-<h2 class="slide-title">Wrap-Up of <strong>Week 13</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> Lecture</div>
-<div class="card-body"><ul><li>Roles (function) differ from personas (viewpoint); three orchestration patterns — pipeline, manager-worker, round-robin; information asymmetry + shared/private memory are design choices that drive behavior</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> Practice</div>
-<div class="card-body"><ul><li>Built a <strong>2-agent Proposer-Reviewer team</strong> with <code class="inline-code">team.py</code>; 3-round pipeline (propose → critique → revise); same model, different system prompts → different roles in practice</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
-<div class="card-body"><ul><li>Week 12 review (14 responses): near-universal yes (backed by nuclear OEF + robotics); reframers shift to HOW; first cracks appear (Gyeongsu anti-oversight, Jaewhoon's definition + deletion case); today's team makes the leadership question — where to put the human checkpoint — concrete</li></ul></div>
-</div>
-</div>
-<p class="slide-text"><strong>Next week:</strong> Final project showcase + course wrap-up.</p>
-</div>
-</section>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> What to Watch For</div>
+            <div class="card-body">
+              <ul>
+                <li>Round 1 hypothesis vs Round 3 hypothesis — did the critique actually improve it?</li>
+                <li>Are Reviewer's bullets specific or generic?</li>
+                <li>If Reviewer is too soft, sharpen its system prompt and re-run</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-19">
+      <div class="slide-content">
+        <h2 class="slide-title">✅ <strong>Week 13 Practice Checklist</strong></h2>
+        <div class="highlight-quote">Complete these stages in order:</div>
+        <p class="slide-text"><strong>Stage 1 — Build the Team</strong></p>
+        <p class="slide-text">1. - [ ] Create <code class="inline-code">team.py</code> with the <code class="inline-code">ROLES</code> dictionary (2 roles)</p>
+        <p class="slide-text">2. - [ ] Add <code class="inline-code">run_role()</code> and test it alone — does the Reviewer produce 3-5 bullets?</p>
+        <p class="slide-text">3. - [ ] Add <code class="inline-code">role_play_simulation()</code> — verify all 3 turns appear in the log</p>
+        <p class="slide-text"><strong>Stage 2 — UI</strong></p>
+        <p class="slide-text">4. - [ ] Append the Research Team section to <code class="inline-code">app.py</code></p>
+        <p class="slide-text">5. - [ ] Run with a topic from your own research field</p>
+        <p class="slide-text">6. - [ ] Compare Round 1 vs Round 3 — did the revision actually improve?</p>
+        <p class="slide-text"><strong>Stage 3 — Experiment</strong></p>
+        <p class="slide-text">7. - [ ] Change the Reviewer's system prompt to be MORE harsh — does Round 3 change?</p>
+        <p class="slide-text">8. - [ ] Add a third turn (Reviewer's final approval) — extend <code class="inline-code">role_play_simulation()</code></p>
+        <p class="slide-text">9. - [ ] <strong>Bonus</strong>: add a third role (e.g., "Final Editor") to make a Pipeline of 3</p>
+        <p class="slide-text"><strong>Stage 4 — Bonus</strong></p>
+        <p class="slide-text">10. - [ ] Show ONLY the final hypothesis (collapse intermediate turns) — does the user trust it less without seeing the process?</p>
+        <p class="slide-text">11. - [ ] Pair this with Week 10 evaluator — score the final hypothesis with the rubric</p>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-20">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+        <p class="slide-subtitle">Selective Memory + Leadership of a Digital Workforce</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-21">
+      <div class="slide-content">
+        <h2 class="slide-title">Week 12 — <strong>Should AI Remember Failed Experiments?</strong></h2>
+        <p class="slide-subtitle">14 responses — near-universal "yes", but the consensus starts to crack</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📊</span> The Vote Pattern</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>All three (1,2,3)</strong>: Huy, Manuella, Nazhiefah — <strong>3</strong></li>
+                <li><strong>Hulk only (3)</strong>: Irfan, Hyunwoo, Ly — <strong>3</strong></li>
+                <li><strong>None / reframe</strong>: Margareth, Yadanar, Seher — <strong>3</strong></li>
+                <li><strong>Iron Man + Hulk (1,3)</strong>: DongYun — <strong>1</strong></li>
+                <li><strong>Cap + Hulk (2,3)</strong>: Waad — <strong>1</strong></li>
+                <li><strong>Iron Man + Cap (1,2, anti-Hulk)</strong>: Gyeongsu — <strong>1</strong></li>
+                <li><strong>Iron Man only (1)</strong>: Tan — <strong>1</strong></li>
+                <li><strong>"It depends" (definition)</strong>: Jaewhoon — <strong>1</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🤝</span> The (Almost) Universal Yes</div>
+            <div class="card-body">
+              <ul>
+                <li>13/14 agree failed experiments should be retained in some form</li>
+                <li>Backed by <strong>real industry practice</strong>: Waad (nuclear OEF), Hyunwoo (robotics safety)</li>
+                <li>The disagreement is about <strong>how to manage</strong> — and now, <strong>what even counts</strong> as a failure</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">🔥</span> The Cracks Appear</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Gyeongsu</strong> rejects Hulk: "babysitting the system defeats automation"</li>
+                <li><strong>Jaewhoon</strong>: "it depends what we define as 'failed experiment'" — and sometimes delete + reset is right</li>
+                <li>Class moves from "should we?" → "how?" → "what counts, and who decides?"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-22">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 1 — <strong>The Reframers</strong></h2>
+        <p class="slide-subtitle">Beyond "remember or forget"</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🗂️</span> Margareth — Structured Storage</div>
+            <div class="card-body">
+              <ul>
+                <li>"Instead of storing everything in the AI's memory or context, maintain a structured history (DB, log) that can be queried"</li>
+                <li>Example: Bayesian optimization — past data builds a model, not just recall</li>
+                <li><strong>Selective storage AND structured use</strong> of negative data</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔥</span> Yadanar — Lessons, Not Logs</div>
+            <div class="card-body">
+              <ul>
+                <li>"AI should not just store failed experiments or erase them. It should learn from them."</li>
+                <li>"You do not remember every time you got burned, but you learn not to touch fire"</li>
+                <li>Transform raw failures into <strong>abstracted principles</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">💎</span> Seher — Living Records</div>
+            <div class="card-body">
+              <ul>
+                <li>The hidden flaw in "type failures before filing": classification at storage time freezes interpretation</li>
+                <li>Chatbot example: frustrating conversations were filed as failures — actually the most valuable signal</li>
+                <li><strong>Proposal</strong>: store raw data + versioned interpretation layer that updates over time</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Don't archive failures. Version them." — Seher</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-23">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 2 — <strong>Huy's Infrastructure + Industry Grounding</strong></h2>
+        <p class="slide-subtitle">The "yes" is backed by how high-stakes fields already work</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🏗️</span> Huy — Three Conditions for Useful Negative Data</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Contextual metadata</strong> — a failure log without parameters/conditions is noise, not signal</li>
+                <li><strong>Temporal tagging</strong> — a failed approach in one tech generation may be viable in the next</li>
+                <li><strong>Shared infrastructure</strong> — most negative data is locked in proprietary lab notebooks</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">☢️</span> Waad — Nuclear Safety Already Does This</div>
+            <div class="card-body">
+              <ul>
+                <li>"Every model, calculation, assumption, result — successful or not — is documented"</li>
+                <li><strong>Operating Experience Feedback (OEF)</strong>: a formal culture of preserving incidents, errors, near-misses</li>
+                <li>"The goal is not to hide mistakes, but to understand them" — real-world proof of the "always retain" view</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🤖</span> Hyunwoo — Robotics Safety</div>
+            <div class="card-body">
+              <ul>
+                <li>"If a system forgets the parameters that caused a collision, it may suggest the same trajectory again"</li>
+                <li>Negative data prevents <strong>physical hardware damage</strong> — concrete, not abstract</li>
+                <li>But "human oversight is required to understand WHY the failure occurred"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Negative data is the boundary system that defines the safety, integrity, and efficiency of agentic exploration." — Huy</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-24">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 3 — <strong>The Cracks in the Consensus</strong></h2>
+        <p class="slide-subtitle">Two students push back on the easy "always retain + always oversee" answer</p>
+        <div class="cards-grid">
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">⚙️</span> Gyeongsu — Anti-Over-Oversight</div>
+            <div class="card-body">
+              <ul>
+                <li>Agrees with Iron Man (shortcut) and Captain America (integrity)</li>
+                <li>But <strong>rejects Hulk</strong>: "micromanaging the AI out of fear defeats the purpose"</li>
+                <li>"If we have to babysit the system at every single step, we lose all the benefits of automation"</li>
+                <li>A direct challenge to the dominant "human-in-every-loop" stance</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">🔍</span> Jaewhoon — The Definition Problem</div>
+            <div class="card-body">
+              <ul>
+                <li>"It depends on what we define as a 'failed experiment'"</li>
+                <li>Engineering reality: humans must <strong>analyze the failure first</strong>, THEN feed it to AI — "AI cannot find the missing point unless I type every fine detail"</li>
+                <li>And the lone deletion case: if AI absorbed <strong>wrong data into its weights</strong>, "it may be better to delete all memories, reset, and re-learn"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">💎</span> Seher — Why Freezing Labels Fails (recap)</div>
+            <div class="card-body">
+              <ul>
+                <li>Classifying a failure at storage time freezes interpretation "at the worst possible moment — when you understand the least"</li>
+                <li>Chatbot example: suppressed "frustrating" conversations were later the most valuable signal</li>
+                <li><strong>"Don't archive failures. Version them."</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Babysitting the system at every step loses all the benefits of automation." — Gyeongsu, vs the Hulk majority</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-25">
+      <div class="slide-content">
+        <h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+        <p class="slide-subtitle">Multi-agent systems make Week 12's questions concrete</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">👥</span> Today's Team Already Has This Problem</div>
+            <div class="card-body">
+              <ul>
+                <li>Round 2 Reviewer critiques the hypothesis — is the critique a "failure log" or a "lesson"?</li>
+                <li>If you saved every critique → store grows unbounded</li>
+                <li>If you only kept Round 3 → you lose the reasoning</li>
+                <li>Same selective memory question, scaled to 1 team</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🧭</span> Now Imagine 10 Agents</div>
+            <div class="card-body">
+              <ul>
+                <li>10 specialists running in parallel for a week</li>
+                <li>Many proposals fail, many critiques get rejected</li>
+                <li>WHO decides what's "failure" worth keeping? WHO decides when to revisit old labels?</li>
+                <li>That role is <strong>you</strong> — the human leader of the digital workforce</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> Leadership Has Concrete Decisions</div>
+            <div class="card-body">
+              <ul>
+                <li>Memory policy (Margareth's structured storage)</li>
+                <li>Distillation policy (Yadanar's lessons-not-logs)</li>
+                <li>Revisit cadence (Seher's living records)</li>
+                <li><strong>Checkpoint placement</strong> (Gyeongsu vs Hulk: oversee every step, or only key ones?)</li>
+                <li>These ARE leadership decisions — not "soft" management</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-26">
+      <div class="slide-content">
+        <h2 class="slide-title">Activity — <strong>Design Your Team's Memory Policy</strong></h2>
+        <p class="slide-subtitle">10 minutes — pair work</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📋</span> The Task</div>
+            <div class="card-body">
+              <ul>
+                <li>Imagine your midterm app, but now running with 5 specialized agents instead of 1</li>
+                <li>In one year, you've accumulated:</li>
+                <li>50,000 proposed hypotheses (5,000 became outputs, 45,000 were dropped)</li>
+                <li>200,000 critique comments</li>
+                <li>1,000 user corrections</li>
+                <li>What do you keep raw? What do you distill? When do you revisit?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">💭</span> Make 4 Lists</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>KEEP RAW</strong> (everything, unprocessed)</li>
+                <li><strong>DISTILL</strong> (turn into abstracted lessons)</li>
+                <li><strong>DISCARD</strong> (not worth storing)</li>
+                <li><strong>SCHEDULE TO REVISIT</strong> (labels that may change)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> The Test</div>
+            <div class="card-body">
+              <ul>
+                <li>Share with your partner — would they make the same calls?</li>
+                <li>Where you disagree = where leadership judgment actually matters</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-27">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Week 13 Discussion Questions</strong> (UST LMS)</h2>
+        <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+        <p class="slide-text">1. In today's 2-agent practice, the Reviewer's critique often shaped Round 3 more than the original topic. Now imagine <strong>scaling to 10 agents</strong> — what would you do differently when one agent's output strongly biases all the others? Connect to Week 12's echo chamber concerns.</p>
+        <p class="slide-text">2. Gyeongsu argued that "babysitting the system at every step loses all the benefits of automation," while the Hulk majority insists on human oversight at each step. After running your 2-agent team today, <strong>where exactly would YOU put the human checkpoint</strong> — every turn, only the final output, or only on disagreement? Defend your choice.</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-28">
+      <div class="slide-content">
+        <h2 class="slide-title">Want to Learn More?</h2>
+        <p class="slide-text">Multi-Agent Frameworks</p>
+        <a href="https://microsoft.github.io/autogen/" target="_blank" class="reference-link">📚 Microsoft AutoGen — Conversational Multi-Agent</a>
+        <a href="https://www.crewai.com/" target="_blank" class="reference-link">📚 CrewAI — Role-Based Agent Teams</a>
+        <a href="https://langchain-ai.github.io/langgraph/" target="_blank" class="reference-link">📚 LangGraph — Stateful Multi-Actor Workflows</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Research Papers</p>
+        <a href="https://arxiv.org/abs/2304.03442" target="_blank" class="reference-link">📄 Generative Agents: Interactive Simulacra of Human Behavior (Park et al., 2023)</a>
+        <a href="https://arxiv.org/abs/2308.00352" target="_blank" class="reference-link">📄 MetaGPT: Meta Programming for Multi-Agent Collaborative Framework (2023)</a>
+        <a href="https://arxiv.org/abs/2305.14325" target="_blank" class="reference-link">📄 Improving Factuality via Multiagent Debate (Du et al., 2023)</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Anthropic Free Online Courses</p>
+        <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank" class="reference-link">🎓 Building with the Claude API</a>
+        <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" class="reference-link">🎓 Introduction to Model Context Protocol</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-29">
+      <div class="slide-content">
+        <h2 class="slide-title">Wrap-Up of <strong>Week 13</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>Roles (function) differ from personas (viewpoint); three orchestration patterns — pipeline, manager-worker, round-robin; information asymmetry + shared/private memory are design choices that drive behavior</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Built a <strong>2-agent Proposer-Reviewer team</strong> with <code class="inline-code">team.py</code>; 3-round pipeline (propose → critique → revise); same model, different system prompts → different roles in practice</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 12 review (14 responses): near-universal yes (backed by nuclear OEF + robotics); reframers shift to HOW; first cracks appear (Gyeongsu anti-oversight, Jaewhoon's definition + deletion case); today's team makes the leadership question — where to put the human checkpoint — concrete</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text"><strong>Next week:</strong> The brake pedal — <strong>human in the loop</strong>: approval checkpoints, audit logs, and stop buttons for the team you just built.</p>
+      </div>
+    </section>
 
   </div>
 

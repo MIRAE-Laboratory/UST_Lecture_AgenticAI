@@ -3,7 +3,7 @@
 - title: Multi-Agent Systems
 - subtitle: Team Dynamics — Orchestrating Multiple Roles
 
-> Week 13 of Phase 4: Composition and Leadership (Weeks 13-14)
+> Week 13 of Phase 4: Collaboration & Future (Weeks 13-16)
 
 =====
 
@@ -41,8 +41,8 @@
 - title: The Story So Far — **Where Multi-Agent Fits**
 
 - card(blue, 🧩): What We've Already Built
-  - Week 7: Two **personas** debating (user moderates)
-  - Week 9: Single agent using **tools**
+  - Week 3-4: A single agent with a **persona** and **tools**
+  - Week 9: A **workflow** — named nodes, explicit state, a router you wrote
   - Week 10: Single output, scored by a **judge** model
   - Week 11: **Reflexion** — same model critiques itself
 
@@ -62,9 +62,9 @@
 - type: cards
 - title: **Role vs Persona** — A Key Distinction
 
-- card(blue, 🎭): Persona (Week 7)
+- card(blue, 🎭): Persona (Week 3)
   - A **viewpoint** or character: "Dr. Data, the empiricist"
-  - Two personas debate the SAME question from different angles
+  - Two personas answer the SAME question from different angles
   - Output: arguments for comparison; user judges
 
 - card(orange, 🔧): Role (Week 13)
@@ -654,4 +654,4 @@ Anthropic Free Online Courses
 - card(orange, 🗣️): Discussion
   - Week 12 review (14 responses): near-universal yes (backed by nuclear OEF + robotics); reframers shift to HOW; first cracks appear (Gyeongsu anti-oversight, Jaewhoon's definition + deletion case); today's team makes the leadership question — where to put the human checkpoint — concrete
 
-**Next week:** Final project showcase + course wrap-up.
+**Next week:** The brake pedal — **human in the loop**: approval checkpoints, audit logs, and stop buttons for the team you just built.

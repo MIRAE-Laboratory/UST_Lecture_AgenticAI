@@ -3,7 +3,7 @@
 - title: Evaluation of LLM Outputs
 - subtitle: Rubrics, LLM-as-Judge, and Iterative Improvement Loops
 
-> Week 10 of Phase 3: Advanced Patterns (Weeks 9-12)
+> Week 10 of Phase 3: Management & Reliability (Weeks 9-12)
 
 =====
 
@@ -41,8 +41,8 @@
 - title: The **Evaluation Gap** — Where We Are
 
 - card(blue, 📄): What We've Built So Far
-  - Week 5-7: chat, metadata, debate
-  - Week 9: agents that call tools
+  - Week 5-7: chat UI, extracted metadata, auto-drafted reports
+  - Week 9: multi-step workflows with explicit acceptance criteria
   - All produce outputs — but how good are they?
 
 - card(red, ❓): The Uncomfortable Question
@@ -416,8 +416,8 @@ from evaluator import (
 st.header("📊 Evaluation Lab — Hometown Introductions")
 hometown = st.text_input("Your hometown", "Daejeon, South Korea")
 judge = st.selectbox(
-    "Judge model",
-    ["gemini-3.1-flash-lite", "gemini-2.0-flash"],
+    "Judge model",                       # IDs change — check the model library
+    ["gemini-3.1-flash-lite", "gemini-3.8-flash"],
 )
 
 if st.button("🚀 Run All 3 Strategies", disabled=not hometown):
@@ -673,8 +673,9 @@ st.subheader("🔬 Multi-Model Comparison")
 
 candidate_models = st.multiselect(
     "Models to compare",
-    ["gemini-3.1-flash-lite", "gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"],
-    default=["gemini-3.1-flash-lite", "gemini-2.0-flash"],
+    ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite",
+     "gemini-3.8-flash", "gemini-2.5-flash"],   # keep one older model on purpose
+    default=["gemini-3.1-flash-lite", "gemini-3.8-flash"],
 )
 
 if st.button("⚖️ Compare Models", disabled=not candidate_models):
@@ -903,7 +904,7 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
 - title: Want to Learn More?
 
 LLM Evaluation
-> 📚 [Anthropic: Evaluating LLM Outputs](https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/develop-tests)
+> 📚 [Anthropic: Define success criteria & build evaluations](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests)
 > 📚 [OpenAI Evals — Open-source Eval Framework](https://github.com/openai/evals)
 > 📚 [LangSmith — Evaluation and Tracing](https://docs.smith.langchain.com/evaluation)
 &nbsp;
@@ -933,4 +934,4 @@ Anthropic Free Online Courses
 - card(orange, 🗣️): Discussion
   - Week 9 review (12 responses): Cap+Hulk coalition wins; Margareth's flexibility-uncertainty tradeoff; Huy's metacognitive clarity + Minh's Independence Threshold/Alignment Drift; Jaewhoon's "feedback loop is key" = exactly today's iterative practice
 
-**Next week:** Multi-step planning — agents that decompose tasks themselves.
+**Next week:** Agents that judge and repair their own work — the **self-feedback loop**.

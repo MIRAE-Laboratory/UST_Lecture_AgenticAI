@@ -513,282 +513,487 @@
 
   <div class="presentation" id="presentation">
     <section class="slide title-slide" id="slide-1">
-<div class="slide-content">
-<h1 class="slide-title">Memory and Retrieval-Augmented Generation</h1>
-<p class="slide-subtitle">Vector Databases — How AI Remembers Across Sessions</p>
-<div class="highlight-quote">Week 12 of Phase 3: Advanced Patterns (Weeks 9-12)</div>
-</div>
-</section>
-<section class="slide" id="slide-2">
-<div class="slide-content">
-<h2 class="slide-title">Contents</h2>
-<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 12</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
-<div class="card-body"><ul><li>The memory problem — LLMs forget after every call</li><li>Embeddings, vector databases, and similarity search — explained simply</li><li>The RAG pattern: retrieve → augment → generate</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
-<div class="card-body"><ul><li>Build a vector memory from your paper PDFs (extends Week 6 pipeline)</li><li>Ask a question → see the top N most relevant chunks with similarity scores</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
-<div class="card-body"><ul><li>Week 11 — Is "teaching" AI a new form of mentorship?</li><li>The class largely rejects the metaphor — what's the better frame?</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide title-slide" id="slide-3">
-<div class="slide-content">
-<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
-<p class="slide-subtitle">Long-Term Context with Vector Databases</p>
-</div>
-</section>
-<section class="slide" id="slide-4">
-<div class="slide-content">
-<h2 class="slide-title">The <strong>Memory Problem</strong> — LLMs Forget Everything</h2>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">🧠</span> What Today's LLM Knows</div>
-<div class="card-body"><ul><li>Only what was in its training data (months/years old)</li><li>Only what you put in the current prompt</li><li><strong>Nothing about your previous conversations</strong></li><li><strong>Nothing about YOUR documents</strong> unless you paste them in</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">📝</span> What This Means in Practice</div>
-<div class="card-body"><ul><li>You build an agent → it works in this session</li><li>Tomorrow you ask "what did we figure out yesterday?" → it has no idea</li><li>You upload 100 papers → it can read 1-2 at a time</li><li>There's no built-in "remember this for next time"</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> Today's Goal</div>
-<div class="card-body"><ul><li>Give the LLM a <strong>searchable memory</strong> of your documents</li><li>It can pull in the relevant parts when needed</li><li>Without you having to paste everything every time</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-5">
-<div class="slide-content">
-<h2 class="slide-title">The Naive Fix — <strong>Just Paste Everything</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🤔</span> Why Not Just Include All Papers?</div>
-<div class="card-body"><ul><li>"Just paste all 100 papers into the prompt every time"</li><li>Simple — model gets full context</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">❌</span> Why It Doesn't Work</div>
-<div class="card-body"><ul><li><strong>Cost</strong>: pasting 100 papers per call costs 100x more tokens</li><li><strong>Latency</strong>: 200,000-token prompts are slow</li><li><strong>Context limit</strong>: even the biggest models cap around 1-2 million tokens</li><li><strong>Signal vs noise</strong>: model gets lost in 100 papers; needs the RIGHT 2-3</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💡</span> The Better Idea</div>
-<div class="card-body"><ul><li>Find the <strong>relevant 2-3 papers</strong> for the current question</li><li>Paste only those into the prompt</li><li>But how do we know what's relevant without reading everything?</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-6">
-<div class="slide-content">
-<h2 class="slide-title">What is an <strong>Embedding</strong>?</h2>
-<p class="slide-subtitle">The single most important concept this week</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔢</span> The Idea</div>
-<div class="card-body"><ul><li>An embedding turns text into a <strong>list of numbers</strong> (typically 768 or 1024 numbers)</li><li>Each number represents some hidden aspect of the text's meaning</li><li>You don't read these numbers — but the computer can compare them</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🪞</span> Why It Helps</div>
-<div class="card-body"><ul><li>Two texts with <strong>similar meaning</strong> get <strong>similar number lists</strong></li><li>Two unrelated texts get <strong>very different</strong> number lists</li><li>So "compare meanings" becomes "compare lists of numbers" — fast and easy</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">📝</span> Concrete Example</div>
-<div class="card-body"><ul><li>"What is a transformer in AI?" → <code class="inline-code">[0.12, -0.85, 0.34, ...]</code></li><li>"Explain the attention mechanism" → <code class="inline-code">[0.15, -0.81, 0.31, ...]</code> (close!)</li><li>"How do I make kimchi?" → <code class="inline-code">[-0.67, 0.42, -0.91, ...]</code> (far away)</li><li>The math: just numerical distance between these lists</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-7">
-<div class="slide-content">
-<h2 class="slide-title">A <strong>Map of Meanings</strong> — The Mental Picture</h2>
-<p class="slide-subtitle">Imagine every sentence has a location</p>
-<div class="mermaid-container"><div class="mermaid">graph TB
-    subgraph "Map of Meanings (2D simplification)"
-      ML["🤖 Machine learning"]
-      DL["🧠 Deep learning"]
-      NN["⚙️ Neural networks"]
-      KIM["🥬 How to make kimchi"]
-      SOUP["🍲 Korean soup recipes"]
-      BUS["🚌 Bus schedule"]
-    end
-
-    ML -.->|close| DL
-    DL -.->|close| NN
-    ML -.->|close| NN
-    KIM -.->|close| SOUP
-    KIM -.->|far| ML
-    BUS -.->|far| everything
-
-    style ML fill:#cce5ff
-    style DL fill:#cce5ff
-    style NN fill:#cce5ff
-    style KIM fill:#d4edda
-    style SOUP fill:#d4edda
-    style BUS fill:#fff3cd</div></div>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> The Intuition</div>
-<div class="card-body"><ul><li>Real embeddings live in 1000+ dimensional space, not 2D — but the idea is the same</li><li>"Find similar meaning" = "find points near each other on this map"</li><li><strong>You don't have to understand the dimensions — just trust the distance</strong></li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-8">
-<div class="slide-content">
-<h2 class="slide-title">What is a <strong>Vector Database</strong>?</h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🗄️</span> The Definition</div>
-<div class="card-body"><ul><li>A storage system designed to find <strong>nearest neighbors</strong> in vector space</li><li>Input: a query vector</li><li>Output: the top N stored vectors closest to it, with similarity scores</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">📚</span> What It Stores</div>
-<div class="card-body"><ul><li>For each piece of text: <code class="inline-code">(text, embedding_vector, optional_metadata)</code></li><li>Example: <code class="inline-code">("Transformers use attention...", [0.12, -0.85, ...], {"source": "paper1.pdf"})</code></li><li>You can store millions of these and search in milliseconds</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🛠️</span> Common Choices</div>
-<div class="card-body"><ul><li><strong>In-memory (numpy)</strong>: simplest, good for thousands of chunks</li><li><strong>FAISS, Chroma</strong>: open source, fast, easy to start</li><li><strong>Pinecone, Weaviate</strong>: hosted, production-scale</li><li>For today: pure numpy — you'll see exactly what's happening, no magic</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-9">
-<div class="slide-content">
-<h2 class="slide-title"><strong>Similarity Search</strong> — Cosine Similarity in One Slide</h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📐</span> The Math (One Formula)</div>
-<div class="card-body"><ul><li>Cosine similarity = <code class="inline-code">dot(a, b) / (norm(a) * norm(b))</code></li><li>Output is between -1 and 1</li><li><strong>1.0 = identical direction</strong>, 0 = unrelated, -1 = opposite</li><li>Most text embeddings stay in 0.0–1.0 range</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> How We Use It</div>
-<div class="card-body"><ul><li>Embed user's question → query vector <code class="inline-code">q</code></li><li>For each chunk in store: compute <code class="inline-code">cosine_sim(q, chunk_vector)</code></li><li>Sort by similarity (highest first)</li><li>Return top N</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚡</span> Interpreting the Score</div>
-<div class="card-body"><ul><li>0.85+ → very strong match (probably what user wants)</li><li>0.65–0.85 → relevant, worth showing</li><li>Below 0.5 → weak — probably not useful</li><li>Threshold values depend on your embedding model</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-10">
-<div class="slide-content">
-<h2 class="slide-title">The <strong>RAG Pattern</strong> — Retrieval-Augmented Generation</h2>
-<p class="slide-subtitle">Search before you generate</p>
-<div class="mermaid-container"><div class="mermaid">graph LR
-    Q[❓ User Question] --> E1[Embed Question]
-    E1 --> S[Search Vector DB]
-    S --> T[Top N Chunks<br/>+ similarity scores]
-    T --> P[Build Prompt:<br/>Question + Chunks]
-    P --> L[🤖 LLM Generates Answer]
-    L --> A[💬 Answer with Citations]
-
-    style Q fill:#fff3cd
-    style S fill:#cce5ff
-    style T fill:#d6e4f0
-    style L fill:#ffe5cc
-    style A fill:#d4edda</div></div>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Why "Augmented"?</div>
-<div class="card-body"><ul><li>The LLM's prompt is <strong>augmented</strong> with retrieved context</li><li>It answers based on what was just retrieved, not just training data</li><li>This is how ChatGPT handles file uploads, Notion AI, Perplexity, etc.</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-11">
-<div class="slide-content">
-<h2 class="slide-title"><strong>Memory of Past Tasks</strong> — Beyond Documents</h2>
-<p class="slide-subtitle">The bigger picture for agentic AI</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📓</span> What to Remember</div>
-<div class="card-body"><ul><li>Past user questions + the agent's answers</li><li>Past tool calls + their results</li><li>Past failures + what fixed them</li><li>Reflexion critiques from Week 11</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔍</span> How Memory Helps</div>
-<div class="card-body"><ul><li>When a similar task comes up → retrieve past examples</li><li>"Last time I asked about X, the agent used tool Y and got result Z"</li><li>Avoids repeating same exploration; reuses lessons learned</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚠️</span> Selective Memory Matters</div>
-<div class="card-body"><ul><li>Remember what worked → reinforce good patterns</li><li>Remember what failed → avoid same mistakes</li><li>But also: when should the agent <strong>forget</strong> outdated info?</li><li>This is the Week 12 discussion topic</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-12">
-<div class="slide-content">
-<h2 class="slide-title">When RAG <strong>Helps</strong> vs <strong>Hurts</strong></h2>
-<div class="cards-grid">
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> RAG Helps Most When</div>
-<div class="card-body"><ul><li>The answer lives in YOUR documents, not the LLM's training data</li><li>Documents are too many to paste in full</li><li>Users ask questions that map to specific passages</li><li>You need citations to actual sources</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">❌</span> RAG Hurts When</div>
-<div class="card-body"><ul><li>The retrieved chunks are not actually relevant (poor chunking, weak embeddings)</li><li>The question requires synthesizing across MANY chunks (top-N isn't enough)</li><li>The LLM gets confused by irrelevant retrieved context</li><li>Latency budget is tight (embedding + search adds overhead)</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🎯</span> Practical Tips</div>
-<div class="card-body"><ul><li><strong>Chunk size matters</strong>: too small = lose context, too big = too much noise</li><li><strong>Always show similarity scores</strong> to the user — transparency catches bad retrieval</li><li><strong>Hybrid search</strong> (keyword + vector) often beats pure vector for technical domains</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-13">
-<div class="slide-content">
-<h2 class="slide-title">Lecture Summary — <strong>Memory and RAG</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔢</span> Embeddings</div>
-<div class="card-body"><ul><li>Turn text into number lists where similar meaning = similar numbers</li><li>This makes "find related text" a math problem (cosine similarity)</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🗄️</span> Vector Database + Search</div>
-<div class="card-body"><ul><li>Stores <code class="inline-code">(text, embedding)</code> pairs</li><li>Given a query embedding, returns nearest neighbors with scores</li><li>You can build one in pure numpy for thousands of chunks</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔁</span> The RAG Pattern</div>
-<div class="card-body"><ul><li>Embed query → search → retrieve top N → put in LLM prompt → generate</li><li>This is how AI assistants gain access to YOUR documents</li><li>For agentic AI: extends to remembering past tasks, failures, decisions</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide title-slide" id="slide-14">
-<div class="slide-content">
-<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
-<p class="slide-subtitle">Build a Paper Memory with Vector Search</p>
-</div>
-</section>
-<section class="slide" id="slide-15">
-<div class="slide-content">
-<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> The Goal</div>
-<div class="card-body"><ul><li>Take the <strong>MD files extracted in Week 6</strong> (paper PDFs → Markdown)</li><li>Chunk them, embed each chunk, store in an in-memory vector DB</li><li>User asks a question → app shows <strong>top N chunks</strong> with similarity scores</li><li>Optional: pass top chunks to LLM for a synthesized answer</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">📁</span> New File</div>
-<div class="card-body"><ul><li><code class="inline-code">memory.py</code> — chunking, embedding, vector store, search</li><li><code class="inline-code">app.py</code> — append a new section "🧠 Paper Memory"</li><li>Reuses MD files in <code class="inline-code">md_output/</code> from Week 6</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚡</span> Why Show Similarity Scores?</div>
-<div class="card-body"><ul><li>Transparency — user sees WHY this chunk was retrieved</li><li>If scores are all low (e.g., 0.3) → no good answer in the docs</li><li>Connects to Week 11: visible feedback enables judgment</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-16">
-<div class="slide-content">
-<h2 class="slide-title">Step 1 — <strong>Chunking</strong> (<code class="inline-code">memory.py</code>)</h2>
-<p class="slide-subtitle">Split long Markdown files into searchable pieces</p>
-<pre class="code-block"><code class="language-python"># memory.py
+      <div class="slide-content">
+        <h1 class="slide-title">Memory and Retrieval-Augmented Generation</h1>
+        <p class="slide-subtitle">Vector Databases — How AI Remembers Across Sessions</p>
+        <div class="highlight-quote">Week 12 of Phase 3: Management & Reliability (Weeks 9-12)</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title">Contents</h2>
+        <p class="slide-subtitle">Lecture, Practice, and Discussion for Week 12</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>The memory problem — LLMs forget after every call</li>
+                <li>Embeddings, vector databases, and similarity search — explained simply</li>
+                <li>The RAG pattern: retrieve → augment → generate</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Build a vector memory from your paper PDFs (extends Week 6 pipeline)</li>
+                <li>Ask a question → see the top N most relevant chunks with similarity scores</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 11 — Is "teaching" AI a new form of mentorship?</li>
+                <li>The class largely rejects the metaphor — what's the better frame?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-3">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+        <p class="slide-subtitle">Long-Term Context with Vector Databases</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title">The <strong>Memory Problem</strong> — LLMs Forget Everything</h2>
+        <div class="cards-grid">
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">🧠</span> What Today's LLM Knows</div>
+            <div class="card-body">
+              <ul>
+                <li>Only what was in its training data (months/years old)</li>
+                <li>Only what you put in the current prompt</li>
+                <li><strong>Nothing about your previous conversations</strong></li>
+                <li><strong>Nothing about YOUR documents</strong> unless you paste them in</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📝</span> What This Means in Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>You build an agent → it works in this session</li>
+                <li>Tomorrow you ask "what did we figure out yesterday?" → it has no idea</li>
+                <li>You upload 100 papers → it can read 1-2 at a time</li>
+                <li>There's no built-in "remember this for next time"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> Today's Goal</div>
+            <div class="card-body">
+              <ul>
+                <li>Give the LLM a <strong>searchable memory</strong> of your documents</li>
+                <li>It can pull in the relevant parts when needed</li>
+                <li>Without you having to paste everything every time</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title">The Naive Fix — <strong>Just Paste Everything</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🤔</span> Why Not Just Include All Papers?</div>
+            <div class="card-body">
+              <ul>
+                <li>"Just paste all 100 papers into the prompt every time"</li>
+                <li>Simple — model gets full context</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">❌</span> Why It Doesn't Work</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Cost</strong>: pasting 100 papers per call costs 100x more tokens</li>
+                <li><strong>Latency</strong>: 200,000-token prompts are slow</li>
+                <li><strong>Context limit</strong>: even the biggest models cap around 1-2 million tokens</li>
+                <li><strong>Signal vs noise</strong>: model gets lost in 100 papers; needs the RIGHT 2-3</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💡</span> The Better Idea</div>
+            <div class="card-body">
+              <ul>
+                <li>Find the <strong>relevant 2-3 papers</strong> for the current question</li>
+                <li>Paste only those into the prompt</li>
+                <li>But how do we know what's relevant without reading everything?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title">What is an <strong>Embedding</strong>?</h2>
+        <p class="slide-subtitle">The single most important concept this week</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔢</span> The Idea</div>
+            <div class="card-body">
+              <ul>
+                <li>An embedding turns text into a <strong>list of numbers</strong> (typically 768 or 1024 numbers)</li>
+                <li>Each number represents some hidden aspect of the text's meaning</li>
+                <li>You don't read these numbers — but the computer can compare them</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🪞</span> Why It Helps</div>
+            <div class="card-body">
+              <ul>
+                <li>Two texts with <strong>similar meaning</strong> get <strong>similar number lists</strong></li>
+                <li>Two unrelated texts get <strong>very different</strong> number lists</li>
+                <li>So "compare meanings" becomes "compare lists of numbers" — fast and easy</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📝</span> Concrete Example</div>
+            <div class="card-body">
+              <ul>
+                <li>"What is a transformer in AI?" → <code class="inline-code">[0.12, -0.85, 0.34, ...]</code></li>
+                <li>"Explain the attention mechanism" → <code class="inline-code">[0.15, -0.81, 0.31, ...]</code> (close!)</li>
+                <li>"How do I make kimchi?" → <code class="inline-code">[-0.67, 0.42, -0.91, ...]</code> (far away)</li>
+                <li>The math: just numerical distance between these lists</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title">A <strong>Map of Meanings</strong> — The Mental Picture</h2>
+        <p class="slide-subtitle">Imagine every sentence has a location</p>
+        <div class="mermaid-container">
+          <div class="mermaid">graph TB
+            subgraph "Map of Meanings (2D simplification)"
+            ML["🤖 Machine learning"]
+            DL["🧠 Deep learning"]
+            NN["⚙️ Neural networks"]
+            KIM["🥬 How to make kimchi"]
+            SOUP["🍲 Korean soup recipes"]
+            BUS["🚌 Bus schedule"]
+            end
+            
+            ML -.->|close| DL
+            DL -.->|close| NN
+            ML -.->|close| NN
+            KIM -.->|close| SOUP
+            KIM -.->|far| ML
+            BUS -.->|far| everything
+            
+            style ML fill:#cce5ff
+            style DL fill:#cce5ff
+            style NN fill:#cce5ff
+            style KIM fill:#d4edda
+            style SOUP fill:#d4edda
+            style BUS fill:#fff3cd</div>
+        </div>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> The Intuition</div>
+            <div class="card-body">
+              <ul>
+                <li>Real embeddings live in 1000+ dimensional space, not 2D — but the idea is the same</li>
+                <li>"Find similar meaning" = "find points near each other on this map"</li>
+                <li><strong>You don't have to understand the dimensions — just trust the distance</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="slide-title">What is a <strong>Vector Database</strong>?</h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🗄️</span> The Definition</div>
+            <div class="card-body">
+              <ul>
+                <li>A storage system designed to find <strong>nearest neighbors</strong> in vector space</li>
+                <li>Input: a query vector</li>
+                <li>Output: the top N stored vectors closest to it, with similarity scores</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📚</span> What It Stores</div>
+            <div class="card-body">
+              <ul>
+                <li>For each piece of text: <code class="inline-code">(text, embedding_vector, optional_metadata)</code></li>
+                <li>Example: <code class="inline-code">("Transformers use attention...", [0.12, -0.85, ...], {"source": "paper1.pdf"})</code></li>
+                <li>You can store millions of these and search in milliseconds</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🛠️</span> Common Choices</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>In-memory (numpy)</strong>: simplest, good for thousands of chunks</li>
+                <li><strong>FAISS, Chroma</strong>: open source, fast, easy to start</li>
+                <li><strong>Pinecone, Weaviate</strong>: hosted, production-scale</li>
+                <li>For today: pure numpy — you'll see exactly what's happening, no magic</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-9">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>Similarity Search</strong> — Cosine Similarity in One Slide</h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📐</span> The Math (One Formula)</div>
+            <div class="card-body">
+              <ul>
+                <li>Cosine similarity = <code class="inline-code">dot(a, b) / (norm(a) * norm(b))</code></li>
+                <li>Output is between -1 and 1</li>
+                <li><strong>1.0 = identical direction</strong>, 0 = unrelated, -1 = opposite</li>
+                <li>Most text embeddings stay in 0.0–1.0 range</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> How We Use It</div>
+            <div class="card-body">
+              <ul>
+                <li>Embed user's question → query vector <code class="inline-code">q</code></li>
+                <li>For each chunk in store: compute <code class="inline-code">cosine_sim(q, chunk_vector)</code></li>
+                <li>Sort by similarity (highest first)</li>
+                <li>Return top N</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚡</span> Interpreting the Score</div>
+            <div class="card-body">
+              <ul>
+                <li>0.85+ → very strong match (probably what user wants)</li>
+                <li>0.65–0.85 → relevant, worth showing</li>
+                <li>Below 0.5 → weak — probably not useful</li>
+                <li>Threshold values depend on your embedding model</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-10">
+      <div class="slide-content">
+        <h2 class="slide-title">The <strong>RAG Pattern</strong> — Retrieval-Augmented Generation</h2>
+        <p class="slide-subtitle">Search before you generate</p>
+        <div class="mermaid-container">
+          <div class="mermaid">graph LR
+            Q[❓ User Question] --> E1[Embed Question]
+            E1 --> S[Search Vector DB]
+            S --> T[Top N Chunks<br/>+ similarity scores]
+            T --> P[Build Prompt:<br/>Question + Chunks]
+            P --> L[🤖 LLM Generates Answer]
+            L --> A[💬 Answer with Citations]
+            
+            style Q fill:#fff3cd
+            style S fill:#cce5ff
+            style T fill:#d6e4f0
+            style L fill:#ffe5cc
+            style A fill:#d4edda</div>
+        </div>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Why "Augmented"?</div>
+            <div class="card-body">
+              <ul>
+                <li>The LLM's prompt is <strong>augmented</strong> with retrieved context</li>
+                <li>It answers based on what was just retrieved, not just training data</li>
+                <li>This is how ChatGPT handles file uploads, Notion AI, Perplexity, etc.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-11">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>Memory of Past Tasks</strong> — Beyond Documents</h2>
+        <p class="slide-subtitle">The bigger picture for agentic AI</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📓</span> What to Remember</div>
+            <div class="card-body">
+              <ul>
+                <li>Past user questions + the agent's answers</li>
+                <li>Past tool calls + their results</li>
+                <li>Past failures + what fixed them</li>
+                <li>Reflexion critiques from Week 11</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔍</span> How Memory Helps</div>
+            <div class="card-body">
+              <ul>
+                <li>When a similar task comes up → retrieve past examples</li>
+                <li>"Last time I asked about X, the agent used tool Y and got result Z"</li>
+                <li>Avoids repeating same exploration; reuses lessons learned</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚠️</span> Selective Memory Matters</div>
+            <div class="card-body">
+              <ul>
+                <li>Remember what worked → reinforce good patterns</li>
+                <li>Remember what failed → avoid same mistakes</li>
+                <li>But also: when should the agent <strong>forget</strong> outdated info?</li>
+                <li>This is the Week 12 discussion topic</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-12">
+      <div class="slide-content">
+        <h2 class="slide-title">When RAG <strong>Helps</strong> vs <strong>Hurts</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> RAG Helps Most When</div>
+            <div class="card-body">
+              <ul>
+                <li>The answer lives in YOUR documents, not the LLM's training data</li>
+                <li>Documents are too many to paste in full</li>
+                <li>Users ask questions that map to specific passages</li>
+                <li>You need citations to actual sources</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">❌</span> RAG Hurts When</div>
+            <div class="card-body">
+              <ul>
+                <li>The retrieved chunks are not actually relevant (poor chunking, weak embeddings)</li>
+                <li>The question requires synthesizing across MANY chunks (top-N isn't enough)</li>
+                <li>The LLM gets confused by irrelevant retrieved context</li>
+                <li>Latency budget is tight (embedding + search adds overhead)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🎯</span> Practical Tips</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Chunk size matters</strong>: too small = lose context, too big = too much noise</li>
+                <li><strong>Always show similarity scores</strong> to the user — transparency catches bad retrieval</li>
+                <li><strong>Hybrid search</strong> (keyword + vector) often beats pure vector for technical domains</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-13">
+      <div class="slide-content">
+        <h2 class="slide-title">Lecture Summary — <strong>Memory and RAG</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔢</span> Embeddings</div>
+            <div class="card-body">
+              <ul>
+                <li>Turn text into number lists where similar meaning = similar numbers</li>
+                <li>This makes "find related text" a math problem (cosine similarity)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🗄️</span> Vector Database + Search</div>
+            <div class="card-body">
+              <ul>
+                <li>Stores <code class="inline-code">(text, embedding)</code> pairs</li>
+                <li>Given a query embedding, returns nearest neighbors with scores</li>
+                <li>You can build one in pure numpy for thousands of chunks</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔁</span> The RAG Pattern</div>
+            <div class="card-body">
+              <ul>
+                <li>Embed query → search → retrieve top N → put in LLM prompt → generate</li>
+                <li>This is how AI assistants gain access to YOUR documents</li>
+                <li>For agentic AI: extends to remembering past tasks, failures, decisions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-14">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+        <p class="slide-subtitle">Build a Paper Memory with Vector Search</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-15">
+      <div class="slide-content">
+        <h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> The Goal</div>
+            <div class="card-body">
+              <ul>
+                <li>Take the <strong>MD files extracted in Week 6</strong> (paper PDFs → Markdown)</li>
+                <li>Chunk them, embed each chunk, store in an in-memory vector DB</li>
+                <li>User asks a question → app shows <strong>top N chunks</strong> with similarity scores</li>
+                <li>Optional: pass top chunks to LLM for a synthesized answer</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📁</span> New File</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">memory.py</code> — chunking, embedding, vector store, search</li>
+                <li><code class="inline-code">app.py</code> — append a new section "🧠 Paper Memory"</li>
+                <li>Reuses MD files in <code class="inline-code">md_output/</code> from Week 6</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚡</span> Why Show Similarity Scores?</div>
+            <div class="card-body">
+              <ul>
+                <li>Transparency — user sees WHY this chunk was retrieved</li>
+                <li>If scores are all low (e.g., 0.3) → no good answer in the docs</li>
+                <li>Connects to Week 11: visible feedback enables judgment</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-16">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 1 — <strong>Chunking</strong> (<code class="inline-code">memory.py</code>)</h2>
+        <p class="slide-subtitle">Split long Markdown files into searchable pieces</p>
+        <pre class="code-block"><code class="language-python"># memory.py
 from pathlib import Path
 
 CHUNK_SIZE = 800       # characters per chunk
@@ -812,25 +1017,39 @@ def chunk_text(text, size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
         chunks.append(text[i:i + size])
         i += size - overlap
     return chunks</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Why Strip Frontmatter?</div>
-<div class="card-body"><ul><li>Week 6 MD files start with YAML metadata between <code class="inline-code">---</code> markers</li><li>If we don't strip it, <strong>chunk 0 of every paper is metadata</strong> — pollutes search</li><li>We chunk only the BODY for semantic search</li></ul></div>
-</div>
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Why Overlap?</div>
-<div class="card-body"><ul><li>A sentence might be split across two chunks</li><li>Overlap ensures key phrases appear in at least one chunk fully</li><li>Typical: 10-15% overlap (here: 100/800 ≈ 12.5%)</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-17">
-<div class="slide-content">
-<h2 class="slide-title">Step 2 — <strong>Embedding Function</strong> (<code class="inline-code">memory.py</code>)</h2>
-<p class="slide-subtitle">Convert text to a vector using Gemini embeddings</p>
-<pre class="code-block"><code class="language-python">import numpy as np
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Why Strip Frontmatter?</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 6 MD files start with YAML metadata between <code class="inline-code">---</code> markers</li>
+                <li>If we don't strip it, <strong>chunk 0 of every paper is metadata</strong> — pollutes search</li>
+                <li>We chunk only the BODY for semantic search</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Why Overlap?</div>
+            <div class="card-body">
+              <ul>
+                <li>A sentence might be split across two chunks</li>
+                <li>Overlap ensures key phrases appear in at least one chunk fully</li>
+                <li>Typical: 10-15% overlap (here: 100/800 ≈ 12.5%)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-17">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 2 — <strong>Embedding Function</strong> (<code class="inline-code">memory.py</code>)</h2>
+        <p class="slide-subtitle">Convert text to a vector using Gemini embeddings</p>
+        <pre class="code-block"><code class="language-python">import numpy as np
 
-EMBEDDING_MODEL = "gemini-embedding-001"
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "gemini-embedding-001")
+# Newer option: "gemini-embedding-2-preview" (multimodal: text, images, PDFs).
+# Never mix models in one store — vectors from different models are not comparable.
 
 def embed_text(client, text, model=EMBEDDING_MODEL):
     """Get an embedding vector for a single piece of text."""
@@ -842,19 +1061,25 @@ def embed_batch(client, texts, model=EMBEDDING_MODEL):
     """Embed many texts in one API call (much faster + avoids rate limits)."""
     result = client.models.embed_content(model=model, contents=texts)
     return [np.array(e.values) for e in result.embeddings]</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Single vs Batch</div>
-<div class="card-body"><ul><li><code class="inline-code">embed_text()</code> — for the user's QUERY (one text)</li><li><code class="inline-code">embed_batch()</code> — for building the store (many texts in one call)</li><li>Batching is dramatically faster AND helps avoid 429 rate-limit errors</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-18">
-<div class="slide-content">
-<h2 class="slide-title">Step 3 — <strong>Build the Vector Store</strong> (<code class="inline-code">memory.py</code>)</h2>
-<p class="slide-subtitle">Process all MD files into searchable chunks</p>
-<pre class="code-block"><code class="language-python">import time
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Single vs Batch</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">embed_text()</code> — for the user's QUERY (one text)</li>
+                <li><code class="inline-code">embed_batch()</code> — for building the store (many texts in one call)</li>
+                <li>Batching is dramatically faster AND helps avoid 429 rate-limit errors</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-18">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 3 — <strong>Build the Vector Store</strong> (<code class="inline-code">memory.py</code>)</h2>
+        <p class="slide-subtitle">Process all MD files into searchable chunks</p>
+        <pre class="code-block"><code class="language-python">import time
 
 def build_vector_store(client, md_dir="md_output",
                        batch_size=20, on_progress=None):
@@ -889,19 +1114,25 @@ def build_vector_store(client, md_dir="md_output",
             on_progress((start + len(batch)) / total,
                         f"Embedded {start + len(batch)}/{total} chunks")
     return store</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Three Improvements over a Naive Loop</div>
-<div class="card-body"><ul><li><strong>Strip frontmatter</strong> — chunk only body text, not YAML metadata</li><li><strong>Batch embedding</strong> — typically 10-20x faster than per-chunk calls</li><li><strong>Progress callback + retry</strong> — UI can show a progress bar, recovers from transient errors</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-19">
-<div class="slide-content">
-<h2 class="slide-title">Step 4 — <strong>Similarity Search</strong> (<code class="inline-code">memory.py</code>)</h2>
-<p class="slide-subtitle">Cosine similarity, top-N results</p>
-<pre class="code-block"><code class="language-python">def cosine_sim(a, b):
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Three Improvements over a Naive Loop</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Strip frontmatter</strong> — chunk only body text, not YAML metadata</li>
+                <li><strong>Batch embedding</strong> — typically 10-20x faster than per-chunk calls</li>
+                <li><strong>Progress callback + retry</strong> — UI can show a progress bar, recovers from transient errors</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-19">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 4 — <strong>Similarity Search</strong> (<code class="inline-code">memory.py</code>)</h2>
+        <p class="slide-subtitle">Cosine similarity, top-N results</p>
+        <pre class="code-block"><code class="language-python">def cosine_sim(a, b):
     """Cosine similarity between two vectors."""
     return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
 
@@ -915,19 +1146,25 @@ def search(client, query, store, top_k=5):
         scored.append({**item, "similarity": sim})
     scored.sort(key=lambda x: -x["similarity"])
     return scored[:top_k]</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> The Whole "Vector DB" in 6 Lines</div>
-<div class="card-body"><ul><li>This IS what a vector database does, just slower at scale</li><li>Real vector DBs use clever indexing (HNSW, IVF) for millions of vectors</li><li>For learning + thousands of chunks → numpy is perfect</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-20">
-<div class="slide-content">
-<h2 class="slide-title">Step 5 — <strong>Streamlit UI</strong> (append to <code class="inline-code">app.py</code>)</h2>
-<p class="slide-subtitle">Build store once, query many times</p>
-<pre class="code-block"><code class="language-python"># === Top of app.py (same setup as Week 10) ===
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> The Whole "Vector DB" in 6 Lines</div>
+            <div class="card-body">
+              <ul>
+                <li>This IS what a vector database does, just slower at scale</li>
+                <li>Real vector DBs use clever indexing (HNSW, IVF) for millions of vectors</li>
+                <li>For learning + thousands of chunks → numpy is perfect</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-20">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 5 — <strong>Streamlit UI</strong> (append to <code class="inline-code">app.py</code>)</h2>
+        <p class="slide-subtitle">Build store once, query many times</p>
+        <pre class="code-block"><code class="language-python"># === Top of app.py (same setup as Week 10) ===
 import os
 from dotenv import load_dotenv
 from google import genai
@@ -971,19 +1208,24 @@ if st.button("🔍 Search", disabled=not (query and st.session_state.vector_stor
             f"{r['source']} (chunk {r['chunk_idx']})"
         ):
             st.write(r["text"])</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Two Important Details</div>
-<div class="card-body"><ul><li><strong><code class="inline-code">client</code> setup</strong> — same <code class="inline-code">genai.Client(...)</code> as Week 10; reuse the same <code class="inline-code">.env</code></li><li><strong>Progress callback</strong> — wires <code class="inline-code">build_vector_store(on_progress=cb)</code> to <code class="inline-code">st.progress()</code> so the user sees embedding progress (not a frozen screen)</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-21">
-<div class="slide-content">
-<h2 class="slide-title">Step 6 (Bonus) — <strong>Generate an Answer with Retrieved Context</strong></h2>
-<p class="slide-subtitle">Full RAG — search results feed into LLM</p>
-<pre class="code-block"><code class="language-python"># Bonus: append to memory.py
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Two Important Details</div>
+            <div class="card-body">
+              <ul>
+                <li><strong><code class="inline-code">client</code> setup</strong> — same <code class="inline-code">genai.Client(...)</code> as Week 10; reuse the same <code class="inline-code">.env</code></li>
+                <li><strong>Progress callback</strong> — wires <code class="inline-code">build_vector_store(on_progress=cb)</code> to <code class="inline-code">st.progress()</code> so the user sees embedding progress (not a frozen screen)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-21">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 6 (Bonus) — <strong>Generate an Answer with Retrieved Context</strong></h2>
+        <p class="slide-subtitle">Full RAG — search results feed into LLM</p>
+        <pre class="code-block"><code class="language-python"># Bonus: append to memory.py
 # Reuse Week 10's helper instead of redefining it
 from evaluator import llm_call
 
@@ -1005,215 +1247,358 @@ Question: {query}
 
 Answer with citations to the source filenames."""
     return llm_call(client, gen_model, prompt), results</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Reusing <code class="inline-code">llm_call</code> from Week 10</div>
-<div class="card-body"><ul><li>We defined <code class="inline-code">llm_call(client, model, prompt)</code> in <code class="inline-code">evaluator.py</code> (Week 10)</li><li>Just import it — don't redefine the same wrapper twice</li><li>If you skipped Week 10, define it here:</li></ul></div>
-</div>
-</div>
-<p class="slide-text"><code class="inline-code">def llm_call(client, model, prompt): return client.models.generate_content(model=model, contents=prompt).text</code></p>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Always Return BOTH</div>
-<div class="card-body"><ul><li>Return the answer AND the retrieved chunks</li><li>User can verify the answer against the actual sources</li><li>This is the practical version of "show your work"</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-22">
-<div class="slide-content">
-<h2 class="slide-title">✅ <strong>Week 12 Practice Checklist</strong></h2>
-<div class="highlight-quote">Complete these stages in order:</div>
-<p class="slide-text">1. - [ ] Create <code class="inline-code">memory.py</code> with <code class="inline-code">strip_frontmatter()</code>, <code class="inline-code">chunk_text()</code>, <code class="inline-code">embed_text()</code>, <code class="inline-code">embed_batch()</code></p>
-<p class="slide-text">2. - [ ] Test <code class="inline-code">embed_text("hello")</code> — confirm you get a numpy array back</p>
-<p class="slide-text">3. - [ ] Test <code class="inline-code">strip_frontmatter()</code> on one of your MD files — does it remove the YAML block?</p>
-<p class="slide-text">4. - [ ] Add <code class="inline-code">build_vector_store()</code> with <code class="inline-code">on_progress</code> callback support</p>
-<p class="slide-text">5. - [ ] Add <code class="inline-code">cosine_sim()</code> and <code class="inline-code">search()</code></p>
-<p class="slide-text">6. - [ ] Append the Streamlit section to <code class="inline-code">app.py</code> (with <code class="inline-code">st.progress</code> callback wired)</p>
-<p class="slide-text">7. - [ ] Build the store — watch the progress bar advance</p>
-<p class="slide-text">8. - [ ] Ask a question from one of your papers — does the top result come from that paper?</p>
-<p class="slide-text">9. - [ ] <strong>Verify</strong>: open the top chunk's text — is it body content (good) or YAML metadata (bug)?</p>
-<p class="slide-text">10. - [ ] Ask a question NOT covered by any paper — what similarity scores do you see?</p>
-<p class="slide-text">11. - [ ] Try chunk sizes 300, 800, 1500 — does retrieval quality change?</p>
-<p class="slide-text">12. - [ ] Look at chunks that "felt wrong" — was the retrieval bad, or was the question ambiguous?</p>
-<p class="slide-text">13. - [ ] Add <code class="inline-code">rag_answer()</code> (import <code class="inline-code">llm_call</code> from <code class="inline-code">evaluator.py</code>) and a button that uses the top chunks for an LLM answer</p>
-<p class="slide-text">14. - [ ] <strong>Persistence</strong>: save the store to a <code class="inline-code">.npz</code> file so you don't re-embed each session</p>
-</div>
-</section>
-<section class="slide title-slide" id="slide-23">
-<div class="slide-content">
-<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
-<p class="slide-subtitle">Is Teaching AI a New Form of Mentorship?</p>
-</div>
-</section>
-<section class="slide" id="slide-24">
-<div class="slide-content">
-<h2 class="slide-title">Week 11 — <strong>"Is Teaching AI a New Form of Mentorship?"</strong></h2>
-<p class="slide-subtitle">9 responses analyzed — the class largely rejects the framing</p>
-<div class="cards-grid">
-<div class="card card-green">
-<div class="card-header"><span class="icon">📊</span> The Vote Distribution</div>
-<div class="card-body"><ul><li><strong>None / rejected the framing</strong>: DongYun, Huy, Waad, Irfan — <strong>4 votes</strong></li><li><strong>Hulk only (3)</strong>: Yadanar — <strong>1 vote</strong></li><li><strong>Captain America + Hulk (2,3)</strong>: Ly, Manuella — <strong>2 votes</strong></li><li><strong>New paradigm proposed</strong>: Seher — <strong>1 vote</strong></li><li><strong>Synthesis of all three (1,2,3)</strong>: Rupam — <strong>1 vote</strong></li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🤝</span> The Surprise</div>
-<div class="card-body"><ul><li>Only <strong>3 out of 9</strong> picked a specific persona</li><li><strong>5 explicitly rejected</strong> the question's framing</li><li>The class is moving from "pick a stance" → "reframe the question"</li><li>This is intellectual maturity, not avoidance</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">🔥</span> The Emerging Position</div>
-<div class="card-body"><ul><li>"Mentorship" is the wrong word — but architecture / authorship / containment IS the right frame</li><li>The interesting question isn't "can AI be a student?" but <strong>"what role should humans take?"</strong></li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-25">
-<div class="slide-content">
-<h2 class="slide-title">Theme 1 — <strong>The "Mentorship" Word is Suspect</strong></h2>
-<p class="slide-subtitle">Three students attack the metaphor itself</p>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">🚫</span> Yadanar — Language Shapes Behavior</div>
-<div class="card-body"><ul><li>"If we keep calling this mentoring, are we blurring the line between genuine guidance and simple automation?"</li><li>The word makes us <strong>feel safer</strong> than the actual situation warrants</li><li>"It also risks letting us off the hook" — we ask "is the AI learning?" instead of "are we designing well?"</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🧠</span> Huy — It's Alignment Engineering</div>
-<div class="card-body"><ul><li>Not mentorship in the classical sense</li><li>It's "authoring at a higher level of abstraction"</li><li>"We are writing the values, constraints, and correction criteria that govern what 'better' means to the system"</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔄</span> DongYun — But the Pattern IS Similar</div>
-<div class="card-body"><ul><li>"Mentorship: giving help and advice over a period of time"</li><li>Iterative prompting + refinement looks like exactly that</li><li>The metaphor isn't wrong — but it's incomplete</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"Mentoring suggests dialogue, care, and growth of character. Self-correction is really just a technical loop." — Yadanar</div>
-</div>
-</section>
-<section class="slide" id="slide-26">
-<div class="slide-content">
-<h2 class="slide-title">Theme 2 — <strong>From Supervision to Architecture</strong></h2>
-<p class="slide-subtitle">The shift in human role</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🏗️</span> Huy — Architectural Authorship</div>
-<div class="card-body"><ul><li>"Architect the value space within which autonomous action is permitted"</li><li>Not supervising every action — designing the rules of the game</li><li>"Carries just as much weight" as classical authorship</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🛡️</span> Waad — Strategic Authorship</div>
-<div class="card-body"><ul><li>"Manual supervision is simply unfeasible at scale"</li><li>"Define, manage, control, and verify the safe operating space"</li><li>Same idea, different vocabulary</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎓</span> Seher — Apprentice Paradigm</div>
-<div class="card-body"><ul><li>"AI is treated like an apprentice system"</li><li>Attempts → tests → receives critique → improves</li><li>"Humans design the boundaries, AI performs and improves, evaluation mechanisms decide when human judgment is truly needed"</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"We aren't supervisors — we're architects of the value space the system operates inside." — synthesis</div>
-</div>
-</section>
-<section class="slide" id="slide-27">
-<div class="slide-content">
-<h2 class="slide-title">Theme 3 — <strong>The Boundary Problem</strong></h2>
-<p class="slide-subtitle">Where humans MUST step in</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔍</span> Concrete Examples Students Gave</div>
-<div class="card-body"><ul><li><strong>Ly</strong>: AI generates simulation code → human verifies math/assumptions</li><li><strong>Manuella</strong>: AI revises citation → may sound stronger but cite wrong source</li><li><strong>Yadanar</strong>: AI flags errors → human decides if proposed fix is correct</li><li>All three describe: <strong>AI generates, human validates final correctness</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> The Common Pattern</div>
-<div class="card-body"><ul><li>AI handles <strong>iteration</strong> (cheap, repeatable, low-stakes)</li><li>Humans handle <strong>judgment</strong> (rare, expensive, high-stakes)</li><li>The boundary is set by the human (Seher's "design the boundaries")</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚠️</span> The Hard Question</div>
-<div class="card-body"><ul><li>WHERE you set the boundary determines everything</li><li>Set it too narrow → AI can't help much</li><li>Set it too wide → catastrophic failures slip through</li><li>"Knowing where to set the boundary" = the new senior skill</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-28">
-<div class="slide-content">
-<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
-<p class="slide-subtitle">Memory is NOT mentorship — but it changes what's possible</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🧠</span> What Memory Adds</div>
-<div class="card-body"><ul><li>Vector memory = the system "remembers" past documents and (optionally) past tasks</li><li>This isn't learning in the human sense — it's structured retrieval</li><li>Yadanar's point applies: don't anthropomorphize what is "just better tuned"</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🏗️</span> The Architectural Question</div>
-<div class="card-body"><ul><li>You decide what goes INTO the memory (chunks, sources, metadata)</li><li>You decide what queries CAN be answered (the search interface)</li><li>You decide what should be FORGOTTEN (stale data, failed attempts)</li><li>This is exactly Huy's "architecting the value space"</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🤔</span> The Selective Memory Problem</div>
-<div class="card-body"><ul><li>Should the agent remember its failed attempts?</li><li>If yes → it avoids repeating mistakes</li><li>If no → it stays unbiased, won't carry over wrong lessons</li><li>Today's discussion: <strong>what should AI remember?</strong> (this leads into next week)</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-29">
-<div class="slide-content">
-<h2 class="slide-title">Activity — <strong>Design the Memory Boundary</strong></h2>
-<p class="slide-subtitle">10 minutes — pair work</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📋</span> The Task</div>
-<div class="card-body"><ul><li>Imagine your midterm app, running for a year</li><li>Decide: what should it <strong>remember</strong>, what should it <strong>forget</strong>?</li><li>Make 3 lists: KEEP, FORGET, ASK USER</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">💭</span> Categories to Consider</div>
-<div class="card-body"><ul><li>Past user questions + answers</li><li>Failed tool calls (what arguments crashed)</li><li>User corrections ("that's wrong, the answer is X")</li><li>Personal preferences ("I always want results in 2 paragraphs")</li><li>Old/outdated facts that have since changed</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> The Test</div>
-<div class="card-body"><ul><li>Share with your partner — would their boundary settings match yours?</li><li>Where you disagree = where the architectural decision matters most</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-30">
-<div class="slide-content">
-<h2 class="slide-title">🗣️ <strong>Week 12 Discussion Questions</strong> (UST LMS)</h2>
-<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
-<p class="slide-text">1. Today you saw similarity scores for each retrieved chunk. <strong>Did the scores match your intuition</strong> of which papers were relevant? Share one example where the top score was the right answer, and one where it wasn't — what does that tell you about embedding limits?</p>
-<p class="slide-text">2. Yadanar argued that calling AI self-correction "mentorship" makes people feel <strong>safer than they should</strong>. After building a vector memory today, <strong>does giving an AI "memory" carry similar risks of overclaiming</strong>? When would you call this "remembering" vs just "indexed retrieval"?</p>
-</div>
-</section>
-<section class="slide" id="slide-31">
-<div class="slide-content">
-<h2 class="slide-title">Want to Learn More?</h2>
-<p class="slide-text">Vector Databases & Embeddings</p>
-<a href="https://ai.google.dev/gemini-api/docs/embeddings" target="_blank" class="reference-link">📚 Google: Embeddings Guide</a>
-<a href="https://www.pinecone.io/learn/vector-embeddings/" target="_blank" class="reference-link">📚 Pinecone Learning Center — Vector Embeddings 101</a>
-<a href="https://docs.trychroma.com/" target="_blank" class="reference-link">📚 Chroma — Open-source Vector DB</a>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">RAG Patterns</p>
-<a href="https://docs.anthropic.com/en/docs/build-with-claude/use-cases" target="_blank" class="reference-link">📚 Anthropic: Retrieval Augmented Generation Guide</a>
-<div class="highlight-quote">📄 [Retrieval-Augmented Generation for NLP Tasks (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401)</div>
-<div class="highlight-quote">📄 [Lost in the Middle: How Language Models Use Long Contexts (2023)](https://arxiv.org/abs/2307.03172)</div>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">Anthropic Free Online Courses</p>
-<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)</div>
-<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
-</div>
-</section>
-<section class="slide" id="slide-32">
-<div class="slide-content">
-<h2 class="slide-title">Wrap-Up of <strong>Week 12</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> Lecture</div>
-<div class="card-body"><ul><li>Embeddings turn text into number lists where similar meaning = similar numbers; vector DB = fast nearest-neighbor search over embeddings; RAG = retrieve before generate, with citations to actual sources</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> Practice</div>
-<div class="card-body"><ul><li>Built a paper memory: chunk MD files → embed each chunk → store in numpy → search by cosine similarity; UI shows top N chunks with similarity scores for transparency</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
-<div class="card-body"><ul><li>Week 11 (9 responses): class rejects the "mentorship" metaphor; emerging consensus = humans architect the value space, not supervise every action; memory architecture = today's concrete example of that authorship</li></ul></div>
-</div>
-</div>
-<p class="slide-text"><strong>Next week:</strong> Reflection on the journey — what worked, what didn't, what comes next.</p>
-</div>
-</section>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Reusing <code class="inline-code">llm_call</code> from Week 10</div>
+            <div class="card-body">
+              <ul>
+                <li>We defined <code class="inline-code">llm_call(client, model, prompt)</code> in <code class="inline-code">evaluator.py</code> (Week 10)</li>
+                <li>Just import it — don't redefine the same wrapper twice</li>
+                <li>If you skipped Week 10, define it here:</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text"><code class="inline-code">def llm_call(client, model, prompt): return client.models.generate_content(model=model, contents=prompt).text</code></p>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Always Return BOTH</div>
+            <div class="card-body">
+              <ul>
+                <li>Return the answer AND the retrieved chunks</li>
+                <li>User can verify the answer against the actual sources</li>
+                <li>This is the practical version of "show your work"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-22">
+      <div class="slide-content">
+        <h2 class="slide-title">✅ <strong>Week 12 Practice Checklist</strong></h2>
+        <div class="highlight-quote">Complete these stages in order:</div>
+        <p class="slide-text"><strong>Stage 1 — Build the Memory</strong></p>
+        <p class="slide-text">1. - [ ] Create <code class="inline-code">memory.py</code> with <code class="inline-code">strip_frontmatter()</code>, <code class="inline-code">chunk_text()</code>, <code class="inline-code">embed_text()</code>, <code class="inline-code">embed_batch()</code></p>
+        <p class="slide-text">2. - [ ] Test <code class="inline-code">embed_text("hello")</code> — confirm you get a numpy array back</p>
+        <p class="slide-text">3. - [ ] Test <code class="inline-code">strip_frontmatter()</code> on one of your MD files — does it remove the YAML block?</p>
+        <p class="slide-text">4. - [ ] Add <code class="inline-code">build_vector_store()</code> with <code class="inline-code">on_progress</code> callback support</p>
+        <p class="slide-text"><strong>Stage 2 — Search</strong></p>
+        <p class="slide-text">5. - [ ] Add <code class="inline-code">cosine_sim()</code> and <code class="inline-code">search()</code></p>
+        <p class="slide-text">6. - [ ] Append the Streamlit section to <code class="inline-code">app.py</code> (with <code class="inline-code">st.progress</code> callback wired)</p>
+        <p class="slide-text">7. - [ ] Build the store — watch the progress bar advance</p>
+        <p class="slide-text">8. - [ ] Ask a question from one of your papers — does the top result come from that paper?</p>
+        <p class="slide-text">9. - [ ] <strong>Verify</strong>: open the top chunk's text — is it body content (good) or YAML metadata (bug)?</p>
+        <p class="slide-text"><strong>Stage 3 — Explore</strong></p>
+        <p class="slide-text">10. - [ ] Ask a question NOT covered by any paper — what similarity scores do you see?</p>
+        <p class="slide-text">11. - [ ] Try chunk sizes 300, 800, 1500 — does retrieval quality change?</p>
+        <p class="slide-text">12. - [ ] Look at chunks that "felt wrong" — was the retrieval bad, or was the question ambiguous?</p>
+        <p class="slide-text"><strong>Stage 4 — Bonus</strong></p>
+        <p class="slide-text">13. - [ ] Add <code class="inline-code">rag_answer()</code> (import <code class="inline-code">llm_call</code> from <code class="inline-code">evaluator.py</code>) and a button that uses the top chunks for an LLM answer</p>
+        <p class="slide-text">14. - [ ] <strong>Persistence</strong>: save the store to a <code class="inline-code">.npz</code> file so you don't re-embed each session</p>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-23">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+        <p class="slide-subtitle">Is Teaching AI a New Form of Mentorship?</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-24">
+      <div class="slide-content">
+        <h2 class="slide-title">Week 11 — <strong>"Is Teaching AI a New Form of Mentorship?"</strong></h2>
+        <p class="slide-subtitle">9 responses analyzed — the class largely rejects the framing</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📊</span> The Vote Distribution</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>None / rejected the framing</strong>: DongYun, Huy, Waad, Irfan — <strong>4 votes</strong></li>
+                <li><strong>Hulk only (3)</strong>: Yadanar — <strong>1 vote</strong></li>
+                <li><strong>Captain America + Hulk (2,3)</strong>: Ly, Manuella — <strong>2 votes</strong></li>
+                <li><strong>New paradigm proposed</strong>: Seher — <strong>1 vote</strong></li>
+                <li><strong>Synthesis of all three (1,2,3)</strong>: Rupam — <strong>1 vote</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🤝</span> The Surprise</div>
+            <div class="card-body">
+              <ul>
+                <li>Only <strong>3 out of 9</strong> picked a specific persona</li>
+                <li><strong>5 explicitly rejected</strong> the question's framing</li>
+                <li>The class is moving from "pick a stance" → "reframe the question"</li>
+                <li>This is intellectual maturity, not avoidance</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">🔥</span> The Emerging Position</div>
+            <div class="card-body">
+              <ul>
+                <li>"Mentorship" is the wrong word — but architecture / authorship / containment IS the right frame</li>
+                <li>The interesting question isn't "can AI be a student?" but <strong>"what role should humans take?"</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-25">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 1 — <strong>The "Mentorship" Word is Suspect</strong></h2>
+        <p class="slide-subtitle">Three students attack the metaphor itself</p>
+        <div class="cards-grid">
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">🚫</span> Yadanar — Language Shapes Behavior</div>
+            <div class="card-body">
+              <ul>
+                <li>"If we keep calling this mentoring, are we blurring the line between genuine guidance and simple automation?"</li>
+                <li>The word makes us <strong>feel safer</strong> than the actual situation warrants</li>
+                <li>"It also risks letting us off the hook" — we ask "is the AI learning?" instead of "are we designing well?"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🧠</span> Huy — It's Alignment Engineering</div>
+            <div class="card-body">
+              <ul>
+                <li>Not mentorship in the classical sense</li>
+                <li>It's "authoring at a higher level of abstraction"</li>
+                <li>"We are writing the values, constraints, and correction criteria that govern what 'better' means to the system"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔄</span> DongYun — But the Pattern IS Similar</div>
+            <div class="card-body">
+              <ul>
+                <li>"Mentorship: giving help and advice over a period of time"</li>
+                <li>Iterative prompting + refinement looks like exactly that</li>
+                <li>The metaphor isn't wrong — but it's incomplete</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Mentoring suggests dialogue, care, and growth of character. Self-correction is really just a technical loop." — Yadanar</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-26">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 2 — <strong>From Supervision to Architecture</strong></h2>
+        <p class="slide-subtitle">The shift in human role</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🏗️</span> Huy — Architectural Authorship</div>
+            <div class="card-body">
+              <ul>
+                <li>"Architect the value space within which autonomous action is permitted"</li>
+                <li>Not supervising every action — designing the rules of the game</li>
+                <li>"Carries just as much weight" as classical authorship</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🛡️</span> Waad — Strategic Authorship</div>
+            <div class="card-body">
+              <ul>
+                <li>"Manual supervision is simply unfeasible at scale"</li>
+                <li>"Define, manage, control, and verify the safe operating space"</li>
+                <li>Same idea, different vocabulary</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎓</span> Seher — Apprentice Paradigm</div>
+            <div class="card-body">
+              <ul>
+                <li>"AI is treated like an apprentice system"</li>
+                <li>Attempts → tests → receives critique → improves</li>
+                <li>"Humans design the boundaries, AI performs and improves, evaluation mechanisms decide when human judgment is truly needed"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"We aren't supervisors — we're architects of the value space the system operates inside." — synthesis</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-27">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 3 — <strong>The Boundary Problem</strong></h2>
+        <p class="slide-subtitle">Where humans MUST step in</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔍</span> Concrete Examples Students Gave</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Ly</strong>: AI generates simulation code → human verifies math/assumptions</li>
+                <li><strong>Manuella</strong>: AI revises citation → may sound stronger but cite wrong source</li>
+                <li><strong>Yadanar</strong>: AI flags errors → human decides if proposed fix is correct</li>
+                <li>All three describe: <strong>AI generates, human validates final correctness</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> The Common Pattern</div>
+            <div class="card-body">
+              <ul>
+                <li>AI handles <strong>iteration</strong> (cheap, repeatable, low-stakes)</li>
+                <li>Humans handle <strong>judgment</strong> (rare, expensive, high-stakes)</li>
+                <li>The boundary is set by the human (Seher's "design the boundaries")</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚠️</span> The Hard Question</div>
+            <div class="card-body">
+              <ul>
+                <li>WHERE you set the boundary determines everything</li>
+                <li>Set it too narrow → AI can't help much</li>
+                <li>Set it too wide → catastrophic failures slip through</li>
+                <li>"Knowing where to set the boundary" = the new senior skill</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-28">
+      <div class="slide-content">
+        <h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+        <p class="slide-subtitle">Memory is NOT mentorship — but it changes what's possible</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧠</span> What Memory Adds</div>
+            <div class="card-body">
+              <ul>
+                <li>Vector memory = the system "remembers" past documents and (optionally) past tasks</li>
+                <li>This isn't learning in the human sense — it's structured retrieval</li>
+                <li>Yadanar's point applies: don't anthropomorphize what is "just better tuned"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🏗️</span> The Architectural Question</div>
+            <div class="card-body">
+              <ul>
+                <li>You decide what goes INTO the memory (chunks, sources, metadata)</li>
+                <li>You decide what queries CAN be answered (the search interface)</li>
+                <li>You decide what should be FORGOTTEN (stale data, failed attempts)</li>
+                <li>This is exactly Huy's "architecting the value space"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🤔</span> The Selective Memory Problem</div>
+            <div class="card-body">
+              <ul>
+                <li>Should the agent remember its failed attempts?</li>
+                <li>If yes → it avoids repeating mistakes</li>
+                <li>If no → it stays unbiased, won't carry over wrong lessons</li>
+                <li>Today's discussion: <strong>what should AI remember?</strong> (this leads into next week)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-29">
+      <div class="slide-content">
+        <h2 class="slide-title">Activity — <strong>Design the Memory Boundary</strong></h2>
+        <p class="slide-subtitle">10 minutes — pair work</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📋</span> The Task</div>
+            <div class="card-body">
+              <ul>
+                <li>Imagine your midterm app, running for a year</li>
+                <li>Decide: what should it <strong>remember</strong>, what should it <strong>forget</strong>?</li>
+                <li>Make 3 lists: KEEP, FORGET, ASK USER</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">💭</span> Categories to Consider</div>
+            <div class="card-body">
+              <ul>
+                <li>Past user questions + answers</li>
+                <li>Failed tool calls (what arguments crashed)</li>
+                <li>User corrections ("that's wrong, the answer is X")</li>
+                <li>Personal preferences ("I always want results in 2 paragraphs")</li>
+                <li>Old/outdated facts that have since changed</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> The Test</div>
+            <div class="card-body">
+              <ul>
+                <li>Share with your partner — would their boundary settings match yours?</li>
+                <li>Where you disagree = where the architectural decision matters most</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-30">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Week 12 Discussion Questions</strong> (UST LMS)</h2>
+        <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+        <p class="slide-text">1. Today you saw similarity scores for each retrieved chunk. <strong>Did the scores match your intuition</strong> of which papers were relevant? Share one example where the top score was the right answer, and one where it wasn't — what does that tell you about embedding limits?</p>
+        <p class="slide-text">2. Yadanar argued that calling AI self-correction "mentorship" makes people feel <strong>safer than they should</strong>. After building a vector memory today, <strong>does giving an AI "memory" carry similar risks of overclaiming</strong>? When would you call this "remembering" vs just "indexed retrieval"?</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-31">
+      <div class="slide-content">
+        <h2 class="slide-title">Want to Learn More?</h2>
+        <p class="slide-text">Vector Databases & Embeddings</p>
+        <a href="https://ai.google.dev/gemini-api/docs/embeddings" target="_blank" class="reference-link">📚 Google: Embeddings Guide</a>
+        <a href="https://www.pinecone.io/learn/vector-embeddings/" target="_blank" class="reference-link">📚 Pinecone Learning Center — Vector Embeddings 101</a>
+        <a href="https://docs.trychroma.com/" target="_blank" class="reference-link">📚 Chroma — Open-source Vector DB</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">RAG Patterns</p>
+        <a href="https://www.anthropic.com/news/contextual-retrieval" target="_blank" class="reference-link">📚 Anthropic: Contextual Retrieval</a>
+        <a href="https://arxiv.org/abs/2005.11401" target="_blank" class="reference-link">📄 Retrieval-Augmented Generation for NLP Tasks (Lewis et al., 2020)</a>
+        <a href="https://arxiv.org/abs/2307.03172" target="_blank" class="reference-link">📄 Lost in the Middle: How Language Models Use Long Contexts (2023)</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Anthropic Free Online Courses</p>
+        <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank" class="reference-link">🎓 Building with the Claude API</a>
+        <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" class="reference-link">🎓 Introduction to Model Context Protocol</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-32">
+      <div class="slide-content">
+        <h2 class="slide-title">Wrap-Up of <strong>Week 12</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>Embeddings turn text into number lists where similar meaning = similar numbers; vector DB = fast nearest-neighbor search over embeddings; RAG = retrieve before generate, with citations to actual sources</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Built a paper memory: chunk MD files → embed each chunk → store in numpy → search by cosine similarity; UI shows top N chunks with similarity scores for transparency</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 11 (9 responses): class rejects the "mentorship" metaphor; emerging consensus = humans architect the value space, not supervise every action; memory architecture = today's concrete example of that authorship</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text"><strong>Next week:</strong> One agent becomes a team — <strong>multi-agent systems</strong>: roles, orchestration patterns, and who is allowed to see what.</p>
+      </div>
+    </section>
 
   </div>
 

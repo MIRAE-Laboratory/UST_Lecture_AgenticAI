@@ -3,7 +3,7 @@
 - title: Human in the Loop (HITL)
 - subtitle: Safety, Audit, and the "Stop" Button
 
-> Week 14 of Phase 4: Composition and Leadership (Weeks 13-14)
+> Week 14 of Phase 4: Collaboration & Future (Weeks 13-16)
 
 =====
 
@@ -46,7 +46,7 @@
   - Your AI agents are the same: at some point, **somebody needs a brake pedal**
 
 - card(orange, 📚): The Story So Far in This Course
-  - Week 9: agent acts via tools
+  - Week 4: agent acts via tools · Week 9: a workflow chains those actions
   - Week 11: agent reflects on itself
   - Week 12-13: agents remember and form teams
   - Each addition gave more autonomy — at some point YOU stop being supervisor and start being a passenger
@@ -744,7 +744,7 @@ Anthropic Free Online Courses
 
 ## Slide: Wrap-Up
 - type: cards
-- title: Wrap-Up of **Week 14** — and the Course
+- title: Wrap-Up of **Week 14**
 
 - card(blue, 📖): Lecture
   - Autonomy spectrum (manual ↔ auto); three checkpoint types (approval / review / intervention); stop buttons need checkpoint-aware + state-preserving + auditable design; audit log captures what / when / by whom / decision
@@ -755,4 +755,4 @@ Anthropic Free Online Courses
 - card(orange, 🗣️): Discussion
   - Week 13 (12 responses): Huy's Tripartite vs Seher's Evolutionary vs Waad's Reversibility — the class debating at the level of architectures; today's three-button gate is a tiny instance of these frameworks
 
-**Thank you for a great semester. Now go build something — and put the humans where they matter.**
+**Next week:** Your tools stop being yours alone — **MCP**: one open standard so the agent you built plugs into everyone else's, and the trust question that comes with it.

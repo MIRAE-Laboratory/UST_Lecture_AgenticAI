@@ -513,228 +513,397 @@
 
   <div class="presentation" id="presentation">
     <section class="slide title-slide" id="slide-1">
-<div class="slide-content">
-<h1 class="slide-title">Evaluation of LLM Outputs</h1>
-<p class="slide-subtitle">Rubrics, LLM-as-Judge, and Iterative Improvement Loops</p>
-<div class="highlight-quote">Week 10 of Phase 3: Advanced Patterns (Weeks 9-12)</div>
-</div>
-</section>
-<section class="slide" id="slide-2">
-<div class="slide-content">
-<h2 class="slide-title">Contents</h2>
-<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 10</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
-<div class="card-body"><ul><li>The evaluation gap — we build, but how do we measure quality?</li><li>LLM-as-a-Judge — using LLMs to score LLM outputs</li><li>Three strategies: naive, refine, aware; then iterate</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
-<div class="card-body"><ul><li>Build a <strong>Hometown Introduction Generator</strong></li><li>Compare 3 generation strategies + multi-model evaluation + iterative loop</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
-<div class="card-body"><ul><li>Week 9 — Ambiguity vs Clarity: why agents fail at vague tasks</li><li>Connection: rubrics as disambiguation mechanism</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide title-slide" id="slide-3">
-<div class="slide-content">
-<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
-<p class="slide-subtitle">How to Measure Whether an LLM Output is Good</p>
-</div>
-</section>
-<section class="slide" id="slide-4">
-<div class="slide-content">
-<h2 class="slide-title">The <strong>Evaluation Gap</strong> — Where We Are</h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📄</span> What We've Built So Far</div>
-<div class="card-body"><ul><li>Week 5-7: chat, metadata, debate</li><li>Week 9: agents that call tools</li><li>All produce outputs — but how good are they?</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">❓</span> The Uncomfortable Question</div>
-<div class="card-body"><ul><li>"Looks good to me" — but is that enough?</li><li>Different LLMs give different answers — which is best?</li><li>You changed the prompt — did it actually improve?</li><li>Without measurement, you're flying blind</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> Today's Goal</div>
-<div class="card-body"><ul><li>Turn "good" from a feeling into a <strong>score</strong></li><li>Build a system that <strong>measures itself</strong>, then <strong>improves itself</strong></li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-5">
-<div class="slide-content">
-<h2 class="slide-title">Why Evaluating LLMs is <strong>Hard</strong></h2>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">🤔</span> "Good" is Subjective</div>
-<div class="card-body"><ul><li>"Write me a report on Seoul" → infinite valid answers</li><li>No single ground truth like math problems</li><li>Reasonable people disagree on what's "best"</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">💡</span> The Trick — Operationalize "Good"</div>
-<div class="card-body"><ul><li>Don't try to define "good" in one word</li><li>Break it into <strong>measurable criteria</strong>: completeness, accuracy, structure, engagement</li><li>Each criterion gets a score → total = quality estimate</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">📋</span> This is a Rubric</div>
-<div class="card-body"><ul><li>Same idea as a grading rubric in school</li><li>Subjective overall, but each criterion is concrete enough to score</li><li>Once you have a rubric, you can measure ANYTHING</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-6">
-<div class="slide-content">
-<h2 class="slide-title"><strong>LLM-as-a-Judge</strong> — The Core Idea</h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🧑‍⚖️</span> The Setup</div>
-<div class="card-body"><ul><li>You have an output from LLM A</li><li>You ask LLM B (the judge): "Score this on these criteria"</li><li>LLM B returns numerical scores per criterion</li><li>Average = quality estimate</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> Why It Works</div>
-<div class="card-body"><ul><li>LLMs are good at applying explicit criteria to text</li><li>Cheap and fast (vs hiring human raters)</li><li>Reproducible (same input → similar score)</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚠️</span> Limits to Know</div>
-<div class="card-body"><ul><li>Same model judging itself = biased (likes its own style)</li><li>Use a <strong>different model</strong> as judge when possible</li><li>Judge can be wrong — sanity check on a few examples</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-7">
-<div class="slide-content">
-<h2 class="slide-title">Three Strategies — <strong>Where Does the Rubric Go?</strong></h2>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">1️⃣</span> Naive — Just Ask</div>
-<div class="card-body"><ul><li>"Write an introduction to my hometown"</li><li>No criteria mentioned, LLM guesses what's wanted</li><li>Baseline — simplest possible approach</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">2️⃣</span> Refine — Ask Then Improve</div>
-<div class="card-body"><ul><li>Step 1: get a draft (naive)</li><li>Step 2: "Here's a draft, here's the rubric — rewrite to score better"</li><li>Two LLM calls, but the rubric is applied AFTER</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">3️⃣</span> Aware — Include Rubric Upfront</div>
-<div class="card-body"><ul><li>"Write an introduction. It will be scored on these criteria: [rubric]"</li><li>Single LLM call, rubric embedded in the request</li><li>The model knows the test before it writes</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"Same task, three ways to use the rubric. Which gives the highest score?"</div>
-</div>
-</section>
-<section class="slide" id="slide-8">
-<div class="slide-content">
-<h2 class="slide-title">The <strong>Iterative Loop</strong> — Generate, Score, Improve</h2>
-<div class="mermaid-container"><div class="mermaid">graph LR
-    A[Initial Output] --> B[LLM Judge Scores]
-    B --> C{Stopping<br/>Condition?}
-    C -->|No| D[Find Weak Criteria]
-    D --> E[Targeted Refinement]
-    E --> B
-    C -->|Yes| F[✅ Final Output]
-
-    style A fill:#fff3cd
-    style B fill:#cce5ff
-    style D fill:#ffe5cc
-    style E fill:#ffe5cc
-    style F fill:#d4edda</div></div>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Two Stopping Strategies</div>
-<div class="card-body"><ul><li><strong>Threshold mode</strong> — stop when all criteria ≥ target (e.g., all ≥ 8)</li><li><strong>Self-evolving mode</strong> — keep going until best score hasn't improved in N iterations (patience)</li><li>Threshold = "good enough"; Self-evolving = "push to the ceiling"</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-9">
-<div class="slide-content">
-<h2 class="slide-title"><strong>Self-Evolving Mode</strong> — Push Beyond "Good Enough"</h2>
-<p class="slide-subtitle">Track the best, refine from the best, stop on no improvement</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📈</span> Track the Best</div>
-<div class="card-body"><ul><li>Don't just look at the <strong>latest</strong> iteration</li><li>Keep a record of the <strong>highest-scoring output so far</strong></li><li>The latest iteration may have <strong>regressed</strong> — that's OK, we keep the best</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔄</span> Refine FROM the Best, Not the Latest</div>
-<div class="card-body"><ul><li>At each iteration, refine starting from the <strong>best text</strong>, not the last one</li><li>This prevents the loop from drifting downward after a bad refinement</li><li>Conceptually: hill-climbing with memory</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">⏱️</span> Patience-Based Stopping</div>
-<div class="card-body"><ul><li>Set <code class="inline-code">patience = 3</code> — wait 3 iterations for a new best</li><li>If 3 consecutive iterations don't beat the best → stop</li><li>You've likely hit the model's ceiling for this task</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"Threshold says 'I'm done when it's good enough.' Self-evolving says 'I'm done when I can't make it any better.'"</div>
-</div>
-</section>
-<section class="slide" id="slide-10">
-<div class="slide-content">
-<h2 class="slide-title"><strong>Multi-Model Comparison</strong> — Same Task, Different Models</h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔬</span> Why Compare Models?</div>
-<div class="card-body"><ul><li>GPT-4, Claude, Gemini, Llama — all give different answers</li><li>Some are better at facts, others at structure, others at style</li><li>Without measurement, you'd just pick one and hope</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">📊</span> The Setup</div>
-<div class="card-body"><ul><li>Run the same prompt on N models</li><li>Score each output with the <strong>same rubric</strong> (using the same judge)</li><li>Plot: model on x-axis, score per criterion on y-axis</li><li>Now you can pick the right model for the right task</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">⚠️</span> Important — Use One Judge</div>
-<div class="card-body"><ul><li>Different judges give different absolute scores</li><li>For comparison, judge MUST be consistent across all candidates</li><li>Best: use a strong model as judge that didn't generate any candidate</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-11">
-<div class="slide-content">
-<h2 class="slide-title">Lecture Summary — <strong>Evaluation</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📋</span> Rubrics</div>
-<div class="card-body"><ul><li>Operationalize "good" into measurable criteria</li><li>Same idea as grading rubrics, applied to AI outputs</li><li>This is the bridge from subjective to scorable</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🧑‍⚖️</span> LLM-as-a-Judge</div>
-<div class="card-body"><ul><li>Use one LLM to score another's output</li><li>Use a different model as judge to avoid self-bias</li><li>Cheap, fast, reproducible — but verify on samples</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔁</span> Three Strategies + Two Loop Modes</div>
-<div class="card-body"><ul><li>Naive / Refine / Aware — three ways to use a rubric</li><li><strong>Threshold mode</strong>: stop when good enough; <strong>Self-evolving mode</strong>: refine FROM best, stop on patience</li><li>Multi-model comparison picks the right tool for the job</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide title-slide" id="slide-12">
-<div class="slide-content">
-<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
-<p class="slide-subtitle">Hometown Introduction — Generate, Score, Improve</p>
-</div>
-</section>
-<section class="slide" id="slide-13">
-<div class="slide-content">
-<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> The Task</div>
-<div class="card-body"><ul><li>Generate an <strong>introduction to your hometown</strong> (1 paragraph)</li><li>Score it with a 5-criterion rubric</li><li>Compare 3 strategies + multiple models + iterative loop</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">📁</span> New File</div>
-<div class="card-body"><ul><li><code class="inline-code">evaluator.py</code> — rubric, generation strategies, judge, loop</li><li><code class="inline-code">app.py</code> — add Tab 8: Evaluation Lab</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚡</span> Why Hometown?</div>
-<div class="card-body"><ul><li>Concrete (you know the ground truth — your own town)</li><li>Quality is genuinely subjective (good for rubric practice)</li><li>Different aspects (history / food / geography) → multi-criterion natural</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-14">
-<div class="slide-content">
-<h2 class="slide-title">Step 1 — <strong>Define the Rubric</strong> (<code class="inline-code">evaluator.py</code>)</h2>
-<p class="slide-subtitle">Five criteria, each with an explicit definition</p>
-<pre class="code-block"><code class="language-python"># evaluator.py
+      <div class="slide-content">
+        <h1 class="slide-title">Evaluation of LLM Outputs</h1>
+        <p class="slide-subtitle">Rubrics, LLM-as-Judge, and Iterative Improvement Loops</p>
+        <div class="highlight-quote">Week 10 of Phase 3: Management & Reliability (Weeks 9-12)</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title">Contents</h2>
+        <p class="slide-subtitle">Lecture, Practice, and Discussion for Week 10</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>The evaluation gap — we build, but how do we measure quality?</li>
+                <li>LLM-as-a-Judge — using LLMs to score LLM outputs</li>
+                <li>Three strategies: naive, refine, aware; then iterate</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Build a <strong>Hometown Introduction Generator</strong></li>
+                <li>Compare 3 generation strategies + multi-model evaluation + iterative loop</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 9 — Ambiguity vs Clarity: why agents fail at vague tasks</li>
+                <li>Connection: rubrics as disambiguation mechanism</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-3">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+        <p class="slide-subtitle">How to Measure Whether an LLM Output is Good</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title">The <strong>Evaluation Gap</strong> — Where We Are</h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📄</span> What We've Built So Far</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 5-7: chat UI, extracted metadata, auto-drafted reports</li>
+                <li>Week 9: multi-step workflows with explicit acceptance criteria</li>
+                <li>All produce outputs — but how good are they?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">❓</span> The Uncomfortable Question</div>
+            <div class="card-body">
+              <ul>
+                <li>"Looks good to me" — but is that enough?</li>
+                <li>Different LLMs give different answers — which is best?</li>
+                <li>You changed the prompt — did it actually improve?</li>
+                <li>Without measurement, you're flying blind</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> Today's Goal</div>
+            <div class="card-body">
+              <ul>
+                <li>Turn "good" from a feeling into a <strong>score</strong></li>
+                <li>Build a system that <strong>measures itself</strong>, then <strong>improves itself</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title">Why Evaluating LLMs is <strong>Hard</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">🤔</span> "Good" is Subjective</div>
+            <div class="card-body">
+              <ul>
+                <li>"Write me a report on Seoul" → infinite valid answers</li>
+                <li>No single ground truth like math problems</li>
+                <li>Reasonable people disagree on what's "best"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">💡</span> The Trick — Operationalize "Good"</div>
+            <div class="card-body">
+              <ul>
+                <li>Don't try to define "good" in one word</li>
+                <li>Break it into <strong>measurable criteria</strong>: completeness, accuracy, structure, engagement</li>
+                <li>Each criterion gets a score → total = quality estimate</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📋</span> This is a Rubric</div>
+            <div class="card-body">
+              <ul>
+                <li>Same idea as a grading rubric in school</li>
+                <li>Subjective overall, but each criterion is concrete enough to score</li>
+                <li>Once you have a rubric, you can measure ANYTHING</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>LLM-as-a-Judge</strong> — The Core Idea</h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧑‍⚖️</span> The Setup</div>
+            <div class="card-body">
+              <ul>
+                <li>You have an output from LLM A</li>
+                <li>You ask LLM B (the judge): "Score this on these criteria"</li>
+                <li>LLM B returns numerical scores per criterion</li>
+                <li>Average = quality estimate</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> Why It Works</div>
+            <div class="card-body">
+              <ul>
+                <li>LLMs are good at applying explicit criteria to text</li>
+                <li>Cheap and fast (vs hiring human raters)</li>
+                <li>Reproducible (same input → similar score)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚠️</span> Limits to Know</div>
+            <div class="card-body">
+              <ul>
+                <li>Same model judging itself = biased (likes its own style)</li>
+                <li>Use a <strong>different model</strong> as judge when possible</li>
+                <li>Judge can be wrong — sanity check on a few examples</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title">Three Strategies — <strong>Where Does the Rubric Go?</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">1️⃣</span> Naive — Just Ask</div>
+            <div class="card-body">
+              <ul>
+                <li>"Write an introduction to my hometown"</li>
+                <li>No criteria mentioned, LLM guesses what's wanted</li>
+                <li>Baseline — simplest possible approach</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">2️⃣</span> Refine — Ask Then Improve</div>
+            <div class="card-body">
+              <ul>
+                <li>Step 1: get a draft (naive)</li>
+                <li>Step 2: "Here's a draft, here's the rubric — rewrite to score better"</li>
+                <li>Two LLM calls, but the rubric is applied AFTER</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">3️⃣</span> Aware — Include Rubric Upfront</div>
+            <div class="card-body">
+              <ul>
+                <li>"Write an introduction. It will be scored on these criteria: [rubric]"</li>
+                <li>Single LLM call, rubric embedded in the request</li>
+                <li>The model knows the test before it writes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Same task, three ways to use the rubric. Which gives the highest score?"</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="slide-title">The <strong>Iterative Loop</strong> — Generate, Score, Improve</h2>
+        <div class="mermaid-container">
+          <div class="mermaid">graph LR
+            A[Initial Output] --> B[LLM Judge Scores]
+            B --> C{Stopping<br/>Condition?}
+            C -->|No| D[Find Weak Criteria]
+            D --> E[Targeted Refinement]
+            E --> B
+            C -->|Yes| F[✅ Final Output]
+            
+            style A fill:#fff3cd
+            style B fill:#cce5ff
+            style D fill:#ffe5cc
+            style E fill:#ffe5cc
+            style F fill:#d4edda</div>
+        </div>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Two Stopping Strategies</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Threshold mode</strong> — stop when all criteria ≥ target (e.g., all ≥ 8)</li>
+                <li><strong>Self-evolving mode</strong> — keep going until best score hasn't improved in N iterations (patience)</li>
+                <li>Threshold = "good enough"; Self-evolving = "push to the ceiling"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-9">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>Self-Evolving Mode</strong> — Push Beyond "Good Enough"</h2>
+        <p class="slide-subtitle">Track the best, refine from the best, stop on no improvement</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📈</span> Track the Best</div>
+            <div class="card-body">
+              <ul>
+                <li>Don't just look at the <strong>latest</strong> iteration</li>
+                <li>Keep a record of the <strong>highest-scoring output so far</strong></li>
+                <li>The latest iteration may have <strong>regressed</strong> — that's OK, we keep the best</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔄</span> Refine FROM the Best, Not the Latest</div>
+            <div class="card-body">
+              <ul>
+                <li>At each iteration, refine starting from the <strong>best text</strong>, not the last one</li>
+                <li>This prevents the loop from drifting downward after a bad refinement</li>
+                <li>Conceptually: hill-climbing with memory</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">⏱️</span> Patience-Based Stopping</div>
+            <div class="card-body">
+              <ul>
+                <li>Set <code class="inline-code">patience = 3</code> — wait 3 iterations for a new best</li>
+                <li>If 3 consecutive iterations don't beat the best → stop</li>
+                <li>You've likely hit the model's ceiling for this task</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Threshold says 'I'm done when it's good enough.' Self-evolving says 'I'm done when I can't make it any better.'"</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-10">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>Multi-Model Comparison</strong> — Same Task, Different Models</h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔬</span> Why Compare Models?</div>
+            <div class="card-body">
+              <ul>
+                <li>GPT-4, Claude, Gemini, Llama — all give different answers</li>
+                <li>Some are better at facts, others at structure, others at style</li>
+                <li>Without measurement, you'd just pick one and hope</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📊</span> The Setup</div>
+            <div class="card-body">
+              <ul>
+                <li>Run the same prompt on N models</li>
+                <li>Score each output with the <strong>same rubric</strong> (using the same judge)</li>
+                <li>Plot: model on x-axis, score per criterion on y-axis</li>
+                <li>Now you can pick the right model for the right task</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">⚠️</span> Important — Use One Judge</div>
+            <div class="card-body">
+              <ul>
+                <li>Different judges give different absolute scores</li>
+                <li>For comparison, judge MUST be consistent across all candidates</li>
+                <li>Best: use a strong model as judge that didn't generate any candidate</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-11">
+      <div class="slide-content">
+        <h2 class="slide-title">Lecture Summary — <strong>Evaluation</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📋</span> Rubrics</div>
+            <div class="card-body">
+              <ul>
+                <li>Operationalize "good" into measurable criteria</li>
+                <li>Same idea as grading rubrics, applied to AI outputs</li>
+                <li>This is the bridge from subjective to scorable</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧑‍⚖️</span> LLM-as-a-Judge</div>
+            <div class="card-body">
+              <ul>
+                <li>Use one LLM to score another's output</li>
+                <li>Use a different model as judge to avoid self-bias</li>
+                <li>Cheap, fast, reproducible — but verify on samples</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔁</span> Three Strategies + Two Loop Modes</div>
+            <div class="card-body">
+              <ul>
+                <li>Naive / Refine / Aware — three ways to use a rubric</li>
+                <li><strong>Threshold mode</strong>: stop when good enough; <strong>Self-evolving mode</strong>: refine FROM best, stop on patience</li>
+                <li>Multi-model comparison picks the right tool for the job</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-12">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+        <p class="slide-subtitle">Hometown Introduction — Generate, Score, Improve</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-13">
+      <div class="slide-content">
+        <h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> The Task</div>
+            <div class="card-body">
+              <ul>
+                <li>Generate an <strong>introduction to your hometown</strong> (1 paragraph)</li>
+                <li>Score it with a 5-criterion rubric</li>
+                <li>Compare 3 strategies + multiple models + iterative loop</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📁</span> New File</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">evaluator.py</code> — rubric, generation strategies, judge, loop</li>
+                <li><code class="inline-code">app.py</code> — add Tab 8: Evaluation Lab</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚡</span> Why Hometown?</div>
+            <div class="card-body">
+              <ul>
+                <li>Concrete (you know the ground truth — your own town)</li>
+                <li>Quality is genuinely subjective (good for rubric practice)</li>
+                <li>Different aspects (history / food / geography) → multi-criterion natural</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-14">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 1 — <strong>Define the Rubric</strong> (<code class="inline-code">evaluator.py</code>)</h2>
+        <p class="slide-subtitle">Five criteria, each with an explicit definition</p>
+        <pre class="code-block"><code class="language-python"># evaluator.py
 RUBRIC = {
     "completeness": (
         "Covers multiple aspects: history, culture, food, geography, and people. "
@@ -757,19 +926,25 @@ RUBRIC = {
         "Score 0 if it invents specific facts; 10 if it stays within safe knowledge."
     ),
 }</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Each Criterion is Self-Contained</div>
-<div class="card-body"><ul><li>Has a name, a definition, and a scoring rule</li><li>The judge doesn't need to guess what "engagement" means</li><li>This is the disambiguation work</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-15">
-<div class="slide-content">
-<h2 class="slide-title">Step 2 — <strong>Three Generation Strategies</strong></h2>
-<p class="slide-subtitle">One small <code class="inline-code">llm_call</code> helper, three different prompts</p>
-<pre class="code-block"><code class="language-python"># evaluator.py — using google-genai SDK
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Each Criterion is Self-Contained</div>
+            <div class="card-body">
+              <ul>
+                <li>Has a name, a definition, and a scoring rule</li>
+                <li>The judge doesn't need to guess what "engagement" means</li>
+                <li>This is the disambiguation work</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-15">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 2 — <strong>Three Generation Strategies</strong></h2>
+        <p class="slide-subtitle">One small <code class="inline-code">llm_call</code> helper, three different prompts</p>
+        <pre class="code-block"><code class="language-python"># evaluator.py — using google-genai SDK
 def llm_call(client, model, prompt):
     """Single-turn call to a Gemini model."""
     resp = client.models.generate_content(
@@ -806,19 +981,25 @@ def generate_refine(client, model, hometown):
 Rewrite this to score better on these criteria:
 {rubric_text}"""
     return llm_call(client, model, prompt)</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> SDK Note</div>
-<div class="card-body"><ul><li>Uses <code class="inline-code">google-genai</code> (native Gemini SDK), not OpenAI-compatible</li><li><code class="inline-code">client.models.generate_content(model=..., contents=...)</code> — single string in, <code class="inline-code">.text</code> out</li><li>All later functions reuse this single <code class="inline-code">llm_call</code> helper</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-16">
-<div class="slide-content">
-<h2 class="slide-title">Step 3 — <strong>The LLM Judge</strong> (<code class="inline-code">evaluator.py</code>)</h2>
-<p class="slide-subtitle">Same rubric, structured JSON output</p>
-<pre class="code-block"><code class="language-python">import json, re
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> SDK Note</div>
+            <div class="card-body">
+              <ul>
+                <li>Uses <code class="inline-code">google-genai</code> (native Gemini SDK), not OpenAI-compatible</li>
+                <li><code class="inline-code">client.models.generate_content(model=..., contents=...)</code> — single string in, <code class="inline-code">.text</code> out</li>
+                <li>All later functions reuse this single <code class="inline-code">llm_call</code> helper</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-16">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 3 — <strong>The LLM Judge</strong> (<code class="inline-code">evaluator.py</code>)</h2>
+        <p class="slide-subtitle">Same rubric, structured JSON output</p>
+        <pre class="code-block"><code class="language-python">import json, re
 
 def evaluate(client, judge_model, text):
     """Score text on each rubric criterion (0-10)."""
@@ -843,19 +1024,25 @@ Return ONLY a JSON object like:
         return json.loads(match.group(0))
     except json.JSONDecodeError:
         return {k: 0 for k in RUBRIC}</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Robust Parsing</div>
-<div class="card-body"><ul><li>LLMs may add commentary around JSON — extract with regex</li><li>Fall back to zero scores on parse failure (visible in UI)</li><li>For production: add retries with stricter formatting prompts</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-17">
-<div class="slide-content">
-<h2 class="slide-title">Step 4a — <strong>App Setup</strong> (<code class="inline-code">app.py</code> — top of file)</h2>
-<p class="slide-subtitle">Standalone Streamlit app — client, model, imports</p>
-<pre class="code-block"><code class="language-python"># app.py
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Robust Parsing</div>
+            <div class="card-body">
+              <ul>
+                <li>LLMs may add commentary around JSON — extract with regex</li>
+                <li>Fall back to zero scores on parse failure (visible in UI)</li>
+                <li>For production: add retries with stricter formatting prompts</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-17">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 4a — <strong>App Setup</strong> (<code class="inline-code">app.py</code> — top of file)</h2>
+        <p class="slide-subtitle">Standalone Streamlit app — client, model, imports</p>
+        <pre class="code-block"><code class="language-python"># app.py
 import os
 from dotenv import load_dotenv
 from google import genai
@@ -871,23 +1058,29 @@ from evaluator import (
     RUBRIC, generate_naive, generate_aware, generate_refine, evaluate,
     iterative_threshold, iterative_self_evolving
 )</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Why a Standalone App?</div>
-<div class="card-body"><ul><li>This week's evaluator is independent of Weeks 5-7 (no shared tabs)</li><li>Run with <code class="inline-code">streamlit run app.py</code> — fresh single-page UI</li><li><code class="inline-code">LLM_MODEL</code> env var lets you swap the generator without editing code</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-18">
-<div class="slide-content">
-<h2 class="slide-title">Step 4b — <strong>UI: Compare 3 Strategies</strong></h2>
-<p class="slide-subtitle">Header, hometown input, judge selector, then run all three</p>
-<pre class="code-block"><code class="language-python">st.header("📊 Evaluation Lab — Hometown Introductions")
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Why a Standalone App?</div>
+            <div class="card-body">
+              <ul>
+                <li>This week's evaluator is independent of Weeks 5-7 (no shared tabs)</li>
+                <li>Run with <code class="inline-code">streamlit run app.py</code> — fresh single-page UI</li>
+                <li><code class="inline-code">LLM_MODEL</code> env var lets you swap the generator without editing code</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-18">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 4b — <strong>UI: Compare 3 Strategies</strong></h2>
+        <p class="slide-subtitle">Header, hometown input, judge selector, then run all three</p>
+        <pre class="code-block"><code class="language-python">st.header("📊 Evaluation Lab — Hometown Introductions")
 hometown = st.text_input("Your hometown", "Daejeon, South Korea")
 judge = st.selectbox(
-    "Judge model",
-    ["gemini-3.1-flash-lite", "gemini-2.0-flash"],
+    "Judge model",                       # IDs change — check the model library
+    ["gemini-3.1-flash-lite", "gemini-3.8-flash"],
 )
 
 if st.button("🚀 Run All 3 Strategies", disabled=not hometown):
@@ -911,19 +1104,25 @@ if st.button("🚀 Run All 3 Strategies", disabled=not hometown):
         x="score:Q", y="criterion:N", color="strategy:N", row="strategy:N",
     )
     st.altair_chart(chart, use_container_width=True)</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Run This First</div>
-<div class="card-body"><ul><li>Confirms rubric + judge + 3 strategies all work</li><li>Building block for the iterative loops next</li><li>Different model for <strong>generation</strong> (<code class="inline-code">model</code>) and <strong>judging</strong> (<code class="inline-code">judge</code>) — avoids self-bias</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-19">
-<div class="slide-content">
-<h2 class="slide-title">Step 5a — <strong>Threshold Loop</strong> (function in <code class="inline-code">evaluator.py</code>)</h2>
-<p class="slide-subtitle">The simplest improvement loop — stop when good enough</p>
-<pre class="code-block"><code class="language-python">def iterative_threshold(client, gen_model, judge_model, hometown,
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Run This First</div>
+            <div class="card-body">
+              <ul>
+                <li>Confirms rubric + judge + 3 strategies all work</li>
+                <li>Building block for the iterative loops next</li>
+                <li>Different model for <strong>generation</strong> (<code class="inline-code">model</code>) and <strong>judging</strong> (<code class="inline-code">judge</code>) — avoids self-bias</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-19">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 5a — <strong>Threshold Loop</strong> (function in <code class="inline-code">evaluator.py</code>)</h2>
+        <p class="slide-subtitle">The simplest improvement loop — stop when good enough</p>
+        <pre class="code-block"><code class="language-python">def iterative_threshold(client, gen_model, judge_model, hometown,
                         max_iters=4, threshold=8):
     """Generate → score → refine weak criteria. Stop when all ≥ threshold."""
     text = generate_aware(client, gen_model, hometown)
@@ -949,19 +1148,25 @@ Rewrite the text to specifically improve these aspects. Keep what works."""
         text = llm_call(client, gen_model, prompt)
 
     return history</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> The Logic</div>
-<div class="card-body"><ul><li>At each iteration, identify weak criteria (below threshold)</li><li>Refine targeting only those criteria</li><li>Exit as soon as all criteria are above the bar — "good enough"</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-20">
-<div class="slide-content">
-<h2 class="slide-title">Step 5b — <strong>UI: Threshold Loop</strong> (append to <code class="inline-code">app.py</code>)</h2>
-<p class="slide-subtitle">Run this section by itself — independent button</p>
-<pre class="code-block"><code class="language-python"># Append below the Compare-Strategies block
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> The Logic</div>
+            <div class="card-body">
+              <ul>
+                <li>At each iteration, identify weak criteria (below threshold)</li>
+                <li>Refine targeting only those criteria</li>
+                <li>Exit as soon as all criteria are above the bar — "good enough"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-20">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 5b — <strong>UI: Threshold Loop</strong> (append to <code class="inline-code">app.py</code>)</h2>
+        <p class="slide-subtitle">Run this section by itself — independent button</p>
+        <pre class="code-block"><code class="language-python"># Append below the Compare-Strategies block
 st.divider()
 st.subheader("🎯 Threshold Loop")
 
@@ -989,39 +1194,63 @@ if st.button("🔁 Run Threshold Loop"):
     st.subheader(f"Final — iter {final['iter']}, avg {final['avg']:.1f}")
     st.write(final["text"])
     st.json(final["scores"])</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> What to Observe</div>
-<div class="card-body"><ul><li>Does the loop stop early (all ≥ threshold) or run to max?</li><li>Which criteria are the last to clear?</li><li>Try lowering threshold to 7 — does it stop faster?</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-21">
-<div class="slide-content">
-<h2 class="slide-title">One Step Further — <strong>Why Threshold Isn't Always Enough</strong></h2>
-<p class="slide-subtitle">From "good enough" to "best possible"</p>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">⚠️</span> Threshold Mode Limits</div>
-<div class="card-body"><ul><li>Stops at the FIRST output where all scores clear the bar</li><li>Doesn't try to keep improving past that point</li><li>The latest iteration may also have regressed in some criteria</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">💡</span> What If We Want the BEST?</div>
-<div class="card-body"><ul><li>Track the highest-scoring output seen so far (<code class="inline-code">best</code>)</li><li>Each refinement starts from <code class="inline-code">best</code>, not from <code class="inline-code">latest</code></li><li>Stop only when we can't beat <code class="inline-code">best</code> for N rounds (patience)</li><li>This is <strong>self-evolving</strong> — pushing to the ceiling</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> When to Use Each</div>
-<div class="card-body"><ul><li><strong>Threshold</strong>: production tasks where "passing the bar" is the goal</li><li><strong>Self-evolving</strong>: research/exploration when you want maximum quality</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-22">
-<div class="slide-content">
-<h2 class="slide-title">Step 6a — <strong>Self-Evolving Loop</strong> (function in <code class="inline-code">evaluator.py</code>)</h2>
-<p class="slide-subtitle">Track best, refine from best, patience-based stopping</p>
-<pre class="code-block"><code class="language-python">def iterative_self_evolving(client, gen_model, judge_model, hometown,
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> What to Observe</div>
+            <div class="card-body">
+              <ul>
+                <li>Does the loop stop early (all ≥ threshold) or run to max?</li>
+                <li>Which criteria are the last to clear?</li>
+                <li>Try lowering threshold to 7 — does it stop faster?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-21">
+      <div class="slide-content">
+        <h2 class="slide-title">One Step Further — <strong>Why Threshold Isn't Always Enough</strong></h2>
+        <p class="slide-subtitle">From "good enough" to "best possible"</p>
+        <div class="cards-grid">
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">⚠️</span> Threshold Mode Limits</div>
+            <div class="card-body">
+              <ul>
+                <li>Stops at the FIRST output where all scores clear the bar</li>
+                <li>Doesn't try to keep improving past that point</li>
+                <li>The latest iteration may also have regressed in some criteria</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">💡</span> What If We Want the BEST?</div>
+            <div class="card-body">
+              <ul>
+                <li>Track the highest-scoring output seen so far (<code class="inline-code">best</code>)</li>
+                <li>Each refinement starts from <code class="inline-code">best</code>, not from <code class="inline-code">latest</code></li>
+                <li>Stop only when we can't beat <code class="inline-code">best</code> for N rounds (patience)</li>
+                <li>This is <strong>self-evolving</strong> — pushing to the ceiling</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> When to Use Each</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Threshold</strong>: production tasks where "passing the bar" is the goal</li>
+                <li><strong>Self-evolving</strong>: research/exploration when you want maximum quality</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-22">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 6a — <strong>Self-Evolving Loop</strong> (function in <code class="inline-code">evaluator.py</code>)</h2>
+        <p class="slide-subtitle">Track best, refine from best, patience-based stopping</p>
+        <pre class="code-block"><code class="language-python">def iterative_self_evolving(client, gen_model, judge_model, hometown,
                             max_iters=10, patience=3):
     """Track best, refine FROM best, stop when best hasn't improved in `patience` iters."""
     text = generate_aware(client, gen_model, hometown)
@@ -1057,19 +1286,25 @@ Rewrite to push these specific criteria higher. Preserve the strengths."""
         text = llm_call(client, gen_model, prompt)
 
     return history, best</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> The Three Key Differences from Threshold</div>
-<div class="card-body"><ul><li><strong>Tracks <code class="inline-code">best</code></strong> dictionary separately from <code class="inline-code">text</code></li><li><strong>Refines from <code class="inline-code">best['text']</code></strong> — not from latest (which might have regressed)</li><li><strong>Stops on patience</strong> — N rounds without a new best</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-23">
-<div class="slide-content">
-<h2 class="slide-title">Step 6b — <strong>UI: Self-Evolving Loop</strong> (append to <code class="inline-code">app.py</code>)</h2>
-<p class="slide-subtitle">Add <code class="inline-code">iterative_self_evolving</code> to the import line first</p>
-<pre class="code-block"><code class="language-python"># At the top of app.py, update the import:
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> The Three Key Differences from Threshold</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Tracks <code class="inline-code">best</code></strong> dictionary separately from <code class="inline-code">text</code></li>
+                <li><strong>Refines from <code class="inline-code">best['text']</code></strong> — not from latest (which might have regressed)</li>
+                <li><strong>Stops on patience</strong> — N rounds without a new best</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-23">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 6b — <strong>UI: Self-Evolving Loop</strong> (append to <code class="inline-code">app.py</code>)</h2>
+        <p class="slide-subtitle">Add <code class="inline-code">iterative_self_evolving</code> to the import line first</p>
+        <pre class="code-block"><code class="language-python"># At the top of app.py, update the import:
 from evaluator import (
     RUBRIC, generate_naive, generate_aware, generate_refine, evaluate,
     iterative_threshold, iterative_self_evolving,
@@ -1107,26 +1342,34 @@ if st.button("🔁 Run Self-Evolving Loop"):
     st.subheader(f"Best — iter {best['iter']}, avg {best['avg']:.1f}")
     st.write(best["text"])
     st.json(best["scores"])</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Read the Chart</div>
-<div class="card-body"><ul><li><strong>avg</strong> zigzags — some iterations regress, that's normal</li><li><strong>best</strong> is monotone non-decreasing — the ratchet</li><li>When <strong>best</strong> plateaus for <code class="inline-code">patience</code> iters → the loop stops</li><li>Output shown is <strong>best</strong>, not latest — this is the whole point</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-24">
-<div class="slide-content">
-<h2 class="slide-title">Step 7 — <strong>Multi-Model Comparison</strong></h2>
-<p class="slide-subtitle">Same task, same judge, different generators</p>
-<pre class="code-block"><code class="language-python"># Append below the Self-Evolving Loop block
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Read the Chart</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>avg</strong> zigzags — some iterations regress, that's normal</li>
+                <li><strong>best</strong> is monotone non-decreasing — the ratchet</li>
+                <li>When <strong>best</strong> plateaus for <code class="inline-code">patience</code> iters → the loop stops</li>
+                <li>Output shown is <strong>best</strong>, not latest — this is the whole point</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-24">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 7 — <strong>Multi-Model Comparison</strong></h2>
+        <p class="slide-subtitle">Same task, same judge, different generators</p>
+        <pre class="code-block"><code class="language-python"># Append below the Self-Evolving Loop block
 st.divider()
 st.subheader("🔬 Multi-Model Comparison")
 
 candidate_models = st.multiselect(
     "Models to compare",
-    ["gemini-3.1-flash-lite", "gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"],
-    default=["gemini-3.1-flash-lite", "gemini-2.0-flash"],
+    ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite",
+     "gemini-3.8-flash", "gemini-2.5-flash"],   # keep one older model on purpose
+    default=["gemini-3.1-flash-lite", "gemini-3.8-flash"],
 )
 
 if st.button("⚖️ Compare Models", disabled=not candidate_models):
@@ -1142,214 +1385,355 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
         x="score:Q", y="criterion:N", color="model:N", row="model:N",
     )
     st.altair_chart(chart, use_container_width=True)</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Pick the Right Model for the Right Task</div>
-<div class="card-body"><ul><li>One model may be best at structure but weak at engagement</li><li>Now you have evidence, not vibes</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-25">
-<div class="slide-content">
-<h2 class="slide-title">✅ <strong>Week 10 Practice Checklist</strong></h2>
-<div class="highlight-quote">Complete these steps during the practice session:</div>
-<p class="slide-text">1. - [ ] Define <code class="inline-code">RUBRIC</code> in <code class="inline-code">evaluator.py</code> with 5 criteria</p>
-<p class="slide-text">2. - [ ] Implement <code class="inline-code">generate_naive</code>, <code class="inline-code">generate_aware</code>, <code class="inline-code">generate_refine</code> (using <code class="inline-code">llm_call</code> with <code class="inline-code">google-genai</code> SDK)</p>
-<p class="slide-text">3. - [ ] Implement <code class="inline-code">evaluate()</code> with robust JSON parsing</p>
-<p class="slide-text">4. - [ ] Set up <code class="inline-code">app.py</code> — <code class="inline-code">.env</code> with <code class="inline-code">GOOGLE_API_KEY</code>, <code class="inline-code">genai.Client</code>, imports</p>
-<p class="slide-text">5. - [ ] Build the <strong>Compare 3 Strategies</strong> UI — does <strong>Aware</strong> score higher than <strong>Naive</strong>?</p>
-<p class="slide-text">6. - [ ] Implement <code class="inline-code">iterative_threshold()</code> in <code class="inline-code">evaluator.py</code></p>
-<p class="slide-text">7. - [ ] Append the <strong>Threshold Loop</strong> UI section to <code class="inline-code">app.py</code> (independent button)</p>
-<p class="slide-text">8. - [ ] Run with threshold=8 — does it stop early or hit max?</p>
-<p class="slide-text">9. - [ ] Run with threshold=10 — does it now hit max iterations?</p>
-<p class="slide-text">10. - [ ] Implement <code class="inline-code">iterative_self_evolving()</code> in <code class="inline-code">evaluator.py</code></p>
-<p class="slide-text">11. - [ ] Append the <strong>Self-Evolving Loop</strong> UI section to <code class="inline-code">app.py</code></p>
-<p class="slide-text">12. - [ ] Run with patience=3 — observe the <code class="inline-code">avg</code> vs <code class="inline-code">best</code> lines</p>
-<p class="slide-text">13. - [ ] Compare final avg score with Stage 2 — did self-evolving find a higher peak?</p>
-<p class="slide-text">14. - [ ] Multi-model comparison — which model wins per criterion?</p>
-<p class="slide-text">15. - [ ] Edit one criterion's definition to be vague — see scores become unstable</p>
-</div>
-</section>
-<section class="slide title-slide" id="slide-26">
-<div class="slide-content">
-<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
-<p class="slide-subtitle">Ambiguity vs Clarity — Why Vague Instructions Break Agents</p>
-</div>
-</section>
-<section class="slide" id="slide-27">
-<div class="slide-content">
-<h2 class="slide-title">Week 9 — <strong>Why Do Agents Fail at Vague Tasks?</strong></h2>
-<p class="slide-subtitle">12 responses analyzed — a Hulk-Captain America coalition emerges</p>
-<div class="cards-grid">
-<div class="card card-green">
-<div class="card-header"><span class="icon">📊</span> The Vote Distribution</div>
-<div class="card-body"><ul><li><strong>Cap + Hulk (2,3)</strong>: Waad, Manuella, Margareth, Minh — <strong>4 votes</strong> (largest)</li><li><strong>Hulk only (3)</strong>: DongYun, Yadanar, Han — <strong>3 votes</strong></li><li><strong>Iron Man only (1)</strong>: Tan — <strong>1 vote</strong></li><li><strong>Iron Man + Hulk (1,3)</strong>: Irfan — <strong>1 vote</strong></li><li><strong>Iron Man + Cap (1,2)</strong>: Jaewhoon — <strong>1 vote</strong></li><li><strong>Captain America only (2)</strong>: Ly — <strong>1 vote</strong></li><li><strong>None</strong>: Huy — <strong>1 vote</strong> (rejects all three frames)</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🤝</span> The Coalition's Position</div>
-<div class="card-body"><ul><li>Humans must specify clearly <strong>AND</strong> verify outputs</li><li>Pure Iron Man (only engineering) has 1 lonely vote (Tan)</li><li>The class converges on: <strong>clarity is a human responsibility, but the system must support it</strong></li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">🔥</span> Three Solution Schools Within the Coalition</div>
-<div class="card-body"><ul><li><strong>Design school</strong>: build better interfaces (Irfan, Tan)</li><li><strong>Demand school</strong>: humans must be precise (Ly, Waad, Manuella)</li><li><strong>Tradeoff school</strong>: explicit about flexibility ↔ uncertainty (Margareth, Minh)</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-28">
-<div class="slide-content">
-<h2 class="slide-title">Theme 1 — <strong>The Flexibility-Uncertainty Tradeoff</strong></h2>
-<p class="slide-subtitle">Margareth's framing — and why "design vs demand" is incomplete</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">⚖️</span> Margareth's Sharp Insight</div>
-<div class="card-body"><ul><li>"More ambiguity allows greater flexibility BUT increases uncertainty"</li><li>"More clarity requires more human effort and reduces the system to <strong>conventional programming</strong>"</li><li>There's no free lunch — every step toward clarity is a step away from flexibility</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🚧</span> Adding the Translation Layer Doesn't Solve It</div>
-<div class="card-body"><ul><li>"Introducing a 'middle layer' to translate vague instructions does not remove ambiguity but <strong>shifts it</strong> into another potentially equally complex problem"</li><li>Iron Man's middleware fix relocates the problem; doesn't dissolve it</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> The Real Question</div>
-<div class="card-body"><ul><li>Not "should we design for ambiguity OR demand clarity?"</li><li>But: <strong>how much flexibility am I willing to trade for how much certainty?</strong></li><li>This is a per-task design choice, not a universal answer</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"More clarity reduces the system to something closer to conventional programming." — Margareth</div>
-</div>
-</section>
-<section class="slide" id="slide-29">
-<div class="slide-content">
-<h2 class="slide-title">Theme 2 — <strong>Two Deepest Critiques: Huy & Minh</strong></h2>
-<p class="slide-subtitle">Beyond all three personas</p>
-<div class="cards-grid">
-<div class="card card-purple">
-<div class="card-header"><span class="icon">💎</span> Huy — "Metacognitive Clarity"</div>
-<div class="card-body"><ul><li>All three personas assume the human KNOWS what they want</li><li>At the research frontier: <strong>often you don't fully know yet</strong></li><li>The real skill: "knowing how well you currently understand what you want to find out"</li><li>Be honest about that gap <strong>before</strong> deploying autonomy</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">⚠️</span> Minh — "Independence Threshold" + "Alignment Drift"</div>
-<div class="card-body"><ul><li>At what point do we transition AI from instruction-follower → autonomous decision-maker?</li><li>Granting AI independence to resolve vagueness → <strong>Alignment Drift</strong></li><li>System optimizes for "likely path" that violates implicit human ethics or physical constraints</li><li>"Right goal through wrong and potentially catastrophic logic"</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔗</span> The Common Thread</div>
-<div class="card-body"><ul><li>Both Huy and Minh point to a problem the personas miss</li><li>Personas frame it as communication — they frame it as <strong>agency boundaries</strong></li><li>The deeper question: how much should the AI fill in for us, ever?</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"An agent might achieve the right goal through the wrong logic, simply because we failed to define the boundaries of its autonomy." — Minh</div>
-</div>
-</section>
-<section class="slide" id="slide-30">
-<div class="slide-content">
-<h2 class="slide-title">Theme 3 — <strong>What Vague Prompts Actually Look Like</strong></h2>
-<p class="slide-subtitle">Yadanar's concrete examples make the abstract real</p>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">📊</span> "Analyze this dataset" — Yadanar's Example</div>
-<div class="card-body"><ul><li>Doesn't say what kind of analysis you want</li><li>Model picks "wrong patterns or even makes stuff up"</li><li>Vivid case of guessing under ambiguity</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">💻</span> "Improve this code"</div>
-<div class="card-body"><ul><li>Could change speed, readability, structure</li><li>"But not necessarily what you intended"</li><li>Each interpretation is plausible — and most are wrong for YOU</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔬</span> Why These Examples Land</div>
-<div class="card-body"><ul><li>These are commands students actually type every day</li><li>Each one is <strong>one short sentence</strong> — none feel "vague" subjectively</li><li>But each contains 3-5 hidden parameters the model has to guess</li><li><strong>Awareness of these hidden parameters = metacognitive clarity in practice</strong></li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"AI doesn't truly understand intent — it just fills gaps based on probability." — Yadanar</div>
-</div>
-</section>
-<section class="slide" id="slide-31">
-<div class="slide-content">
-<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
-<p class="slide-subtitle">Jaewhoon's "feedback loop" hits the lecture's core idea</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔁</span> Jaewhoon — "The Feedback Loop is Key"</div>
-<div class="card-body"><ul><li>"When a user provides specific feedback on an unsatisfactory output, the AI incorporates that learning"</li><li>"Simple rejection doesn't help — clear, constructive criticism leads to better iterations"</li><li><strong>This is exactly what today's iterative loop is</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🎯</span> The Rubric IS the Constructive Feedback</div>
-<div class="card-body"><ul><li>"Score on completeness, specificity, structure..." — that's what Jaewhoon means by constructive criticism</li><li>The judge produces structured feedback the model can actually use</li><li>This is Irfan's "design for ambiguity" — operationalized in code</li></ul></div>
-</div>
-<div class="card card-purple">
-<div class="card-header"><span class="icon">💎</span> Connecting Huy's Critique</div>
-<div class="card-body"><ul><li>Writing the rubric = forcing metacognitive clarity</li><li>If you can't write a rubric, you don't yet know what "good" means to you</li><li>The system doesn't replace this — it <strong>surfaces</strong> the gap</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚖️</span> Connecting Margareth's Tradeoff</div>
-<div class="card-body"><ul><li>More criteria in the rubric = more clarity, less flexibility</li><li>Self-evolving loop pushes for the score ceiling — but at the cost of generation freedom</li><li>Choose the rubric depth that matches the certainty you need</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-32">
-<div class="slide-content">
-<h2 class="slide-title">Activity — <strong>Write a Rubric for Your Research</strong></h2>
-<p class="slide-subtitle">10 minutes in pairs</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📋</span> The Task</div>
-<div class="card-body"><ul><li>Pick one common output in your field (e.g., literature summary, code review, model evaluation)</li><li>Write a 4-5 criterion rubric, each with explicit scoring guidance</li><li>Trade rubrics with a partner — would you score the same way?</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">✏️</span> Required Elements</div>
-<div class="card-body"><ul><li>Each criterion needs a <strong>name</strong>, <strong>definition</strong>, and <strong>scoring guidance</strong> (what gets 0 vs 10)</li><li>Avoid criteria that overlap (e.g., "clarity" and "readability")</li><li>Make sure each criterion is <strong>independently scorable</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> The Test</div>
-<div class="card-body"><ul><li>Show your rubric to your partner WITHOUT showing the original task description</li><li>Can they guess what kind of output it's evaluating?</li><li>If yes → your rubric is specific enough</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-33">
-<div class="slide-content">
-<h2 class="slide-title">🗣️ <strong>Week 10 Discussion Questions</strong> (UST LMS)</h2>
-<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
-<p class="slide-text">1. Today you saw three strategies (naive, refine, aware) plus two loop modes (threshold, self-evolving). <strong>Which combination gave the biggest improvement on your hometown task?</strong> Connect your finding to Jaewhoon's claim that "the feedback loop is key."</p>
-<p class="slide-text">2. Margareth argued that more clarity reduces the system "to something closer to conventional programming." After writing a strict rubric today, <strong>did your final output feel more constrained — and was that good or bad?</strong> Where would you draw the line between flexibility and reliability for your own research?</p>
-</div>
-</section>
-<section class="slide" id="slide-34">
-<div class="slide-content">
-<h2 class="slide-title">Want to Learn More?</h2>
-<p class="slide-text">LLM Evaluation</p>
-<a href="https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/develop-tests" target="_blank" class="reference-link">📚 Anthropic: Evaluating LLM Outputs</a>
-<a href="https://github.com/openai/evals" target="_blank" class="reference-link">📚 OpenAI Evals — Open-source Eval Framework</a>
-<a href="https://docs.smith.langchain.com/evaluation" target="_blank" class="reference-link">📚 LangSmith — Evaluation and Tracing</a>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">Research Papers</p>
-<div class="highlight-quote">📄 [G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment (2023)](https://arxiv.org/abs/2303.16634)</div>
-<div class="highlight-quote">📄 [Self-Refine: Iterative Refinement with Self-Feedback (2023)](https://arxiv.org/abs/2303.17651)</div>
-<div class="highlight-quote">📄 [Constitutional AI — Anthropic](https://arxiv.org/abs/2212.08073)</div>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">Anthropic Free Online Courses</p>
-<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)</div>
-<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
-</div>
-</section>
-<section class="slide" id="slide-35">
-<div class="slide-content">
-<h2 class="slide-title">Wrap-Up of <strong>Week 10</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> Lecture</div>
-<div class="card-body"><ul><li>Rubrics turn "good" into measurable criteria; LLM-as-judge scores outputs cheaply; three strategies (naive / refine / aware) place the rubric at different points; iterative loop drives scores up</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> Practice</div>
-<div class="card-body"><ul><li>Built a <strong>Hometown Introduction Evaluator</strong>: 5-criterion rubric, 3 strategies, LLM judge, multi-model comparison, and TWO iterative loops — threshold-based (good enough) and self-evolving (push to ceiling, refine from best, patience-based stopping)</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
-<div class="card-body"><ul><li>Week 9 review (12 responses): Cap+Hulk coalition wins; Margareth's flexibility-uncertainty tradeoff; Huy's metacognitive clarity + Minh's Independence Threshold/Alignment Drift; Jaewhoon's "feedback loop is key" = exactly today's iterative practice</li></ul></div>
-</div>
-</div>
-<p class="slide-text"><strong>Next week:</strong> Multi-step planning — agents that decompose tasks themselves.</p>
-</div>
-</section>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Pick the Right Model for the Right Task</div>
+            <div class="card-body">
+              <ul>
+                <li>One model may be best at structure but weak at engagement</li>
+                <li>Now you have evidence, not vibes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-25">
+      <div class="slide-content">
+        <h2 class="slide-title">✅ <strong>Week 10 Practice Checklist</strong></h2>
+        <div class="highlight-quote">Complete these steps during the practice session:</div>
+        <p class="slide-text"><strong>Stage 1 — Foundations</strong></p>
+        <p class="slide-text">1. - [ ] Define <code class="inline-code">RUBRIC</code> in <code class="inline-code">evaluator.py</code> with 5 criteria</p>
+        <p class="slide-text">2. - [ ] Implement <code class="inline-code">generate_naive</code>, <code class="inline-code">generate_aware</code>, <code class="inline-code">generate_refine</code> (using <code class="inline-code">llm_call</code> with <code class="inline-code">google-genai</code> SDK)</p>
+        <p class="slide-text">3. - [ ] Implement <code class="inline-code">evaluate()</code> with robust JSON parsing</p>
+        <p class="slide-text">4. - [ ] Set up <code class="inline-code">app.py</code> — <code class="inline-code">.env</code> with <code class="inline-code">GOOGLE_API_KEY</code>, <code class="inline-code">genai.Client</code>, imports</p>
+        <p class="slide-text">5. - [ ] Build the <strong>Compare 3 Strategies</strong> UI — does <strong>Aware</strong> score higher than <strong>Naive</strong>?</p>
+        <p class="slide-text"><strong>Stage 2 — Threshold Loop (start here, finish before Stage 3)</strong></p>
+        <p class="slide-text">6. - [ ] Implement <code class="inline-code">iterative_threshold()</code> in <code class="inline-code">evaluator.py</code></p>
+        <p class="slide-text">7. - [ ] Append the <strong>Threshold Loop</strong> UI section to <code class="inline-code">app.py</code> (independent button)</p>
+        <p class="slide-text">8. - [ ] Run with threshold=8 — does it stop early or hit max?</p>
+        <p class="slide-text">9. - [ ] Run with threshold=10 — does it now hit max iterations?</p>
+        <p class="slide-text"><strong>Stage 3 — Self-Evolving Loop (only after Stage 2 works)</strong></p>
+        <p class="slide-text">10. - [ ] Implement <code class="inline-code">iterative_self_evolving()</code> in <code class="inline-code">evaluator.py</code></p>
+        <p class="slide-text">11. - [ ] Append the <strong>Self-Evolving Loop</strong> UI section to <code class="inline-code">app.py</code></p>
+        <p class="slide-text">12. - [ ] Run with patience=3 — observe the <code class="inline-code">avg</code> vs <code class="inline-code">best</code> lines</p>
+        <p class="slide-text">13. - [ ] Compare final avg score with Stage 2 — did self-evolving find a higher peak?</p>
+        <p class="slide-text"><strong>Stage 4 — Bonus</strong></p>
+        <p class="slide-text">14. - [ ] Multi-model comparison — which model wins per criterion?</p>
+        <p class="slide-text">15. - [ ] Edit one criterion's definition to be vague — see scores become unstable</p>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-26">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+        <p class="slide-subtitle">Ambiguity vs Clarity — Why Vague Instructions Break Agents</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-27">
+      <div class="slide-content">
+        <h2 class="slide-title">Week 9 — <strong>Why Do Agents Fail at Vague Tasks?</strong></h2>
+        <p class="slide-subtitle">12 responses analyzed — a Hulk-Captain America coalition emerges</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📊</span> The Vote Distribution</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Cap + Hulk (2,3)</strong>: Waad, Manuella, Margareth, Minh — <strong>4 votes</strong> (largest)</li>
+                <li><strong>Hulk only (3)</strong>: DongYun, Yadanar, Han — <strong>3 votes</strong></li>
+                <li><strong>Iron Man only (1)</strong>: Tan — <strong>1 vote</strong></li>
+                <li><strong>Iron Man + Hulk (1,3)</strong>: Irfan — <strong>1 vote</strong></li>
+                <li><strong>Iron Man + Cap (1,2)</strong>: Jaewhoon — <strong>1 vote</strong></li>
+                <li><strong>Captain America only (2)</strong>: Ly — <strong>1 vote</strong></li>
+                <li><strong>None</strong>: Huy — <strong>1 vote</strong> (rejects all three frames)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🤝</span> The Coalition's Position</div>
+            <div class="card-body">
+              <ul>
+                <li>Humans must specify clearly <strong>AND</strong> verify outputs</li>
+                <li>Pure Iron Man (only engineering) has 1 lonely vote (Tan)</li>
+                <li>The class converges on: <strong>clarity is a human responsibility, but the system must support it</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">🔥</span> Three Solution Schools Within the Coalition</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Design school</strong>: build better interfaces (Irfan, Tan)</li>
+                <li><strong>Demand school</strong>: humans must be precise (Ly, Waad, Manuella)</li>
+                <li><strong>Tradeoff school</strong>: explicit about flexibility ↔ uncertainty (Margareth, Minh)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-28">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 1 — <strong>The Flexibility-Uncertainty Tradeoff</strong></h2>
+        <p class="slide-subtitle">Margareth's framing — and why "design vs demand" is incomplete</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">⚖️</span> Margareth's Sharp Insight</div>
+            <div class="card-body">
+              <ul>
+                <li>"More ambiguity allows greater flexibility BUT increases uncertainty"</li>
+                <li>"More clarity requires more human effort and reduces the system to <strong>conventional programming</strong>"</li>
+                <li>There's no free lunch — every step toward clarity is a step away from flexibility</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🚧</span> Adding the Translation Layer Doesn't Solve It</div>
+            <div class="card-body">
+              <ul>
+                <li>"Introducing a 'middle layer' to translate vague instructions does not remove ambiguity but <strong>shifts it</strong> into another potentially equally complex problem"</li>
+                <li>Iron Man's middleware fix relocates the problem; doesn't dissolve it</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> The Real Question</div>
+            <div class="card-body">
+              <ul>
+                <li>Not "should we design for ambiguity OR demand clarity?"</li>
+                <li>But: <strong>how much flexibility am I willing to trade for how much certainty?</strong></li>
+                <li>This is a per-task design choice, not a universal answer</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"More clarity reduces the system to something closer to conventional programming." — Margareth</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-29">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 2 — <strong>Two Deepest Critiques: Huy & Minh</strong></h2>
+        <p class="slide-subtitle">Beyond all three personas</p>
+        <div class="cards-grid">
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">💎</span> Huy — "Metacognitive Clarity"</div>
+            <div class="card-body">
+              <ul>
+                <li>All three personas assume the human KNOWS what they want</li>
+                <li>At the research frontier: <strong>often you don't fully know yet</strong></li>
+                <li>The real skill: "knowing how well you currently understand what you want to find out"</li>
+                <li>Be honest about that gap <strong>before</strong> deploying autonomy</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">⚠️</span> Minh — "Independence Threshold" + "Alignment Drift"</div>
+            <div class="card-body">
+              <ul>
+                <li>At what point do we transition AI from instruction-follower → autonomous decision-maker?</li>
+                <li>Granting AI independence to resolve vagueness → <strong>Alignment Drift</strong></li>
+                <li>System optimizes for "likely path" that violates implicit human ethics or physical constraints</li>
+                <li>"Right goal through wrong and potentially catastrophic logic"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔗</span> The Common Thread</div>
+            <div class="card-body">
+              <ul>
+                <li>Both Huy and Minh point to a problem the personas miss</li>
+                <li>Personas frame it as communication — they frame it as <strong>agency boundaries</strong></li>
+                <li>The deeper question: how much should the AI fill in for us, ever?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"An agent might achieve the right goal through the wrong logic, simply because we failed to define the boundaries of its autonomy." — Minh</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-30">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 3 — <strong>What Vague Prompts Actually Look Like</strong></h2>
+        <p class="slide-subtitle">Yadanar's concrete examples make the abstract real</p>
+        <div class="cards-grid">
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">📊</span> "Analyze this dataset" — Yadanar's Example</div>
+            <div class="card-body">
+              <ul>
+                <li>Doesn't say what kind of analysis you want</li>
+                <li>Model picks "wrong patterns or even makes stuff up"</li>
+                <li>Vivid case of guessing under ambiguity</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">💻</span> "Improve this code"</div>
+            <div class="card-body">
+              <ul>
+                <li>Could change speed, readability, structure</li>
+                <li>"But not necessarily what you intended"</li>
+                <li>Each interpretation is plausible — and most are wrong for YOU</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔬</span> Why These Examples Land</div>
+            <div class="card-body">
+              <ul>
+                <li>These are commands students actually type every day</li>
+                <li>Each one is <strong>one short sentence</strong> — none feel "vague" subjectively</li>
+                <li>But each contains 3-5 hidden parameters the model has to guess</li>
+                <li><strong>Awareness of these hidden parameters = metacognitive clarity in practice</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"AI doesn't truly understand intent — it just fills gaps based on probability." — Yadanar</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-31">
+      <div class="slide-content">
+        <h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+        <p class="slide-subtitle">Jaewhoon's "feedback loop" hits the lecture's core idea</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔁</span> Jaewhoon — "The Feedback Loop is Key"</div>
+            <div class="card-body">
+              <ul>
+                <li>"When a user provides specific feedback on an unsatisfactory output, the AI incorporates that learning"</li>
+                <li>"Simple rejection doesn't help — clear, constructive criticism leads to better iterations"</li>
+                <li><strong>This is exactly what today's iterative loop is</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> The Rubric IS the Constructive Feedback</div>
+            <div class="card-body">
+              <ul>
+                <li>"Score on completeness, specificity, structure..." — that's what Jaewhoon means by constructive criticism</li>
+                <li>The judge produces structured feedback the model can actually use</li>
+                <li>This is Irfan's "design for ambiguity" — operationalized in code</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">💎</span> Connecting Huy's Critique</div>
+            <div class="card-body">
+              <ul>
+                <li>Writing the rubric = forcing metacognitive clarity</li>
+                <li>If you can't write a rubric, you don't yet know what "good" means to you</li>
+                <li>The system doesn't replace this — it <strong>surfaces</strong> the gap</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚖️</span> Connecting Margareth's Tradeoff</div>
+            <div class="card-body">
+              <ul>
+                <li>More criteria in the rubric = more clarity, less flexibility</li>
+                <li>Self-evolving loop pushes for the score ceiling — but at the cost of generation freedom</li>
+                <li>Choose the rubric depth that matches the certainty you need</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-32">
+      <div class="slide-content">
+        <h2 class="slide-title">Activity — <strong>Write a Rubric for Your Research</strong></h2>
+        <p class="slide-subtitle">10 minutes in pairs</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📋</span> The Task</div>
+            <div class="card-body">
+              <ul>
+                <li>Pick one common output in your field (e.g., literature summary, code review, model evaluation)</li>
+                <li>Write a 4-5 criterion rubric, each with explicit scoring guidance</li>
+                <li>Trade rubrics with a partner — would you score the same way?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">✏️</span> Required Elements</div>
+            <div class="card-body">
+              <ul>
+                <li>Each criterion needs a <strong>name</strong>, <strong>definition</strong>, and <strong>scoring guidance</strong> (what gets 0 vs 10)</li>
+                <li>Avoid criteria that overlap (e.g., "clarity" and "readability")</li>
+                <li>Make sure each criterion is <strong>independently scorable</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> The Test</div>
+            <div class="card-body">
+              <ul>
+                <li>Show your rubric to your partner WITHOUT showing the original task description</li>
+                <li>Can they guess what kind of output it's evaluating?</li>
+                <li>If yes → your rubric is specific enough</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-33">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Week 10 Discussion Questions</strong> (UST LMS)</h2>
+        <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+        <p class="slide-text">1. Today you saw three strategies (naive, refine, aware) plus two loop modes (threshold, self-evolving). <strong>Which combination gave the biggest improvement on your hometown task?</strong> Connect your finding to Jaewhoon's claim that "the feedback loop is key."</p>
+        <p class="slide-text">2. Margareth argued that more clarity reduces the system "to something closer to conventional programming." After writing a strict rubric today, <strong>did your final output feel more constrained — and was that good or bad?</strong> Where would you draw the line between flexibility and reliability for your own research?</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-34">
+      <div class="slide-content">
+        <h2 class="slide-title">Want to Learn More?</h2>
+        <p class="slide-text">LLM Evaluation</p>
+        <a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests" target="_blank" class="reference-link">📚 Anthropic: Define success criteria & build evaluations</a>
+        <a href="https://github.com/openai/evals" target="_blank" class="reference-link">📚 OpenAI Evals — Open-source Eval Framework</a>
+        <a href="https://docs.smith.langchain.com/evaluation" target="_blank" class="reference-link">📚 LangSmith — Evaluation and Tracing</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Research Papers</p>
+        <a href="https://arxiv.org/abs/2303.16634" target="_blank" class="reference-link">📄 G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment (2023)</a>
+        <a href="https://arxiv.org/abs/2303.17651" target="_blank" class="reference-link">📄 Self-Refine: Iterative Refinement with Self-Feedback (2023)</a>
+        <a href="https://arxiv.org/abs/2212.08073" target="_blank" class="reference-link">📄 Constitutional AI — Anthropic</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Anthropic Free Online Courses</p>
+        <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank" class="reference-link">🎓 Building with the Claude API</a>
+        <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" class="reference-link">🎓 Introduction to Model Context Protocol</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-35">
+      <div class="slide-content">
+        <h2 class="slide-title">Wrap-Up of <strong>Week 10</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>Rubrics turn "good" into measurable criteria; LLM-as-judge scores outputs cheaply; three strategies (naive / refine / aware) place the rubric at different points; iterative loop drives scores up</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Built a <strong>Hometown Introduction Evaluator</strong>: 5-criterion rubric, 3 strategies, LLM judge, multi-model comparison, and TWO iterative loops — threshold-based (good enough) and self-evolving (push to ceiling, refine from best, patience-based stopping)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 9 review (12 responses): Cap+Hulk coalition wins; Margareth's flexibility-uncertainty tradeoff; Huy's metacognitive clarity + Minh's Independence Threshold/Alignment Drift; Jaewhoon's "feedback loop is key" = exactly today's iterative practice</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text"><strong>Next week:</strong> Agents that judge and repair their own work — the <strong>self-feedback loop</strong>.</p>
+      </div>
+    </section>
 
   </div>
 

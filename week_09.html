@@ -503,7 +503,7 @@
 </head>
 <body>
   <header class="global-header">
-    <span class="header-logo">Function Calling</span>
+    <span class="header-logo">Design of Task and Workflow</span>
     <span class="header-sep">|</span>
     <span class="header-subtitle">How AI Agents Take Action — Not Just Talk</span>
   </header>
@@ -513,691 +513,1172 @@
 
   <div class="presentation" id="presentation">
     <section class="slide title-slide" id="slide-1">
-<div class="slide-content">
-<h1 class="slide-title">Function Calling</h1>
-<p class="slide-subtitle">How AI Agents Take Action — Not Just Talk</p>
-<div class="highlight-quote">Week 9 of Phase 3: Advanced Patterns (Weeks 9-12)</div>
-</div>
-</section>
-<section class="slide" id="slide-2">
-<div class="slide-content">
-<h2 class="slide-title">Contents</h2>
-<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 9</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
-<div class="card-body"><ul><li>The limit of "text in, text out" LLMs</li><li>Function calling — letting AI invoke real code</li><li>The agentic loop: call → observe → decide → repeat</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
-<div class="card-body"><ul><li>Build a research agent with <strong>3 tools</strong>: search, fetch, summarize</li><li>The agent decides which tool to call based on user question</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
-<div class="card-body"><ul><li>Designing tool definitions clearly</li><li>Midterm reflection: vague specs → flaky agents</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide title-slide" id="slide-3">
-<div class="slide-content">
-<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
-<p class="slide-subtitle">Function Calling — Giving AI the Power to Act</p>
-</div>
-</section>
-<section class="slide" id="slide-4">
-<div class="slide-content">
-<h2 class="slide-title">The Story So Far — <strong>From Talking to Acting</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📄</span> What We've Built So Far</div>
-<div class="card-body"><ul><li>Week 5: AI <strong>answers</strong> questions about papers</li><li>Week 6: AI <strong>extracts</strong> metadata into structured form</li><li>Week 7: AI <strong>debates</strong> topics with personas</li><li>All of these = AI produces <strong>text</strong> as output</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">⚠️</span> The Limitation</div>
-<div class="card-body"><ul><li>The LLM only outputs <strong>text</strong> — it can't actually DO anything</li><li>It can't search a database, call an API, read a file, run code</li><li>You had to write all the surrounding logic yourself</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🚀</span> Today's Shift</div>
-<div class="card-body"><ul><li>Give the LLM access to <strong>real functions</strong></li><li>Let it decide which function to call, with what arguments</li><li>Now the LLM can <strong>act</strong>, not just describe actions</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-5">
-<div class="slide-content">
-<h2 class="slide-title">The Core Problem — <strong>LLMs Can't Do Anything</strong></h2>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">❌</span> What an LLM Can't Do</div>
-<div class="card-body"><ul><li>It can't check today's weather</li><li>It can't search your local files</li><li>It can't run a calculation reliably (<code class="inline-code">23847 × 9281</code> = ?)</li><li>It can't query a database</li><li>It only generates text based on training data</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">💡</span> What If We Gave It Tools?</div>
-<div class="card-body"><ul><li>"Here's a <code class="inline-code">get_weather(city)</code> function"</li><li>"Here's a <code class="inline-code">search_papers(query)</code> function"</li><li>"Here's a <code class="inline-code">calculate(expr)</code> function"</li><li>The LLM still outputs text — but the text says <strong>"call this function with these arguments"</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> The Result</div>
-<div class="card-body"><ul><li>The LLM becomes an <strong>orchestrator</strong> — it picks the right tool</li><li>The actual work happens in your real code</li><li>Reliable, verifiable, and the LLM stays in its lane</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-6">
-<div class="slide-content">
-<h2 class="slide-title">What is <strong>Function Calling</strong>?</h2>
-<p class="slide-subtitle">A simple but powerful API pattern</p>
-<pre class="code-block"><code class="language-text">1. You define functions in JSON:
-   { name: "search_papers", description: "...", parameters: {...} }
+      <div class="slide-content">
+        <h1 class="slide-title">Design of Task and Workflow</h1>
+        <p class="slide-subtitle">Algorithmic Thinking — Turning a Vague Request into a Flow That Survives Contact With Reality</p>
+        <div class="highlight-quote">Week 9 of Phase 3: Management & Reliability (Weeks 9-12)</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title">Contents</h2>
+        <p class="slide-subtitle">Lecture, Practice, and Discussion for Week 9</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>Algorithmic thinking: decomposing a task into a workflow</li>
+                <li>Five workflow patterns, explicit state, and the guards that make a flow robust</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Flow Architecture: a multi-step research flow in plain Python, then in <strong>LangGraph</strong></li>
+                <li>Nodes, state, conditional routing, retries, and an explicit give-up path</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 7 Review: Authorship & Accountability</li>
+                <li>Ambiguity vs. Clarity — why agents fail when human instructions are vague</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-3">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+        <p class="slide-subtitle">Algorithmic Thinking — Designing Robust Workflows</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title">Phase 3 Begins — <strong>From "It Worked Once" to "It Works Every Time"</strong></h2>
+        <p class="slide-subtitle">Your midterm prototype demoed fine. Now run it fifty times.</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">✅</span> What Phase 2 Gave You</div>
+            <div class="card-body">
+              <ul>
+                <li>An interface (Week 5), an input pipeline (Week 6), an output pipeline (Week 7), and a working prototype (Week 8)</li>
+                <li>Each piece was a <strong>single call</strong> or a <strong>short script</strong> you drove by hand</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">💥</span> What Breaks at Run #7</div>
+            <div class="card-body">
+              <ul>
+                <li>The model picks a different tool than last time, and the next step receives the wrong shape</li>
+                <li>One API call times out, and the whole run dies with nothing saved</li>
+                <li>A vague instruction sends it down a path you never imagined, for eleven expensive steps</li>
+                <li>You cannot tell <strong>where</strong> it went wrong, only that the answer is bad</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧭</span> What This Week Adds</div>
+            <div class="card-body">
+              <ul>
+                <li>Stop writing one long prompt and one long script. Write a <strong>flow</strong>: named steps, explicit state, defined transitions</li>
+                <li>Once the steps are named, each one can be tested, retried, resumed, and replaced</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"A demo needs to work once. A workflow needs to fail in a way you can diagnose."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>Workflow</strong> or <strong>Agent</strong>? The Distinction That Decides Everything</h2>
+        <p class="slide-subtitle">Anthropic's definition, and why it is a design choice rather than a ranking</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🛤️</span> Workflow</div>
+            <div class="card-body">
+              <ul>
+                <li>"Systems where LLMs and tools are orchestrated through <strong>predefined code paths</strong>"</li>
+                <li><em>You</em> decide the order; the model fills in the content of each step</li>
+                <li>Predictable cost, predictable latency, testable step by step</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🤖</span> Agent</div>
+            <div class="card-body">
+              <ul>
+                <li>"Systems where LLMs <strong>dynamically direct their own processes</strong> and tool usage, maintaining control over how they accomplish tasks"</li>
+                <li>Week 4's ReAct loop is the minimal agent: the model chooses the next action each turn</li>
+                <li>Flexible on open-ended problems; unpredictable in cost, path, and failure mode</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> How to Choose</div>
+            <div class="card-body">
+              <ul>
+                <li>If you can draw the steps on a whiteboard → build a <strong>workflow</strong>. Most research tasks are like this</li>
+                <li>If the path genuinely depends on what is discovered mid-task → use an <strong>agent</strong>, inside a budget</li>
+                <li>The best systems are usually a workflow with <strong>one agentic node</strong>, not an agent all the way down</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Find the simplest solution possible, and only increase complexity when needed. — Anthropic, Building Effective Agents"</div>
+        <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" class="reference-link">📚 Building Effective Agents — Anthropic</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title">The Five <strong>Workflow Patterns</strong></h2>
+        <p class="slide-subtitle">Almost every research pipeline is one of these, or two of them stacked</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">⛓️</span> 1. Prompt Chaining</div>
+            <div class="card-body">
+              <ul>
+                <li>Decompose into sequential steps; each call processes the previous output</li>
+                <li>Use when the task has a natural order: extract → normalize → summarize</li>
+                <li>Add a <strong>gate</strong> between steps: if step 1's output fails validation, stop instead of poisoning step 2</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔀</span> 2. Routing</div>
+            <div class="card-body">
+              <ul>
+                <li>Classify the input, then send it to a specialized path</li>
+                <li>"Is this a methods question, a data question, or a citation question?" → three different prompts and tool sets</li>
+                <li>Cheaper and more accurate than one prompt that tries to cover every case</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🍴</span> 3. Parallelization</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Sectioning</strong>: split the work (20 PDFs → 20 concurrent extractions) · <strong>Voting</strong>: run the same task 3× and compare</li>
+                <li>Voting is the cheapest hallucination detector you will ever implement: if three runs disagree on a number, flag it</li>
+                <li>Watch the rate limits, and watch the bill</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">🧑‍🏭</span> 4. Orchestrator–Workers</div>
+            <div class="card-body">
+              <ul>
+                <li>A central LLM breaks the task into subtasks <strong>at run time</strong> and delegates each to a worker</li>
+                <li>Use when you cannot know the subtasks in advance ("review this codebase", "survey this field")</li>
+                <li>This is where a workflow becomes genuinely agentic — budget it accordingly</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🔁</span> 5. Evaluator–Optimizer</div>
+            <div class="card-body">
+              <ul>
+                <li>One model drafts, a second critiques against explicit criteria, the first revises. Loop until the criteria pass or the budget runs out</li>
+                <li>Works only when you can <strong>state the criteria</strong> — which is the whole lesson of this week</li>
+                <li>Week 11 builds this pattern properly as self-reflection</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title">The Patterns, <strong>Drawn</strong></h2>
+        <p class="slide-subtitle">Chaining, routing, parallelization</p>
+        <div class="mermaid-container">
+          <div class="mermaid">graph LR
+            subgraph "Prompt Chaining"
+            A1["Input"] --> A2["Step 1"] --> AG{"Gate"} --> A3["Step 2"] --> A4["Out"]
+            AG -->|fail| AX["Stop"]
+            end
+            subgraph "Routing"
+            B1["Input"] --> BR{"Classify"}
+            BR -->|methods| B2["Path A"]
+            BR -->|data| B3["Path B"]
+            BR -->|citation| B4["Path C"]
+            end
+            subgraph "Parallelization"
+            C1["Input"] --> C2["Worker 1"]
+            C1 --> C3["Worker 2"]
+            C1 --> C4["Worker 3"]
+            C2 --> C5["Aggregate / Vote"]
+            C3 --> C5
+            C4 --> C5
+            end
+            style AG fill:#fff3e0,stroke:#f57c00
+            style BR fill:#fff3e0,stroke:#f57c00
+            style C5 fill:#e8f5e9,stroke:#388e3c</div>
+        </div>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Note What the Diamonds Are</div>
+            <div class="card-body">
+              <ul>
+                <li>Every diamond is a <strong>decision made by code</strong>, using a criterion you wrote down</li>
+                <li>If you cannot write the criterion, you do not yet have a workflow — you have a wish</li>
+                <li>That sentence is this week's discussion question in disguise</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="slide-title">Algorithmic Thinking — <strong>Vague In, Flow Out</strong></h2>
+        <p class="slide-subtitle">The same request, before and after decomposition</p>
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Vague request</th>
+              <th>What the agent has to guess</th>
+              <th>Decomposed step</th>
+              <th>Acceptance criterion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>"Review the literature on perovskite stability"</td>
+              <td>Which years? How many papers? Review for what?</td>
+              <td>1. Propose 3–5 search queries</td>
+              <td>Queries are distinct, each ≤ 8 words</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>2. Search each query</td>
+              <td>≥ 5 hits per query, or retry once</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>3. Screen by year and venue</td>
+              <td>Keep ≤ 20, all ≥ 2023</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>4. Extract method + stability metric</td>
+              <td>Both fields non-empty for ≥ 80%</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>5. Synthesize by method family</td>
+              <td>Every claim cites a kept paper</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>6. Verify citations resolve</td>
+              <td>100% of DOIs resolve, else flag</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔑</span> The Technique</div>
+            <div class="card-body">
+              <ul>
+                <li>For each step ask: <strong>what comes in, what goes out, and how do I know it worked?</strong></li>
+                <li>The third question is the one everybody skips — and it is the one that makes the flow robust</li>
+                <li>Write the acceptance criterion <em>before</em> the prompt. The criterion often makes the prompt obvious</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Agents do not fail because instructions are long. They fail because nobody wrote down what 'done' means."</div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-9">
+      <div class="slide-content">
+        <h2 class="slide-title"><strong>State</strong> — What Actually Flows Between Steps</h2>
+        <p class="slide-subtitle">A flow is nodes plus the thing they pass around</p>
+        <pre class="code-block"><code class="language-python"># Make the state explicit and typed. This single declaration is your contract.
+from typing import Annotated, TypedDict
+from operator import add
 
-2. You send the user message + function definitions to the LLM
+class Flow(TypedDict):
+    question: str                        # set once at the start
+    queries:  list[str]                  # produced by the planner
+    cursor:   int                        # which query we are on
+    hits:     Annotated[list, add]       # reducer: nodes APPEND, never overwrite
+    kept:     list | None                # None = screening has not run yet
+    draft:    str                        # the final artefact
+    errors:   Annotated[list, add]       # everything that went wrong, kept for the log</code></pre>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📐</span> Rules That Save You Later</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>One writer per field.</strong> If two nodes write <code class="inline-code">kept</code>, you will spend an evening finding out which</li>
+                <li><strong><code class="inline-code">None</code> means "not computed yet"</strong>, which is different from <code class="inline-code">[]</code> meaning "computed, found nothing" — routing depends on that difference</li>
+                <li><strong>Never overwrite history.</strong> Append hits and errors so a failed run is still diagnosable</li>
+                <li><strong>Keep it small.</strong> State is re-serialized at every step; a 200-page document belongs on disk with a path in the state</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔗</span> Week 3 Called This Context Engineering</div>
+            <div class="card-body">
+              <ul>
+                <li>The state <em>is</em> the context you assemble for the next node</li>
+                <li>Passing the whole accumulated history into every node is how flows get slow, expensive, and forgetful</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-10">
+      <div class="slide-content">
+        <h2 class="slide-title">Making a Flow <strong>Robust</strong> — Five Guards</h2>
+        <p class="slide-subtitle">Each of these is three lines of code and saves an hour of debugging</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🚧</span> 1. Validation Gates</div>
+            <div class="card-body">
+              <ul>
+                <li>After every LLM node, check the output against the acceptance criterion before moving on</li>
+                <li>Schema-valid (Week 3) is not the same as <strong>acceptable</strong>: <code class="inline-code">{"year": 1823}</code> parses fine and is still wrong</li>
+                <li>A gate turns a silent wrong answer into a loud, located failure</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔄</span> 2. Bounded Retries</div>
+            <div class="card-body">
+              <ul>
+                <li>Retry a failed node with the error message appended — models fix their own output surprisingly often</li>
+                <li>Bound it: <code class="inline-code">max_retries=2</code>, then take the give-up path. Unbounded retry is how you wake up to a $400 bill</li>
+                <li>Exponential backoff for rate limits, immediate retry for validation failures</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⏱️</span> 3. Budgets</div>
+            <div class="card-body">
+              <ul>
+                <li>Every flow gets a <strong>step budget</strong>, a <strong>token budget</strong>, and a <strong>wall-clock timeout</strong></li>
+                <li>Track them in the state and check them in the router — the flow should stop itself</li>
+                <li>Log cost per node once; the expensive node is never the one you guessed</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">💾</span> 4. Checkpoints</div>
+            <div class="card-body">
+              <ul>
+                <li>Persist the state after every node. A crash at step 9 should resume at step 9, not step 1</li>
+                <li>This is the single feature that justifies using a graph framework instead of a <code class="inline-code">for</code> loop</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🚪</span> 5. An Explicit Give-Up Path</div>
+            <div class="card-body">
+              <ul>
+                <li>Every flow needs a node that says "I could not do this, here is how far I got, here is why"</li>
+                <li>Without it, a failing flow either loops or returns a confident, empty answer</li>
+                <li>The give-up path is what makes the system honest</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-11">
+      <div class="slide-content">
+        <h2 class="slide-title">Where the <strong>Human</strong> Enters the Flow</h2>
+        <p class="slide-subtitle">An approval step is a node, not an afterthought</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧑‍⚖️</span> Three Placements</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Before an irreversible action</strong> — the Week 4 confirmation gate, now a node with its own state</li>
+                <li><strong>At a low-confidence branch</strong> — when the router cannot decide, it asks instead of guessing</li>
+                <li><strong>At the end, always</strong> — nothing leaves the flow with your name on it unread</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧊</span> Interrupt and Resume</div>
+            <div class="card-body">
+              <ul>
+                <li>With checkpointing, a flow can <strong>pause</strong> at an approval node, persist, and wait — minutes or days</li>
+                <li>Resuming continues from the saved state, so the human review does not cost you the run</li>
+                <li>LangGraph provides this directly; in plain Python you save the state to JSON and reload it</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📉</span> Do Not Over-Gate</div>
+            <div class="card-body">
+              <ul>
+                <li>Approving 40 steps trains the human to click yes without reading — worse than no gate at all</li>
+                <li>Gate the <strong>irreversible</strong> and the <strong>uncertain</strong>; automate the rest</li>
+                <li>Week 14 is the full session on this: audit interfaces and stop buttons</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-12">
+      <div class="slide-content">
+        <h2 class="slide-title">Choosing the Right Amount of <strong>Structure</strong></h2>
+        <p class="slide-subtitle">More autonomy is not more advanced — it is more expensive</p>
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>If your task…</th>
+              <th>Build</th>
+              <th>Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Has the same steps every time</td>
+              <td>A <strong>script</strong> with LLM calls</td>
+              <td>No orchestration needed; the least machinery wins</td>
+            </tr>
+            <tr>
+              <td>Has the same steps but branches on content</td>
+              <td><strong>Routing workflow</strong></td>
+              <td>Branch in code on a classified value</td>
+            </tr>
+            <tr>
+              <td>Splits into independent chunks</td>
+              <td><strong>Parallel workflow</strong></td>
+              <td>Latency drops, and you can vote for reliability</td>
+            </tr>
+            <tr>
+              <td>Has quality criteria you can state</td>
+              <td><strong>Evaluator–optimizer</strong></td>
+              <td>The loop terminates on a criterion, not on vibes</td>
+            </tr>
+            <tr>
+              <td>Has subtasks unknown until run time</td>
+              <td><strong>Orchestrator–workers</strong></td>
+              <td>Only here do you need run-time decomposition</td>
+            </tr>
+            <tr>
+              <td>Is genuinely open-ended</td>
+              <td><strong>Agent, inside a budget</strong></td>
+              <td>Accept the unpredictability, cap the damage</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="highlight-quote">"Every step you hand to the model is a step you can no longer predict. Spend that budget where it buys you something."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-13">
+      <div class="slide-content">
+        <h2 class="slide-title">Why Agents Fail on <strong>Vague</strong> Tasks — A Taxonomy</h2>
+        <p class="slide-subtitle">Today's discussion question, answered from the engineering side</p>
+        <div class="cards-grid">
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🎯</span> No Termination Criterion</div>
+            <div class="card-body">
+              <ul>
+                <li>"Research this topic thoroughly" has no defined end, so the agent stops when it runs out of budget — anywhere</li>
+                <li>Fix: define <strong>done</strong> as a checkable condition, not an adjective</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🌫️</span> Underspecified Output</div>
+            <div class="card-body">
+              <ul>
+                <li>You wanted a table; it wrote an essay; the next node expected JSON. One vague word, three failures downstream</li>
+                <li>Fix: schema on every hand-off (Week 3)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧭</span> Missing Decision Criteria</div>
+            <div class="card-body">
+              <ul>
+                <li>"Keep the relevant papers" — relevant by what test? The model invents one, differently each run</li>
+                <li>Fix: write the predicate in code, or state it explicitly in the prompt</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">📚</span> Missing Context, Not Missing Intelligence</div>
+            <div class="card-body">
+              <ul>
+                <li>The agent does not know your lab uses "yield" to mean something specific, or that 2019 data is unusable</li>
+                <li>Fix: that knowledge belongs in the state or the system prompt, not in your head</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔍</span> The Diagnostic Question</div>
+            <div class="card-body">
+              <ul>
+                <li>Before blaming the model, ask: <strong>could a competent new student do this task from my instructions alone?</strong></li>
+                <li>If not, the instruction is the bug. Vagueness is not tolerated by the flow — it is <em>revealed</em> by it</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-14">
+      <div class="slide-content">
+        <h2 class="slide-title">Lecture Summary — Task and Workflow Design</h2>
+        <p class="slide-subtitle">Key takeaways</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🛤️</span> Workflow First</div>
+            <div class="card-body">
+              <ul>
+                <li>Workflows run predefined code paths; agents choose their own. Prefer the workflow, add agency where it earns its cost</li>
+                <li>Five patterns cover nearly everything: chaining, routing, parallelization, orchestrator–workers, evaluator–optimizer</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📐</span> Make It Explicit</div>
+            <div class="card-body">
+              <ul>
+                <li>Named nodes, typed state with one writer per field, and an <strong>acceptance criterion</strong> for every step</li>
+                <li>Writing the criterion is the actual design work; the prompt follows from it</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🛡️</span> Make It Survive</div>
+            <div class="card-body">
+              <ul>
+                <li>Gates, bounded retries, budgets, checkpoints, and an explicit give-up path</li>
+                <li>Plus a human node where the action is irreversible or the decision is uncertain</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text">References:</p>
+        <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" class="reference-link">📚 Building Effective Agents — Anthropic</a>
+        <a href="https://docs.langchain.com/oss/python/langgraph/graph-api" target="_blank" class="reference-link">📚 LangGraph — Graph API</a>
+        <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" class="reference-link">📚 Effective Context Engineering for AI Agents — Anthropic</a>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-15">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+        <p class="slide-subtitle">Flow Architecture — Multi-Step Research Logic, by Hand and with LangGraph</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-16">
+      <div class="slide-content">
+        <h2 class="slide-title">What We'll <strong>Build</strong> Today</h2>
+        <p class="slide-subtitle">The same literature-triage flow twice — once in plain Python, once in LangGraph</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> The Flow</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>plan</strong> → propose 3–5 search queries from the research question</li>
+                <li><strong>search</strong> → run one query at a time against a paper source (Week 6's tools)</li>
+                <li><strong>screen</strong> → keep recent, relevant hits; stop if nothing survives</li>
+                <li><strong>synthesize</strong> → write a grounded summary of what was kept</li>
+                <li><strong>give_up</strong> → an explicit, honest failure path</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🛠️</span> Two Implementations</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">flow_plain.py</code> — nodes, a router, a state dict, a step budget. <strong>No framework</strong></li>
+                <li><code class="inline-code">flow_graph.py</code> — the identical logic as a <code class="inline-code">StateGraph</code>, with checkpointing for free</li>
+                <li>Building both is the point: you will see exactly what the framework buys you</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📁</span> Files</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">nodes.py</code> — the four node functions (LLM calls + tools from Week 4/6)</li>
+                <li><code class="inline-code">flow_plain.py</code> · <code class="inline-code">flow_graph.py</code> · <code class="inline-code">run.py</code></li>
+                <li><code class="inline-code">trace.jsonl</code> — every transition, appended as it happens</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="flow-container">
+          <div class="flow-step">plan</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">search ↺</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">screen</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">synthesize</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">verify</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">report</div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-17">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 0 — <strong>Setup</strong></h2>
+        <p class="slide-subtitle">One new dependency</p>
+        <pre class="code-block"><code class="language-bash">cd practices/week9
+pip install langgraph openai python-dotenv        # plus pandas if you reuse Week 6/7 code
+python run.py --engine plain    # start here
+python run.py --engine graph    # then compare</code></pre>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Why Plain Python First</div>
+            <div class="card-body">
+              <ul>
+                <li>LangGraph is small, but it is still a framework, and frameworks hide the thing you are trying to learn</li>
+                <li>After you have written the router yourself, <code class="inline-code">add_conditional_edges</code> reads like a label rather than magic</li>
+                <li>If your midterm project has a simple flow, plain Python may remain the right answer</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-18">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 1 — <strong>State and Nodes</strong> (<code class="inline-code">nodes.py</code>)</h2>
+        <p class="slide-subtitle">Each node does one thing and declares what it changed</p>
+        <pre class="code-block"><code class="language-python">from typing import Annotated, TypedDict
+from operator import add
 
-3. The LLM responds with EITHER:
-   (a) A normal text answer, OR
-   (b) "I want to call search_papers with query='deep learning'"
+class Flow(TypedDict):
+    question: str
+    queries: list[str]
+    cursor: int
+    hits: Annotated[list, add]      # append-only
+    kept: list | None               # None = not screened yet
+    draft: str
+    errors: Annotated[list, add]
 
-4. If (b), YOUR code runs the real function and gets the result
+def node_plan(s: Flow) -&gt; dict:                     # returns ONLY what changed
+    queries = propose_queries(s["question"])        # LLM + JSON schema (Week 3)
+    return {"queries": queries[:5], "cursor": 0}
 
-5. You send the result back to the LLM → it forms the final answer</code></pre>
-<div class="highlight-quote">"The LLM never actually runs code. It just tells YOU which function to run, and YOU run it."</div>
-</div>
-</section>
-<section class="slide" id="slide-7">
-<div class="slide-content">
-<h2 class="slide-title">The Flow — <strong>Visualized</strong></h2>
-<div class="mermaid-container"><div class="mermaid">sequenceDiagram
-    participant U as 👤 User
-    participant A as 💻 Your App
-    participant L as 🤖 LLM
-    participant F as 🔧 Real Function
+def node_search(s: Flow) -&gt; dict:
+    q = s["queries"][s["cursor"]]
+    return {"hits": search_papers(q), "cursor": s["cursor"] + 1}   # tool, deterministic
 
-    U->>A: "Find recent GNN papers"
-    A->>L: message + tool definitions
-    L-->>A: tool_call: search_papers(query="GNN")
-    A->>F: search_papers("GNN")
-    F-->>A: [paper1, paper2, paper3]
-    A->>L: tool_result: [...]
-    L-->>A: "I found 3 papers: ..."
-    A-->>U: Final answer</div></div>
-</div>
-</section>
-<section class="slide" id="slide-8">
-<div class="slide-content">
-<h2 class="slide-title">A <strong>Tool Definition</strong> — JSON Schema</h2>
-<p class="slide-subtitle">This is what you send to the LLM</p>
-<pre class="code-block"><code class="language-python">tool = {
-    "type": "function",
-    "function": {
-        "name": "search_papers",
-        "description": "Search the local paper collection by keyword.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "query": {
-                    "type": "string",
-                    "description": "Keyword or topic to search for"
-                },
-                "max_results": {
-                    "type": "integer",
-                    "description": "How many papers to return (default 5)"
-                }
-            },
-            "required": ["query"]
-        }
-    }
-}</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Three Things the LLM Sees</div>
-<div class="card-body"><ul><li><strong>name</strong> — identifier the LLM uses to "call" the function</li><li><strong>description</strong> — when should the LLM use this? (CRITICAL)</li><li><strong>parameters</strong> — what arguments are needed (JSON schema)</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-9">
-<div class="slide-content">
-<h2 class="slide-title">The <strong>Description</strong> is Where Specifying Lives</h2>
-<p class="slide-subtitle">This is the new prompt engineering</p>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">❌</span> Vague Description</div>
-<div class="card-body"><ul><li><code class="inline-code">"description": "search papers"</code></li><li>LLM has no idea <strong>when</strong> to call this vs other tools</li><li>It might call it for "what is deep learning?" (wrong — that's general knowledge)</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> Clear Description</div>
-<div class="card-body"><ul><li><code class="inline-code">"description": "Search the user's local paper collection (extracted via Week 6 metadata). Use this when the user asks about specific papers or trends in THEIR collection. Do NOT use for general knowledge questions."</code></li><li>LLM now knows <strong>exactly</strong> when to call it</li><li>The description is your <strong>contract</strong> with the LLM</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"Tool description = clearer specification. The skill from Week 8's midterm reflection — directly applied here."</div>
-</div>
-</section>
-<section class="slide" id="slide-10">
-<div class="slide-content">
-<h2 class="slide-title">The <strong>Agentic Loop</strong> — Multiple Tool Calls</h2>
-<p class="slide-subtitle">One question may need several tools</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔄</span> The Pattern</div>
-<div class="card-body"><ul><li>User asks a question</li><li>LLM thinks → calls Tool A</li><li>Sees Tool A's result → decides to call Tool B</li><li>Sees Tool B's result → maybe calls Tool C</li><li>Eventually: enough info → produces final answer</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">📝</span> Concrete Example</div>
-<div class="card-body"><ul><li><strong>User</strong>: "Summarize the top 3 GNN papers in my collection"</li><li><strong>LLM call 1</strong>: <code class="inline-code">search_papers(query="GNN", max_results=3)</code> → gets 3 papers</li><li><strong>LLM call 2</strong>: <code class="inline-code">get_paper_details(id=1)</code> → gets full text of paper 1</li><li><strong>LLM call 3</strong>: <code class="inline-code">get_paper_details(id=2)</code> → gets full text of paper 2</li><li><strong>LLM call 4</strong>: <code class="inline-code">get_paper_details(id=3)</code> → gets full text of paper 3</li><li><strong>LLM final</strong>: synthesizes summary across all 3</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚠️</span> Important</div>
-<div class="card-body"><ul><li>You loop in your code: while LLM keeps calling tools, run them</li><li>Set a max iteration count to prevent infinite loops</li><li>Each step is observable — you see exactly what was called</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-11">
-<div class="slide-content">
-<h2 class="slide-title">The <strong>Agentic Loop</strong> in Code</h2>
-<p class="slide-subtitle">This is the heart of every agent system</p>
-<pre class="code-block"><code class="language-python">messages = [{"role": "user", "content": user_question}]
+def node_screen(s: Flow) -&gt; dict:
+    kept = [h for h in s["hits"] if h["year"] &gt;= 2023][:20]
+    return {"kept": kept}
 
-for step in range(MAX_STEPS):
-    resp = client.chat.completions.create(
-        model=model,
-        messages=messages,
-        tools=tool_definitions,
-    )
-    msg = resp.choices[0].message
-    messages.append(msg)
+def node_synthesize(s: Flow) -&gt; dict:
+    return {"draft": write_summary(s["kept"])}      # facts-only prompt (Week 7)
 
-    if not msg.tool_calls:
-        # LLM gave a final answer — done
-        return msg.content
+def node_give_up(s: Flow) -&gt; dict:
+    return {"draft": f"No usable evidence for {s['question']!r}. "
+                     f"Tried {len(s['queries'])} queries, {len(s['hits'])} hits, 0 kept."}</code></pre>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-19">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 2 — <strong>The Router</strong> — Where the Design Lives</h2>
+        <p class="slide-subtitle">Every branch is a criterion you wrote down</p>
+        <pre class="code-block"><code class="language-python">def route(s: Flow) -&gt; str:
+    if not s["queries"]:                     return "plan"
+    if s["cursor"] &lt; len(s["queries"]):      return "search"
+    if s["kept"] is None:                    return "screen"
+    if not s["kept"]:                        return "give_up"      # explicit failure
+    if not s["draft"]:                       return "synthesize"
+    return "done"</code></pre>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔍</span> Read It Top to Bottom</div>
+            <div class="card-body">
+              <ul>
+                <li>Each line is one acceptance criterion from the decomposition table, in code</li>
+                <li><code class="inline-code">kept is None</code> vs <code class="inline-code">not kept</code> — the distinction from the State slide, doing real work</li>
+                <li>There is no branch that depends on how the model <em>feels</em> about progress</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚠️</span> The Bug This Prevents</div>
+            <div class="card-body">
+              <ul>
+                <li>Without the <code class="inline-code">kept is None</code> case, an empty screen result sends the flow back to <code class="inline-code">screen</code> forever</li>
+                <li>A router with no give-up branch is the most common cause of runaway agent bills</li>
+                <li>Test the router on its own — it is a pure function of the state, so it needs no API key</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-20">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 3 — <strong>Run It Without a Framework</strong> (<code class="inline-code">flow_plain.py</code>)</h2>
+        <p class="slide-subtitle">Twenty lines. This is the whole idea.</p>
+        <pre class="code-block"><code class="language-python">import json, time
 
-    # LLM wants to call tools — run them
-    for tc in msg.tool_calls:
-        result = run_tool(tc.function.name, tc.function.arguments)
-        messages.append({
-            "role": "tool",
-            "tool_call_id": tc.id,
-            "content": str(result),
-        })</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Read This Loop Carefully</div>
-<div class="card-body"><ul><li>It alternates: LLM call → run tools → LLM call → run tools → ...</li><li>Exits when LLM stops requesting tools (gives final answer)</li><li><code class="inline-code">MAX_STEPS</code> prevents runaway loops</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-12">
-<div class="slide-content">
-<h2 class="slide-title">When to Use <strong>Function Calling</strong></h2>
-<div class="cards-grid">
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> Good Fit</div>
-<div class="card-body"><ul><li>The task needs <strong>real-world data</strong> (DB, API, files, calculations)</li><li>The task involves <strong>multiple specialized steps</strong> (search → fetch → summarize)</li><li>You need <strong>deterministic</strong> parts mixed with LLM reasoning</li><li>You want the LLM's actions to be <strong>inspectable</strong></li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">❌</span> Not a Good Fit</div>
-<div class="card-body"><ul><li>Pure text transformation (translate, summarize, rewrite) → just prompt</li><li>Single-shot Q&A from training data → just prompt</li><li>Tasks where you don't trust the LLM to choose tools wisely → fixed pipeline</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🤔</span> Function Calling vs Fixed Pipeline</div>
-<div class="card-body"><ul><li><strong>Fixed pipeline (Week 7-style)</strong>: you write the order, LLM fills in</li><li><strong>Function calling</strong>: LLM decides the order itself</li><li>Function calling = more flexible, but harder to predict</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-13">
-<div class="slide-content">
-<h2 class="slide-title">Common Pitfalls — <strong>What Goes Wrong</strong></h2>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">1️⃣</span> Vague Tool Descriptions</div>
-<div class="card-body"><ul><li>LLM picks the wrong tool, or no tool when one was needed</li><li><strong>Fix</strong>: be explicit about WHEN to use each tool, with examples</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">2️⃣</span> Too Many Tools</div>
-<div class="card-body"><ul><li>20 tools → LLM gets confused, picks randomly</li><li><strong>Fix</strong>: keep it under ~7 tools, group related ones</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">3️⃣</span> Infinite Loops</div>
-<div class="card-body"><ul><li>LLM keeps calling tools forever</li><li><strong>Fix</strong>: set <code class="inline-code">MAX_STEPS = 10</code> and bail out gracefully</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">4️⃣</span> No Validation</div>
-<div class="card-body"><ul><li>LLM passes garbage arguments — your function crashes</li><li><strong>Fix</strong>: validate arguments inside each tool function, return error messages the LLM can read</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-14">
-<div class="slide-content">
-<h2 class="slide-title">Lecture Summary — <strong>Function Calling</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> The Core Idea</div>
-<div class="card-body"><ul><li>LLM outputs structured JSON saying "call this function with these arguments"</li><li>YOUR code runs the function and returns the result</li><li>LLM sees the result and decides what to do next</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔄</span> The Agentic Loop</div>
-<div class="card-body"><ul><li>Loop until LLM stops requesting tools</li><li>Each tool call is observable — full transparency</li><li>Set MAX_STEPS to prevent runaway behavior</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">📝</span> The Skill That Matters</div>
-<div class="card-body"><ul><li>Tool <strong>descriptions</strong> = where you specify WHEN to use each tool</li><li>Vague descriptions → LLM picks the wrong tool</li><li>Clear descriptions → LLM behaves predictably</li><li><strong>This is specifying skill, applied to tool design</strong></li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide title-slide" id="slide-15">
-<div class="slide-content">
-<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
-<p class="slide-subtitle">Build a Research Agent with 3 Tools</p>
-</div>
-</section>
-<section class="slide" id="slide-16">
-<div class="slide-content">
-<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> The Goal</div>
-<div class="card-body"><ul><li>A chat interface where the user asks research questions</li><li>The agent has <strong>3 tools</strong> for accessing the paper collection</li><li>The agent <strong>decides</strong> which tools to call, in what order</li><li>The chat shows every tool call so users can see what's happening</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔧</span> The Three Tools</div>
-<div class="card-body"><ul><li><code class="inline-code">search_papers(query, max_results)</code> — keyword search in metadata</li><li><code class="inline-code">get_paper_details(paper_id)</code> — full info for one paper</li><li><code class="inline-code">count_papers_by_year(year)</code> — simple stats query</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">📁</span> Files</div>
-<div class="card-body"><ul><li><code class="inline-code">tools.py</code> — the 3 tool functions + their JSON schemas</li><li><code class="inline-code">agent.py</code> — the agentic loop</li><li><code class="inline-code">app.py</code> — add Tab 7 (Agent Chat)</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-17">
-<div class="slide-content">
-<h2 class="slide-title">Step 1 — <strong>Tool Functions</strong> (<code class="inline-code">tools.py</code>)</h2>
-<p class="slide-subtitle">Three real Python functions the agent can call</p>
-<pre class="code-block"><code class="language-python"># tools.py
-import json
-from pdf_to_md import load_all_metadata
-MD_DIR = "md_output"
+NODES = {"plan": node_plan, "search": node_search, "screen": node_screen,
+         "synthesize": node_synthesize, "give_up": node_give_up}
 
-def search_papers(query: str, max_results: int = 5) -&gt; str:
-    """Keyword search in titles and abstracts."""
-    papers = load_all_metadata(MD_DIR)
-    q = query.lower()
-    hits = []
-    for i, p in enumerate(papers):
-        text = (p.get("title", "") + " " + p.get("abstract", "")).lower()
-        if q in text:
-            hits.append({"id": i, "title": p.get("title", "?")})
-        if len(hits) &gt;= max_results:
+def run(question: str, max_steps: int = 12, deadline_s: int = 120) -&gt; Flow:
+    s: Flow = {"question": question, "queries": [], "cursor": 0,
+               "hits": [], "kept": None, "draft": "", "errors": []}
+    started = time.time()
+
+    for step in range(max_steps):
+        if time.time() - started &gt; deadline_s:
+            s["errors"].append("deadline exceeded"); break
+        nxt = route(s)
+        if nxt == "done":
             break
-    return json.dumps(hits)
+        try:
+            s.update(NODES[nxt](s))                      # merge the node's changes
+        except Exception as e:
+            s["errors"].append(f"{nxt}: {e}")
+            s.update(node_give_up(s)); break
+        with open("trace.jsonl", "a", encoding="utf-8") as f:   # every transition, logged
+            f.write(json.dumps({"step": step, "node": nxt,
+                                "kept": None if s["kept"] is None else len(s["kept"]),
+                                "hits": len(s["hits"])}, ensure_ascii=False) + "\n")
+    else:
+        s["errors"].append(f"step budget {max_steps} exhausted")
+    return s</code></pre>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧾</span> What You Just Built</div>
+            <div class="card-body">
+              <ul>
+                <li>A step budget, a wall-clock deadline, an error path, and a trace file — the five guards from the lecture, minus checkpointing</li>
+                <li>Checkpointing is the one that is genuinely annoying to write yourself. That is the next slide</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-21">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 4 — <strong>The Same Flow as a Graph</strong> (<code class="inline-code">flow_graph.py</code>)</h2>
+        <p class="slide-subtitle">Identical nodes, identical router — the framework supplies the loop</p>
+        <pre class="code-block"><code class="language-python">from langgraph.graph import StateGraph, START, END
+from langgraph.checkpoint.memory import InMemorySaver
 
-def get_paper_details(paper_id: int) -&gt; str:
-    """Full metadata for a single paper by id."""
-    papers = load_all_metadata(MD_DIR)
-    if 0 &lt;= paper_id &lt; len(papers):
-        return json.dumps(papers[paper_id])
-    return json.dumps({"error": f"paper_id {paper_id} not found"})
+builder = StateGraph(Flow)
+builder.add_node("plan", node_plan)
+builder.add_node("search", node_search)
+builder.add_node("screen", node_screen)
+builder.add_node("synthesize", node_synthesize)
+builder.add_node("give_up", node_give_up)
 
-def count_papers_by_year(year: int) -&gt; str:
-    """Count papers published in a given year."""
-    papers = load_all_metadata(MD_DIR)
-    count = sum(1 for p in papers if str(p.get("year", "")) == str(year))
-    return json.dumps({"year": year, "count": count})</code></pre>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-18">
-<div class="slide-content">
-<h2 class="slide-title">Step 2 — <strong>Tool Schemas</strong> (<code class="inline-code">tools.py</code>)</h2>
-<p class="slide-subtitle">How the LLM sees each tool</p>
-<pre class="code-block"><code class="language-python">TOOL_SCHEMAS = [
-    {
-        "type": "function",
-        "function": {
-            "name": "search_papers",
-            "description": (
-                "Search the user's local paper collection by keyword. "
-                "Use when the user asks about a specific topic in THEIR papers."
-            ),
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "query": {"type": "string", "description": "Search keyword"},
-                    "max_results": {"type": "integer", "description": "Default 5"}
-                },
-                "required": ["query"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "get_paper_details",
-            "description": "Get full metadata for one paper by its id (from search).",
-            "parameters": {
-                "type": "object",
-                "properties": {"paper_id": {"type": "integer"}},
-                "required": ["paper_id"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "count_papers_by_year",
-            "description": "Count how many papers in the collection were published in a given year.",
-            "parameters": {
-                "type": "object",
-                "properties": {"year": {"type": "integer"}},
-                "required": ["year"]
-            }
-        }
-    }
-]
+builder.add_edge(START, "plan")
+builder.add_conditional_edges("plan",   route, {"search": "search"})
+builder.add_conditional_edges("search", route, {"search": "search", "screen": "screen"})
+builder.add_conditional_edges("screen", route, {"synthesize": "synthesize",
+                                                "give_up": "give_up"})
+builder.add_edge("synthesize", END)
+builder.add_edge("give_up", END)
 
-TOOL_FUNCS = {
-    "search_papers": search_papers,
-    "get_paper_details": get_paper_details,
-    "count_papers_by_year": count_papers_by_year,
-}</code></pre>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-19">
-<div class="slide-content">
-<h2 class="slide-title">Step 3 — <strong>Agent Loop</strong> (<code class="inline-code">agent.py</code>)</h2>
-<p class="slide-subtitle">The heart of any function-calling agent</p>
-<pre class="code-block"><code class="language-python"># agent.py
-import json
-from tools import TOOL_SCHEMAS, TOOL_FUNCS
+graph = builder.compile(checkpointer=InMemorySaver())
 
-MAX_STEPS = 8
-
-def run_agent(client, model, user_question, on_step=None):
-    """Run the agentic loop. on_step(event) is called for each tool call."""
-    messages = [
-        {"role": "system", "content":
-         "You are a research assistant with access to the user's paper collection. "
-         "Use tools to answer questions about their papers. "
-         "When unsure which paper, use search_papers first."},
-        {"role": "user", "content": user_question},
-    ]
-
-    for step in range(MAX_STEPS):
-        resp = client.chat.completions.create(
-            model=model, messages=messages, tools=TOOL_SCHEMAS,
-        )
-        msg = resp.choices[0].message
-        messages.append(msg)
-
-        if not msg.tool_calls:
-            return msg.content  # final answer
-
-        for tc in msg.tool_calls:
-            name = tc.function.name
-            args = json.loads(tc.function.arguments)
-            if on_step:
-                on_step({"type": "call", "name": name, "args": args})
-            try:
-                result = TOOL_FUNCS[name](**args)
-            except Exception as e:
-                result = json.dumps({"error": str(e)})
-            if on_step:
-                on_step({"type": "result", "name": name, "result": result})
-            messages.append({
-                "role": "tool",
-                "tool_call_id": tc.id,
-                "content": result,
-            })
-
-    return "Stopped — too many steps."</code></pre>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-20">
-<div class="slide-content">
-<h2 class="slide-title">Step 4 — <strong>Streamlit UI</strong> (<code class="inline-code">app.py</code> Tab 7)</h2>
-<p class="slide-subtitle">Show every tool call in real time</p>
-<pre class="code-block"><code class="language-python"># app.py — Tab 7 (Agent Chat)
-from agent import run_agent
-
-with tab7:
-    st.header("🔧 Research Agent (Function Calling)")
-    question = st.text_input(
-        "Ask about your papers",
-        placeholder="e.g., How many GNN papers do I have from 2024?"
-    )
-
-    if st.button("▶️ Run Agent", disabled=not question):
-        events = []
-
-        def on_step(event):
-            events.append(event)
-
-        with st.spinner("Agent thinking..."):
-            answer = run_agent(client, model, question, on_step=on_step)
-
-        # Show every tool call (transparency)
-        st.subheader("🔍 Tool Calls")
-        for e in events:
-            if e["type"] == "call":
-                st.markdown(f"📞 **{e['name']}**(`{e['args']}`)")
-            else:
-                st.markdown(f"📦 result: `{e['result'][:200]}...`")
-
-        st.subheader("💬 Final Answer")
-        st.markdown(answer)</code></pre>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-21">
-<div class="slide-content">
-<h2 class="slide-title">Step 5 — <strong>Try These Questions</strong></h2>
-<p class="slide-subtitle">See the agent pick different tools</p>
-<pre class="code-block"><code class="language-text">Question 1: "How many papers from 2024 do I have?"
-   → Agent calls count_papers_by_year(2024) → answers
-
-Question 2: "Find papers about graph neural networks"
-   → Agent calls search_papers("graph neural networks") → lists them
-
-Question 3: "Tell me about the first GNN paper in detail"
-   → Agent calls search_papers("GNN") → then get_paper_details(id=X)
-   → synthesizes a summary
-
-Question 4: "Compare 2023 vs 2024 paper counts"
-   → Agent calls count_papers_by_year(2023)
-   → then count_papers_by_year(2024)
-   → presents both numbers</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> What to Watch For</div>
-<div class="card-body"><ul><li>Does the agent pick the <strong>right tool</strong>?</li><li>Does it call <strong>multiple tools</strong> when needed?</li><li>Does it sometimes <strong>fail to use a tool</strong> when it should?</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-22">
-<div class="slide-content">
-<h2 class="slide-title">✅ <strong>Week 9 Practice Checklist</strong></h2>
-<div class="highlight-quote">Complete these steps during the practice session:</div>
-<p class="slide-text">1. - [ ] Create <code class="inline-code">tools.py</code> with the 3 functions and their schemas</p>
-<p class="slide-text">2. - [ ] Create <code class="inline-code">agent.py</code> with the <code class="inline-code">run_agent()</code> loop</p>
-<p class="slide-text">3. - [ ] Add Tab 7 to <code class="inline-code">app.py</code> showing tool calls in real time</p>
-<p class="slide-text">4. - [ ] Test with the 4 example questions — does the agent pick the right tools?</p>
-<p class="slide-text">5. - [ ] Try a question the agent <strong>should NOT</strong> use a tool for (e.g., "What is deep learning?") — does it answer directly?</p>
-<p class="slide-text">6. - [ ] <strong>Bonus</strong>: edit one tool's description to be vague, see how behavior changes</p>
-<p class="slide-text">7. - [ ] <strong>Bonus</strong>: add a 4th tool of your choice (e.g., <code class="inline-code">list_authors()</code>)</p>
-</div>
-</section>
-<section class="slide title-slide" id="slide-23">
-<div class="slide-content">
-<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
-<p class="slide-subtitle">Authorship & Accountability — Who Owns the AI's Output?</p>
-</div>
-</section>
-<section class="slide" id="slide-24">
-<div class="slide-content">
-<h2 class="slide-title">Week 7 — <strong>"Who is Responsible for a Flawed AI Hypothesis?"</strong></h2>
-<p class="slide-subtitle">14 responses analyzed — a near-universal consensus, with one twist</p>
-<div class="cards-grid">
-<div class="card card-green">
-<div class="card-header"><span class="icon">📊</span> The Vote Count</div>
-<div class="card-body"><ul><li><strong>All three (1+2+3 combined)</strong>: Huy, Waad, Nazhiefah, DongYun, Minh — <strong>5 votes</strong></li><li><strong>Hulk only (3)</strong>: Namcheol, Gyeongsu, Han, Hyunwoo — <strong>4 votes</strong></li><li><strong>Captain America only (2)</strong>: Yadanar, Ly, Seher — <strong>3 votes</strong></li><li><strong>Captain + Hulk (2,3)</strong>: Irfan — <strong>1 vote</strong></li><li><strong>Iron Man only (1)</strong>: Tan — <strong>1 vote</strong></li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🤝</span> The Universal Consensus</div>
-<div class="card-body"><ul><li>Almost everyone says: <strong>the human is fully accountable, period</strong></li><li>"AI cannot bear moral or scientific accountability" appears in nearly every response</li><li>Even Iron Man supporters don't excuse the human — they just emphasize speed</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">🔥</span> The Real Disagreement</div>
-<div class="card-body"><ul><li>The split is NOT about <em>who</em> is responsible</li><li>The split is about <em>how</em> to manage AI to fulfill that responsibility</li><li>This is a much more productive disagreement</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-25">
-<div class="slide-content">
-<h2 class="slide-title">Theme 1 — <strong>The Real Disagreement is HOW, Not WHO</strong></h2>
-<p class="slide-subtitle">Three management philosophies emerge</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🚀</span> The Velocity Camp (Iron Man side)</div>
-<div class="card-body"><ul><li><strong>Tan</strong>: "Define problem, select data, choose model — the researcher is in control at every step"</li><li><strong>Huy</strong>: "AI provides the velocity, but the human provides the vector"</li><li>Position: embrace speed, but never abdicate decisions</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🛡️</span> The Integrity Camp (Captain America side)</div>
-<div class="card-body"><ul><li><strong>Yadanar</strong>: "Relying on AI without careful judgment weakens scientific integrity"</li><li><strong>Ly</strong>: "If results are wrong, we don't blame the software — we check our model"</li><li><strong>Seher</strong>: "Use multiple AI systems to cross-check, but final judgment must be human"</li><li>Position: keep deep engagement to maintain accountability</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">🔬</span> The Verification Camp (Hulk side)</div>
-<div class="card-body"><ul><li><strong>Hyunwoo</strong>: "A flawed hypothesis can result in severe hardware damage"</li><li><strong>Gyeongsu</strong>: "AI hallucinated fake research papers in my coding work"</li><li><strong>Han</strong>: "Researchers must never blindly trust AI; must personally verify every result"</li><li>Position: build active verification systems around the AI</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"The real question isn't 'is the AI responsible?' (no), but 'what does taking responsibility actually look like in practice?'"</div>
-</div>
-</section>
-<section class="slide" id="slide-26">
-<div class="slide-content">
-<h2 class="slide-title">Theme 2 — <strong>The Tool Metaphors</strong></h2>
-<p class="slide-subtitle">How students framed the AI's role</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔨</span> "AI is a Tool" — Most Common Frame</div>
-<div class="card-body"><ul><li><strong>DongYun</strong>: "AI is merely a tool, like a hammer"</li><li><strong>Tan</strong>: "AI is fundamentally a tool without intent or accountability"</li><li><strong>Minh</strong>: "We do not credit the power drill for the architecture"</li><li>The hammer/drill metaphor is intuitive but limited — tools don't <em>suggest</em> what to build</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚛️</span> "AI is a High-Power Instrument" — Namcheol's Reframe</div>
-<div class="card-body"><ul><li>"A nuclear engineer doesn't blame the reactor if a control rod is miscalibrated"</li><li>But the engineer DOES need active containment, monitoring, documentation</li><li>This metaphor better captures the <em>operational risk</em> dimension</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🧭</span> "Velocity vs Vector" — Huy's New Frame</div>
-<div class="card-body"><ul><li>AI provides the <strong>velocity</strong> (speed of generating ideas)</li><li>Human provides the <strong>vector</strong> (direction and validation)</li><li>Captures both the productivity gain AND the irreplaceable human role</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-27">
-<div class="slide-content">
-<h2 class="slide-title">Theme 3 — <strong>Real Engineering Stakes</strong></h2>
-<p class="slide-subtitle">Why this isn't an abstract debate</p>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">⚠️</span> Concrete Failures Students Have Seen or Worry About</div>
-<div class="card-body"><ul><li><strong>Gyeongsu</strong>: AI fabricated fake paper citations — would have been "deeply embarrassing" if used in a presentation</li><li><strong>Hyunwoo</strong>: "A flawed hypothesis regarding system dynamics can result in severe hardware damage"</li><li><strong>Minh</strong>: Motor winding design — "AI-generated hypothesis is merely a high-probability suggestion that must undergo empirical validation"</li><li><strong>Waad</strong>: "Dangerous trend where the ease of a single button press erodes critical thinking in younger generations"</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔍</span> The Pattern</div>
-<div class="card-body"><ul><li>These aren't theoretical concerns — students are encountering them in their own work</li><li>The verification step isn't a luxury; it's how you avoid catastrophic failure</li><li>Engineering domains (robotics, motors, hardware) have <strong>physical consequences</strong> for AI errors</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"AI changes how ideas are generated. It does not change who is responsible for them." — Huy</div>
-</div>
-</section>
-<section class="slide" id="slide-28">
-<div class="slide-content">
-<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
-<p class="slide-subtitle">Function calling makes accountability MECHANICAL, not just philosophical</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔧</span> Tool Calls = Accountability Made Visible</div>
-<div class="card-body"><ul><li>Today's agent shows EVERY tool call in the UI</li><li>You see what the agent searched for, what it retrieved, what it computed</li><li>This is <strong>operational</strong> accountability — not just claimed, but observable</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🎯</span> Tool Descriptions = Where You Specify Limits</div>
-<div class="card-body"><ul><li>Want to constrain the AI? Write narrow tool descriptions</li><li>"Use ONLY when..." in the description prevents misuse</li><li>This is the verification camp's discipline, baked into the system design</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔁</span> The Velocity-Vector Pattern in Code</div>
-<div class="card-body"><ul><li>Tools provide the <strong>velocity</strong> (search 1000 papers in seconds)</li><li>Tool definitions and the loop's exit conditions provide the <strong>vector</strong></li><li>You designed the rails the agent runs on — that's where your accountability lives</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-29">
-<div class="slide-content">
-<h2 class="slide-title">Activity — <strong>Design a Tool with Built-In Accountability</strong></h2>
-<p class="slide-subtitle">Apply the lessons in pairs (10 min)</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📋</span> The Task</div>
-<div class="card-body"><ul><li>Pick any tool from your own research workflow you'd want to automate</li><li>Write its <code class="inline-code">description</code> field with <strong>explicit limits</strong> built in</li><li>Show your description to a partner — can they tell when the LLM should/shouldn't use it?</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">✏️</span> Required Elements in Your Description</div>
-<div class="card-body"><ul><li><strong>What</strong> the tool does (1 sentence)</li><li><strong>When</strong> to use it (specific scenarios)</li><li><strong>When NOT</strong> to use it (boundaries)</li><li><strong>What outputs to verify</strong> (the human-in-the-loop checkpoint)</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> Example</div>
-<div class="card-body"><ul><li>"Generate a hypothesis from input data. Use ONLY for preliminary brainstorming on small datasets (<1000 rows). Do NOT use for high-stakes claims. <strong>OUTPUT MUST BE VALIDATED</strong> against at least one independent baseline before being included in any report."</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-30">
-<div class="slide-content">
-<h2 class="slide-title">🗣️ <strong>Week 9 Discussion Questions</strong> (UST LMS)</h2>
-<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
-<p class="slide-text">1. Several classmates (Huy, Namcheol, Minh) reframed the AI accountability debate using metaphors — "velocity vs vector", "high-power instrument", "power drill". <strong>Which metaphor best captures how YOU work with AI in your research?</strong> Or propose a better one.</p>
-<p class="slide-text">2. In today's practice, you saw every tool call the agent made (transparency). <strong>Does this kind of visibility change your sense of responsibility for the AI's output?</strong> Would you trust an AI more or less if you couldn't see its tool calls?</p>
-</div>
-</section>
-<section class="slide" id="slide-31">
-<div class="slide-content">
-<h2 class="slide-title">Want to Learn More?</h2>
-<p class="slide-text">Function Calling Documentation</p>
-<a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" class="reference-link">📚 OpenAI: Function Calling Guide</a>
-<a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use" target="_blank" class="reference-link">📚 Anthropic: Tool Use Overview</a>
-<a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" class="reference-link">📚 Anthropic: Building Effective Agents</a>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">Agent Frameworks (built on function calling)</p>
-<a href="https://langchain-ai.github.io/langgraph/" target="_blank" class="reference-link">📚 LangGraph — Stateful Agent Workflows</a>
-<a href="https://github.com/openai/openai-agents-python" target="_blank" class="reference-link">📚 OpenAI Agents SDK</a>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">Anthropic Free Online Courses</p>
-<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)</div>
-<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)</div>
-<div class="highlight-quote">🎓 [Introduction to Agent Skills](https://anthropic.skilljar.com/introduction-to-agent-skills)</div>
-</div>
-</section>
-<section class="slide" id="slide-32">
-<div class="slide-content">
-<h2 class="slide-title">Wrap-Up of <strong>Week 9</strong></h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> Lecture</div>
-<div class="card-body"><ul><li>Function calling = LLM outputs JSON describing which function to call; YOUR code runs it; result fed back; loop until done</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> Practice</div>
-<div class="card-body"><ul><li>Built a research agent with <strong>3 tools</strong> (search, fetch, count); the agent picks tools based on the question; every call is visible to the user</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
-<div class="card-body"><ul><li>Week 7 review: universal consensus that humans are accountable; the real disagreement is HOW (velocity / integrity / verification camps); Huy's "velocity vs vector" frame connects accountability to today's tool design</li></ul></div>
-</div>
-</div>
-<p class="slide-text"><strong>Next week:</strong> What happens when tool calls fail — error handling and recovery in agent loops.</p>
-</div>
-</section>
+cfg = {"configurable": {"thread_id": "run-1"}}
+result = graph.invoke({"question": "perovskite stability under humidity",
+                       "queries": [], "cursor": 0, "hits": [],
+                       "kept": None, "draft": "", "errors": []}, config=cfg)
+print(result["draft"])
+print(graph.get_graph().draw_ascii())        # the flow, drawn from the code</code></pre>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎁</span> What the Framework Added</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Checkpointing</strong> — swap <code class="inline-code">InMemorySaver</code> for a SQLite saver and a crashed run resumes from its last node</li>
+                <li><strong>Streaming</strong> — <code class="inline-code">graph.stream(...)</code> yields each node's update as it happens, which is your progress bar</li>
+                <li><strong>A drawing of your own flow</strong>, generated from the code, so the diagram can never drift from reality</li>
+                <li><strong>Interrupts</strong> — pause at an approval node and resume later, which is Week 14's audit interface</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚖️</span> What It Cost</div>
+            <div class="card-body">
+              <ul>
+                <li>A dependency, a new vocabulary, and state updates that merge instead of mutate — a real source of confusion at first</li>
+                <li>Nodes must return <strong>partial updates</strong>, not the whole state. Returning <code class="inline-code">s</code> itself will fight the reducers</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-22">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 5 — <strong>Break Your Own Flow</strong></h2>
+        <p class="slide-subtitle">The part of the session you will actually learn from</p>
+        <div class="cards-grid">
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">💣</span> Five Failures to Induce</div>
+            <div class="card-body">
+              <ul>
+                <li>Make <code class="inline-code">search_papers</code> raise on the second call — does the flow give up cleanly, with the partial state intact?</li>
+                <li>Return zero hits for every query — does it reach <code class="inline-code">give_up</code>, or loop?</li>
+                <li>Have the planner return <strong>eight</strong> queries — does your step budget stop it at the right place?</li>
+                <li>Feed a deliberately vague question ("tell me about materials") — where does it go wrong, and which node would have caught it?</li>
+                <li>Kill the process mid-run, then re-invoke with the same <code class="inline-code">thread_id</code> — does the graph resume?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📊</span> What to Record</div>
+            <div class="card-body">
+              <ul>
+                <li>For each failure: which node, which guard caught it, and what the trace file showed</li>
+                <li>Which failures did the <strong>plain</strong> version handle worse than the graph version? Which ones better?</li>
+                <li>Bring one trace excerpt to the discussion — it is the evidence for this week's forum question</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"You do not understand a flow until you have watched it fail in a way you predicted."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-23">
+      <div class="slide-content">
+        <h2 class="slide-title">✅ <strong>Practice Checklist</strong></h2>
+        <p class="slide-subtitle">Complete these tasks during the hands-on session</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📋</span> Checklist</div>
+            <div class="card-body">
+              <ul>
+                <li>[ ] Write the decomposition table for <strong>your own</strong> research task before touching code: step, input, output, acceptance criterion</li>
+                <li>[ ] Implement the four nodes and run <code class="inline-code">flow_plain.py</code> end to end</li>
+                <li>[ ] Unit-test <code class="inline-code">route()</code> on hand-written states — no API key required</li>
+                <li>[ ] Confirm the step budget, the deadline, and the give-up path each actually trigger</li>
+                <li>[ ] Port the same flow to <code class="inline-code">flow_graph.py</code> and diff the behaviour</li>
+                <li>[ ] Print <code class="inline-code">draw_ascii()</code> and check the picture matches the flow you intended</li>
+                <li>[ ] Induce at least <strong>three</strong> of the five failures and record what happened</li>
+                <li>[ ] (Bonus) Add a validation gate after <code class="inline-code">plan</code>: reject duplicate or over-long queries and retry once</li>
+                <li>[ ] (Bonus) Add an approval node before <code class="inline-code">synthesize</code> and resume the run after approving</li>
+                <li>[ ] (Bonus) Parallelize <code class="inline-code">search</code> across queries and measure the latency difference</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-24">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+        <p class="slide-subtitle">Week 7 Review (Authorship & Accountability) · Ambiguity vs. Clarity</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-25">
+      <div class="slide-content">
+        <h2 class="slide-title">Week 7 — <strong>"Who is Responsible for a Flawed AI Hypothesis?"</strong></h2>
+        <p class="slide-subtitle">14 responses analyzed — a near-universal consensus, with one twist</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📊</span> The Vote Count</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>All three (1+2+3 combined)</strong>: Huy, Waad, Nazhiefah, DongYun, Minh — <strong>5 votes</strong></li>
+                <li><strong>Hulk only (3)</strong>: Namcheol, Gyeongsu, Han, Hyunwoo — <strong>4 votes</strong></li>
+                <li><strong>Captain America only (2)</strong>: Yadanar, Ly, Seher — <strong>3 votes</strong></li>
+                <li><strong>Captain + Hulk (2,3)</strong>: Irfan — <strong>1 vote</strong></li>
+                <li><strong>Iron Man only (1)</strong>: Tan — <strong>1 vote</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🤝</span> The Universal Consensus</div>
+            <div class="card-body">
+              <ul>
+                <li>Almost everyone says: <strong>the human is fully accountable, period</strong></li>
+                <li>"AI cannot bear moral or scientific accountability" appears in nearly every response</li>
+                <li>Even Iron Man supporters don't excuse the human — they just emphasize speed</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">🔥</span> The Real Disagreement</div>
+            <div class="card-body">
+              <ul>
+                <li>The split is NOT about <em>who</em> is responsible</li>
+                <li>The split is about <em>how</em> to manage AI to fulfill that responsibility</li>
+                <li>This is a much more productive disagreement</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-26">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 1 — <strong>The Real Disagreement is HOW, Not WHO</strong></h2>
+        <p class="slide-subtitle">Three management philosophies emerge</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🚀</span> The Velocity Camp (Iron Man side)</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Tan</strong>: "Define problem, select data, choose model — the researcher is in control at every step"</li>
+                <li><strong>Huy</strong>: "AI provides the velocity, but the human provides the vector"</li>
+                <li>Position: embrace speed, but never abdicate decisions</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🛡️</span> The Integrity Camp (Captain America side)</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Yadanar</strong>: "Relying on AI without careful judgment weakens scientific integrity"</li>
+                <li><strong>Ly</strong>: "If results are wrong, we don't blame the software — we check our model"</li>
+                <li><strong>Seher</strong>: "Use multiple AI systems to cross-check, but final judgment must be human"</li>
+                <li>Position: keep deep engagement to maintain accountability</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">🔬</span> The Verification Camp (Hulk side)</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Hyunwoo</strong>: "A flawed hypothesis can result in severe hardware damage"</li>
+                <li><strong>Gyeongsu</strong>: "AI hallucinated fake research papers in my coding work"</li>
+                <li><strong>Han</strong>: "Researchers must never blindly trust AI; must personally verify every result"</li>
+                <li>Position: build active verification systems around the AI</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"The real question isn't 'is the AI responsible?' (no), but 'what does taking responsibility actually look like in practice?'"</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-27">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 2 — <strong>The Tool Metaphors</strong></h2>
+        <p class="slide-subtitle">How students framed the AI's role</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔨</span> "AI is a Tool" — Most Common Frame</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>DongYun</strong>: "AI is merely a tool, like a hammer"</li>
+                <li><strong>Tan</strong>: "AI is fundamentally a tool without intent or accountability"</li>
+                <li><strong>Minh</strong>: "We do not credit the power drill for the architecture"</li>
+                <li>The hammer/drill metaphor is intuitive but limited — tools don't <em>suggest</em> what to build</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚛️</span> "AI is a High-Power Instrument" — Namcheol's Reframe</div>
+            <div class="card-body">
+              <ul>
+                <li>"A nuclear engineer doesn't blame the reactor if a control rod is miscalibrated"</li>
+                <li>But the engineer DOES need active containment, monitoring, documentation</li>
+                <li>This metaphor better captures the <em>operational risk</em> dimension</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧭</span> "Velocity vs Vector" — Huy's New Frame</div>
+            <div class="card-body">
+              <ul>
+                <li>AI provides the <strong>velocity</strong> (speed of generating ideas)</li>
+                <li>Human provides the <strong>vector</strong> (direction and validation)</li>
+                <li>Captures both the productivity gain AND the irreplaceable human role</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-28">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 3 — <strong>Real Engineering Stakes</strong></h2>
+        <p class="slide-subtitle">Why this isn't an abstract debate</p>
+        <div class="cards-grid">
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">⚠️</span> Concrete Failures Students Have Seen or Worry About</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Gyeongsu</strong>: AI fabricated fake paper citations — would have been "deeply embarrassing" if used in a presentation</li>
+                <li><strong>Hyunwoo</strong>: "A flawed hypothesis regarding system dynamics can result in severe hardware damage"</li>
+                <li><strong>Minh</strong>: Motor winding design — "AI-generated hypothesis is merely a high-probability suggestion that must undergo empirical validation"</li>
+                <li><strong>Waad</strong>: "Dangerous trend where the ease of a single button press erodes critical thinking in younger generations"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔍</span> The Pattern</div>
+            <div class="card-body">
+              <ul>
+                <li>These aren't theoretical concerns — students are encountering them in their own work</li>
+                <li>The verification step isn't a luxury; it's how you avoid catastrophic failure</li>
+                <li>Engineering domains (robotics, motors, hardware) have <strong>physical consequences</strong> for AI errors</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"AI changes how ideas are generated. It does not change who is responsible for them." — Huy</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-29">
+      <div class="slide-content">
+        <h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+        <p class="slide-subtitle">A flow makes accountability MECHANICAL, not just philosophical</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧭</span> The Router Is Where Your Accountability Lives</div>
+            <div class="card-body">
+              <ul>
+                <li>Every branch in <code class="inline-code">route()</code> is a decision <strong>you</strong> made and wrote down</li>
+                <li>Huy's "velocity vs vector": the nodes are the velocity, the router is the vector</li>
+                <li>When the flow produces something wrong, <code class="inline-code">trace.jsonl</code> says exactly which of your criteria let it through</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📏</span> Acceptance Criteria Are Accountability, Written Early</div>
+            <div class="card-body">
+              <ul>
+                <li>The verification camp's discipline (Han, Hyunwoo, Gyeongsu) is just "define done before you run"</li>
+                <li>A criterion you can check is a promise you can keep; an adjective is not</li>
+                <li>Namcheol's reactor analogy lands here: containment is designed <strong>in advance</strong>, not diagnosed afterwards</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🚪</span> The Give-Up Path Is an Ethical Feature</div>
+            <div class="card-body">
+              <ul>
+                <li>A flow that reports "0 papers survived screening" is more honest than one that writes a fluent summary of nothing</li>
+                <li>Tan's "AI has no intent or accountability" is exactly why the system must be able to say <em>I could not do this</em></li>
+                <li>You built that node today</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-30">
+      <div class="slide-content">
+        <h2 class="slide-title">Activity — <strong>The Vagueness Audit</strong> (in pairs, 10 min)</h2>
+        <p class="slide-subtitle">Find out whose instruction is actually the bug</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📋</span> The Task</div>
+            <div class="card-body">
+              <ul>
+                <li>Write down, in one sentence, a task you would hand to an agent in your research</li>
+                <li>Give that sentence — <strong>only</strong> that sentence — to your partner</li>
+                <li>Your partner decomposes it into steps with acceptance criteria, guessing wherever you were vague</li>
+                <li>Compare their decomposition with what you actually meant</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">✏️</span> Record Three Things</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>How many guesses</strong> did your partner have to make?</li>
+                <li>Which guess would have been <strong>most expensive</strong> if an agent had made it instead?</li>
+                <li>Rewrite the sentence so that guess is no longer possible — how much longer did it get?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> Worked Example</div>
+            <div class="card-body">
+              <ul>
+                <li>Vague: "Summarize the recent literature on solid-state electrolytes."</li>
+                <li>Guesses required: recent = ? · how many papers = ? · summarize for whom = ? · include preprints = ? · when is it finished = ?</li>
+                <li>Specified: "From arXiv + Scopus, 2023 onward, take the 15 most-cited papers on sulfide solid-state electrolytes; for each extract conductivity, synthesis route, and stability window; group by synthesis route; stop when every group has at least 2 papers or you have screened 60 candidates."</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-31">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Week 9 Discussion Questions</strong> (UST LMS)</h2>
+        <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+        <p class="slide-text">1. <strong>Ambiguity vs. Clarity — why do agents fail when human instructions are vague?</strong> Bring the sentence from today's Vagueness Audit and the decomposition your partner produced. How many guesses did one sentence require? Was the failure a limit of the <em>model</em>, or a gap in your <em>specification</em>? Where is the line?</p>
+        <p class="slide-text">2. Today you wrote acceptance criteria before prompts, and a router that branches only on conditions you can check. <strong>Which step of your own research could you NOT write an acceptance criterion for?</strong> Is that because the criterion is hard to express, or because you have not yet decided what "good" means — and what does that imply about delegating it to an agent?</p>
+        <p class="slide-text">3. Several classmates (Huy, Namcheol, Minh) reframed the accountability debate using metaphors — "velocity vs vector", "high-power instrument", "power drill". After building a flow with an explicit give-up path, <strong>which metaphor best captures how YOU work with AI?</strong> Or propose a better one.</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-32">
+      <div class="slide-content">
+        <h2 class="slide-title">Want to Learn More?</h2>
+        <p class="slide-text">Workflow Design</p>
+        <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" class="reference-link">📚 Building Effective Agents — Anthropic</a>
+        <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" class="reference-link">📚 Effective Context Engineering for AI Agents — Anthropic</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Frameworks</p>
+        <a href="https://docs.langchain.com/oss/python/langgraph/graph-api" target="_blank" class="reference-link">📚 LangGraph — Graph API</a>
+        <a href="https://docs.langchain.com/oss/python/langgraph/persistence" target="_blank" class="reference-link">📚 LangGraph — Persistence and checkpointing</a>
+        <a href="https://github.com/openai/openai-agents-python" target="_blank" class="reference-link">📚 OpenAI Agents SDK</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Anthropic Free Online Courses</p>
+        <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank" class="reference-link">🎓 Building with the Claude API</a>
+        <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" class="reference-link">🎓 Introduction to Model Context Protocol</a>
+        <a href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank" class="reference-link">🎓 Introduction to Agent Skills</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-33">
+      <div class="slide-content">
+        <h2 class="slide-title">Wrap-Up of <strong>Week 9</strong></h2>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>Workflows run <strong>predefined code paths</strong>; agents choose their own — prefer the workflow and buy agency only where it pays. Five patterns, typed state, an acceptance criterion per step, and five guards: gates, bounded retries, budgets, checkpoints, and an explicit give-up path</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Built the same literature-triage flow twice — plain Python and <strong>LangGraph</strong> — then broke it on purpose and watched each guard fire</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 7 review: universal consensus that humans are accountable; the disagreement is HOW (velocity / integrity / verification camps). Today reframes it: vagueness is not tolerated by a flow, it is <strong>revealed</strong> by it</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text"><strong>Next week:</strong> How do you know the output is any good? <strong>Evaluation of agent output</strong> — metrics, rubrics, and who gets to judge.</p>
+      </div>
+    </section>
 
   </div>
 
@@ -1212,7 +1693,7 @@ Question 4: "Compare 2023 vs 2024 paper counts"
       <div class="nav-controls">
         <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
         <div class="page-input-wrapper">
-          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">32</span>
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">33</span>
         </div>
         <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
       </div>
@@ -1220,7 +1701,7 @@ Question 4: "Compare 2023 vs 2024 paper counts"
         <a class="nav-link" onclick="goToSlide(1)">Intro</a>
         <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
         <a class="nav-link" onclick="goToSlide(15)">Practice</a>
-        <a class="nav-link" onclick="goToSlide(23)">Discussion</a>
+        <a class="nav-link" onclick="goToSlide(24)">Discussion</a>
       </div>
     </div>
   </nav>
@@ -1228,7 +1709,7 @@ Question 4: "Compare 2023 vs 2024 paper counts"
   <script>
     const pres = document.getElementById('presentation');
     const pageInput = document.getElementById('pageInput');
-    const totalSlides = 32;
+    const totalSlides = 33;
     let currentSlide = 1;
 
     // Modal logic

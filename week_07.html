@@ -503,7 +503,7 @@
 </head>
 <body>
   <header class="global-header">
-    <span class="header-logo">Multi-Agent Research Debate</span>
+    <span class="header-logo">Automation of Data Output &amp; Discovery</span>
     <span class="header-sep">|</span>
     <span class="header-subtitle">Two AI Personas Discuss Your Papers — You Moderate</span>
   </header>
@@ -513,717 +513,1128 @@
 
   <div class="presentation" id="presentation">
     <section class="slide title-slide" id="slide-1">
-<div class="slide-content">
-<h1 class="slide-title">Multi-Agent Research Debate</h1>
-<p class="slide-subtitle">Two AI Personas Discuss Your Papers — You Moderate</p>
-<div class="highlight-quote">Week 7 of Phase 2: Building Real Systems (Weeks 5-8)</div>
-</div>
-</section>
-<section class="slide" id="slide-2">
-<div class="slide-content">
-<h2 class="slide-title">Contents</h2>
-<p class="slide-subtitle">Lecture, Practice, and Discussion for Week 7</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
-<div class="card-body"><ul><li>Multi-Agent Conversation — why two perspectives beat one</li><li>Debate as a research tool — surfacing hidden assumptions</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> 2. Practice</div>
-<div class="card-body"><ul><li>Build a Research Debate App (Streamlit)</li><li>Two customizable personas debate using YOUR paper metadata</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
-<div class="card-body"><ul><li>Week 6 Student Response Review</li><li>Midterm final check — submission next week</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide title-slide" id="slide-3">
-<div class="slide-content">
-<h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
-<p class="slide-subtitle">Why Two AI Voices Are Better Than One</p>
-</div>
-</section>
-<section class="slide" id="slide-4">
-<div class="slide-content">
-<h2 class="slide-title">The Story So Far — <strong>Where We Are</strong></h2>
-<p class="slide-subtitle">Week 5 → 6 → 7 progression</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📄</span> Week 5 — Chat with Papers</div>
-<div class="card-body"><ul><li>Upload PDFs, ask questions, get answers</li><li>Single AI voice — helpful but one-sided</li><li>"What does this paper say?" → summary</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔬</span> Week 6 — Extract & Visualize</div>
-<div class="card-body"><ul><li>Metadata extraction, charts, author networks</li><li>Data-driven view of your paper collection</li><li>"What patterns exist?" → charts</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> Week 7 — Debate with Papers</div>
-<div class="card-body"><ul><li>Two AI personas argue about your research topic</li><li>Using your paper metadata as evidence</li><li>"What should we think about this?" → <strong>structured disagreement</strong></li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"Week 5 answered questions. Week 6 found patterns. Week 7 challenges assumptions."</div>
-</div>
-</section>
-<section class="slide" id="slide-5">
-<div class="slide-content">
-<h2 class="slide-title">Why <strong>Debate</strong> as a Research Tool?</h2>
-<p class="slide-subtitle">The problem with a single AI perspective</p>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">⚠️</span> The Echo Chamber Problem</div>
-<div class="card-body"><ul><li>Ask one AI: "Is deep learning good for materials science?"</li><li>Answer: "Yes, deep learning shows promising results in..."</li><li>It agrees with your premise — it doesn't push back</li><li>You get <strong>confirmation</strong>, not <strong>insight</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💡</span> The Debate Solution</div>
-<div class="card-body"><ul><li>Ask TWO AIs with different perspectives to argue the point</li><li>Optimist: "Deep learning has transformed property prediction by..."</li><li>Skeptic: "But the lack of interpretability means that..."</li><li>You get <strong>tension</strong> — and tension reveals what matters</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> Research Application</div>
-<div class="card-body"><ul><li>Literature review: two views on methodology choices</li><li>Gap analysis: "This is important" vs "This is already solved"</li><li>Future directions: "We should pursue X" vs "X has fundamental limits"</li><li>The debate surfaces <strong>assumptions you didn't know you had</strong></li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-6">
-<div class="slide-content">
-<h2 class="slide-title">Multi-Agent <strong>Conversation Pattern</strong></h2>
-<p class="slide-subtitle">How two AI personas interact — a new design pattern</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🏗️</span> Architecture</div>
-<div class="card-body"><ul><li><strong>Persona A</strong> sends a message → its response is added to shared history</li><li><strong>Persona B</strong> sees A's message + history → responds to A</li><li><strong>Repeat</strong> — each agent builds on the other's arguments</li><li>Both share the same <strong>metadata context</strong> as evidence base</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔄</span> The Turn Cycle</div>
-<div class="card-body"><ul><li>Each "round" = Persona A speaks + Persona B responds</li><li>Rounds continue until user pauses or max rounds reached</li><li>Each persona maintains its character and argues from its position</li><li>Metadata serves as shared "ground truth" both must reference</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">👤</span> The Human Moderator</div>
-<div class="card-body"><ul><li>User can <strong>pause</strong> the debate at any time</li><li>User can <strong>interject</strong> with a comment or redirect</li><li>User can <strong>modify personas</strong> mid-debate to shift perspective</li><li>User can <strong>resume</strong> — both agents see the user's interjection</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-7">
-<div class="slide-content">
-<h2 class="slide-title">Designing <strong>Debate Personas</strong></h2>
-<p class="slide-subtitle">Good personas create productive tension — not just disagreement</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎭</span> What Makes a Good Debate Persona?</div>
-<div class="card-body"><ul><li>Clear <strong>position</strong> — not neutral, not vague</li><li>Defined <strong>reasoning style</strong> — how they argue, what evidence they value</li><li><strong>Grounded in data</strong> — must reference actual papers from the collection</li><li><strong>Respectful</strong> — challenges ideas, not people</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> Good Persona Pairs</div>
-<div class="card-body"><ul><li><strong>Methodologist vs Empiricist</strong> — "The method is flawed" vs "But it works in practice"</li><li><strong>Innovator vs Traditionalist</strong> — "We need new approaches" vs "Established methods are reliable"</li><li><strong>Optimist vs Skeptic</strong> — "This trend will transform the field" vs "This is hype"</li><li><strong>Specialist vs Generalist</strong> — "Depth in one area" vs "Cross-disciplinary connections"</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">❌</span> Bad Persona Pairs</div>
-<div class="card-body"><ul><li>Two personas that agree on everything → no debate</li><li>One persona with no expertise → unfair argument</li><li>Personas with personal attacks → toxic, not productive</li><li>Personas that ignore the data → speculation, not analysis</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-8">
-<div class="slide-content">
-<h2 class="slide-title">Persona <strong>Prompt Structure</strong></h2>
-<p class="slide-subtitle">How to define a persona for research debate</p>
-<pre class="code-block"><code class="language-text">You are [PERSONA NAME], a [ROLE/PERSPECTIVE].
+      <div class="slide-content">
+        <h1 class="slide-title">Automation of Data Output & Discovery</h1>
+        <p class="slide-subtitle">From Raw CSV to a Drafted Report — Figures, Numbers, and Words You Can Defend</p>
+        <div class="highlight-quote">Week 7 of Phase 2: Workflow Automation & Design (Weeks 5-8)</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title">Contents</h2>
+        <p class="slide-subtitle">Lecture, Practice, and Discussion for Week 7</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> 1. Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>Drafting reports and visualizing results</li>
+                <li>Why the numbers must come from code and only the sentences from the LLM</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> 2. Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Auto-Drafting: raw CSV → figures → a report draft you can defend</li>
+                <li>Every number in the draft is traced back to a row</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> 3. Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 6 Review & Authorship and Ethics</li>
+                <li>Who is responsible if the AI-generated hypothesis is flawed?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-3">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 1: <strong>Lecture</strong></h1>
+        <p class="slide-subtitle">Drafting Reports and Visualizing Results</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title">The Story So Far — <strong>Input Is Solved, Output Is Not</strong></h2>
+        <p class="slide-subtitle">Week 6 filled the funnel; today we empty it</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📥</span> Week 6 — Data In</div>
+            <div class="card-body">
+              <ul>
+                <li>PDFs → Markdown → structured metadata → a table you can export as CSV</li>
+                <li>You automated the part of research that is <em>reading and recording</em></li>
+                <li>The output was <strong>data</strong>: rows, fields, a chart or two</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📤</span> Week 7 — Data Out (Today)</div>
+            <div class="card-body">
+              <ul>
+                <li>The other half: turning a table into <strong>figures, findings, and prose</strong></li>
+                <li>Weekly progress reports, experiment summaries, figure captions, methods paragraphs</li>
+                <li>The part of research that is <em>explaining what the data says</em></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚠️</span> Why This Half Is More Dangerous</div>
+            <div class="card-body">
+              <ul>
+                <li>A wrong metadata field is visible in a table; a wrong number inside a fluent paragraph is not</li>
+                <li>Week 2's lesson arrives with full force: <strong>fluency ≠ accuracy</strong></li>
+                <li>Today's entire design goal: make it <strong>structurally impossible</strong> for the model to invent a number</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="flow-container">
+          <div class="flow-step">PDFs (W6)</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Metadata CSV (W6)</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Facts computed in code</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Figures</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Drafted report (W7)</div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title">What "Auto-Drafting" <strong>Is and Is Not</strong></h2>
+        <p class="slide-subtitle">Setting the expectation before we build</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> What It Is</div>
+            <div class="card-body">
+              <ul>
+                <li>A pipeline that turns a <strong>table</strong> into a <strong>first draft</strong>: figures, captions, a results paragraph, a limitations note</li>
+                <li>The boring 70%: "N samples were measured across 4 conditions; mean yield was 81.9% (SD 3.2)"</li>
+                <li>A <strong>starting point</strong> you edit, not a submission you sign</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">❌</span> What It Is Not</div>
+            <div class="card-body">
+              <ul>
+                <li>Not "write my paper" — the argument, the interpretation, and the claim stay yours</li>
+                <li>Not a statistician — it does not choose your test or defend your assumptions</li>
+                <li>Not a discovery engine — it proposes patterns; <strong>you</strong> decide which are real</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> The Useful Frame</div>
+            <div class="card-body">
+              <ul>
+                <li>Think of it as a <strong>very fast research assistant who cannot do arithmetic</strong></li>
+                <li>So you never let it do arithmetic — you hand it the answers and ask for sentences</li>
+                <li>Everything today follows from that one rule</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"The draft is the cheapest part of the paper. The reason it is cheap is that it is also the least valuable part — so automate exactly that."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title">The <strong>Drafting Pipeline</strong> — Five Stages</h2>
+        <p class="slide-subtitle">Notice where the LLM appears, and where it does not</p>
+        <div class="mermaid-container">
+          <div class="mermaid">graph LR
+            A["📄 Raw CSV"] --> B["🧹 Validate & Profile<br>(pandas — no LLM)"]
+            B --> C["🔢 Compute Facts<br>(pandas — no LLM)"]
+            C --> D["📊 Choose & Render Charts<br>(LLM picks spec → matplotlib draws)"]
+            C --> E["✍️ Narrate the Facts<br>(LLM — text only)"]
+            D --> F["📝 Assemble Report<br>(template — no LLM)"]
+            E --> F
+            F --> G["✅ Verify every number<br>(code — no LLM)"]
+            style B fill:#e8f5e9,stroke:#388e3c
+            style C fill:#e8f5e9,stroke:#388e3c
+            style D fill:#fff3e0,stroke:#f57c00
+            style E fill:#fff3e0,stroke:#f57c00
+            style G fill:#e1f5fe,stroke:#0288d1</div>
+        </div>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Read the Colors</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Green</strong> = deterministic Python. Same input, same output, forever</li>
+                <li><strong>Orange</strong> = the LLM. It chooses <em>how to present</em> and <em>how to phrase</em> — never <em>what the number is</em></li>
+                <li><strong>Blue</strong> = the guard that catches the LLM when it slips</li>
+                <li>This split is the whole lecture. Everything else is detail</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title">Stage 1–2 — <strong>Compute the Facts in Code</strong></h2>
+        <p class="slide-subtitle">The LLM receives answers, never raw data to add up</p>
+        <pre class="code-block"><code class="language-python"># facts.py — no LLM anywhere in this file
+import pandas as pd
 
-## Your Position
-[What you believe and argue for — 2-3 sentences]
-
-## Your Reasoning Style
-- You prioritize [type of evidence/logic]
-- You are skeptical of [what you push back on]
-- You always reference specific papers from the data provided
-
-## Rules
-- Respond in 100-150 words per turn
-- Cite specific paper titles or authors as evidence
-- Acknowledge good points from the other side
-- Stay in character throughout the debate</code></pre>
-<div class="highlight-quote">"A well-designed persona prompt is like casting a role in a play — the character must be clear enough to be consistent, but flexible enough to respond naturally."</div>
-</div>
-</section>
-<section class="slide" id="slide-9">
-<div class="slide-content">
-<h2 class="slide-title">Example — <strong>Two Research Personas</strong></h2>
-<p class="slide-subtitle">Designed for a materials science paper collection</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔬</span> Dr. Data (The Empiricist)</div>
-<div class="card-body"><ul><li>"I believe in what the numbers show."</li><li>Prioritizes: statistical evidence, reproducibility, large datasets</li><li>Skeptical of: theoretical claims without experimental validation</li><li>Style: precise, measured, data-driven arguments</li><li>"According to Kim et al. (2025), the error rate dropped from 24% to 1.5% — that's not speculation, that's evidence."</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🧠</span> Prof. Theory (The Conceptualist)</div>
-<div class="card-body"><ul><li>"I care about WHY things work, not just THAT they work."</li><li>Prioritizes: interpretability, causal mechanisms, first principles</li><li>Skeptical of: black-box models, correlation-only findings</li><li>Style: probing questions, analogies, connecting to broader principles</li><li>"Yes, GNN reduces error — but can anyone explain WHY? Without mechanism, we're optimizing in the dark."</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-10">
-<div class="slide-content">
-<h2 class="slide-title">The Human as <strong>Moderator</strong></h2>
-<p class="slide-subtitle">This is where YOUR irreplaceable skill (Week 6 discussion) comes in</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> What the Moderator Does</div>
-<div class="card-body"><ul><li><strong>Directs</strong> the topic: "Now discuss the methodology limitations"</li><li><strong>Challenges</strong> both sides: "Dr. Data, you ignored the small sample size"</li><li><strong>Redirects</strong>: "This is going in circles — let's move to future directions"</li><li><strong>Synthesizes</strong>: "It seems you both agree on X but disagree on Y"</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔗</span> Connection to Week 6 Discussion</div>
-<div class="card-body"><ul><li><strong>Iron Man</strong>: you set the research direction (choose the debate topic)</li><li><strong>Captain America</strong>: you maintain integrity (spot hallucinations)</li><li><strong>Hulk</strong>: you validate claims (check against actual metadata)</li><li><strong>Han's epistemic taste</strong>: you know when the debate is productive vs noise</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"The AI debates. You judge. This is the human-AI collaboration pattern we've been building toward all semester."</div>
-</div>
-</section>
-<section class="slide" id="slide-11">
-<div class="slide-content">
-<h2 class="slide-title">Technical <strong>Architecture</strong></h2>
-<p class="slide-subtitle">How the debate system works under the hood</p>
-<div class="mermaid-container"><div class="mermaid">sequenceDiagram
-    participant U as 👤 User (Moderator)
-    participant A as 🔵 Persona A
-    participant B as 🟠 Persona B
-    participant M as 📁 Metadata Context
-
-    U->>A: Set topic + persona prompt
-    U->>B: Set topic + persona prompt
-    M-->>A: Paper metadata as evidence
-    M-->>B: Paper metadata as evidence
-    loop Each Round
-        A->>B: Argument (sees full history)
-        B->>A: Counter-argument (sees full history)
-        U-->>U: Pause / Interject / Continue?
-    end
-    U->>U: Synthesize & conclude</div></div>
-</div>
-</section>
-<section class="slide" id="slide-12">
-<div class="slide-content">
-<h2 class="slide-title"><strong>Shared History</strong> — The Key Design Choice</h2>
-<p class="slide-subtitle">How messages flow between personas and user</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📝</span> Message Types</div>
-<div class="card-body"><ul><li><strong>[Persona A]</strong>: "Based on the metadata, deep learning papers grew 300%..."</li><li><strong>[Persona B]</strong>: "But Prof. Theory would note that interpretability papers are at 0%..."</li><li><strong>[User/Moderator]</strong>: "Good point. Let's focus on interpretability specifically."</li><li>All three types go into the <strong>same conversation history</strong></li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔧</span> Implementation</div>
-<div class="card-body"><ul><li>Single list of messages: <code class="inline-code">[{role, name, content}, ...]</code></li><li>Persona A sees: system prompt A + shared history + "Your turn"</li><li>Persona B sees: system prompt B + shared history + "Your turn"</li><li>User interjection: added as "moderator" message, both see it next turn</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚡</span> Why This Works</div>
-<div class="card-body"><ul><li>Shared context means personas <strong>respond to each other</strong>, not just repeat</li><li>User interjections <strong>redirect</strong> the conversation naturally</li><li>The debate evolves — later rounds are more nuanced than early ones</li><li>Metadata citations keep both personas <strong>grounded in evidence</strong></li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-13">
-<div class="slide-content">
-<h2 class="slide-title">Lecture Summary — Multi-Agent Research Debate</h2>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🗣️</span> Why Debate?</div>
-<div class="card-body"><ul><li>Single AI confirms your biases; two AIs surface hidden assumptions</li><li>Debate = structured disagreement grounded in evidence (your metadata)</li><li>Four persona pair patterns: Methodologist/Empiricist, Innovator/Traditionalist, Optimist/Skeptic, Specialist/Generalist</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🔧</span> How It Works</div>
-<div class="card-body"><ul><li>Shared conversation history — personas respond to each other</li><li>User as moderator: pause, interject, redirect, resume</li><li>Both personas reference the same metadata as evidence</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">👤</span> The Human Role</div>
-<div class="card-body"><ul><li>Connects to every week's discussion: you direct (Iron Man), validate (Hulk), maintain integrity (Cap), and exercise epistemic taste (Han)</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide title-slide" id="slide-14">
-<div class="slide-content">
-<h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
-<p class="slide-subtitle">Build a Research Debate App — Two Personas, Your Data, You Moderate</p>
-</div>
-</section>
-<section class="slide" id="slide-15">
-<div class="slide-content">
-<h2 class="slide-title">Practice Overview — <strong>What We'll Build</strong></h2>
-<p class="slide-subtitle">Extend the Week 6 app with a debate tab</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> Goal</div>
-<div class="card-body"><ul><li>Add a <strong>Debate</strong> tab to the existing Streamlit app</li><li>Two editable personas debate a user-chosen topic</li><li>Metadata from extracted papers serves as shared evidence</li><li>User controls: Start, Pause, Interject, Resume</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">📁</span> New Files</div>
-<div class="card-body"><ul><li><code class="inline-code">debate_engine.py</code> — debate loop, persona management, history</li><li><code class="inline-code">app.py</code> — add Tab 5: Research Debate</li><li>Reuses: <code class="inline-code">pdf_to_md.py</code>, <code class="inline-code">llm_client.py</code> from Week 6</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚡</span> Key Features</div>
-<div class="card-body"><ul><li>Editable persona prompts (text areas in sidebar or inline)</li><li>Round-by-round generation with streaming</li><li>User interjection between rounds</li><li>Full debate history displayed as a conversation</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-16">
-<div class="slide-content">
-<h2 class="slide-title">Step 0 — <strong>File Structure</strong></h2>
-<p class="slide-subtitle">Add to your existing Week 6 project</p>
-<pre class="code-block"><code class="language-text">practices/week_06/
-  app.py                # Updated — add Tab 5 (Debate)
-  pdf_to_md.py          # Same as Week 6
-  llm_client.py         # Updated — add debate_turn()
-  chart_generator.py    # Same as Week 6
-  debate_engine.py      # NEW — persona management + debate loop
-  md_output/            # Your extracted .md files
-  pdfs/                 # Your PDF files</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Build on Week 6</div>
-<div class="card-body"><ul><li>Same app, same data — just a new way to explore it</li><li>The debate uses the SAME metadata that powers charts and Q&A</li><li>Week 3 persona concept + Week 6 data + new interaction pattern</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-17">
-<div class="slide-content">
-<h2 class="slide-title">Step 1 — <strong>Debate Engine</strong> (<code class="inline-code">debate_engine.py</code>)</h2>
-<p class="slide-subtitle">Persona definitions + debate turn management</p>
-<pre class="code-block"><code class="language-python"># debate_engine.py
-DEFAULT_PERSONAS = {
-    "Dr. Data (Empiricist)": """You are Dr. Data, an empirical researcher.
-## Your Position
-You believe in evidence-based conclusions. Numbers and reproducibility matter most.
-## Your Style
-- Cite specific papers and statistics from the data provided
-- Be skeptical of claims without quantitative evidence
-- Acknowledge strong counter-arguments, then redirect
-## Rules
-- Respond in 100-150 words per turn
-- Reference specific paper titles or authors as evidence
-- Stay in character""",
-
-    "Prof. Theory (Conceptualist)": """You are Prof. Theory, a theoretical researcher.
-## Your Position
-You care about WHY things work, not just THAT they work. Interpretability and
-mechanism matter more than benchmark scores.
-## Your Style
-- Ask probing questions about assumptions and mechanisms
-- Connect findings to broader scientific principles
-- Challenge black-box approaches, demand explanations
-## Rules
-- Respond in 100-150 words per turn
-- Reference specific paper titles or authors as evidence
-- Stay in character""",
+def compute_facts(df: pd.DataFrame, value_col: str, group_col: str) -&gt; dict:
+    g = df.groupby(group_col)[value_col]
+    return {
+        "n_rows": int(len(df)),
+        "n_groups": int(df[group_col].nunique()),
+        "missing": int(df[value_col].isna().sum()),
+        "overall_mean": round(float(df[value_col].mean()), 3),
+        "overall_sd": round(float(df[value_col].std(ddof=1)), 3),
+        "group_means": {k: round(float(v), 3) for k, v in g.mean().items()},
+        "best_group": str(g.mean().idxmax()),
+        "worst_group": str(g.mean().idxmin()),
+        "spread": round(float(g.mean().max() - g.mean().min()), 3),
+    }</code></pre>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔒</span> Why This Matters</div>
+            <div class="card-body">
+              <ul>
+                <li>Every number the report will ever contain now exists in <strong>one dictionary</strong></li>
+                <li>The LLM's job shrinks from "analyze this data" to "write sentences using these values"</li>
+                <li>This is Week 4's lesson without the ceremony: a <strong>tool</strong> computed it, so it is deterministic</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🧮</span> What Goes In the Facts Dict</div>
+            <div class="card-body">
+              <ul>
+                <li>Counts, means, SDs, min/max, group comparisons, missing-value counts, date ranges, units</li>
+                <li><strong>Include the ugly numbers</strong>: how many rows you dropped, how many groups have n < 3</li>
+                <li>If a fact is not in the dict, it must not appear in the draft</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="slide-title">Which Chart? — A <strong>Decision Table</strong> the LLM Can Follow</h2>
+        <p class="slide-subtitle">Put this table in the system prompt and chart choice stops being random</p>
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>What you are showing</th>
+              <th>Chart</th>
+              <th>Never use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>One value per category</td>
+              <td>Horizontal bar, sorted</td>
+              <td>Pie (beyond ~4 slices)</td>
+            </tr>
+            <tr>
+              <td>Distribution of one variable</td>
+              <td>Histogram, or box/violin by group</td>
+              <td>Bar of means alone</td>
+            </tr>
+            <tr>
+              <td>Relationship of two numeric variables</td>
+              <td>Scatter (+ fit line if justified)</td>
+              <td>Dual y-axis</td>
+            </tr>
+            <tr>
+              <td>Change over time</td>
+              <td>Line, time on x</td>
+              <td>Bar with many time points</td>
+            </tr>
+            <tr>
+              <td>Group means with uncertainty</td>
+              <td>Bar/dot <strong>with error bars</strong>, n labelled</td>
+              <td>Mean without spread</td>
+            </tr>
+            <tr>
+              <td>Many pairwise comparisons</td>
+              <td>Small multiples or heatmap</td>
+              <td>One chart with 12 colors</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="cards-grid">
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🚫</span> The Two Sins of Auto-Generated Figures</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Mean without spread</strong> — a bar chart of four means hides that one group has n = 2</li>
+                <li><strong>Truncated y-axis</strong> — the model loves a dramatic-looking difference; force <code class="inline-code">ylim</code> from 0 unless you have a reason</li>
+                <li>Both are easy for an agent to produce and hard for a reader to notice</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-9">
+      <div class="slide-content">
+        <h2 class="slide-title">Stage 3 — Let the LLM Pick the <strong>Spec</strong>, Not Write the Code</h2>
+        <p class="slide-subtitle">Structured output (Week 3) is what makes this safe</p>
+        <pre class="code-block"><code class="language-python"># The model returns a chart SPECIFICATION constrained by a schema.
+# It never returns Python, so nothing generated is ever executed.
+CHART_SPEC = {
+    "type": "object",
+    "properties": {
+        "chart":  {"type": "string", "enum": ["bar", "line", "scatter", "hist", "box"]},
+        "x":      {"type": "string"},
+        "y":      {"type": "string"},
+        "error_bars": {"type": "boolean"},
+        "title":  {"type": "string"},
+        "caption": {"type": "string"},
+        "reason": {"type": "string"},          # why this chart — you read this
+    },
+    "required": ["chart", "x", "y", "error_bars", "title", "caption", "reason"],
+    "additionalProperties": False,
 }
 
-def build_persona_system_prompt(persona_prompt, metadata_context, topic):
-    """Build full system prompt for a debate persona."""
-    return f"""{persona_prompt}
+def render(df, spec):                           # a small, boring, auditable renderer
+    fig, ax = plt.subplots(figsize=(6, 4))
+    if spec["chart"] == "bar":
+        g = df.groupby(spec["x"])[spec["y"]]
+        g.mean().plot.bar(ax=ax, yerr=g.std() if spec["error_bars"] else None)
+        ax.set_ylim(bottom=0)                   # no truncated axes, ever
+    elif spec["chart"] == "scatter":
+        df.plot.scatter(x=spec["x"], y=spec["y"], ax=ax)
+    ...
+    ax.set_title(spec["title"])
+    return fig</code></pre>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🛡️</span> Why Not Just Let It Write matplotlib Code?</div>
+            <div class="card-body">
+              <ul>
+                <li>Because then you are back to <code class="inline-code">exec()</code> on model output — exactly the hole we closed in Week 4</li>
+                <li>A spec has a <strong>fixed vocabulary</strong>: five chart types you implemented and tested</li>
+                <li>When the spec is wrong you see it instantly in the <code class="inline-code">reason</code> field; when generated code is wrong it may still run</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-10">
+      <div class="slide-content">
+        <h2 class="slide-title">Stage 4 — <strong>Narrate the Facts</strong>, Nothing Else</h2>
+        <p class="slide-subtitle">The prompt that keeps the numbers honest</p>
+        <pre class="code-block"><code class="language-python">SYSTEM = """You write the Results section of a research report.
 
-## Debate Topic
-{topic}
+You will receive a JSON object of COMPUTED FACTS and nothing else.
 
-## Available Evidence (Paper Metadata)
-{metadata_context}
+Rules:
+1. Use ONLY numbers that appear in the FACTS object. Never compute a new
+   number, never round differently, never estimate.
+2. If a claim needs a number that is not in FACTS, write
+   [NUMBER NOT AVAILABLE] instead of guessing.
+3. Report the spread and the sample size whenever you report a mean.
+4. Describe what the data shows. Do NOT explain WHY, do not speculate
+   about mechanisms, and do not claim significance without a test result.
+5. 150 words maximum. Past tense, third person, no adjectives of praise.
+"""
 
-## Instructions
-- Use the paper metadata above as your evidence base
-- Cite specific papers by title or author when making claims
-- Respond to the other persona's latest argument directly
-- Keep your response focused and under 150 words"""
+user = json.dumps(facts, indent=2, ensure_ascii=False)</code></pre>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> Why Each Rule Exists</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Rule 1–2</strong> turn hallucination into a visible <code class="inline-code">[NUMBER NOT AVAILABLE]</code> marker instead of a plausible lie</li>
+                <li><strong>Rule 3</strong> blocks the most common auto-draft error: a bare mean</li>
+                <li><strong>Rule 4</strong> keeps the <em>interpretation</em> — the part that is actually yours — out of the model's hands</li>
+                <li><strong>Rule 5</strong> keeps it a draft, not a document you are tempted to paste unread</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-11">
+      <div class="slide-content">
+        <h2 class="slide-title">Stage 5 — <strong>Verify</strong>: Catch the Number It Made Up Anyway</h2>
+        <p class="slide-subtitle">Twenty lines that make the whole pipeline trustworthy</p>
+        <pre class="code-block"><code class="language-python">import re
 
-def build_metadata_context(all_meta):
-    """Format metadata as readable context for personas."""
-    parts = []
-    for meta in all_meta:
-        lines = [f"### {meta.get('title', meta.get('_filename', '?'))}"]
-        for k, v in meta.items():
-            if not k.startswith("_"):
-                lines.append(f"- {k}: {v}")
-        parts.append("\n".join(lines))
-    return "\n\n".join(parts)</code></pre>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-18">
-<div class="slide-content">
-<h2 class="slide-title">Step 2 — <strong>Debate Turn Function</strong> (<code class="inline-code">llm_client.py</code>)</h2>
-<p class="slide-subtitle">Generate one persona's response given the shared history</p>
-<pre class="code-block"><code class="language-python"># Add to llm_client.py
+def flatten(facts):                      # every allowed number, in every rounding
+    out = set()
+    def walk(v):
+        if isinstance(v, (int, float)):
+            out.update({f"{v:g}", f"{v:.1f}", f"{v:.2f}", str(round(v))})
+        elif isinstance(v, dict):
+            for x in v.values(): walk(x)
+    walk(facts)
+    return out
 
-def debate_turn(client, model, system_prompt, history):
-    """Generate one debate turn — streaming.
+def unsupported_numbers(draft: str, facts: dict) -&gt; list:
+    allowed = flatten(facts)
+    found = re.findall(r"\d+(?:\.\d+)?", draft)
+    return sorted({n for n in found if n not in allowed})
 
-    Args:
-        system_prompt: persona-specific system prompt with metadata
-        history: shared conversation history (all turns so far)
-    """
-    messages = [{"role": "system", "content": system_prompt}]
-    messages.extend(history)
-    messages.append({"role": "user", "content": "Your turn to respond."})
-    return client.chat.completions.create(
-        model=model, messages=messages, stream=True
-    )</code></pre>
-<div class="cards-grid">
-<div class="card card-yellow">
-<div class="card-header"><span class="icon">💡</span> Design Choices</div>
-<div class="card-body"><ul><li>"Your turn to respond" triggers the persona to continue the debate</li><li>The <strong>system prompt</strong> defines WHO they are and WHAT data they have</li><li>The <strong>history</strong> shows what's been said — they respond to the latest argument</li><li>Streaming lets the user see the response forming in real time</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-19">
-<div class="slide-content">
-<h2 class="slide-title">Step 3 — <strong>Tab 5: Debate Setup</strong> (<code class="inline-code">app.py</code>)</h2>
-<p class="slide-subtitle">Topic input + persona editors + debate controls</p>
-<pre class="code-block"><code class="language-python"># app.py — Tab 5 (Debate)
-from debate_engine import (
-    DEFAULT_PERSONAS, build_persona_system_prompt, build_metadata_context
-)
-from llm_client import debate_turn
-
-with tab5:
-    st.header("🗣️ Research Debate")
-    all_meta = load_all_metadata(MD_DIR)
-
-    if len(all_meta) &lt; 2:
-        st.info("Need at least 2 papers. Extract more in Tab 1.")
-    else:
-        # --- Debate Setup ---
-        topic = st.text_input(
-            "Debate Topic",
-            placeholder="e.g., Is deep learning the best approach for materials science?",
-        )
-        persona_names = list(DEFAULT_PERSONAS.keys())
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown("### 🔵 Persona A")
-            name_a = st.text_input("Name", persona_names[0], key="name_a")
-            prompt_a = st.text_area(
-                "Persona Prompt", DEFAULT_PERSONAS[persona_names[0]],
-                height=200, key="prompt_a")
-        with col2:
-            st.markdown("### 🟠 Persona B")
-            name_b = st.text_input("Name", persona_names[1], key="name_b")
-            prompt_b = st.text_area(
-                "Persona Prompt", DEFAULT_PERSONAS[persona_names[1]],
-                height=200, key="prompt_b")
-
-        max_rounds = st.slider("Max Rounds", 1, 10, 3)</code></pre>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-20">
-<div class="slide-content">
-<h2 class="slide-title">Step 4 — <strong>Debate Loop with User Control</strong></h2>
-<p class="slide-subtitle">Start → Round → Pause/Interject → Resume</p>
-<pre class="code-block"><code class="language-python">        # --- Session State ---
-        if "debate_history" not in st.session_state:
-            st.session_state.debate_history = []
-        if "debate_round" not in st.session_state:
-            st.session_state.debate_round = 0
-        if "debate_paused" not in st.session_state:
-            st.session_state.debate_paused = False
-
-        meta_context = build_metadata_context(all_meta)
-        sys_a = build_persona_system_prompt(prompt_a, meta_context, topic)
-        sys_b = build_persona_system_prompt(prompt_b, meta_context, topic)
-
-        # --- Display History ---
-        for msg in st.session_state.debate_history:
-            role_icon = "🔵" if msg["name"] == name_a else (
-                "🟠" if msg["name"] == name_b else "👤")
-            st.markdown(f"**{role_icon} {msg['name']}**: {msg['content']}")
-
-        # --- Controls ---
-        ctrl_cols = st.columns(4)
-        start = ctrl_cols[0].button("▶️ Start / Next Round",
-            disabled=not topic or client is None)
-        pause = ctrl_cols[1].button("⏸️ Pause")
-        clear = ctrl_cols[2].button("🗑️ Reset Debate")
-
-        # User interjection
-        interjection = st.chat_input("💬 Interject as moderator...")</code></pre>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-21">
-<div class="slide-content">
-<h2 class="slide-title">Step 5 — <strong>Generating Debate Turns</strong></h2>
-<p class="slide-subtitle">Persona A speaks, then Persona B responds — one round at a time</p>
-<pre class="code-block"><code class="language-python">        if clear:
-            st.session_state.debate_history = []
-            st.session_state.debate_round = 0
-            st.session_state.debate_paused = False
-            st.rerun()
-
-        if pause:
-            st.session_state.debate_paused = True
-
-        if interjection:
-            st.session_state.debate_history.append(
-                {"role": "user", "name": "Moderator", "content": interjection})
-            st.session_state.debate_paused = False
-            st.rerun()
-
-        if start and not st.session_state.debate_paused:
-            history_msgs = [
-                {"role": "assistant", "content": f"[{m['name']}]: {m['content']}"}
-                for m in st.session_state.debate_history
-            ]
-            # Persona A turn
-            st.markdown(f"**🔵 {name_a}**:")
-            ph_a = st.empty()
-            text_a = ""
-            for chunk in debate_turn(client, model, sys_a, history_msgs):
-                if chunk.choices[0].delta.content:
-                    text_a += chunk.choices[0].delta.content
-                    ph_a.markdown(text_a + "▌")
-            ph_a.markdown(text_a)
-            st.session_state.debate_history.append(
-                {"role": "assistant", "name": name_a, "content": text_a})
-
-            # Persona B turn
-            history_msgs.append(
-                {"role": "assistant", "content": f"[{name_a}]: {text_a}"})
-            st.markdown(f"**🟠 {name_b}**:")
-            ph_b = st.empty()
-            text_b = ""
-            for chunk in debate_turn(client, model, sys_b, history_msgs):
-                if chunk.choices[0].delta.content:
-                    text_b += chunk.choices[0].delta.content
-                    ph_b.markdown(text_b + "▌")
-            ph_b.markdown(text_b)
-            st.session_state.debate_history.append(
-                {"role": "assistant", "name": name_b, "content": text_b})
-
-            st.session_state.debate_round += 1
-            st.rerun()</code></pre>
-</div>
-</section>
-<section class="slide practice-slide" id="slide-22">
-<div class="slide-content">
-<h2 class="slide-title">Step 6 — <strong>Run and Test</strong></h2>
-<p class="slide-subtitle">Same app as Week 6, now with debate functionality</p>
-<pre class="code-block"><code class="language-bash">cd practices/week_06
+bad = unsupported_numbers(draft, facts)
+if bad:
+    print(f"⚠️  Numbers not traceable to the data: {bad}")   # never auto-publish</code></pre>
+        <div class="cards-grid">
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔍</span> What This Catches in Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>"approximately 85%" when the computed mean was 81.9 — the model smoothed it</li>
+                <li>A percentage it derived itself instead of reading from the facts</li>
+                <li>A year, an n, or a p-value that simply never existed</li>
+                <li>It is a blunt instrument — it over-reports (dates, figure numbers) — and it is still worth every line</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"An agent you cannot audit is an agent you cannot cite. The verifier is not a nicety; it is what lets you put your name on the output."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-12">
+      <div class="slide-content">
+        <h2 class="slide-title">The "<strong>Discovery</strong>" Half — And Its Trap</h2>
+        <p class="slide-subtitle">Finding candidate patterns without fooling yourself</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔎</span> What Automated Discovery Can Do</div>
+            <div class="card-body">
+              <ul>
+                <li>Flag <strong>outliers</strong> (IQR or z-score) and tell you which rows to re-check in the lab notebook</li>
+                <li>Rank <strong>correlations</strong> between measured variables and hand you the top few</li>
+                <li>Spot <strong>missing cells</strong> in your design: condition C was never run at 50 °C</li>
+                <li>Cluster similar runs and ask whether the grouping matches your intended conditions</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">⚠️</span> The Trap — Automated p-Hacking</div>
+            <div class="card-body">
+              <ul>
+                <li>An agent that tests 20 variable pairs will find one "significant" at p < 0.05 <strong>by construction</strong></li>
+                <li>Scanning is cheap now, so the multiple-comparison problem is no longer theoretical — it is the default</li>
+                <li>Correct the threshold (Bonferroni / FDR), <strong>or</strong> report the number of comparisons made, every time</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🏷️</span> The Labelling Rule</div>
+            <div class="card-body">
+              <ul>
+                <li>Anything the pipeline finds is a <strong>hypothesis</strong>, and the report must say so in those words</li>
+                <li>Discovery output goes in a section headed "Candidate patterns — not tested", never in Results</li>
+                <li>Week 2's framing, now enforced by your template rather than by your memory</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-13">
+      <div class="slide-content">
+        <h2 class="slide-title">Auto-Drafting <strong>Failure Modes</strong></h2>
+        <p class="slide-subtitle">What goes wrong, and the line of code that prevents it</p>
+        <div class="cards-grid">
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🔢</span> Invented Numbers</div>
+            <div class="card-body">
+              <ul>
+                <li>Symptom: a fluent sentence with a figure that is not in your data</li>
+                <li>Prevention: facts-only prompt + <code class="inline-code">unsupported_numbers()</code> on every draft</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📈</span> Flattering Figures</div>
+            <div class="card-body">
+              <ul>
+                <li>Symptom: truncated y-axis, no error bars, n hidden, cherry-picked subset</li>
+                <li>Prevention: a fixed renderer with <code class="inline-code">ylim(bottom=0)</code>, mandatory n in the caption</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">🗣️</span> Over-Claiming</div>
+            <div class="card-body">
+              <ul>
+                <li>Symptom: "significantly improved", "demonstrates that", "proves" — with no test behind them</li>
+                <li>Prevention: ban the vocabulary in the system prompt; require a test result before any claim of significance</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🪞</span> Template Blindness</div>
+            <div class="card-body">
+              <ul>
+                <li>Symptom: every weekly report reads the same, so nobody — including you — reads them</li>
+                <li>Prevention: the draft is an input to your thinking, not a replacement for it. If you would not have written it, do not send it</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-14">
+      <div class="slide-content">
+        <h2 class="slide-title">Lecture Summary — Output and Discovery</h2>
+        <p class="slide-subtitle">Key takeaways</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧮</span> Numbers in Code, Words in the Model</div>
+            <div class="card-body">
+              <ul>
+                <li>Compute every statistic with pandas; hand the LLM a facts dictionary and ask only for sentences</li>
+                <li>Charts come from a <strong>schema-constrained spec</strong> rendered by your own code — never from generated code</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔍</span> Verify Mechanically</div>
+            <div class="card-body">
+              <ul>
+                <li>Every number in the draft must be traceable to the facts dict; a 20-line checker enforces it</li>
+                <li>Report spread and n with every mean; no truncated axes</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🏷️</span> Discovery Is Hypothesis Generation</div>
+            <div class="card-body">
+              <ul>
+                <li>Automated scanning produces candidate patterns, not findings — label them and count your comparisons</li>
+                <li>The interpretation, and the accountability for it, stays with you — which is exactly this week's discussion</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text">References:</p>
+        <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview" target="_blank" class="reference-link">📚 Anthropic — Structured outputs and tools</a>
+        <a href="https://developers.openai.com/api/docs/guides/structured-outputs" target="_blank" class="reference-link">📚 OpenAI — Structured model outputs</a>
+        <a href="https://matplotlib.org/stable/gallery/statistics/errorbar_features.html" target="_blank" class="reference-link">📚 matplotlib — Error bars</a>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-15">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 2: <strong>Practice</strong></h1>
+        <p class="slide-subtitle">Auto-Drafting — Converting Raw CSV Data into a Report You Can Defend</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-16">
+      <div class="slide-content">
+        <h2 class="slide-title">What We'll <strong>Build</strong> Today</h2>
+        <p class="slide-subtitle">A 3-tab Streamlit app: CSV in, figures and a verified draft out</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> The Goal</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Tab 1 — Data</strong>: upload a CSV (Week 6's metadata export, or your own experiment data) → profile and validate it</li>
+                <li><strong>Tab 2 — Figures</strong>: the LLM proposes a chart spec → your renderer draws it → you accept or override</li>
+                <li><strong>Tab 3 — Draft</strong>: facts → narrative → <strong>number verification</strong> → download <code class="inline-code">report.md</code> with figures</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🛠️</span> Tech Stack</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Streamlit</strong> (Weeks 5–6), <strong>pandas</strong>, <strong>matplotlib</strong></li>
+                <li><strong>OpenAI client</strong> against Gemini or Ollama — the same <code class="inline-code">llm_client.py</code> pattern as Week 6</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📁</span> Project Structure</div>
+            <div class="card-body">
+              <ul>
+                <li><code class="inline-code">app.py</code> — 3-tab Streamlit app</li>
+                <li><code class="inline-code">facts.py</code> — all statistics (no LLM)</li>
+                <li><code class="inline-code">charts.py</code> — chart spec schema + renderer</li>
+                <li><code class="inline-code">drafter.py</code> — facts → narrative + <code class="inline-code">unsupported_numbers()</code></li>
+                <li><code class="inline-code">out/</code> — generated <code class="inline-code">report.md</code> and <code class="inline-code">.png</code> figures</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="flow-container">
+          <div class="flow-step">Upload CSV</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Compute Facts</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Chart Spec</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Render</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Draft</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Verify</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Export</div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-17">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 0 — <strong>Setup</strong></h2>
+        <p class="slide-subtitle">Same environment as Week 6, two extra packages</p>
+        <pre class="code-block"><code class="language-bash">cd practices/week7
+pip install streamlit pandas matplotlib openai python-dotenv
 streamlit run app.py</code></pre>
-<pre class="code-block"><code class="language-text">Expected UI (Tab 5 — Debate):
-┌──────────────────────────────────────────────────────────────────┐
-│  🗣️ Research Debate                                              │
-│                                                                  │
-│  Topic: [Is multi-agent AI better than single-agent?          ]  │
-│                                                                  │
-│  🔵 Persona A              🟠 Persona B                          │
-│  [Dr. Data (Empiricist)]   [Prof. Theory (Conceptualist)]        │
-│  [editable prompt...]      [editable prompt...]                  │
-│                                                                  │
-│  Rounds: [===3===]  [▶️ Start] [⏸️ Pause] [🗑️ Reset]             │
-│                                                                  │
-│  🔵 Dr. Data: According to Kim et al. (2025), multi-agent...    │
-│  🟠 Prof. Theory: But can we explain WHY agents collaborate...   │
-│  👤 Moderator: Focus on the error rate reduction specifically.   │
-│  🔵 Dr. Data: The error rate dropped from 24% to 1.5%...        │
-│  🟠 Prof. Theory: Impressive, but correlation isn't causation... │
-│                                                                  │
-│  💬 [Interject as moderator...                                ]  │
-└──────────────────────────────────────────────────────────────────┘</code></pre>
-</div>
-</section>
-<section class="slide" id="slide-23">
-<div class="slide-content">
-<h2 class="slide-title">✅ <strong>Week 7 Practice Checklist</strong></h2>
-<div class="highlight-quote">Complete these steps during the practice session:</div>
-<p class="slide-text">1. - [ ] Create <code class="inline-code">debate_engine.py</code> with default personas and helper functions</p>
-<p class="slide-text">2. - [ ] Add <code class="inline-code">debate_turn()</code> to <code class="inline-code">llm_client.py</code></p>
-<p class="slide-text">3. - [ ] Add Tab 5 (Debate) to <code class="inline-code">app.py</code> with persona editors and debate controls</p>
-<p class="slide-text">4. - [ ] Run <code class="inline-code">streamlit run app.py</code> and start a debate with default personas</p>
-<p class="slide-text">5. - [ ] <strong>Interject</strong> as moderator mid-debate — does the conversation shift?</p>
-<p class="slide-text">6. - [ ] <strong>Edit a persona</strong> prompt and restart — how does the debate change?</p>
-<p class="slide-text">7. - [ ] <strong>Bonus</strong>: create your own persona pair for YOUR research field</p>
-</div>
-</section>
-<section class="slide title-slide" id="slide-24">
-<div class="slide-content">
-<h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
-<p class="slide-subtitle">Week 6 Review & Final Midterm Check</p>
-</div>
-</section>
-<section class="slide" id="slide-25">
-<div class="slide-content">
-<h2 class="slide-title">Week 6 — <strong>"The Risk of Not Reading"</strong> Responses</h2>
-<p class="slide-subtitle">15 responses analyzed — Hulk dominates, but the interesting ideas are elsewhere</p>
-<div class="cards-grid">
-<div class="card card-green">
-<div class="card-header"><span class="icon">📊</span> The Vote Count</div>
-<div class="card-body"><ul><li><strong>Hulk (pragmatic balance)</strong>: Seher, Gyeongsu, Manuella, Ly, Tan, DongYun, Hyunwoo — <strong>7 votes</strong></li><li><strong>Iron Man + Hulk combo</strong>: Huy, Irfan, Waad — <strong>3 votes</strong></li><li><strong>Iron Man</strong>: Rupam, Han — <strong>2 votes</strong></li><li><strong>Captain America</strong>: Yadanar — <strong>1 vote</strong></li><li><strong>Iron Man + Captain America</strong>: Nazhiefah — <strong>1 vote</strong></li><li><strong>"None" (meta-critique)</strong>: Jaewhoon — <strong>1 vote</strong></li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🔬</span> The Consensus</div>
-<div class="card-body"><ul><li>Almost everyone agrees: AI handles initial filtering, humans do final synthesis</li><li>The "balance" position is now the <strong>default</strong> — nobody argues for full automation OR full manual</li><li>But <strong>how</strong> you balance is where the real disagreement lives</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">🔥</span> The Surprise</div>
-<div class="card-body"><ul><li><strong>Rupam</strong> switched from his usual Hulk to <strong>Iron Man</strong> — "published papers are already verified, risk is minimal"</li><li><strong>Jaewhoon</strong> rejected ALL three personas — "the question itself is wrong"</li><li>These outliers reveal more than the consensus</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-26">
-<div class="slide-content">
-<h2 class="slide-title">Theme 1 — <strong>The "Research Director" Paradigm</strong></h2>
-<p class="slide-subtitle">Upgrading the human role from reader to investigator</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> The Core Idea</div>
-<div class="card-body"><ul><li><strong>Huy</strong>: coined "Research Director model of Agentic Scrutiny"</li><li>Not outsourcing your mind — <strong>upgrading your role</strong> from laborer to investigator</li><li>Active tracking: require AI to provide "clickable links to specific sentences"</li><li>Spot-check protocol: deep-read 10% to calibrate the AI's lens on the other 90%</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💡</span> Conditional Delegation</div>
-<div class="card-body"><ul><li><strong>Waad</strong>: "save 90% of time wasted on tedious research... dive deep into the top 5 key papers"</li><li><strong>Irfan</strong>: "the real irreplaceable skill is knowing what to trust, what to question, and what is worth deeply reading"</li><li><strong>Han</strong>: "AI can be trusted for indexing... but this is precisely where human work should begin"</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔗</span> Why This Matters for Today</div>
-<div class="card-body"><ul><li>The debate tool is exactly this pattern — AI argues, you <strong>direct and verify</strong></li><li>You don't read every paper — you read the AI's debate and judge its quality</li><li>The "Research Director" decides what's worth investigating further</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"We aren't 'outsourcing' our minds; we are upgrading our role from laborer to investigator." — Huy</div>
-</div>
-</section>
-<section class="slide" id="slide-27">
-<div class="slide-content">
-<h2 class="slide-title">Theme 2 — <strong>Jaewhoon's Meta-Critique</strong></h2>
-<p class="slide-subtitle">"The question itself is wrong" — the deepest challenge yet</p>
-<div class="cards-grid">
-<div class="card card-purple">
-<div class="card-header"><span class="icon">💎</span> The Argument</div>
-<div class="card-body"><ul><li>The crisis of "not reading" existed <strong>before AI</strong> — low-quality journals, citation inflation, copyright issues</li><li>Experienced researchers already tell students: "read a paper in 30 minutes or less"</li><li>That's "basically not that much different from using AI for summarizing papers"</li><li>AI didn't create the problem — it <strong>accelerated</strong> an existing crisis</li></ul></div>
-</div>
-<div class="card card-red">
-<div class="card-header"><span class="icon">⚠️</span> The Real Question</div>
-<div class="card-body"><ul><li>"The point should be moved to <strong>'what is the essential ability in research'</strong>, not 'does AI threaten reading abilities'"</li><li>China's new professional doctorate: doctoral-level degree <strong>without papers</strong>, earned by solving industrial problems</li><li>"As papers written by AI begin to pass peer review, we need to discuss <strong>what is the real value of human in doing research</strong>"</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🤔</span> Class Reflection</div>
-<div class="card-body"><ul><li>Jaewhoon is the only student who chose <strong>"None"</strong> — rejecting all three personas</li><li>This is a meta-level challenge: the debate about AI-and-reading assumes reading is central</li><li>What if the <strong>entire frame</strong> of paper-based research is shifting?</li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"The value of reading comes from well-written papers that solve difficult problems with deep thinking. But in reality, most of us just extract the main idea." — Jaewhoon</div>
-</div>
-</section>
-<section class="slide" id="slide-28">
-<div class="slide-content">
-<h2 class="slide-title">Theme 3 — <strong>Context Shifts Everything</strong></h2>
-<p class="slide-subtitle">Your position changes depending on the situation you're in</p>
-<div class="cards-grid">
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔄</span> The Position Shifters</div>
-<div class="card-body"><ul><li><strong>Rupam</strong>: "Today my answer is different from usual — I usually relate to Hulk, but today I align with Iron Man"</li><li>Published papers are already verified → lower risk → AI can handle it</li><li><strong>Nazhiefah</strong>: "It depends on what we are looking for" — Iron Man when pressured to produce, Captain America when there's time</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> The Deep Readers</div>
-<div class="card-body"><ul><li><strong>Yadanar</strong>: "I don't fully trust AI with papers that are very important for my research field"</li><li><strong>Manuella</strong>: "If you cannot clearly explain your findings, true insight has not been achieved"</li><li><strong>Hyunwoo</strong>: "A small error in understanding a mathematical model can cause actual hardware damage"</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">🧠</span> The Retention Problem</div>
-<div class="card-body"><ul><li><strong>Gyeongsu</strong>: "AI helps us process tons of info, but will I actually <strong>remember</strong> any of it?"</li><li><strong>DongYun</strong>: "Mistakes made by AI can cause a series of errors that get worse over time"</li><li>Reading isn't just about extraction — it's about <strong>building internal models</strong></li></ul></div>
-</div>
-</div>
-<div class="highlight-quote">"Today my answer is different from usual. AI is a tool meant to make difficult tasks easier, not a replacement for the human mind." — Rupam</div>
-</div>
-</section>
-<section class="slide" id="slide-29">
-<div class="slide-content">
-<h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
-<p class="slide-subtitle">The debate app is a direct test of the "Research Director" model</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">🎯</span> You Are the Research Director</div>
-<div class="card-body"><ul><li>Today you built an app where two AIs debate using your paper data</li><li>YOU set the topic and personas (Huy's "architectural design of the intake pipeline")</li><li>YOU verify citations against real metadata (Waad's "conditional delegation")</li><li>YOU decide when to interject and redirect (Irfan's "knowing what to question")</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🔗</span> Testing Jaewhoon's Challenge</div>
-<div class="card-body"><ul><li>The debate format doesn't require you to read every paper — it requires you to <strong>judge arguments about papers</strong></li><li>Is that "the essential ability in research"? Or is something lost?</li><li>Use today's practice to test this on yourself</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> The Moderation Test</div>
-<div class="card-body"><ul><li>If you can't spot when a persona misrepresents a paper → you need more domain knowledge</li><li>If you can redirect the debate productively → you have "epistemic taste" (Han, Week 5)</li><li>The tool makes your judgment <strong>visible</strong> — to yourself and others</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-30">
-<div class="slide-content">
-<h2 class="slide-title">Midterm — <strong>Final Check</strong></h2>
-<p class="slide-subtitle">Submission is NEXT WEEK</p>
-<div class="cards-grid">
-<div class="card card-red">
-<div class="card-header"><span class="icon">📅</span> Deadline</div>
-<div class="card-body"><ul><li><strong>Week 8 (April 17, Friday) 24:00</strong></li><li>Email to <strong>hogeony@ust.ac.kr</strong></li><li>Working prototype + 5-minute live demo</li></ul></div>
-</div>
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📦</span> Deliverables</div>
-<div class="card-body"><ul><li><strong>Specification document</strong> — 5 Questions answered</li><li><strong>Working prototype</strong> — Streamlit/Gradio app, runnable code</li><li><strong>5-minute demo plan</strong> — what will you show and explain?</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">✅</span> Self-Check</div>
-<div class="card-body"><ul><li>Does your app <strong>run</strong>? (test it right now!)</li><li>Can you explain your <strong>design decisions</strong> in the demo?</li><li>Does your app demonstrate the <strong>human-AI interaction</strong> you specified?</li><li>Have you tested with <strong>real data</strong> from your research domain?</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">⚠️</span> Common Mistakes</div>
-<div class="card-body"><ul><li>App that doesn't start (missing dependencies, wrong paths)</li><li>No real data — only dummy/test inputs</li><li>Can't explain WHY you made certain design choices</li><li>Spec document doesn't match what the prototype actually does</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-<section class="slide" id="slide-31">
-<div class="slide-content">
-<h2 class="slide-title">🗣️ <strong>Week 7 Discussion Questions</strong> (UST LMS)</h2>
-<p class="slide-subtitle">Post your response on the forum this week</p>
-<div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
-<p class="slide-text">1. You just used a <strong>debate tool</strong> where two AI personas argued about your research topic. Did the debate surface any insight you wouldn't have found with a single AI? Was there a moment where you felt the need to <strong>interject as moderator</strong> — what triggered it? Does this experience support or challenge <strong>Han's "epistemic taste" argument</strong>?</p>
-<p class="slide-text">2. <strong>Midterm final update</strong>: Your prototype is due next week. Describe your app in one sentence. What's the single most impressive thing it does? What's the one thing you're most worried about for the demo?</p>
-</div>
-</section>
-<section class="slide" id="slide-32">
-<div class="slide-content">
-<h2 class="slide-title">Want to Learn More?</h2>
-<p class="slide-text">Multi-Agent Systems</p>
-<a href="https://microsoft.github.io/autogen/" target="_blank" class="reference-link">📚 AutoGen — Multi-Agent Conversation Framework</a>
-<a href="https://www.crewai.com/" target="_blank" class="reference-link">📚 CrewAI — AI Agent Collaboration</a>
-<a href="https://langchain-ai.github.io/langgraph/" target="_blank" class="reference-link">📚 LangGraph — Multi-Actor Orchestration</a>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">Debate & Argumentation in AI</p>
-<a href="https://openai.com/index/debate/" target="_blank" class="reference-link">📚 AI Debate as Alignment Strategy (OpenAI)</a>
-<a href="https://arxiv.org/abs/2303.08769" target="_blank" class="reference-link">📚 Socratic Method with LLMs</a>
-<p class="slide-text">&nbsp;</p>
-<p class="slide-text">Anthropic Free Online Courses (Recommended)</p>
-<div class="highlight-quote">🎓 [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api) — API 활용 실습</div>
-<div class="highlight-quote">🎓 [Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol) — MCP 서버/클라이언트 구축</div>
-<div class="highlight-quote">🎓 [Introduction to Agent Skills](https://anthropic.skilljar.com/introduction-to-agent-skills) — 재사용 가능한 에이전트 스킬 생성</div>
-</div>
-</section>
-<section class="slide" id="slide-33">
-<div class="slide-content">
-<h2 class="slide-title">Wrap-Up of <strong>Week 7</strong></h2>
-<p class="slide-subtitle">Three things to remember</p>
-<div class="cards-grid">
-<div class="card card-blue">
-<div class="card-header"><span class="icon">📖</span> Lecture</div>
-<div class="card-body"><ul><li>Two AI perspectives beat one — debate surfaces hidden assumptions; persona design creates productive tension; shared history + metadata grounding = evidence-based disagreement</li></ul></div>
-</div>
-<div class="card card-green">
-<div class="card-header"><span class="icon">💻</span> Practice</div>
-<div class="card-body"><ul><li>Built a <strong>Research Debate</strong> tab: two editable personas + user moderation (pause, interject, resume); same metadata from Week 6, new interaction pattern</li></ul></div>
-</div>
-<div class="card card-orange">
-<div class="card-header"><span class="icon">🗣️</span> Discussion</div>
-<div class="card-body"><ul><li>Week 6 review: Hulk won again, but Huy's "Research Director" model and Jaewhoon's meta-critique challenge the frame; <strong>Midterm due next week April 17 24:00</strong></li></ul></div>
-</div>
-</div>
-<p class="slide-text"><strong>Next week:</strong> Working prototype + 5-minute live demo. Good luck!</p>
-</div>
-</section>
+        <pre class="code-block"><code class="language-text"># practices/.env  (DO NOT COMMIT)
+GOOGLE_API_KEY=your_key_here
+GEMINI_MODEL=gemini-3.1-flash-lite
+# or run locally:  OLLAMA_MODEL=qwen3.5:0.8b</code></pre>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Bring Real Data</div>
+            <div class="card-body">
+              <ul>
+                <li>Best: a CSV from <strong>your own</strong> experiments — one numeric column and one grouping column is enough</li>
+                <li>Second best: the metadata CSV you exported in Week 6 (year, field, method, …)</li>
+                <li>Fallback: <code class="inline-code">sample_data.csv</code> in the practice folder — but you will learn much less from it</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-18">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 1 — <strong>Load and Profile</strong> (<code class="inline-code">facts.py</code>)</h2>
+        <p class="slide-subtitle">Before any AI touches it, know what you actually have</p>
+        <pre class="code-block"><code class="language-python">def profile(df: pd.DataFrame) -&gt; dict:
+    return {
+        "rows": int(len(df)),
+        "columns": {c: str(df[c].dtype) for c in df.columns},
+        "missing": {c: int(df[c].isna().sum()) for c in df.columns if df[c].isna().any()},
+        "numeric": [c for c in df.columns if pd.api.types.is_numeric_dtype(df[c])],
+        "categorical": [c for c in df.columns
+                        if not pd.api.types.is_numeric_dtype(df[c]) and df[c].nunique() &lt;= 20],
+        "small_groups": {},   # filled below — groups too small to average honestly
+    }
+
+def small_groups(df, group_col, min_n=3):
+    counts = df[group_col].value_counts()
+    return {str(k): int(v) for k, v in counts[counts &lt; min_n].items()}</code></pre>
+        <div class="cards-grid">
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚠️</span> The <code class="inline-code">small_groups</code> Field Is the Point</div>
+            <div class="card-body">
+              <ul>
+                <li>A mean over n = 2 is not a mean, it is an anecdote with a decimal point</li>
+                <li>Passing this into the facts dict forces the draft to disclose it</li>
+                <li>This is the kind of caveat a human reviewer asks for and an unguarded LLM never volunteers</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-19">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 2 — <strong>Chart Spec → Figure</strong> (<code class="inline-code">charts.py</code>)</h2>
+        <p class="slide-subtitle">The model proposes; your code disposes</p>
+        <pre class="code-block"><code class="language-python">def propose_chart(client, model, profile_dict, question: str) -&gt; dict:
+    resp = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": CHART_RULES},     # the decision table from the lecture
+            {"role": "user", "content": json.dumps(
+                {"profile": profile_dict, "question": question}, ensure_ascii=False)},
+        ],
+        response_format={"type": "json_schema",
+                         "json_schema": {"name": "chart_spec", "strict": True,
+                                         "schema": CHART_SPEC}},
+    )
+    return json.loads(resp.choices[0].message.content)
+
+# In app.py — always show the model's reasoning and let the user override
+spec = propose_chart(client, model, prof, st.session_state.question)
+st.info(f"Chart: **{spec['chart']}** — {spec['reason']}")
+spec["chart"] = st.selectbox("Override chart type", CHART_TYPES,
+                             index=CHART_TYPES.index(spec["chart"]))
+st.pyplot(render(df, spec))</code></pre>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">👤</span> The Override Box Is Not Decoration</div>
+            <div class="card-body">
+              <ul>
+                <li>It is the Week 4 approval gate, applied to a figure instead of a file write</li>
+                <li>Students consistently find the model's second choice better about a third of the time</li>
+                <li>Log which ones you overrode — that log is your eval set</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-20">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 3 — <strong>Draft and Verify</strong> (<code class="inline-code">drafter.py</code>)</h2>
+        <p class="slide-subtitle">The narrative, then the checker, then the export</p>
+        <pre class="code-block"><code class="language-python">def draft(client, model, facts: dict) -&gt; str:
+    resp = client.chat.completions.create(
+        model=model, temperature=0.2,
+        messages=[{"role": "system", "content": SYSTEM_FACTS_ONLY},
+                  {"role": "user", "content": json.dumps(facts, indent=2, ensure_ascii=False)}],
+    )
+    return resp.choices[0].message.content
+
+# app.py — Tab 3
+text = draft(client, model, facts)
+bad = unsupported_numbers(text, facts)
+
+if bad:
+    st.error(f"❌ {len(bad)} number(s) not traceable to your data: {', '.join(bad)}")
+    st.caption("Fix the facts dict or reject the draft. Do not export it.")
+else:
+    st.success("✅ Every number in this draft comes from your data.")
+
+st.download_button("Download report.md", build_report(text, figures, facts),
+                   file_name="report.md", disabled=bool(bad))</code></pre>
+        <div class="cards-grid">
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🔒</span> Note the <code class="inline-code">disabled=bool(bad)</code></div>
+            <div class="card-body">
+              <ul>
+                <li>The export button is <strong>switched off</strong> while an unverifiable number is present</li>
+                <li>Policy encoded in the interface instead of in a paragraph nobody reads</li>
+                <li>This is Week 5's interaction design and Week 4's guardrails meeting in four characters</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-21">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 4 — <strong>Assemble</strong> <code class="inline-code">report.md</code></h2>
+        <p class="slide-subtitle">A template, not a generated document</p>
+        <pre class="code-block"><code class="language-python">REPORT = """# {title}
+
+*Generated {date} from `{source}` — {rows} rows. Draft: verify before use.*
+
+## Results
+
+{narrative}
+
+{figures}
+
+## Data quality notes
+
+- Rows analysed: {rows} (missing values dropped: {missing})
+- Groups with n &lt; 3: {small_groups}
+- Comparisons performed: {n_comparisons}
+
+## Candidate patterns — NOT TESTED
+
+{discoveries}
+"""</code></pre>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧱</span> Why a Template Beats "Write Me a Report"</div>
+            <div class="card-body">
+              <ul>
+                <li>The structure is fixed by you, so the model cannot quietly drop the caveats section</li>
+                <li>"Data quality notes" and "Candidate patterns — NOT TESTED" appear <strong>even when the model would rather not mention them</strong></li>
+                <li>The template is where your scientific standards live; the LLM only fills the slots you allow</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide practice-slide" id="slide-22">
+      <div class="slide-content">
+        <h2 class="slide-title">Step 5 — <strong>Run and Inspect</strong></h2>
+        <p class="slide-subtitle">What a good session looks like</p>
+        <pre class="code-block"><code class="language-text">$ streamlit run app.py
+
+Tab 1  ▸ uploaded yield_2026.csv — 48 rows, 4 groups
+        ⚠️ groups with n &lt; 3: {'C-high': 2}
+Tab 2  ▸ Chart: bar — "One numeric value across four categories;
+          error bars included because SD is available."
+        [override → box]  ✓ kept as bar
+Tab 3  ▸ Draft:
+        "Yield was measured for 48 samples across four conditions.
+         Mean yield was 81.9% (SD 3.2). Condition B showed the highest
+         mean (85.4%) and condition C-high the lowest (77.1%); note that
+         C-high contains only 2 samples."
+        ✅ Every number in this draft comes from your data.
+        [Download report.md]</code></pre>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Try to Break It</div>
+            <div class="card-body">
+              <ul>
+                <li>Delete a column from the facts dict and re-draft — does <code class="inline-code">[NUMBER NOT AVAILABLE]</code> appear, or does the model invent?</li>
+                <li>Ask for a claim the data cannot support: "does B significantly outperform C?"</li>
+                <li>Run the same facts on Gemini and on <code class="inline-code">qwen3.5:0.8b</code> and compare how often the verifier fires</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-23">
+      <div class="slide-content">
+        <h2 class="slide-title">✅ <strong>Practice Checklist</strong></h2>
+        <p class="slide-subtitle">Complete these tasks during the hands-on session</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📋</span> Checklist</div>
+            <div class="card-body">
+              <ul>
+                <li>[ ] Load a CSV — ideally <strong>your own data</strong> — and read the profile output before doing anything else</li>
+                <li>[ ] Confirm <code class="inline-code">small_groups</code> correctly flags any group with n < 3</li>
+                <li>[ ] Generate a chart spec, read the <code class="inline-code">reason</code> field, and <strong>override it at least once</strong></li>
+                <li>[ ] Produce a draft and confirm the verifier reports zero unsupported numbers</li>
+                <li>[ ] Deliberately break it: remove a fact and check that the model marks it rather than inventing it</li>
+                <li>[ ] Export <code class="inline-code">report.md</code> and read it as a reviewer — what would you reject?</li>
+                <li>[ ] (Bonus) Add an outlier detector and route its output to the "Candidate patterns" section only</li>
+                <li>[ ] (Bonus) Count and report the number of comparisons your discovery step performed</li>
+                <li>[ ] (Bonus) Swap the backend to Ollama and note where the small model's draft degrades first</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-24">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
+        <p class="slide-subtitle">Week 6 Review · Authorship & Ethics · Final Midterm Check</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-25">
+      <div class="slide-content">
+        <h2 class="slide-title">Week 6 — <strong>"The Risk of Not Reading"</strong> Responses</h2>
+        <p class="slide-subtitle">15 responses analyzed — Hulk dominates, but the interesting ideas are elsewhere</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📊</span> The Vote Count</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Hulk (pragmatic balance)</strong>: Seher, Gyeongsu, Manuella, Ly, Tan, DongYun, Hyunwoo — <strong>7 votes</strong></li>
+                <li><strong>Iron Man + Hulk combo</strong>: Huy, Irfan, Waad — <strong>3 votes</strong></li>
+                <li><strong>Iron Man</strong>: Rupam, Han — <strong>2 votes</strong></li>
+                <li><strong>Captain America</strong>: Yadanar — <strong>1 vote</strong></li>
+                <li><strong>Iron Man + Captain America</strong>: Nazhiefah — <strong>1 vote</strong></li>
+                <li><strong>"None" (meta-critique)</strong>: Jaewhoon — <strong>1 vote</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔬</span> The Consensus</div>
+            <div class="card-body">
+              <ul>
+                <li>Almost everyone agrees: AI handles initial filtering, humans do final synthesis</li>
+                <li>The "balance" position is now the <strong>default</strong> — nobody argues for full automation OR full manual</li>
+                <li>But <strong>how</strong> you balance is where the real disagreement lives</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">🔥</span> The Surprise</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Rupam</strong> switched from his usual Hulk to <strong>Iron Man</strong> — "published papers are already verified, risk is minimal"</li>
+                <li><strong>Jaewhoon</strong> rejected ALL three personas — "the question itself is wrong"</li>
+                <li>These outliers reveal more than the consensus</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-26">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 1 — <strong>The "Research Director" Paradigm</strong></h2>
+        <p class="slide-subtitle">Upgrading the human role from reader to investigator</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> The Core Idea</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Huy</strong>: coined "Research Director model of Agentic Scrutiny"</li>
+                <li>Not outsourcing your mind — <strong>upgrading your role</strong> from laborer to investigator</li>
+                <li>Active tracking: require AI to provide "clickable links to specific sentences"</li>
+                <li>Spot-check protocol: deep-read 10% to calibrate the AI's lens on the other 90%</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💡</span> Conditional Delegation</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Waad</strong>: "save 90% of time wasted on tedious research... dive deep into the top 5 key papers"</li>
+                <li><strong>Irfan</strong>: "the real irreplaceable skill is knowing what to trust, what to question, and what is worth deeply reading"</li>
+                <li><strong>Han</strong>: "AI can be trusted for indexing... but this is precisely where human work should begin"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔗</span> Why This Matters for Today</div>
+            <div class="card-body">
+              <ul>
+                <li>Today's drafter is exactly this pattern — the AI writes, you <strong>direct and verify</strong></li>
+                <li>You don't recompute every statistic — you decide which facts enter the dictionary and audit what comes out</li>
+                <li>Huy's "clickable links to specific sentences" is literally today's number verifier: every figure traceable to a row</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"We aren't 'outsourcing' our minds; we are upgrading our role from laborer to investigator." — Huy</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-27">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 2 — <strong>Jaewhoon's Meta-Critique</strong></h2>
+        <p class="slide-subtitle">"The question itself is wrong" — the deepest challenge yet</p>
+        <div class="cards-grid">
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">💎</span> The Argument</div>
+            <div class="card-body">
+              <ul>
+                <li>The crisis of "not reading" existed <strong>before AI</strong> — low-quality journals, citation inflation, copyright issues</li>
+                <li>Experienced researchers already tell students: "read a paper in 30 minutes or less"</li>
+                <li>That's "basically not that much different from using AI for summarizing papers"</li>
+                <li>AI didn't create the problem — it <strong>accelerated</strong> an existing crisis</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">⚠️</span> The Real Question</div>
+            <div class="card-body">
+              <ul>
+                <li>"The point should be moved to <strong>'what is the essential ability in research'</strong>, not 'does AI threaten reading abilities'"</li>
+                <li>China's new professional doctorate: doctoral-level degree <strong>without papers</strong>, earned by solving industrial problems</li>
+                <li>"As papers written by AI begin to pass peer review, we need to discuss <strong>what is the real value of human in doing research</strong>"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🤔</span> Class Reflection</div>
+            <div class="card-body">
+              <ul>
+                <li>Jaewhoon is the only student who chose <strong>"None"</strong> — rejecting all three personas</li>
+                <li>This is a meta-level challenge: the debate about AI-and-reading assumes reading is central</li>
+                <li>What if the <strong>entire frame</strong> of paper-based research is shifting?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"The value of reading comes from well-written papers that solve difficult problems with deep thinking. But in reality, most of us just extract the main idea." — Jaewhoon</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-28">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 3 — <strong>Context Shifts Everything</strong></h2>
+        <p class="slide-subtitle">Your position changes depending on the situation you're in</p>
+        <div class="cards-grid">
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔄</span> The Position Shifters</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Rupam</strong>: "Today my answer is different from usual — I usually relate to Hulk, but today I align with Iron Man"</li>
+                <li>Published papers are already verified → lower risk → AI can handle it</li>
+                <li><strong>Nazhiefah</strong>: "It depends on what we are looking for" — Iron Man when pressured to produce, Captain America when there's time</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> The Deep Readers</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Yadanar</strong>: "I don't fully trust AI with papers that are very important for my research field"</li>
+                <li><strong>Manuella</strong>: "If you cannot clearly explain your findings, true insight has not been achieved"</li>
+                <li><strong>Hyunwoo</strong>: "A small error in understanding a mathematical model can cause actual hardware damage"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧠</span> The Retention Problem</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Gyeongsu</strong>: "AI helps us process tons of info, but will I actually <strong>remember</strong> any of it?"</li>
+                <li><strong>DongYun</strong>: "Mistakes made by AI can cause a series of errors that get worse over time"</li>
+                <li>Reading isn't just about extraction — it's about <strong>building internal models</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Today my answer is different from usual. AI is a tool meant to make difficult tasks easier, not a replacement for the human mind." — Rupam</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-29">
+      <div class="slide-content">
+        <h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+        <p class="slide-subtitle">Auto-drafting is where "not reading" becomes "not checking"</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎯</span> You Are the Research Director</div>
+            <div class="card-body">
+              <ul>
+                <li>Today you built a pipeline that writes sentences about your data</li>
+                <li>YOU decide which facts go into the dictionary — that choice is the analysis (Huy's "architectural design")</li>
+                <li>YOU read the chart's <code class="inline-code">reason</code> field and override it — Waad's "conditional delegation", made clickable</li>
+                <li>YOU are the one who presses export, with your name on the file</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔗</span> Testing Jaewhoon's Challenge</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 6 asked whether skipping the reading costs you something. Week 7 asks the sharper version: <strong>does skipping the writing cost you the understanding?</strong></li>
+                <li>Writing a Results paragraph is where most researchers first notice their data is odd</li>
+                <li>If the draft arrives finished, when exactly do you notice?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> The Verification Test</div>
+            <div class="card-body">
+              <ul>
+                <li>If the verifier fires and you cannot tell <strong>which</strong> number is wrong → you did not know your data well enough</li>
+                <li>If the draft reads plausibly and you accept it without checking <code class="inline-code">small_groups</code> → the tool made you faster and worse</li>
+                <li>The pipeline makes your judgment <strong>visible</strong> — to yourself first</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-30">
+      <div class="slide-content">
+        <h2 class="slide-title">Midterm — <strong>Final Check</strong></h2>
+        <p class="slide-subtitle">Submission is THIS FRIDAY — 23 October, 24:00</p>
+        <div class="cards-grid">
+          <div class="card card-red">
+            <div class="card-header"><span class="icon">📅</span> Deadline</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>This Friday — 23 October 2026, 24:00</strong></li>
+                <li>Email to <strong>hogeony@ust.ac.kr</strong></li>
+                <li>Spec document + working prototype + a 3–5 minute recorded video pitch</li>
+                <li>The pitches are compiled into next week's session, so a late file is a missing slot</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📦</span> Deliverables</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Specification document</strong> — 5 Questions answered</li>
+                <li><strong>Working prototype</strong> — Streamlit/Gradio app, runnable code</li>
+                <li><strong>The recorded pitch itself</strong> — 3–5 minutes: the problem, the app running on screen, your design decisions</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">✅</span> Self-Check</div>
+            <div class="card-body">
+              <ul>
+                <li>Does your app <strong>run</strong>? (test it right now!)</li>
+                <li>Can you explain your <strong>design decisions</strong> in the demo?</li>
+                <li>Does your app demonstrate the <strong>human-AI interaction</strong> you specified?</li>
+                <li>Have you tested with <strong>real data</strong> from your research domain?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⚠️</span> Common Mistakes</div>
+            <div class="card-body">
+              <ul>
+                <li>App that doesn't start (missing dependencies, wrong paths)</li>
+                <li>No real data — only dummy/test inputs</li>
+                <li>Can't explain WHY you made certain design choices</li>
+                <li>Spec document doesn't match what the prototype actually does</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-31">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Week 7 Discussion Questions</strong> (UST LMS)</h2>
+        <p class="slide-subtitle">Post your response on the forum this week</p>
+        <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+        <p class="slide-text">1. <strong>Authorship & Ethics — who is responsible if the AI-generated hypothesis is flawed?</strong> Today your pipeline produced a Results paragraph and a "candidate patterns" section. Suppose one of those candidate patterns turns out to be an artefact and it reaches a published paper. Who is accountable — you, your supervisor, the model provider, whoever wrote the prompt? Does the fact that every number was <strong>machine-verifiable</strong> change your answer? And would you disclose that the draft was AI-generated — in the methods, in an acknowledgement, or not at all?</p>
+        <p class="slide-text">2. <strong>Midterm final update</strong>: Your prototype and recorded pitch are due <strong>this Friday</strong>. Describe your app in one sentence. What's the single most impressive thing it does? What is the one moment of the recording you are least sure about — and do you have time to re-record it?</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-32">
+      <div class="slide-content">
+        <h2 class="slide-title">Want to Learn More?</h2>
+        <p class="slide-text">Drafting & Structured Output</p>
+        <a href="https://developers.openai.com/api/docs/guides/structured-outputs" target="_blank" class="reference-link">📚 OpenAI — Structured model outputs</a>
+        <a href="https://ai.google.dev/gemini-api/docs/structured-output" target="_blank" class="reference-link">📚 Gemini API — Structured output</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Figures & Honest Statistics</p>
+        <a href="https://matplotlib.org/stable/gallery/statistics/errorbar_features.html" target="_blank" class="reference-link">📚 matplotlib — Error bars</a>
+        <a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002106" target="_blank" class="reference-link">📚 The Extent and Consequences of P-Hacking in Science — Head et al., PLOS Biology 2015</a>
+        <a href="https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020124" target="_blank" class="reference-link">📚 Why Most Published Research Findings Are False — Ioannidis 2005</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Authorship Policy</p>
+        <a href="https://publicationethics.org/guidance/cope-position/authorship-and-ai-tools" target="_blank" class="reference-link">📚 COPE — Authorship and AI tools</a>
+        <a href="https://www.icmje.org/recommendations/" target="_blank" class="reference-link">📚 ICMJE Recommendations — use of AI in manuscripts</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Anthropic Free Online Courses (Recommended)</p>
+        <div class="highlight-quote">🎓 <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank">Building with the Claude API</a> — API 활용 실습</div>
+        <div class="highlight-quote">🎓 <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank">Introduction to Model Context Protocol</a> — MCP 서버/클라이언트 구축</div>
+        <div class="highlight-quote">🎓 <a href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank">Introduction to Agent Skills</a> — 재사용 가능한 에이전트 스킬 생성</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-33">
+      <div class="slide-content">
+        <h2 class="slide-title">Wrap-Up of <strong>Week 7</strong></h2>
+        <p class="slide-subtitle">Three things to remember</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> Lecture</div>
+            <div class="card-body">
+              <ul>
+                <li>Numbers are computed in <strong>code</strong>, sentences come from the <strong>model</strong>: a facts dictionary, a schema-constrained chart spec, a facts-only prompt, and a verifier that traces every digit back to a row</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">💻</span> Practice</div>
+            <div class="card-body">
+              <ul>
+                <li>Built a 3-tab <strong>auto-drafting</strong> app: CSV → profile → figure (with override) → narrative → number verification → <code class="inline-code">report.md</code>; export stays disabled while any number is unverifiable</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 6 review: Hulk won again, but Huy's "Research Director" model and Jaewhoon's meta-critique challenge the frame; this week's forum turns to <strong>authorship and accountability</strong>; <strong>Midterm due this Friday, 23 Oct 24:00</strong> — screened in Week 8</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text"><strong>This Friday, 23 October, 24:00:</strong> spec + working prototype + your 3–5 minute recorded video pitch, by email. <strong>Next week</strong> we watch them together and review each other's feasibility. Record early — you can always re-record. Good luck!</p>
+      </div>
+    </section>
 
   </div>
 
@@ -1245,7 +1656,7 @@ streamlit run app.py</code></pre>
       <div class="section-links">
         <a class="nav-link" onclick="goToSlide(1)">Intro</a>
         <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
-        <a class="nav-link" onclick="goToSlide(14)">Practice</a>
+        <a class="nav-link" onclick="goToSlide(15)">Practice</a>
         <a class="nav-link" onclick="goToSlide(24)">Discussion</a>
       </div>
     </div>

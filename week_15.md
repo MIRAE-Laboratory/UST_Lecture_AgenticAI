@@ -3,7 +3,7 @@
 - title: Standardization & Expansion
 - subtitle: Connectivity through Model Context Protocol (MCP)
 
-> Week 15 of Phase 5: Ecosystem (Weeks 15-16)
+> Week 15 of Phase 4: Collaboration & Future (Weeks 13-16)
 
 =====
 
@@ -14,7 +14,7 @@
 
 - card(blue, 📖): 1. Lecture
   - Why standards matter — the USB-C analogy
-  - What MCP is and how it differs from Week 9's function calling
+  - What MCP is and how it differs from Week 4's function calling
   - The ecosystem effect of standardization
 
 - card(green, 💻): 2. Practice
@@ -41,7 +41,7 @@
 - title: The Story So Far — **Why Standards Now?**
 
 - card(blue, 🔧): What We've Built
-  - Week 9: agents call tools (function calling)
+  - Week 4: agents call tools (function calling)
   - Week 12: agents query memory (RAG)
   - Week 13: agents work in teams
   - Week 14: humans approve at checkpoints
@@ -96,9 +96,10 @@ graph LR
 - title: What is **MCP**? — In One Slide
 
 - card(blue, 🔌): The Definition
-  - **MCP = Model Context Protocol** (announced by Anthropic, 2024)
+  - **MCP = Model Context Protocol** — announced by Anthropic in late 2024, now an open standard with its own spec releases
   - An **open standard** for how AI agents connect to external tools and data
   - Think of it as **the AI's USB port** — a universal jack for plugging in capabilities
+  - Adopted across Claude, ChatGPT, VS Code and Cursor: build the server once, plug it in everywhere
 
 - card(green, 📦): The Pattern
   - **MCP server** = a small program that exposes tools/data (the "device")
@@ -118,7 +119,7 @@ graph LR
 
 - card(blue, 🛠️): 1. Tools — "Things the AI Can Do"
   - Functions the AI can call (e.g., `search_papers`, `send_email`, `get_weather`)
-  - Just like Week 9 function calling, but defined in the **standard format**
+  - Just like Week 4 function calling, but defined in the **standard format**
   - Example: a Notion MCP server exposes `create_page`, `search_pages`, `update_block`
 
 - card(green, 📄): 2. Resources — "Things the AI Can Read"
@@ -137,9 +138,9 @@ graph LR
 
 ## Slide: MCP vs Function Calling
 - type: cards
-- title: **MCP vs Week 9's Function Calling** — What's Different?
+- title: **MCP vs Week 4's Function Calling** — What's Different?
 
-- card(blue, 🔧): Week 9 — Function Calling (Per-App)
+- card(blue, 🔧): Week 4 — Function Calling (Per-App)
   - You wrote tools inside YOUR Python code
   - The tool definitions only existed in YOUR app
   - To share a tool, your friend had to **copy your code**
@@ -196,9 +197,38 @@ graph LR
   - Your collaborators can connect their own AI to YOUR research tools
 
 - card(red, ⚠️): But...
-  - The standard is young (1 year old as of 2026)
-  - Discovery is still ad-hoc (no official "app store" yet)
-  - Security model is evolving — be careful what you connect to
+  - The standard is still young — announced late 2024, with the spec revised several times since
+  - Discovery is still ad-hoc: there is no curated registry you can trust by default
+  - **Security is the open problem** — an MCP server runs code with your data and your permissions. Next slide
+
+=====
+
+## Slide: Trusting a Server
+- type: cards
+- title: **Connecting a Server Is Running Someone's Code**
+- subtitle: The part of MCP that is not solved — and the rules that keep you out of trouble
+
+- card(pink, 🧨): What You Actually Grant
+  - An MCP server runs **with your permissions, on your machine, beside your data**
+  - Installing one is closer to `pip install` than to adding a bookmark — and nobody reviews it for you
+  - Its **tool descriptions enter your prompt**, so a hostile server can issue instructions to your agent (tool poisoning), and can change them after you approved it
+
+- card(orange, 📰): It Already Happened
+  - May 2025: a malicious **GitHub issue** steered a coding agent through its MCP server into leaking **private repositories** via a public pull request
+  - The pattern is Week 2's **lethal trifecta**: untrusted input + private data + an outbound action
+  - Nothing in the protocol prevents this. The protocol is plumbing; the policy is yours
+
+- card(green, 🛡️): Practical Rules
+  - **Read the source** of any server you connect, and **pin the version** — an update can change every tool description
+  - **Least privilege**: give each server the narrowest filesystem path, repo scope and API key it can work with
+  - **Pass secrets explicitly** through `env=` rather than letting a subprocess inherit your whole environment
+  - **Separate the servers** that touch private data from the ones that read the open web
+  - **Require approval** for anything that writes, sends, publishes or pays — Week 14's checkpoints, applied here
+
+- highlight-quote: "The ecosystem effect cuts both ways: a protocol that lets anyone publish a tool for your agent also lets anyone publish a tool for your agent."
+
+> 📚 [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)
+> 📚 [The Lethal Trifecta for AI Agents — Simon Willison](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/)
 
 =====
 
@@ -214,10 +244,10 @@ graph LR
 - card(red, ❌): Don't Use MCP When
   - The tool is one-off, used only inside ONE app
   - You haven't validated the tool works as a plain function yet
-  - You're prototyping — Week 9 function calling is faster for early experimentation
+  - You're prototyping — Week 4 function calling is faster for early experimentation
 
 - card(orange, 🎯): The Progression
-  - Stage 1: build the tool inline (Week 9)
+  - Stage 1: build the tool inline (Week 4)
   - Stage 2: it works and is useful → extract into a function
   - Stage 3: others want it → wrap as an MCP server
   - Stage 4: maintain it as shared infrastructure
@@ -239,8 +269,9 @@ graph LR
   - Closes the gap between "one researcher's clever script" and "field-wide tool"
 
 - card(orange, ⏳): The Maturity Caveat
-  - It's new (announced late 2024) — fast-evolving, expect rough edges
+  - Announced late 2024 and still moving — pin your SDK version and re-read the spec before you ship
   - Use MCP when reuse matters; keep using simple function calling otherwise
+  - **Connecting a server is running someone's code** — trust it the way you trust a dependency, not a bookmark
   - Today's practice: build your own minimal server + client
 
 =====
@@ -288,7 +319,7 @@ python -m venv .venv
 .venv\Scripts\activate   # Windows
 # source .venv/bin/activate   # macOS/Linux
 
-# Install the SDK
+# Install the SDK (the [cli] extra adds the `mcp` command and the Inspector)
 pip install "mcp[cli]"
 ```
 
@@ -306,10 +337,10 @@ pip install "mcp[cli]"
 
 ```python
 # mcp_demo/server.py
-from mcp.server.fastmcp import FastMCP
+from mcp.server import MCPServer
 from datetime import datetime
 
-mcp = FastMCP("ResearchHelper")
+mcp = MCPServer("ResearchHelper")
 
 
 @mcp.tool()
@@ -333,13 +364,15 @@ def word_count(text: str) -> dict:
 
 
 if __name__ == "__main__":
-    mcp.run()   # runs over stdio by default
+    mcp.run()   # stdio by default — see below for the HTTP form
 ```
 
 - card(yellow, 💡): How `@mcp.tool()` Works
   - The decorator reads your function's name, docstring, and type hints
   - It builds the MCP tool schema automatically — no JSON writing
   - Any MCP-compatible client can now discover and call these tools
+  - ⚠️ The **docstring is shipped to the model**, exactly like a Week 4 tool description. Write it for the agent, not for yourself
+  - For a server other machines reach, run it over HTTP instead: `mcp run server.py --transport streamable-http`
 
 =====
 
@@ -351,6 +384,7 @@ if __name__ == "__main__":
 ```bash
 # Run the inspector on your server
 mcp dev server.py
+# with uv:  uv run mcp dev server.py
 ```
 
 - card(blue, 🔍): What Happens
@@ -375,34 +409,34 @@ mcp dev server.py
 ```python
 # mcp_demo/client.py
 import asyncio
-from mcp.client.stdio import stdio_client, StdioServerParameters
-from mcp import ClientSession
+from mcp import Client, StdioServerParameters
+
+# Spawn our own server as a subprocess. The child gets an ALLOW-LISTED environment,
+# so any secret it needs must be passed explicitly — nothing is inherited.
+server = StdioServerParameters(command="python", args=["server.py"], env={})
+# Already running over HTTP instead?   Client("http://localhost:8000/mcp")
 
 
 async def main():
-    params = StdioServerParameters(command="python", args=["server.py"])
-    async with stdio_client(params) as (read, write):
-        async with ClientSession(read, write) as session:
-            await session.initialize()
+    async with Client(server) as client:          # entering spawns it, leaving shuts it down
+        tools = await client.list_tools()
+        print("Available tools:", [t.name for t in tools.tools])
 
-            tools = await session.list_tools()
-            print("Available tools:", [t.name for t in tools.tools])
+        now = await client.call_tool("current_time", {})
+        print("Time:", now.structured_content)
 
-            time_result = await session.call_tool("current_time", {})
-            print("Time:", time_result.content[0].text)
-
-            wc_result = await session.call_tool("word_count", {"text": "Hello MCP world"})
-            print("Word count:", wc_result.content[0].text)
+        wc = await client.call_tool("word_count", {"text": "Hello MCP world"})
+        print("Word count:", wc.structured_content)
 
 
 asyncio.run(main())
 ```
 
 - card(yellow, 💡): What the Client Does
-  - Spawns your server as a subprocess (`stdio_client`)
-  - Opens a session and handshakes (`initialize`)
-  - Lists available tools dynamically (you didn't hardcode them!)
-  - Calls each tool and prints the result
+  - Spawns your server as a subprocess and handshakes for you — `Client` handles the session
+  - Lists available tools **dynamically** (you didn't hardcode them!)
+  - Calls each tool and reads `structured_content`, the typed result your type hints produced
+  - Swap `StdioServerParameters` for a URL and the same four lines talk to a remote server
 
 =====
 
@@ -745,7 +779,9 @@ python client.py
 
 MCP Foundations
 > 📚 [Model Context Protocol Spec](https://modelcontextprotocol.io/)
-> 📚 [Anthropic: Introduction to MCP](https://docs.anthropic.com/en/docs/build-with-claude/mcp)
+> 📚 [MCP — Introduction](https://modelcontextprotocol.io/docs/getting-started/intro)
+> 📚 [MCP Python SDK docs](https://py.sdk.modelcontextprotocol.io/)
+> 📚 [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)
 > 🎓 [Anthropic: Introduction to MCP (free course)](https://anthropic.skilljar.com/introduction-to-model-context-protocol)
 &nbsp;
 
