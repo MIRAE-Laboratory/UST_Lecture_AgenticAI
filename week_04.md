@@ -1101,124 +1101,120 @@ conversation so far>) before answering anything else.
 ## Slide: Week 3 Discussion Review — Your Votes
 - type: cards
 - title: How Did You Vote?
-- subtitle: A clear pattern emerged — but with interesting nuances
+- subtitle: Hulk still leads — but Captain America gained ground, and two of you refused to pick
 
-- card(green, 📊): Voting Results
-  - **Hulk's caution** dominated: Rupam, Lin, Irfan, Seher, Waad, Margareth, Hyunwoo — practical safety first
-  - **Captain America's ethics** resonated: Lin, DongYun, Waad — integrity and accountability
-  - **Iron Man's ambition** attracted synthesizers: Tran, Manuella, Tan, Ly — automation WITH oversight
-  - Most students **combined positions** — showing growing sophistication since Week 1
+- card(green, 📊): Voting Results (7 responses)
+  - **Hulk (Option 3)** — 5 of 7 (Qasim, Minh, Najwa, Firman, Rustam): confine AI to computational heavy lifting, keep human oversight
+  - **Captain America (Option 2)** — 4 of 7 (Khine, Nurul, Firman, Rustam): critical thinking and integrity stay human
+  - **Iron Man (Option 1)** — 2 of 7 (Firman, Rustam), and **never alone**: acceleration yes, autonomy no
+  - **All three** — Firman ("all partially correlated") and Rustam ("all three perspectives highlight an important part")
 
-- card(purple, 💡): Key Shift from Week 2
-  - Week 2: "How much can we trust probabilistic answers?" → theoretical
-  - Week 3: "**What should AI never do?**" → practical boundary-drawing
-  - The class moved from debating AI's **nature** to defining AI's **role**
-  - Almost nobody said "never use AI" — the debate is now about **where to draw the line**
+- card(purple, 💡): Key Shift from Week 1
+  - Week 1: "Is AI an assistant or a crutch?" → **which** persona; Week 3: "What should AI never do?" → **where** exactly is the line
+  - Khine drew the line in one sentence; Rustam moved it from *tasks* to *responsibility*
+  - Nobody said "never use AI"; nobody said "let it run alone" — the whole debate now lives **between** the personas
+  - New voices this week: Qasim and Najwa joined on Hulk's side
 
 =====
 
-## Slide: Key Theme 1 — Automation vs Judgment
+## Slide: Key Theme 1 — Verifiable vs Accountable
 - type: cards
-- title: Key Theme 1 — **Automate the Bolts, Own the Blueprint**
-- subtitle: The strongest consensus across the class
+- title: Key Theme 1 — **Delegate the Task, Never the Responsibility**
+- subtitle: The strongest idea of the week came from two different directions
 
-- card(blue, 🏗️): The "Amplifier" View (Tran, Manuella, Tan, Ly)
-  - AI should **aggressively** handle computation, simulation, repetitive tasks
-  - This **frees** the researcher for higher-level thinking — "big-picture architecture" (Tran)
-  - "AI does not diminish human thinking — it **amplifies** it" (Manuella)
-  - "Let AI handle the heavy computation while humans stay in charge of **validating results**" (Ly)
+- card(blue, 📏): Khine's Line
+  - AI can do tasks "whose output I can verify independently, such as fitting data, drafting a literature table, or formatting"
+  - It should never make "the judgments I would be accountable for, such as interpreting results, choosing which mechanism explains them, or deciding what counts as evidence"
+  - "AI accelerates the work I could check myself and never replaces the judgment I must defend"
 
-- card(orange, 🚫): The "Never Replace" Line (Rupam, DongYun, Waad)
-  - "AI should never lead us to become **careless or blind** in our thinking" (Rupam)
-  - "We must clearly separate the role of computing from the role of **human judgment**" (DongYun)
-  - In nuclear engineering, Iron Man's approach is "**extremely dangerous**" — hybrid approach essential (Waad)
+- card(green, ⚖️): Rustam's Reframe
+  - "The key distinction is between delegating tasks and delegating responsibility"
+  - AI need not be "restricted only to computational tasks" — hypothesis generation, experimental planning, even interpretation are fine "provided that its outputs are independently validated"
+  - The goal: "the level of autonomy where AI increases research capability without removing human accountability"
 
-- card(green, 🎯): The Synthesis
-  - Nearly everyone converged: AI = computation engine; Human = judgment engine
-  - The disagreement is about the **boundary** — how much oversight is enough?
-  - Manuella's rebuttal to Waad: "The risk depends on **how it is used**, not on AI itself"
+- card(orange, 🧪): The Hulk Majority (Qasim, Minh, Najwa, Nurul)
+  - "AI should support our decisions rather than make autonomous decisions" (Qasim)
+  - "AI should only handle computational heavy lifting, while human oversight and critical judgment must remain non-negotiable" (Minh)
+  - Filter "high-volume datasets to clear away the noise" so scientists "skip the grunt work" and do quality control (Najwa); "still need to check its answers and make our own decisions" (Nurul)
 
-- highlight-quote: "AI should be used as a powerful assistant for efficiency while ensuring that all key interpretations, decisions, and validations remain under human control." — Tan
+- highlight-quote: Same conclusion, different tests: Khine asks "Can I verify it?"; Rustam asks "Am I still responsible for it?"; the Hulk camp asks "Is it computation?" — which test would you use?
 
 =====
 
 ## Slide: Debate Point 1 — Discussion Activity
 - type: card-single
-- title: 🗣️ **Live Discussion** — Where Is YOUR Boundary?
-- subtitle: 10 minutes — Manuella vs Waad: Is Iron Man dangerous or empowering?
+- title: 🗣️ **Live Discussion** — Three Tests for the Same Line
+- subtitle: 10 minutes — Khine vs Rustam vs the Hulk camp
 
 - card(yellow, 💡): Discussion Prompt
-  - Waad (nuclear engineering): "Relying on Iron Man's opinion is **extremely dangerous**" in safety-critical fields
-  - Manuella (rebuttal): "The risk depends on **how it is used** — AI as an anchor for testing actually **strengthens** research"
-  - **Your task**: Where is YOUR field on this spectrum?
-  - Is there a task in your research where **full automation** would be fine? Where it would be catastrophic?
-  - Draw your personal **Green / Yellow / Red** zones for AI autonomy in your specific field
+  - Take one real step of your own research workflow (e.g. choosing a baseline, cleaning a dataset, writing the related-work section, picking a mechanism to explain a result)
+  - Apply **Khine's test**: could you verify the AI's output independently? Apply **Rustam's test**: if it is wrong, are you still the one responsible? Apply **Minh's test**: is it computation or judgment?
+  - Do the three tests agree? Find one task where they **disagree** — that is where your personal boundary lives
+  - Rustam says interpretation can be delegated *if* independently validated; Khine says interpretation must never be delegated. Who is right for **your** field?
 
 =====
 
-## Slide: Key Theme 2 — Cognitive Bias Risk
+## Slide: Key Theme 2 — Skill Erosion
 - type: cards
-- title: Key Theme 2 — **The Hidden Danger: AI Shapes How We Think**
-- subtitle: Margareth's insight goes beyond output quality to cognitive influence
+- title: Key Theme 2 — **"Faster at Producing Answers, Not Better at Producing Knowledge"**
+- subtitle: Captain America's worry, restated by the class in concrete terms
 
-- card(pink, 🧠): Anchoring Bias (Margareth)
-  - Even with human-in-the-loop, AI outputs can introduce **cognitive biases**
-  - **Anchoring**: early exposure to AI-generated answers **narrows subsequent thinking**
-  - "The challenge is not only **what** AI should do, but **how and when** its outputs are presented"
-  - This limits exploration of alternatives — you stop thinking once AI gives an answer
+- card(pink, 📉): The Curve-Fit Test (Khine)
+  - "The skill erosion Captain America fears is also real: someone who has never fit a curve by hand can't recognize a bad fit"
+  - Verification requires a skill you only get by doing the task yourself at least once
+  - The boundary is therefore not fixed: it depends on **what you can still recognize**
 
-- card(blue, 🔍): Data Interpretation (Rupam)
-  - "Data can often be **misleading** — it may appear to indicate one conclusion while meaning something entirely different"
-  - Interpreting such cases depends on **human insight and domain knowledge**, not pattern matching
-  - AI sees correlations; humans understand **causation and context**
+- card(blue, 🧠): Answers vs Knowledge (Rustam)
+  - "If we simply accept AI-generated outputs, we may become faster at producing answers without necessarily becoming better at producing knowledge"
+  - "Using AI does not mean researchers should stop questioning results or understanding how conclusions are reached"
+  - A fully autonomous pipeline "can create a false sense of reliability"
 
-- card(orange, ⚖️): Manuella's Sequence (Revised from Week 2)
-  - Iron Man + Hulk = **speed and brilliance** (build, analyze, uncover)
-  - Captain America = the necessary **boundary** (core thinking stays human)
-  - "He is the director — ensuring that the work is done **properly**, not just quickly"
-  - **Success lies in balance**: leveraging AI speed while maintaining human discipline
+- card(green, 🔁): Quality Control as the New Craft (Najwa)
+  - Let AI "filter high-volume datasets to clear away the noise" — then move human effort to "quality controls over the intellectual agency"
+  - But hallucination "could slip through" and "corrupt an entire research journey" — QC only works if the human still knows what good looks like
+
+- highlight-quote: "AI accelerates the work I could check myself and never replaces the judgment I must defend." — Khine Wai Zin
 
 =====
 
 ## Slide: Debate Point 2 — Discussion Activity
 - type: card-single
-- title: 🗣️ **Live Discussion** — Anchoring Experiment
-- subtitle: 5 minutes — Experience cognitive anchoring firsthand
+- title: 🗣️ **Live Discussion** — Could You Spot the Bad Fit?
+- subtitle: 5 minutes — Test Khine's claim on yourself
 
 - card(yellow, 💡): Quick Exercise
-  - Think of a **research problem** you're working on right now
-  - Imagine you asked AI for a solution and it gave you Answer X
-  - Now try to think of **3 alternative approaches** that are completely different from X
-  - **How hard was that?** Did Answer X keep pulling you back?
-  - This is **anchoring bias** in action — and it happens every time you use AI without thinking first
-  - Connect to Week 3: How could your **system prompt** be designed to **prevent** anchoring? (e.g., "Generate 5 diverse approaches before recommending one")
+  - Name one task you now routinely hand to AI (code, statistics, a literature summary, a figure)
+  - When did you last do it **by hand**? Could you tell a subtly wrong output from a correct one today?
+  - If not, Khine's rule says you have already crossed the line — the task is no longer "verifiable" for you
+  - Design a fix in your **system prompt** (Week 3): e.g. "show the fit residuals and the alternative model you rejected", "list the three assumptions this answer depends on"
+  - Connect to today: which of your agent's **tools** should return evidence (data, DOIs, residuals) instead of conclusions?
 
 =====
 
-## Slide: Key Theme 3 — Domain Stakes Define the Rules
+## Slide: Key Theme 3 — Just Another Tool?
 - type: cards
-- title: Key Theme 3 — **One Size Does NOT Fit All**
-- subtitle: Your field determines how much AI autonomy is acceptable
+- title: Key Theme 3 — **"Just Another Tool" — with Ultron in the Footnotes**
+- subtitle: Firman's history lesson and the question of stakes
 
-- card(pink, ☢️): High-Stakes Fields (Waad, Hyunwoo, Seher)
-  - Nuclear: "A single algorithmic hallucination could be catastrophic" — **zero tolerance** (Waad)
-  - Robotics: "A single logic error or hallucination can result in **catastrophic hardware failure**" (Hyunwoo)
-  - Safety-critical: "AI should not be used independently" — always with human oversight (Seher)
+- card(blue, 🔧): The Amplifier (Firman on Iron Man)
+  - AI is "just another tool", like "the transition from the transistor to the microchip, calculator to the GPU to LLM"
+  - "JARVIS never replaced Tony Stark, it augmented him" — Stark "always makes the final calls and takes full responsibility"
+  - "It is neutral, and should not diminish human thinking. Instead, it amplifies capability tremendously"
 
-- card(blue, 🔬): Research Fields (Rupam, DongYun, Namcheol)
-  - "AI should be used to **reduce heavy workloads** while maintaining visibility and control" (Rupam)
-  - "AI should be used as a way to **start** the research" — not finish it (DongYun)
-  - "Human oversight as the final **Gating Function**" ensuring adherence to physical laws (Minh)
+- card(green, 🛡️): The Safeguard (Firman on Bruce Banner)
+  - Banner "responsibly calculates every risk" because the power is "highly unpredictable"
+  - "Set strict ethics, clear boundaries, and strong safeguards **before** integrating powerful technology"
+  - Echoes Rustam's Week 1 point: build the protocols in advance
 
-- card(green, 💡): Creative/Exploratory (Manuella, Ly, Tran)
-  - "Creativity has never emerged perfectly formed — it evolves through **iteration and experimentation**" (Manuella)
-  - AI accelerates the iteration cycle → can explore and refine at a "**much higher level**"
-  - Use AI for ideas/hypotheses, but verify using logic and experiments (Tran)
+- card(pink, ⚠️): The Ultron Case (Firman on Captain America)
+  - "When powerful technology is rushed without enough safety measures, it can fail, be manipulated, and cause disaster"
+  - "AI lacks conscience, so the real risk lies in human intention and commands" → "a strict, legally binding regulatory framework"
+  - "Who is to blame when an AI entity like Ultron concludes that humans are the greatest threat?"
 
 - card(purple, 🎯): The Emerging Principle
-  - **Higher stakes → more human oversight → less AI autonomy**
-  - But even in low-stakes tasks, **anchoring bias** can silently degrade thinking (Margareth)
-  - The right policy depends on **your specific field and task**
+  - Every prior breakthrough was "beneficial to humanity, but also came with major risks" — the tool is neutral, the **stakes** are not
+  - Higher stakes → safeguards first, autonomy later
+  - Qasim: "errors, hallucinations, and data leaks can have serious consequences" — the same three risks Minh named
 
 =====
 
@@ -1228,36 +1224,35 @@ conversation so far>) before answering anything else.
 - subtitle: 10 minutes — Create a field-specific AI autonomy policy
 
 - card(yellow, 💡): Exercise
-  - Using today's **function calling** knowledge + your classmates' insights, design an AI policy for your lab:
-  - **Green Zone** (AI executes autonomously): What tool calls need no human review? (e.g., `calculate()`, `search_papers()`)
-  - **Yellow Zone** (AI proposes, human approves): What needs review before execution? (e.g., `write_file()`, `send_email()`)
-  - **Red Zone** (human only): What should AI **never** do in your field? What tool should you NOT build?
-  - How does **Margareth's anchoring concern** change your policy? Should AI show results before or after you think?
+  - Using today's **function calling** knowledge + your classmates' tests, design an AI policy for your lab:
+  - **Green Zone** (AI executes autonomously): tool calls whose output you can verify independently (Khine) — e.g. `calculate()`, `search_papers()`
+  - **Yellow Zone** (AI proposes, human approves): tasks where you keep responsibility (Rustam) — e.g. `write_file()`, `send_email()`, hypothesis generation
+  - **Red Zone** (human only): the judgments you must defend — what tool should you **never build**?
+  - Firman's Banner rule: which safeguard must exist **before** you switch a tool from Yellow to Green?
 
 =====
 
 ## Slide: Key Theme 4 — The Accountability Problem
 - type: cards
-- title: Key Theme 4 — **Who Is Responsible When AI Fails?**
-- subtitle: The question nobody can fully answer yet
+- title: Key Theme 4 — **"Nobody Owns the Error"**
+- subtitle: Two students arrived at the same unanswered question
 
-- card(blue, 🎯): "Accountability Cannot Be Outsourced" (Minh)
-  - "The 'Director' role exists because accountability cannot be outsourced to a **probabilistic engine**"
-  - AI navigates the infinite search space; humans are the "**Gating Function**"
-  - Researchers' duty to keep scientific work **honest and reliable** (DongYun)
+- card(blue, 🎯): The Ownership Gap (Khine)
+  - Against a fully autonomous pipeline: "When it is wrong, nobody owns the error"
+  - "Fabricated citations or silent calculation mistakes end up under a human's name"
+  - The output carries your name; the decision behind it must carry your judgment
 
-- card(orange, 🤔): The Unclear Case (Margareth)
-  - "Human makes mistakes too, but at least the **responsible party is clearer**"
-  - When AI makes mistakes, "it would be more **messy** as to who became responsible"
-  - "Virtually impossible for the developer to make all possible guardrails"
-  - Who is at fault: the user? The prompt engineer? The model developer? The tool author?
+- card(orange, 🤔): The Ultron Question (Firman)
+  - Stark "takes full responsibility for any decision" — that is the Iron Man model done right
+  - But when Stark and Banner rushed Ultron, the failure had no clear owner
+  - Firman's answer: "a strict, legally binding regulatory framework" — accountability by law, not by goodwill
 
-- card(green, 📐): The Ethical Dimension
-  - Also: privacy/data leaks, copyright (AI art using copyrighted training data) (Margareth)
-  - Ethics and security aren't separate from AI utility — they're **intertwined**
-  - "There are just so many **dimensionalities** to problems... to be able to clearly separate what it should and should not do" (Margareth)
+- card(green, 📐): Responsibility Is Not Delegable (Rustam, Minh)
+  - "The researcher should remain responsible for verifying evidence, recognizing uncertainty, and making the final scientific judgment" (Rustam)
+  - "Human oversight and critical judgment must remain non-negotiable to prevent hallucinations, ethical breaches, and data leaks" (Minh)
+  - Tasks scale with autonomy; responsibility does not
 
-- highlight-quote: "It is a tool and it's up to the human to decide what tool is appropriate — not using a calculator for a math test if the goal is learning calculation." — Margareth
+- highlight-quote: "The goal should not be 'AI versus humans,' but rather finding the level of autonomy where AI increases research capability without removing human accountability." — Rustam
 
 =====
 
@@ -1269,12 +1264,12 @@ conversation so far>) before answering anything else.
 - card(yellow, 💡): Scenario
   - Your research agent (built today!) uses `search_papers()` to find references and `calculate()` to verify statistics
   - It produces a paragraph for your paper that **cites a paper that doesn't exist** (hallucination despite tools)
-  - The hallucinated citation **passes peer review** and gets published
+  - The hallucinated citation **passes peer review** and gets published — "under a human's name", as Khine warned
   - Six months later, someone discovers the citation is fake
   - **Questions:**
-  - Who is responsible? You? The AI provider? The peer reviewers?
+  - Who is responsible? You? The AI provider? The peer reviewers? Would Firman's "legally binding framework" change the answer?
   - Could your **tool design** have prevented this? (Hint: what if `search_papers()` returned real DOI links?)
-  - Does today's **function calling** lecture change how you think about this problem?
+  - Rustam says delegate tasks, not responsibility — which part of this workflow was a task, and which was responsibility?
   - What **tool** would you add to your agent to catch this before submission?
 
 =====
@@ -1284,22 +1279,22 @@ conversation so far>) before answering anything else.
 - title: From Debate to **Practice** — Tools Are the Answer to Your Concerns
 - subtitle: Today's lecture addresses what you worried about last week
 
-- card(blue, 🔗): "AI Must Stay Computational" Insight Needs Tools
-  - You said: AI should handle computation, not judgment
-  - Today's tools make this **concrete**: `calculate()` is computation; deciding what to calculate is judgment
+- card(blue, 🔗): "Verifiable Output" Needs Tools
+  - Khine: AI may do what "I can verify independently"; Minh: "only computational heavy lifting"
+  - Today's tools make this **concrete**: `calculate()` is computation you can check; deciding what to calculate is judgment
   - **Function calling is the implementation of the boundary you described**
 
-- card(green, 🎭): "Context Matters" Insight Needs Personas
-  - Waad: nuclear requires extreme caution; Manuella: creativity allows more freedom
+- card(green, 🎭): "Safeguards Before Integration" Needs Personas
+  - Firman's Banner: set boundaries before switching the power on
   - **Different personas** for different contexts = different system prompts with different tool permissions
   - Today's practice: you built exactly this — **persona + tools = context-aware agent**
 
-- card(orange, 🛡️): "Human Oversight" Insight Needs the Agent Loop
-  - Hyunwoo: "every final output needs human oversight"
-  - The **ReAct loop** makes this possible: Think → Act → **Observe** → human can inspect at every step
+- card(orange, 🛡️): "Delegate Tasks, Not Responsibility" Needs the Agent Loop
+  - Rustam: autonomy may grow as long as accountability stays human
+  - The **ReAct loop** makes this possible: Think → Act → **Observe** → a human can inspect at every step
   - The `if msg.tool_calls:` branch in today's code is literally where a **human-in-the-loop** checkpoint goes — and today you put one there (`CONFIRM_REQUIRED`)
 
-- highlight-quote: "Your Week 3 concerns about automation boundaries, cognitive bias, and accountability are exactly the problems that function calling and tool design are built to address."
+- highlight-quote: "Your Week 3 concerns — verifiability, skill erosion, safeguards, and who owns the error — are exactly the problems that function calling and tool design are built to address."
 
 =====
 
@@ -1311,7 +1306,7 @@ conversation so far>) before answering anything else.
 - card(blue, 📈): Week 1 → Week 2 → Week 3 → Week 4
   - **Week 1**: "AI is useful but we need boundaries" → defined the assistant/crutch line
   - **Week 2**: "AI is stochastic — treat outputs as hypotheses" → moved from *if* to *how* to trust
-  - **Week 3**: "Define what AI can do and what it should never do" → drew practical boundaries
+  - **Week 3**: "Define what AI can do and what it should never do" → Khine's verifiable-vs-accountable line, Rustam's "delegate tasks, not responsibility"
   - **Week 4 (today)**: Tools make those boundaries **enforceable** — computation vs judgment, encoded in code
 
 - card(green, 🎯): From Philosophy to Engineering
@@ -1366,7 +1361,7 @@ graph LR
 
 1. You now know how to write system prompts (Week 3) AND define tools (Week 4). **Design a complete mini-agent** for your research: describe the persona (system prompt), 3 custom tools, and one example conversation showing how they work together. Why did you choose these specific tools?
 2. Reflect on the **Director's Role**: after 4 weeks of learning about AI capabilities, where do YOU draw the line? What decisions should remain **100% human**, what can be **delegated to AI with review**, and what can be **fully automated**? Give specific examples from your research.
-3. Margareth raised the **anchoring bias** concern: AI outputs can narrow your thinking even when you're "in the loop." Design a **workflow** for your research that mitigates this risk. When should you think BEFORE consulting AI? When is it safe to let AI go first?
+3. Khine argued that "someone who has never fit a curve by hand can't recognize a bad fit," and Rustam warned we may become "faster at producing answers without necessarily becoming better at producing knowledge." Design a **workflow** for your research that keeps your verification skills alive while still using AI. Which tasks must you keep doing by hand, and how often?
 4. After completing Phase 1, has your **Week 1 position** (AI as assistant vs crutch) changed? Write a "letter to your Week 1 self" explaining what you've learned and how your thinking has evolved across all 4 weeks.
 
 =====
@@ -1411,6 +1406,6 @@ Videos
   - Built a persona chat app with **tool-calling capability**; chose between Gemini/Ollama APIs; loaded personas from `personas.md` — same code, multiple backends
 
 - card(orange, 🗣️): Discussion
-  - Week 3 review: class converged on "AI computes, humans judge" but the **boundary depends on your field**; Margareth's anchoring bias insight adds a new dimension; accountability remains unresolved
+  - Week 3 review: class converged on "delegate the task, never the responsibility" (Khine, Rustam); Hulk still leads (5/7) but the boundary now depends on what you can **verify**; who owns the error remains unresolved
 
 **Phase 1 complete!** Next week begins Phase 2: Building — starting with **Human-AI interaction design**: putting today's agent behind a Streamlit interface a researcher would actually use.
