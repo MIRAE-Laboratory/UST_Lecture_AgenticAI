@@ -1690,16 +1690,16 @@ Expected UI:
     <section class="slide" id="slide-29">
       <div class="slide-content">
         <h2 class="slide-title">How Did You Vote?</h2>
-        <p class="slide-subtitle">The most nuanced responses yet — almost everyone combined multiple perspectives</p>
+        <p class="slide-subtitle">The biggest turnout yet — and the clearest consensus</p>
         <div class="cards-grid">
           <div class="card card-green">
-            <div class="card-header"><span class="icon">📊</span> Voting Results</div>
+            <div class="card-header"><span class="icon">📊</span> Voting Results (10 responses)</div>
             <div class="card-body">
               <ul>
-                <li><strong>Hulk dominated</strong> again: Waad, Rupam, Lin, Seher, Hyunwoo, Ly, Han, Manuella — human as fail-safe</li>
-                <li><strong>Iron Man + Hulk synthesis</strong> was the new trend: Tran, Irfan, Gyeongsu, Minh — automate execution, verify rigorously</li>
-                <li><strong>Iron Man + Captain America</strong> appeared: DongYun, Tan, Nazhiefah — shift to director, but keep integrity</li>
-                <li><strong>Margareth's unique view</strong>: "We are basically still the programmers, handling AI that handles the tools"</li>
+                <li><strong>Hulk (Option 3)</strong> — 9 of 10: Qasim, Jeonghyeon, Minh, Rustam, Seong su, Batool, Khine, Azzahra, Firman — the human as fail-safe</li>
+                <li><strong>Iron Man (Option 1)</strong> — Jeonghyeon and Firman explicitly; Khine ("Iron Man's ambition, Hulk's verification") and Najwa ("I agree to Iron Man" on speed) in spirit</li>
+                <li><strong>Captain America (Option 2)</strong> — Seong su and Firman; Najwa's "moral responsibility" and Rustam's "caution" lean the same way</li>
+                <li><strong>New voices</strong>: Seong su, Batool, Azzahra posted for the first time; Firman closed with <em>I, Robot</em>: "Can a robot write a symphony?" — "Can you?"</li>
               </ul>
             </div>
           </div>
@@ -1707,8 +1707,8 @@ Expected UI:
             <div class="card-header"><span class="icon">💡</span> Week 4 vs Previous Weeks</div>
             <div class="card-body">
               <ul>
-                <li>The class has moved from "should we trust AI?" to <strong>"how do we architect human-AI systems?"</strong></li>
-                <li>Nearly every student now <strong>combines multiple perspectives</strong> — no one picks just one</li>
+                <li>Week 1: <em>which</em> persona; Week 3: <em>where</em> the line is; Week 4: <em>what the director actually does</em> — direction, verification, responsibility</li>
+                <li>Nobody defended Iron Man's "ethics is red tape"; Khine: "I reject Iron Man's view that ethics is red tape, and this is where Hulk is right"</li>
                 <li>The debate has matured from philosophical to <strong>operational and design-oriented</strong></li>
                 <li>Perfect timing: today's lecture is about translating these principles into <strong>app specifications</strong></li>
               </ul>
@@ -1719,28 +1719,28 @@ Expected UI:
     </section>
     <section class="slide" id="slide-30">
       <div class="slide-content">
-        <h2 class="slide-title">Key Theme 1 — <strong>The Human as Architect AND Fail-Safe</strong></h2>
-        <p class="slide-subtitle">The strongest consensus — combining Iron Man's vision with Hulk's caution</p>
+        <h2 class="slide-title">Key Theme 1 — <strong>Direction Without Verification Is Delegation of Blame</strong></h2>
+        <p class="slide-subtitle">The strongest consensus — Iron Man's ambition fused with Hulk's caution</p>
         <div class="cards-grid">
           <div class="card card-blue">
-            <div class="card-header"><span class="icon">🏗️</span> The Architect Role</div>
+            <div class="card-header"><span class="icon">🏗️</span> The Director Sets the Direction</div>
             <div class="card-body">
               <ul>
-                <li>"Our primary role is shifting toward acting as the <strong>visionary architect</strong>" (Tran)</li>
-                <li>"Researchers must define the right problems, set constraints, and make <strong>final calls</strong>" (DongYun)</li>
-                <li>Define the "<strong>Right Problems</strong>" and provide the final validation (Minh)</li>
-                <li>"Only we know the exact thing we want AI to do, how we want it done, and whether the outcome is <strong>meaningful</strong>" (Margareth)</li>
+                <li>"The human's unique contribution is direction: choosing which problems matter, framing hypotheses, and deciding what the results mean" (Khine)</li>
+                <li>"Humans should design the process, provide the necessary input, and set the overall direction, while AI carries out the technical and repetitive tasks" (Jeonghyeon)</li>
+                <li>"Researchers must decide which questions are worth exploring, evaluate AI-generated results, and consider the ethical impact" (Batool)</li>
+                <li>"Humans should remain responsible for deciding where we are going and whether we should go there at all" (Rustam)</li>
               </ul>
             </div>
           </div>
           <div class="card card-green">
-            <div class="card-header"><span class="icon">🛡️</span> The Fail-Safe Role</div>
+            <div class="card-header"><span class="icon">🛡️</span> The Director Verifies</div>
             <div class="card-body">
               <ul>
-                <li>"Our unique contribution is to <strong>hold the leash</strong> and make the final decisions based on scrutiny" (Hyunwoo)</li>
-                <li>"If a human does not understand their specific area fully, AI can be guided into <strong>misleading steps</strong>" (Tran)</li>
-                <li>"Keeping AI in a boundary and keeping a <strong>logbook</strong> of its working" (Rupam)</li>
-                <li>Design a controlled workflow: AI handles exploration, humans define objectives and <strong>validate key stages</strong> (Irfan)</li>
+                <li>"Direction without verification is just delegation of blame" (Khine)</li>
+                <li>"Humans must monitor the process, review the results, and take responsibility for the final decisions" (Jeonghyeon)</li>
+                <li>"We still have to double-check every output it gives, almost like holding the leash Hulk mentioned" (Azzahra)</li>
+                <li>"Humans still need to critically check the results, consider ethical risks, and make the final decisions" (Qasim)</li>
               </ul>
             </div>
           </div>
@@ -1749,18 +1749,18 @@ Expected UI:
             <div class="card-body">
               <ul>
                 <li>Your midterm app should encode BOTH roles:</li>
-                <li><strong>Architect</strong>: the human defines what problem to solve, what data to use, what questions to ask</li>
-                <li><strong>Fail-safe</strong>: the human reviews AI outputs before they're used, with clear verification points</li>
+                <li><strong>Direction</strong>: the human defines what problem to solve, what data to use, what questions to ask</li>
+                <li><strong>Verification</strong>: the human reviews AI outputs before they are used, with clear checkpoints — not "rubber-stamping" (Minh)</li>
               </ul>
             </div>
           </div>
         </div>
-        <div class="highlight-quote">"The true human role becomes not doing the work, but deciding what work is worth doing in the first place." — Margareth</div>
+        <div class="highlight-quote">"Clinging to manual work for its own sake is nostalgia, not rigor. … So: Iron Man's ambition, Hulk's verification." — Khine Wai Zin</div>
       </div>
     </section>
     <section class="slide" id="slide-31">
       <div class="slide-content">
-        <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Architect vs Fail-Safe in YOUR App</h2>
+        <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Direction vs Verification in YOUR App</h2>
         <p class="slide-subtitle">10 minutes — Apply this to your midterm project</p>
         <div class="cards-grid">
           <div class="card card-yellow">
@@ -1768,10 +1768,10 @@ Expected UI:
             <div class="card-body">
               <ul>
                 <li>Think about the AI app you want to build for midterm</li>
-                <li><strong>As Architect</strong>: What are the 3 most important decisions the human makes in your app? (problem framing, data selection, evaluation criteria)</li>
-                <li><strong>As Fail-Safe</strong>: What are the 3 most dangerous things the AI could get wrong? How does your UI let the human catch these errors?</li>
-                <li><strong>Design question</strong>: Can you design your interaction flow so the human plays BOTH roles naturally — without the verification feeling like extra work?</li>
-                <li>Connect to today's practice: in the Multi-PDF app, checkboxes = architect (choosing context), reading the response = fail-safe (verifying accuracy)</li>
+                <li><strong>Direction</strong>: What are the 3 most important decisions the human makes in your app? (problem framing, data selection, evaluation criteria)</li>
+                <li><strong>Verification</strong>: What are the 3 most dangerous things the AI could get wrong? How does your UI let the human catch these errors?</li>
+                <li><strong>Khine's test</strong>: does the user "understand the machine well enough to know when it's lying"? What does your UI show to make that possible?</li>
+                <li>Connect to today's practice: in the Multi-PDF app, checkboxes = direction (choosing context), reading the response with its sources = verification</li>
               </ul>
             </div>
           </div>
@@ -1780,38 +1780,46 @@ Expected UI:
     </section>
     <section class="slide" id="slide-32">
       <div class="slide-content">
-        <h2 class="slide-title">Key Theme 2 — <strong>"AI Is Harder to Debug Than Code"</strong></h2>
-        <p class="slide-subtitle">Margareth's insight from hands-on tool-building experience</p>
+        <h2 class="slide-title">Key Theme 2 — <strong>"Never Let the Calculator Decide What Needs to Be Calculated"</strong></h2>
+        <p class="slide-subtitle">Verification requires mastery, and mastery is what atrophies first</p>
         <div class="cards-grid">
           <div class="card card-pink">
-            <div class="card-header"><span class="icon">🔧</span> The Unpredictability Problem (Margareth)</div>
+            <div class="card-header"><span class="icon">🔧</span> Mastery Is the Fail-Safe (Minh)</div>
             <div class="card-body">
               <ul>
-                <li>"As someone who has been trying to design and give tools to AI, I would say they are <strong>hard to predict</strong>"</li>
-                <li>"Sometimes it surprises you with how well they choose the right tool; sometimes they <strong>keep failing</strong> a task you think is very clear"</li>
-                <li>Normal programming: "program does exactly what you intend" (given correct syntax)</li>
-                <li>AI: "doing things with AI sometimes feels like you just want them to <strong>read your mind</strong>"</li>
+                <li>"Our contribution is not merely rubber-stamping automated outputs, but mastering the underlying core mechanisms"</li>
+                <li>"Without a solid grasp of foundational principles, we cannot reliably detect subtle hallucinations, prevent critical data leakage, or validate edge cases"</li>
+                <li>"Delegating execution to AI should never mean abdicating our intellectual ownership and ethical responsibility"</li>
               </ul>
             </div>
           </div>
           <div class="card card-blue">
-            <div class="card-header"><span class="icon">🧪</span> The Implications for App Design</div>
+            <div class="card-header"><span class="icon">🧮</span> The Calculator Rule (Seong su)</div>
             <div class="card-body">
               <ul>
-                <li>Traditional software: input → deterministic output → predictable UI</li>
-                <li>AI software: input → <strong>probabilistic</strong> output → UI must handle <strong>variability</strong></li>
-                <li>Your midterm app needs to handle: what happens when the AI gives a <strong>bad</strong> answer?</li>
-                <li>Do you retry? Show alternatives? Let the user edit? Ask for clarification?</li>
+                <li>"I certainly wouldn't advocate mental math when a calculator sits on the desk — we must never let the calculator decide what needs to be calculated"</li>
+                <li>Autonomous agents find drug candidates "at unprecedented speed", but "even minor hallucinations can slip through undetected, calcify into accepted 'facts,' and corrupt downstream results"</li>
+                <li>The unpredictability of agentic AI "demands deliberate pacing" and "both technical and ethical literacy"</li>
               </ul>
             </div>
           </div>
           <div class="card card-green">
-            <div class="card-header"><span class="icon">💡</span> Han's Industry Perspective</div>
+            <div class="card-header"><span class="icon">🔬</span> The Domain Test (Khine)</div>
             <div class="card-body">
               <ul>
-                <li>Han connected the 3 agents to <strong>real companies</strong>: Iron Man = OpenAI, Captain America = Google (privacy concerns), Hulk = Anthropic/Claude (ethics first)</li>
-                <li>"Utilization of AI must be considered carefully" — even companies with the best AI struggle with boundaries</li>
-                <li>Economic pressures push toward less safety — another reason <strong>human oversight</strong> matters</li>
+                <li>"In my corrosion experiments, AI can suggest an equivalent circuit or a mechanism. But only I know whether the sample prep was sound and whether the fit is physically real, and my name goes on the paper"</li>
+                <li>"The director doesn't need to turn every wrench, but must understand the machine well enough to know when it's lying"</li>
+                <li>For your app: what must the user already know to catch a wrong answer?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">💡</span> The Implication for App Design</div>
+            <div class="card-body">
+              <ul>
+                <li>AI output is <strong>probabilistic</strong>: your UI must handle bad answers, not assume good ones</li>
+                <li>Show the evidence (sources, data, residuals) so the expert can judge — do not show only the conclusion</li>
+                <li>Rustam: AI "can recognize patterns, generate ideas, and process enormous amounts of information, but this does not automatically mean that everything it produces is correct or meaningful"</li>
               </ul>
             </div>
           </div>
@@ -1820,20 +1828,20 @@ Expected UI:
     </section>
     <section class="slide" id="slide-33">
       <div class="slide-content">
-        <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Designing for AI Unpredictability</h2>
+        <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Designing to Catch the Lie</h2>
         <p class="slide-subtitle">5 minutes — How does your app handle bad AI output?</p>
         <div class="cards-grid">
           <div class="card card-yellow">
             <div class="card-header"><span class="icon">💡</span> Quick Exercise</div>
             <div class="card-body">
               <ul>
-                <li>Your AI app gives a <strong>wrong answer</strong>. The user can tell it's wrong.</li>
+                <li>Your AI app gives a <strong>wrong answer</strong>. An expert user could tell it's wrong — if the UI showed enough.</li>
                 <li><strong>Design 3 recovery options</strong> your app could offer:</li>
                 <li>Option A: "Retry" button → same prompt, hope for different output?</li>
                 <li>Option B: "Adjust" → let the user edit the prompt and try again?</li>
-                <li>Option C: "Show reasoning" → Chain-of-Thought so the user can see WHERE it went wrong?</li>
-                <li>Option D: Something else? (Switch model? Change context? Fall back to manual?)</li>
-                <li>Which option(s) will your midterm app include? Why?</li>
+                <li>Option C: "Show evidence" → sources, data, or reasoning so the user can see WHERE it went wrong (Khine's "know when it's lying")</li>
+                <li>Option D: Something else? (Switch model? Change context? Fall back to manual, Seong su's "deliberate pacing"?)</li>
+                <li>Which option(s) will your midterm app include? Which one keeps the user's skill alive instead of letting it atrophy?</li>
               </ul>
             </div>
           </div>
@@ -1842,32 +1850,41 @@ Expected UI:
     </section>
     <section class="slide" id="slide-34">
       <div class="slide-content">
-        <h2 class="slide-title">Unexpected Insight — <strong>AI Should Free Us, Not Add More Work</strong></h2>
-        <p class="slide-subtitle">Nazhiefah's human-centered perspective</p>
+        <h2 class="slide-title">Key Theme 3 — <strong>Who Is Accountable When the Tool Acts?</strong></h2>
+        <p class="slide-subtitle">Najwa, Firman and Rustam on the moral side of the director's role</p>
         <div class="cards-grid">
           <div class="card card-pink">
-            <div class="card-header"><span class="icon">❤️</span> The Human Cost (Nazhiefah)</div>
+            <div class="card-header"><span class="icon">⚖️</span> Blurred Responsibility (Najwa)</div>
             <div class="card-body">
               <ul>
-                <li>"Back then... we used to collect data by ourselves, search papers one by one... it sometimes leads to <strong>unbalance work and life, stress, and unwell condition</strong>"</li>
-                <li>"If AI can ease some work, it will be good for doing such thing rather than doing a core thing"</li>
-                <li><strong>BUT</strong>: "not because AI helps some work, we can add more work, no. <strong>Healthy and balance life are the important one</strong>"</li>
+                <li>Automated systems "remain vulnerable to malicious prompt that can trigger dangerous actions" — the Week 2 injection lesson, now in a director's words</li>
+                <li>"When decision-making relies heavily on generative AI, the boundaries of responsibility between the human prompter and cloud developers become blurred, leaving the system unaccountable"</li>
+                <li>The human brings "equilibrium to AI utilization, balancing computational power with moral accountability"</li>
               </ul>
             </div>
           </div>
           <div class="card card-blue">
-            <div class="card-header"><span class="icon">🎯</span> The Design Implication</div>
+            <div class="card-header"><span class="icon">🛡️</span> The Red Line (Firman)</div>
             <div class="card-body">
               <ul>
-                <li>Many AI tools are designed to increase <strong>productivity</strong> — do more, faster</li>
-                <li>But Nazhiefah's insight: AI should also increase <strong>quality of life</strong> — do the same, with less stress</li>
-                <li>Your midterm spec: is your app designed to make the human do MORE? Or do the <strong>same with less burden</strong>?</li>
-                <li>Success criteria should include not just efficiency but <strong>researcher wellbeing</strong></li>
+                <li>All three personas "share a critical 'red line'. Humans are irreplaceable as the architects, safeguards, and moral compasses that give direction to powerful tools"</li>
+                <li>"JARVIS can turn wrenches and solve problems on its own, but only under Stark's decisions and commands"</li>
+                <li>"The person running the tools is the one who is ultimately responsible" → "a strict, legally binding regulatory framework"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧭</span> Caution as Contribution (Rustam)</div>
+            <div class="card-body">
+              <ul>
+                <li>"The most important human contribution in the Director's role is caution and responsibility"</li>
+                <li>"We are the humans who discovered and developed AI; AI is not the entity that discovered us"</li>
+                <li>"We should be careful about giving AI too much authority over decisions that ultimately affect humans"</li>
               </ul>
             </div>
           </div>
         </div>
-        <div class="highlight-quote">"We will be the architect itself, not just user. However, not because AI helps some work, we can add more work. Healthy and balance life are the important one." — Nazhiefah</div>
+        <div class="highlight-quote">Firman's closing, from <em>I, Robot</em> (2004) — Spooner: "Can a robot write a symphony? Can a robot turn a canvas into a beautiful masterpiece?" Sonny: "Can you?" — What <em>is</em> the irreplaceable human contribution, if not the symphony? This week's forum question.</div>
       </div>
     </section>
     <section class="slide" id="slide-35">
@@ -1892,9 +1909,9 @@ Expected UI:
                 <li>Week 1: "AI is an assistant" → your app should have <strong>clear human control points</strong></li>
                 <li>Week 2: "Treat AI output as hypothesis" → your app should make <strong>verification easy</strong></li>
                 <li>Week 3: "Define what AI should never do" → your spec should have a <strong>Red Zone</strong></li>
-                <li>Week 4: "Human = architect + fail-safe" → your interaction flow should <strong>encode both roles</strong></li>
-                <li>Week 4 bonus: "AI is hard to predict" → your app needs <strong>recovery options</strong> for bad outputs</li>
-                <li>Week 4 bonus: "Don't just add more work" → your success criteria should include <strong>reduced burden</strong></li>
+                <li>Week 4: "Direction without verification is delegation of blame" (Khine) → your interaction flow should <strong>encode both roles</strong></li>
+                <li>Week 4 bonus: "Never let the calculator decide what needs to be calculated" (Seong su) → your app needs <strong>evidence and recovery options</strong> for bad outputs</li>
+                <li>Week 4 bonus: "Responsibility becomes blurred" (Najwa) → your spec should name <strong>who is accountable</strong> for each AI action</li>
               </ul>
             </div>
           </div>
@@ -2085,7 +2102,7 @@ Expected UI:
             <div class="card-header"><span class="icon">🗣️</span> Discussion</div>
             <div class="card-body">
               <ul>
-                <li>Week 4 review: class converged on "AI computes, human judges"; this week's forum asks what is <strong>irreplaceable</strong> in a researcher; <strong>midterm announced</strong>: everything (spec + prototype + <strong>recorded video pitch</strong>) due <strong>Fri 23 Oct 24:00</strong>, screened in Week 8 — include your failure states</li>
+                <li>Week 4 review: 9 of 10 chose Hulk; class converged on "direction + verification, never delegation of blame" (Khine); this week's forum asks what is <strong>irreplaceable</strong> in a researcher; <strong>midterm announced</strong>: everything (spec + prototype + <strong>recorded video pitch</strong>) due <strong>Fri 23 Oct 24:00</strong>, screened in Week 8 — include your failure states</li>
               </ul>
             </div>
           </div>

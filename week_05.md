@@ -915,119 +915,126 @@ Expected UI:
 ## Slide: Week 4 Voting Results
 - type: cards
 - title: How Did You Vote?
-- subtitle: The most nuanced responses yet — almost everyone combined multiple perspectives
+- subtitle: The biggest turnout yet — and the clearest consensus
 
-- card(green, 📊): Voting Results
-  - **Hulk dominated** again: Waad, Rupam, Lin, Seher, Hyunwoo, Ly, Han, Manuella — human as fail-safe
-  - **Iron Man + Hulk synthesis** was the new trend: Tran, Irfan, Gyeongsu, Minh — automate execution, verify rigorously
-  - **Iron Man + Captain America** appeared: DongYun, Tan, Nazhiefah — shift to director, but keep integrity
-  - **Margareth's unique view**: "We are basically still the programmers, handling AI that handles the tools"
+- card(green, 📊): Voting Results (10 responses)
+  - **Hulk (Option 3)** — 9 of 10: Qasim, Jeonghyeon, Minh, Rustam, Seong su, Batool, Khine, Azzahra, Firman — the human as fail-safe
+  - **Iron Man (Option 1)** — Jeonghyeon and Firman explicitly; Khine ("Iron Man's ambition, Hulk's verification") and Najwa ("I agree to Iron Man" on speed) in spirit
+  - **Captain America (Option 2)** — Seong su and Firman; Najwa's "moral responsibility" and Rustam's "caution" lean the same way
+  - **New voices**: Seong su, Batool, Azzahra posted for the first time; Firman closed with *I, Robot*: "Can a robot write a symphony?" — "Can you?"
 
 - card(purple, 💡): Week 4 vs Previous Weeks
-  - The class has moved from "should we trust AI?" to **"how do we architect human-AI systems?"**
-  - Nearly every student now **combines multiple perspectives** — no one picks just one
+  - Week 1: *which* persona; Week 3: *where* the line is; Week 4: *what the director actually does* — direction, verification, responsibility
+  - Nobody defended Iron Man's "ethics is red tape"; Khine: "I reject Iron Man's view that ethics is red tape, and this is where Hulk is right"
   - The debate has matured from philosophical to **operational and design-oriented**
   - Perfect timing: today's lecture is about translating these principles into **app specifications**
 
 =====
 
-## Slide: Key Theme 1 — Architect + Fail-Safe
+## Slide: Key Theme 1 — Direction + Verification
 - type: cards
-- title: Key Theme 1 — **The Human as Architect AND Fail-Safe**
-- subtitle: The strongest consensus — combining Iron Man's vision with Hulk's caution
+- title: Key Theme 1 — **Direction Without Verification Is Delegation of Blame**
+- subtitle: The strongest consensus — Iron Man's ambition fused with Hulk's caution
 
-- card(blue, 🏗️): The Architect Role
-  - "Our primary role is shifting toward acting as the **visionary architect**" (Tran)
-  - "Researchers must define the right problems, set constraints, and make **final calls**" (DongYun)
-  - Define the "**Right Problems**" and provide the final validation (Minh)
-  - "Only we know the exact thing we want AI to do, how we want it done, and whether the outcome is **meaningful**" (Margareth)
+- card(blue, 🏗️): The Director Sets the Direction
+  - "The human's unique contribution is direction: choosing which problems matter, framing hypotheses, and deciding what the results mean" (Khine)
+  - "Humans should design the process, provide the necessary input, and set the overall direction, while AI carries out the technical and repetitive tasks" (Jeonghyeon)
+  - "Researchers must decide which questions are worth exploring, evaluate AI-generated results, and consider the ethical impact" (Batool)
+  - "Humans should remain responsible for deciding where we are going and whether we should go there at all" (Rustam)
 
-- card(green, 🛡️): The Fail-Safe Role
-  - "Our unique contribution is to **hold the leash** and make the final decisions based on scrutiny" (Hyunwoo)
-  - "If a human does not understand their specific area fully, AI can be guided into **misleading steps**" (Tran)
-  - "Keeping AI in a boundary and keeping a **logbook** of its working" (Rupam)
-  - Design a controlled workflow: AI handles exploration, humans define objectives and **validate key stages** (Irfan)
+- card(green, 🛡️): The Director Verifies
+  - "Direction without verification is just delegation of blame" (Khine)
+  - "Humans must monitor the process, review the results, and take responsibility for the final decisions" (Jeonghyeon)
+  - "We still have to double-check every output it gives, almost like holding the leash Hulk mentioned" (Azzahra)
+  - "Humans still need to critically check the results, consider ethical risks, and make the final decisions" (Qasim)
 
 - card(orange, 🎯): The Design Principle
   - Your midterm app should encode BOTH roles:
-  - **Architect**: the human defines what problem to solve, what data to use, what questions to ask
-  - **Fail-safe**: the human reviews AI outputs before they're used, with clear verification points
+  - **Direction**: the human defines what problem to solve, what data to use, what questions to ask
+  - **Verification**: the human reviews AI outputs before they are used, with clear checkpoints — not "rubber-stamping" (Minh)
 
-- highlight-quote: "The true human role becomes not doing the work, but deciding what work is worth doing in the first place." — Margareth
+- highlight-quote: "Clinging to manual work for its own sake is nostalgia, not rigor. … So: Iron Man's ambition, Hulk's verification." — Khine Wai Zin
 
 =====
 
 ## Slide: Debate Point 1 — Discussion Activity
 - type: card-single
-- title: 🗣️ **Live Discussion** — Architect vs Fail-Safe in YOUR App
+- title: 🗣️ **Live Discussion** — Direction vs Verification in YOUR App
 - subtitle: 10 minutes — Apply this to your midterm project
 
 - card(yellow, 💡): Discussion Prompt
   - Think about the AI app you want to build for midterm
-  - **As Architect**: What are the 3 most important decisions the human makes in your app? (problem framing, data selection, evaluation criteria)
-  - **As Fail-Safe**: What are the 3 most dangerous things the AI could get wrong? How does your UI let the human catch these errors?
-  - **Design question**: Can you design your interaction flow so the human plays BOTH roles naturally — without the verification feeling like extra work?
-  - Connect to today's practice: in the Multi-PDF app, checkboxes = architect (choosing context), reading the response = fail-safe (verifying accuracy)
+  - **Direction**: What are the 3 most important decisions the human makes in your app? (problem framing, data selection, evaluation criteria)
+  - **Verification**: What are the 3 most dangerous things the AI could get wrong? How does your UI let the human catch these errors?
+  - **Khine's test**: does the user "understand the machine well enough to know when it's lying"? What does your UI show to make that possible?
+  - Connect to today's practice: in the Multi-PDF app, checkboxes = direction (choosing context), reading the response with its sources = verification
 
 =====
 
-## Slide: Key Theme 2 — AI Is Hard to Predict
+## Slide: Key Theme 2 — Understand the Machine
 - type: cards
-- title: Key Theme 2 — **"AI Is Harder to Debug Than Code"**
-- subtitle: Margareth's insight from hands-on tool-building experience
+- title: Key Theme 2 — **"Never Let the Calculator Decide What Needs to Be Calculated"**
+- subtitle: Verification requires mastery, and mastery is what atrophies first
 
-- card(pink, 🔧): The Unpredictability Problem (Margareth)
-  - "As someone who has been trying to design and give tools to AI, I would say they are **hard to predict**"
-  - "Sometimes it surprises you with how well they choose the right tool; sometimes they **keep failing** a task you think is very clear"
-  - Normal programming: "program does exactly what you intend" (given correct syntax)
-  - AI: "doing things with AI sometimes feels like you just want them to **read your mind**"
+- card(pink, 🔧): Mastery Is the Fail-Safe (Minh)
+  - "Our contribution is not merely rubber-stamping automated outputs, but mastering the underlying core mechanisms"
+  - "Without a solid grasp of foundational principles, we cannot reliably detect subtle hallucinations, prevent critical data leakage, or validate edge cases"
+  - "Delegating execution to AI should never mean abdicating our intellectual ownership and ethical responsibility"
 
-- card(blue, 🧪): The Implications for App Design
-  - Traditional software: input → deterministic output → predictable UI
-  - AI software: input → **probabilistic** output → UI must handle **variability**
-  - Your midterm app needs to handle: what happens when the AI gives a **bad** answer?
-  - Do you retry? Show alternatives? Let the user edit? Ask for clarification?
+- card(blue, 🧮): The Calculator Rule (Seong su)
+  - "I certainly wouldn't advocate mental math when a calculator sits on the desk — we must never let the calculator decide what needs to be calculated"
+  - Autonomous agents find drug candidates "at unprecedented speed", but "even minor hallucinations can slip through undetected, calcify into accepted 'facts,' and corrupt downstream results"
+  - The unpredictability of agentic AI "demands deliberate pacing" and "both technical and ethical literacy"
 
-- card(green, 💡): Han's Industry Perspective
-  - Han connected the 3 agents to **real companies**: Iron Man = OpenAI, Captain America = Google (privacy concerns), Hulk = Anthropic/Claude (ethics first)
-  - "Utilization of AI must be considered carefully" — even companies with the best AI struggle with boundaries
-  - Economic pressures push toward less safety — another reason **human oversight** matters
+- card(green, 🔬): The Domain Test (Khine)
+  - "In my corrosion experiments, AI can suggest an equivalent circuit or a mechanism. But only I know whether the sample prep was sound and whether the fit is physically real, and my name goes on the paper"
+  - "The director doesn't need to turn every wrench, but must understand the machine well enough to know when it's lying"
+  - For your app: what must the user already know to catch a wrong answer?
+
+- card(orange, 💡): The Implication for App Design
+  - AI output is **probabilistic**: your UI must handle bad answers, not assume good ones
+  - Show the evidence (sources, data, residuals) so the expert can judge — do not show only the conclusion
+  - Rustam: AI "can recognize patterns, generate ideas, and process enormous amounts of information, but this does not automatically mean that everything it produces is correct or meaningful"
 
 =====
 
 ## Slide: Debate Point 2 — Discussion Activity
 - type: card-single
-- title: 🗣️ **Live Discussion** — Designing for AI Unpredictability
+- title: 🗣️ **Live Discussion** — Designing to Catch the Lie
 - subtitle: 5 minutes — How does your app handle bad AI output?
 
 - card(yellow, 💡): Quick Exercise
-  - Your AI app gives a **wrong answer**. The user can tell it's wrong.
+  - Your AI app gives a **wrong answer**. An expert user could tell it's wrong — if the UI showed enough.
   - **Design 3 recovery options** your app could offer:
   - Option A: "Retry" button → same prompt, hope for different output?
   - Option B: "Adjust" → let the user edit the prompt and try again?
-  - Option C: "Show reasoning" → Chain-of-Thought so the user can see WHERE it went wrong?
-  - Option D: Something else? (Switch model? Change context? Fall back to manual?)
-  - Which option(s) will your midterm app include? Why?
+  - Option C: "Show evidence" → sources, data, or reasoning so the user can see WHERE it went wrong (Khine's "know when it's lying")
+  - Option D: Something else? (Switch model? Change context? Fall back to manual, Seong su's "deliberate pacing"?)
+  - Which option(s) will your midterm app include? Which one keeps the user's skill alive instead of letting it atrophy?
 
 =====
 
-## Slide: Key Theme 3 — Work-Life Balance
+## Slide: Key Theme 3 — Accountability and Equilibrium
 - type: cards
-- title: Unexpected Insight — **AI Should Free Us, Not Add More Work**
-- subtitle: Nazhiefah's human-centered perspective
+- title: Key Theme 3 — **Who Is Accountable When the Tool Acts?**
+- subtitle: Najwa, Firman and Rustam on the moral side of the director's role
 
-- card(pink, ❤️): The Human Cost (Nazhiefah)
-  - "Back then... we used to collect data by ourselves, search papers one by one... it sometimes leads to **unbalance work and life, stress, and unwell condition**"
-  - "If AI can ease some work, it will be good for doing such thing rather than doing a core thing"
-  - **BUT**: "not because AI helps some work, we can add more work, no. **Healthy and balance life are the important one**"
+- card(pink, ⚖️): Blurred Responsibility (Najwa)
+  - Automated systems "remain vulnerable to malicious prompt that can trigger dangerous actions" — the Week 2 injection lesson, now in a director's words
+  - "When decision-making relies heavily on generative AI, the boundaries of responsibility between the human prompter and cloud developers become blurred, leaving the system unaccountable"
+  - The human brings "equilibrium to AI utilization, balancing computational power with moral accountability"
 
-- card(blue, 🎯): The Design Implication
-  - Many AI tools are designed to increase **productivity** — do more, faster
-  - But Nazhiefah's insight: AI should also increase **quality of life** — do the same, with less stress
-  - Your midterm spec: is your app designed to make the human do MORE? Or do the **same with less burden**?
-  - Success criteria should include not just efficiency but **researcher wellbeing**
+- card(blue, 🛡️): The Red Line (Firman)
+  - All three personas "share a critical 'red line'. Humans are irreplaceable as the architects, safeguards, and moral compasses that give direction to powerful tools"
+  - "JARVIS can turn wrenches and solve problems on its own, but only under Stark's decisions and commands"
+  - "The person running the tools is the one who is ultimately responsible" → "a strict, legally binding regulatory framework"
 
-- highlight-quote: "We will be the architect itself, not just user. However, not because AI helps some work, we can add more work. Healthy and balance life are the important one." — Nazhiefah
+- card(green, 🧭): Caution as Contribution (Rustam)
+  - "The most important human contribution in the Director's role is caution and responsibility"
+  - "We are the humans who discovered and developed AI; AI is not the entity that discovered us"
+  - "We should be careful about giving AI too much authority over decisions that ultimately affect humans"
+
+- highlight-quote: Firman's closing, from *I, Robot* (2004) — Spooner: "Can a robot write a symphony? Can a robot turn a canvas into a beautiful masterpiece?" Sonny: "Can you?" — What *is* the irreplaceable human contribution, if not the symphony? This week's forum question.
 
 =====
 
@@ -1045,9 +1052,9 @@ Expected UI:
   - Week 1: "AI is an assistant" → your app should have **clear human control points**
   - Week 2: "Treat AI output as hypothesis" → your app should make **verification easy**
   - Week 3: "Define what AI should never do" → your spec should have a **Red Zone**
-  - Week 4: "Human = architect + fail-safe" → your interaction flow should **encode both roles**
-  - Week 4 bonus: "AI is hard to predict" → your app needs **recovery options** for bad outputs
-  - Week 4 bonus: "Don't just add more work" → your success criteria should include **reduced burden**
+  - Week 4: "Direction without verification is delegation of blame" (Khine) → your interaction flow should **encode both roles**
+  - Week 4 bonus: "Never let the calculator decide what needs to be calculated" (Seong su) → your app needs **evidence and recovery options** for bad outputs
+  - Week 4 bonus: "Responsibility becomes blurred" (Najwa) → your spec should name **who is accountable** for each AI action
 
 - card(orange, 🎯): The Midterm Challenge
   - Design an AI agent app that embodies **your own principles** from 5 weeks of discussion
@@ -1176,6 +1183,6 @@ PDF Processing
   - Built a **Multi-PDF Research Assistant** with Streamlit: upload, a visible token budget, preset prompts, saved prompts — plus named extraction errors and paper text fenced as untrusted data rather than injected into the system prompt
 
 - card(orange, 🗣️): Discussion
-  - Week 4 review: class converged on "AI computes, human judges"; this week's forum asks what is **irreplaceable** in a researcher; **midterm announced**: everything (spec + prototype + **recorded video pitch**) due **Fri 23 Oct 24:00**, screened in Week 8 — include your failure states
+  - Week 4 review: 9 of 10 chose Hulk; class converged on "direction + verification, never delegation of blame" (Khine); this week's forum asks what is **irreplaceable** in a researcher; **midterm announced**: everything (spec + prototype + **recorded video pitch**) due **Fri 23 Oct 24:00**, screened in Week 8 — include your failure states
 
 **Next week:** Automating the input side — literature collection and **metadata extraction**, so your app stops depending on data you assembled by hand.
