@@ -1076,100 +1076,106 @@ print(score("md_output"))     # e.g. {'year': '3/3', 'journal': '2/3', 'methodol
 ## Slide: Your Responses Overview
 - type: cards
 - title: Your Responses — **The Class Map**
-- subtitle: 17 responses — most of you agreed with all three, but the interesting part is WHERE you disagreed
+- subtitle: 10 responses — Hulk again, but the interesting part is HOW each of you defined "irreplaceable"
 
 - card(green, 📊): The Numbers
-  - **All three (1+2+3)**: Huy, Yadanar, Irfan, Waad, Tan, DongYun, Nazhiefah — "all three are complementary"
-  - **Iron Man + Hulk (1+3)**: Seher, Gyeongsu, Minh — "vision + validation, skip the lecture on virtue"
-  - **Captain America + Hulk (2+3)**: Manuella, Ly — "judgment + ethics, not just big ideas"
-  - **Hulk only (3)**: Namcheol, Rupam, Hyunwoo — "validation is THE core skill"
-  - **Captain America (2)**: Margareth — "ethics is hardest to replace"
+  - **Hulk (3)** — 9 of 10: Qasim, Najwa, Minh, Azzahra, Batool, Jemal, Seong su, Rustam, Firman — validation is THE core skill
+  - **Captain America (2)** — Khine (alone, "with one adjustment"), Najwa, Azzahra, Firman — integrity, redefined as accountability
+  - **Iron Man (1)** — Seong su ("orchestra conductor"), Rustam ("scientific director"), Firman ("the Vision of Tony Stark") — always paired with Hulk
+  - **All three** — Firman: "Hybrid skill: balancing three roles"
 
-- card(red, 🔥): The Provocateur
-  - **Han**: "All three are partially right and **collectively miss the point**"
-  - Introduced a new concept: **"cultivated epistemic taste"**
-  - "That taste only develops through doing the work AI is now replacing"
-  - This challenges the entire premise — are we losing the very skill we claim is irreplaceable?
+- card(red, 🔥): The Reframe
+  - **Khine** moved the whole debate: integrity is "less as 'doing things the slow way' and more as **accountability**"
+  - "I don't see AI as a threat to integrity. It is a **test** of it"
+  - "Both depend on a researcher who chooses honesty when no one is checking. That choice is the one thing we cannot automate"
+  - Three answers to "what is irreplaceable?": the **check** (Hulk camp), the **name on the paper** (Khine, Minh, Firman), the **question** (Rustam, Seong su, Batool)
 
 =====
 
 ## Slide: Theme 1
 - type: cards
-- title: Theme 1 — **Hulk Wins the Vote**
-- subtitle: Skeptical validation emerged as the class's top priority
+- title: Theme 1 — **Hulk Wins the Vote (Again)**
+- subtitle: Skeptical validation is the class's top skill — now with domain evidence
 
 - card(green, 🧪): The Consensus
-  - Every single response included validation as essential — Hulk's view was universally endorsed
-  - **Jaewhoon**: "Computer is deterministic, AI is **probabilistic** — that's why we must check"
-  - **Namcheol**: "The researcher must know when to pull the **emergency stop button**"
-  - **Hyunwoo**: "In robotics, we must cross-reference AI outputs against **physical reality**"
+  - **Qasim**: "Rigorous, skeptical validation is the most irreplaceable skill … researchers must critically evaluate the results, identify errors, and ensure scientific integrity"
+  - **Batool**: AI "is not always accurate and can sometimes produce misleading results"; researchers must "interpret results within the proper scientific context, and recognize limitations that AI may overlook"
+  - **Minh**: "establishing rigorous human oversight and skeptical validation at every stage, ensuring that scientific integrity and reproducibility are never sacrificed for speed"
 
-- card(blue, 🧠): Why This Matters
-  - **Rupam**: "Skepticism is **intrinsic** — it's not something that can be easily taught or programmed"
-  - **Minh**: "Strategic Synthesis — bridging 'what can be simulated' and 'what should be built'"
-  - **Huy**: "We do not need to **compete** with AI but rather **judge** it"
-  - The class is saying: validation isn't just checking boxes — it requires deep domain knowledge
+- card(blue, 🧠): Why a Black Box Needs a Human
+  - **Jemal**: ML models "are essentially black boxes that do not actually understand the physical chemistry of the materials they analyze" — the job is to ensure "the relationships the AI identifies make scientific sense in the real world rather than just being mathematical shortcuts"
+  - **Seong su**: "The absurdities that can emerge from an algorithmic black box could ultimately reduce science to mere **science fiction**"
+  - **Najwa**: "only a human researcher possess the ethical compass and objective judgment to cross-reference these output"
+
+- card(orange, 🔑): What Validation Requires
+  - Not box-ticking: Jemal and Khine both validate against **physical reality** they know from the bench
+  - Today's practice makes this concrete — extracted metadata is a **claim** you score against hand labels
+  - The skill is domain knowledge plus the willingness to say "this result is not real"
 
 =====
 
 ## Slide: Theme 2
 - type: cards
-- title: Theme 2 — **The Captain America Debate**
-- subtitle: The most divisive AI agent — is "doing things the hard way" valuable or outdated?
+- title: Theme 2 — **Integrity = Accountability, Not Slowness**
+- subtitle: Khine's adjustment to Captain America became the class's sharpest idea
 
-- card(red, ❌): The Critics
-  - **Gyeongsu**: "Efficiency isn't a **moral flaw**. Sticking to manual labor just for tradition is a speed bump"
-  - **Rupam**: "We cannot dismiss AI because it is fast — that argument feels **illogical**"
-  - Both argue: integrity matters, but Captain America wrongly equates slowness with virtue
+- card(blue, ✅): The Name on the Paper (Khine)
+  - "AI can run experiments and draft manuscripts, but it **cannot be held responsible** for them"
+  - "When a paper is published, a human name is on it, and that person must be able to explain every figure, defend every assumption, and admit when something is wrong"
+  - Mg-alloy corrosion: a dataset "can look clean and statistically convincing while hiding a problem: a contaminated sample, an unstable electrolyte, or a measurement taken before the system reached steady state. An AI trained to find patterns will happily find one"
 
-- card(blue, ✅): The Defenders
-  - **Margareth**: "Ethics and moral integrity are the aspects **hardest to replace** with AI"
-  - **Nazhiefah**: "Rather than speed everything, the **process of research itself** is the important thing"
-  - **Ly**: "The researcher must act as an **ethical anchor** and guardian of scientific validity"
+- card(purple, ⚖️): Responsibility Cannot Be Delegated (Minh, Firman, Najwa)
+  - **Minh**: algorithms "cannot take intellectual or legal responsibility for scientific claims"
+  - **Firman**: "In a dangerous field like biohazard, nuclear tech, weapon, or gene editing, the researcher must know when to say 'no' and take full responsibility for what they build"
+  - **Najwa**: the irreplaceable core "remains on their morality and critical thinking to validate the data"
 
 - card(orange, 🔑): The Synthesis
-  - **Han** resolved the tension: "epistemic taste only develops through doing the work AI is replacing — **struggling through calculations, debugging by hand, reading papers slowly**"
-  - This reframes Captain America: it's not about virtue — it's about **building the judgment you need**
-  - If you skip the hard work, you lose the ability to validate (connecting Theme 1 and 2)
+  - Captain America's "slow way" was never the point; the point is who stands behind the result
+  - **Azzahra**: "we should not be afraid to use the tools we have, but we must always combine this with careful checking and strong effort"
+  - Speed is fine — as long as the human can still **explain and defend** what the speed produced
+
+- highlight-quote: "The faster and easier it becomes to produce polished results, the more value lies in the person willing to slow down, question their own data, and stand behind only what they truly understand." — Khine Wai Zin
 
 =====
 
 ## Slide: Theme 3
 - type: cards
-- title: Theme 3 — **Han's Challenge**
-- subtitle: "If you outsource the friction, you become someone who can't read the blueprints"
+- title: Theme 3 — **The Question Is the Skill**
+- subtitle: Iron Man's half, as the class rewrote it: conductor, director, curiosity
 
-- card(purple, 💎): Cultivated Epistemic Taste
-  - Han's concept: the judgment to know which questions are worth asking, which results matter
-  - "It's built from years of **wrestling** directly with a domain's hardest problems"
-  - "AI can optimize within a search space; it cannot reliably **define** the right search space"
+- card(purple, 🎼): Conductor, Not Drone (Seong su)
+  - "The ideal role of a researcher is akin to that of an **orchestra conductor**: designing the overarching blueprint and directing the workflow with a comprehensive, top-down understanding, while delegating tedious calculations to machines"
+  - "The moment AI is allowed to override human decision-making, judgment, and individuality, we are essentially setting sail on an open ocean aboard a **ship with no known destination**"
 
-- card(red, ⚠️): The Paradox
-  - The skill we need most (judgment) is built through the work we're outsourcing to AI
-  - **Nazhiefah** echoed this: "we sometimes want quick results but are lazy to do boring stuff"
-  - **Jaewhoon**: like a grad assistant that hallucinates — if the PI doesn't check, the PI takes the blame
-  - Question: how do we develop epistemic taste if AI does all the "boring" foundational work?
+- card(blue, ❓): Deciding What Is Worth Asking (Rustam, Batool)
+  - **Rustam**: AI's capabilities "do not necessarily mean that AI understands **why** a particular question matters or what scientific problem is truly worth solving"
+  - "AI may help us discover answers faster, but the researcher must still decide which questions are worth asking and what those answers actually mean"
+  - **Batool**: "human creativity and curiosity are essential for asking meaningful research questions and guiding scientific discovery"
 
-- highlight-quote: "If you outsource that friction entirely to stay 'high level,' you don't become a visionary architect. You become someone who can't actually read the blueprints they're supposedly designing." — Han
+- card(green, 🤝): AI as Partner, Not Oracle (Azzahra, Firman)
+  - **Azzahra**: AI is also "a discussion partner that can help us notice things we might have missed in our own research"
+  - **Firman**: "Let JARVIS help with a huge amount of data and write the initial drafts. It still cannot replace human curiosity"
+  - The irreplaceable skill is **vision, conscience, judgment, and responsibility** — Firman's four words
+
+- highlight-quote: "I see the future researcher less as someone who performs every experiment manually and more as a scientific director who combines human curiosity, judgment, and responsibility with AI's computational power." — Rustam
 
 =====
 
 ## Slide: Discussion Activity
 - type: cards
-- title: 🗣️ **Reflect** — Apply Han's Paradox to Your Midterm
-- subtitle: 5 minutes — Think about this tension in YOUR app
+- title: 🗣️ **Reflect** — Which Skill Does Your Midterm App Protect?
+- subtitle: 5 minutes — Test your design against the three answers
 
 - card(blue, 🔬): The Question for You
   - Your midterm app automates some research task with AI
-  - Does your app **preserve** the user's ability to develop judgment?
-  - Or does it outsource the "friction" that builds expertise?
-  - Is there a way to design for **both** efficiency AND skill development?
+  - **The check** (Theme 1): can the user validate the output against something real — data, sources, a hand label?
+  - **The name** (Theme 2): could the user "explain every figure, defend every assumption" that came out of your app? Or does it hide the steps?
+  - **The question** (Theme 3): does the user still choose what to ask, or does the app decide for them?
 
 - card(orange, 💡): Design Principle
-  - Consider adding a "learning mode" vs "production mode" to your app
-  - Learning mode: shows the AI's reasoning, asks user to verify steps
-  - Production mode: runs autonomously for experienced users
-  - This resolves Han's paradox — the tool helps you learn AND speeds you up
+  - Consider a "slow mode": show the AI's intermediate steps and ask the user to confirm each — Khine's "person willing to slow down"
+  - And a "conductor mode": the user sets the question and the constraints; the app runs the permutations (Seong su)
+  - Today's extraction pipeline already has one of these — the hand-label scoring tab. Which one is your app missing?
 
 =====
 
@@ -1203,7 +1209,7 @@ print(score("md_output"))     # e.g. {'year': '3/3', 'journal': '2/3', 'methodol
 
 > Visit: **UST LMS → Class → Discussion**
 
-1. **The Risk of "Not Reading" — how do you maintain deep insight while automating data intake?** Today you built a pipeline that reads papers so you do not have to. Han's counter-argument from last week was that "cultivated epistemic taste only develops through doing the work AI is now replacing". Where is **your** line: which papers will you still read end to end, and what rule decides that? Include one thing your pipeline extracted today that you would **not** have noticed by reading — and one thing you would have noticed that it missed.
+1. **The Risk of "Not Reading" — how do you maintain deep insight while automating data intake?** Today you built a pipeline that reads papers so you do not have to. Khine's argument from last week was that "the faster and easier it becomes to produce polished results, the more value lies in the person willing to slow down, question their own data, and stand behind only what they truly understand". Where is **your** line: which papers will you still read end to end, and what rule decides that? Include one thing your pipeline extracted today that you would **not** have noticed by reading — and one thing you would have noticed that it missed.
 2. Today you learned to extract **structured metadata** from PDFs using an LLM. **Design a custom extraction schema** for your specific research field: what 5-8 metadata fields would be most valuable for analyzing papers in YOUR domain? Why these fields? Which of them could a **database API** answer better than an LLM?
 3. You measured the extraction against hand labels. **Post your per-field accuracy** and say which field you would never accept without review. How does that number change what you are willing to claim from this data?
 4. **Midterm progress update**: Share your current specification status. What's your app's name, core problem, and 3 main features? What's your biggest design challenge so far?
@@ -1256,6 +1262,6 @@ Anthropic Free Online Courses (Recommended)
   - Built a **4-tab extraction pipeline** — schema-enforced extraction, valid YAML frontmatter, a rendered author graph, and Q&A over the whole collection; then scored it against hand labels
 
 - card(orange, 🗣️): Discussion
-  - Week 5 review — Core Competency: Hulk (validation) won the vote; Captain America was most divisive; Han's "epistemic taste" paradox: outsourcing the friction destroys the judgment. This week's forum turns that into a personal rule: **what will you still read?** Midterm (spec + prototype + recorded video pitch) due **Fri 23 Oct 24:00** via email — screened in Week 8
+  - Week 5 review — Core Competency: Hulk (validation) won 9 of 10; Khine redefined integrity as **accountability** ("AI is a test of it"); Rustam and Seong su made the question itself the skill. This week's forum turns that into a personal rule: **what will you still read?** Midterm (spec + prototype + recorded video pitch) due **Fri 23 Oct 24:00** via email — screened in Week 8
 
 **Next week:** The output side — turning the data you just extracted into **figures and a drafted report**. It is also midterm week: spec, prototype and recorded pitch are all due **Friday 23 October, 24:00**.
