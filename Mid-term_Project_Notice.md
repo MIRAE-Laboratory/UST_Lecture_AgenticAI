@@ -9,13 +9,13 @@
 
 ## 2. Deliverables (submit everything at once)
 
-| # | Item                             | Format                                                                                                                 |
-| - | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| 1 | **Specification document** | The 5-question template (Problem, Users, Features, Interaction Flow, Success Criteria), including failure states       |
-| 2 | **Working prototype**      | Streamlit or Gradio app with runnable code (`requirements.txt`, `README.md` with run instructions)                 |
-| 3 | **Recorded video pitch**   | 3–5 minutes, screen recording of the app actually running on real data from your research, plus your design decisions |
+| # | Item                             | Filename           | Format                                                                                                                 |  |
+| - | -------------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------- | - |
+| 1 | **Specification document** | StudentID_Name.md  | The 5-question template (Problem, Users, Features, Interaction Flow, Success Criteria), including failure states       |  |
+| 2 | **Working prototype**      | as you wish        | Streamlit or Gradio app with runnable code (`requirements.txt`, `README.md` with run instructions)                 |  |
+| 3 | **Recorded video pitch**   | StudentID_Name.mp4 | 3–5 minutes, screen recording of the app actually running on real data from your research, plus your design decisions |  |
 
-Name your files and folder as `StudentID_Name` (e.g. `02523035_MinhLeTran`).
+Name your files and zip them as `StudentID_Name.zip` (e.g. `02523035_MinhLeTran.zip`).
 
 ## 3. Sharing of submissions
 
