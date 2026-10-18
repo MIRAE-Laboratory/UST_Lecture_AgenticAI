@@ -604,99 +604,95 @@ Tab 3  ▸ Draft:
 ## Slide: Week 6 Discussion Recap
 - type: cards
 - title: Week 6 — **"The Risk of Not Reading"** Responses
-- subtitle: 15 responses analyzed — Hulk dominates, but the interesting ideas are elsewhere
+- subtitle: 10 responses — Hulk still leads, but Iron Man had his best week and the rules got specific
 
 - card(green, 📊): The Vote Count
-  - **Hulk (pragmatic balance)**: Seher, Gyeongsu, Manuella, Ly, Tan, DongYun, Hyunwoo — **7 votes**
-  - **Iron Man + Hulk combo**: Huy, Irfan, Waad — **3 votes**
-  - **Iron Man**: Rupam, Han — **2 votes**
-  - **Captain America**: Yadanar — **1 vote**
-  - **Iron Man + Captain America**: Nazhiefah — **1 vote**
-  - **"None" (meta-critique)**: Jaewhoon — **1 vote**
+  - **Hulk (3)** — 8 of 10: Nurul, Najwa, Rustam, Khine, Batool, Jemal, Azzahra, Firman
+  - **Captain America (2)** — 5: Nurul, Rustam, Batool, Seong su (alone), Azzahra
+  - **Iron Man (1)** — 4: Minh (alone, a first), Rustam, Jemal, Firman
+  - **"All in balanced way"** — Rustam; Firman "strongly" with Iron Man, Hulk as the leash
 
 - card(blue, 🔬): The Consensus
-  - Almost everyone agrees: AI handles initial filtering, humans do final synthesis
-  - The "balance" position is now the **default** — nobody argues for full automation OR full manual
-  - But **how** you balance is where the real disagreement lives
+  - Everyone agrees: AI screens and organizes; the human reads what matters and does the final synthesis
+  - Nobody argued for reading everything, nobody for reading nothing — the debate is **which** papers and **when**
+  - Three of you wrote an explicit **rule** for that choice (Khine, Rustam, Minh) — this is the class moving from stance to protocol
 
-- card(red, 🔥): The Surprise
-  - **Rupam** switched from his usual Hulk to **Iron Man** — "published papers are already verified, risk is minimal"
-  - **Jaewhoon** rejected ALL three personas — "the question itself is wrong"
-  - These outliers reveal more than the consensus
+- card(red, 🔥): The Surprises
+  - **Minh** voted Iron Man alone: for bibliometrics and knowledge maps, "manually reading every paper is an inefficient use of human cognition"
+  - **Seong su** voted Captain America alone, on evolutionary grounds: our "analytical muscles atrophy"
+  - **Jemal** reported an AI that "claims it has completed a task … while producing fabricated evidence" — the risk of not reading, witnessed
 
 =====
 
 ## Slide: Theme 1
 - type: cards
-- title: Theme 1 — **The "Research Director" Paradigm**
-- subtitle: Upgrading the human role from reader to investigator
+- title: Theme 1 — **"The Deeper the Dependence, the Deeper the Reading"**
+- subtitle: Khine and Rustam wrote the class's reading rule
 
-- card(blue, 🎯): The Core Idea
-  - **Huy**: coined "Research Director model of Agentic Scrutiny"
-  - Not outsourcing your mind — **upgrading your role** from laborer to investigator
-  - Active tracking: require AI to provide "clickable links to specific sentences"
-  - Spot-check protocol: deep-read 10% to calibrate the AI's lens on the other 90%
+- card(blue, 📏): Khine's Rule
+  - "I don't think every step needs manual verification. That isn't realistic. AI is useful for screening and organizing large numbers of papers"
+  - "But any paper whose data I compare against mine, whose method I adopt, or whose result contradicts the consensus, I read myself"
+  - "The deeper the dependence, the deeper the reading"
 
-- card(green, 💡): Conditional Delegation
-  - **Waad**: "save 90% of time wasted on tedious research... dive deep into the top 5 key papers"
-  - **Irfan**: "the real irreplaceable skill is knowing what to trust, what to question, and what is worth deeply reading"
-  - **Han**: "AI can be trusted for indexing... but this is precisely where human work should begin"
+- card(green, 📏): Rustam's Rule
+  - "I would still read the most relevant papers from beginning to end, especially those that directly influence my experimental design, support my main research hypotheses, or provide evidence for the conclusions of my publications"
+  - "I would also carefully check any unexpected results or claims that seem inconsistent with established scientific knowledge"
+  - What AI adds: patterns across papers "that I might overlook when reading them individually" — e.g. temperature × electrolyte × performance in SOEC studies
 
-- card(orange, 🔗): Why This Matters for Today
-  - Today's drafter is exactly this pattern — the AI writes, you **direct and verify**
-  - You don't recompute every statistic — you decide which facts enter the dictionary and audit what comes out
-  - Huy's "clickable links to specific sentences" is literally today's number verifier: every figure traceable to a row
+- card(orange, 🔄): First Stage vs Final Synthesis (Azzahra, Batool, Nurul)
+  - **Azzahra**: "AI can support the first stage of the work, but the final synthesis and deep insight must still come from our own thinking"
+  - **Batool**: "reading important papers ourselves helps us understand the methods, results, and limitations more deeply"
+  - **Nurul**: "Reading key papers ourselves builds genuine understanding, while checking AI summaries helps us identify errors and misinterpretations"
 
-- highlight-quote: "We aren't 'outsourcing' our minds; we are upgrading our role from laborer to investigator." — Huy
+- highlight-quote: "The deeper the dependence, the deeper the reading." — Khine Wai Zin
 
 =====
 
 ## Slide: Theme 2
 - type: cards
-- title: Theme 2 — **Jaewhoon's Meta-Critique**
-- subtitle: "The question itself is wrong" — the deepest challenge yet
+- title: Theme 2 — **Delegate by Task, Then Audit the Delegate**
+- subtitle: The Iron Man week — with a Hulk-shaped audit attached
 
-- card(purple, 💎): The Argument
-  - The crisis of "not reading" existed **before AI** — low-quality journals, citation inflation, copyright issues
-  - Experienced researchers already tell students: "read a paper in 30 minutes or less"
-  - That's "basically not that much different from using AI for summarizing papers"
-  - AI didn't create the problem — it **accelerated** an existing crisis
+- card(purple, 🗺️): It Depends on the Objective (Minh)
+  - "The necessity of manual reading depends strictly on the specific objective of the research task"
+  - For "bibliometric analyses, or discover latent cross-study correlations … we should fully delegate data ingestion to machines while enforcing architectural rigor"
+  - His architecture: "multi-agent workflows for automated cross-verification, complemented by targeted human spot-checks when necessary"
 
-- card(red, ⚠️): The Real Question
-  - "The point should be moved to **'what is the essential ability in research'**, not 'does AI threaten reading abilities'"
-  - China's new professional doctorate: doctoral-level degree **without papers**, earned by solving industrial problems
-  - "As papers written by AI begin to pass peer review, we need to discuss **what is the real value of human in doing research**"
+- card(orange, ✈️): Automation Is Already Everywhere (Firman)
+  - "Thousands of planes fly, rockets travel into space, satellites operate autonomously in orbit" — "Humans cannot do this alone because we have many limitations"
+  - "The 'garbage-in, garbage-out' rule still applies, and AI models can hallucinate. Therefore, we should let AI handle the heavy lifting while we sip our coffee and monitor its work as a human in the loop"
+  - "AI hallucinations can be actively reduced by developers and better algorithms" — human error cannot
 
-- card(blue, 🤔): Class Reflection
-  - Jaewhoon is the only student who chose **"None"** — rejecting all three personas
-  - This is a meta-level challenge: the debate about AI-and-reading assumes reading is central
-  - What if the **entire frame** of paper-based research is shifting?
+- card(red, 🔍): Audit the Delegate (Jemal)
+  - Screening with AI works — "I've seen this often when using LeapSpace" — if you prompt "with specific skills and clear requirements"
+  - "I also reviewed some of the articles AI had excluded. If any turned out to be important studies, I would adjust the search criteria"
+  - "AI sometimes claims it has completed a task … while producing fabricated evidence without fully checking the documents. I've witnessed this too"
 
-- highlight-quote: "The value of reading comes from well-written papers that solve difficult problems with deep thinking. But in reality, most of us just extract the main idea." — Jaewhoon
+- highlight-quote: "Any work done with AI should be audited to check how accurately it completed the assigned task." — Jemal
 
 =====
 
 ## Slide: Theme 3
 - type: cards
-- title: Theme 3 — **Context Shifts Everything**
-- subtitle: Your position changes depending on the situation you're in
+- title: Theme 3 — **The Real Risk: Losing the Ability to Notice**
+- subtitle: Not hallucination itself, but the atrophy of the skill that catches it
 
-- card(orange, 🔄): The Position Shifters
-  - **Rupam**: "Today my answer is different from usual — I usually relate to Hulk, but today I align with Iron Man"
-  - Published papers are already verified → lower risk → AI can handle it
-  - **Nazhiefah**: "It depends on what we are looking for" — Iron Man when pressured to produce, Captain America when there's time
+- card(pink, 🧪): The Invalid Comparison (Khine)
+  - "The real risk of not reading isn't hallucination alone. It's losing the ability to notice when a summary is wrong"
+  - A corrosion rate "means little without its test conditions: NaCl concentration, pH, immersion time, alloy state, and whether it was measured by weight loss, hydrogen evolution, or electrochemistry"
+  - "An AI tool that lines up 'corrosion rates' from ten papers can produce a comparison that looks clean but is invalid. I can only catch that because I have read the experimental sections myself"
 
-- card(blue, 📖): The Deep Readers
-  - **Yadanar**: "I don't fully trust AI with papers that are very important for my research field"
-  - **Manuella**: "If you cannot clearly explain your findings, true insight has not been achieved"
-  - **Hyunwoo**: "A small error in understanding a mathematical model can cause actual hardware damage"
+- card(blue, 🧬): The Atrophy Argument (Seong su)
+  - "Even if AI advances to the point where hallucinations disappear … merely consuming summarized information will cause us to avoid long texts, settle into convenience, and ultimately let our analytical muscles atrophy"
+  - "The pace at which AI is penetrating our lives is far too rapid for humanity to adapt"
+  - If the system fails or "a specific group monopolizes the technology", humans "could be reduced to helpless children incapable of doing anything on their own"
 
-- card(green, 🧠): The Retention Problem
-  - **Gyeongsu**: "AI helps us process tons of info, but will I actually **remember** any of it?"
-  - **DongYun**: "Mistakes made by AI can cause a series of errors that get worse over time"
-  - Reading isn't just about extraction — it's about **building internal models**
+- card(green, 💡): Reading as the Source of Questions (Najwa)
+  - "Original research ideas begin with curiosity — asking how and why — which can only be explored by reading"
+  - "The routinity of reading papers would enhanced the researcher inspiration", especially "to grasp the foundational principles beneath automated data"
+  - Reading is not only verification; it is where the next question comes from
 
-- highlight-quote: "Today my answer is different from usual. AI is a tool meant to make difficult tasks easier, not a replacement for the human mind." — Rupam
+- highlight-quote: "Automation is safe only for researchers who have already built the skill to check it." — Khine Wai Zin
 
 =====
 
@@ -707,19 +703,19 @@ Tab 3  ▸ Draft:
 
 - card(blue, 🎯): You Are the Research Director
   - Today you built a pipeline that writes sentences about your data
-  - YOU decide which facts go into the dictionary — that choice is the analysis (Huy's "architectural design")
-  - YOU read the chart's `reason` field and override it — Waad's "conditional delegation", made clickable
+  - YOU decide which facts go into the dictionary — that choice is the analysis (Rustam's "which papers influence my experimental design", applied to rows)
+  - YOU read the chart's `reason` field and override it — Khine's "the deeper the dependence, the deeper the reading", made clickable
   - YOU are the one who presses export, with your name on the file
 
-- card(orange, 🔗): Testing Jaewhoon's Challenge
-  - Week 6 asked whether skipping the reading costs you something. Week 7 asks the sharper version: **does skipping the writing cost you the understanding?**
-  - Writing a Results paragraph is where most researchers first notice their data is odd
+- card(orange, 🔗): Testing Khine's Warning
+  - Week 6 asked whether skipping the reading costs you the ability to notice. Week 7 asks the sharper version: **does skipping the writing cost you the understanding?**
+  - Writing a Results paragraph is where most researchers first notice their data is odd — the "corrosion rate without conditions" of your own dataset
   - If the draft arrives finished, when exactly do you notice?
 
 - card(green, ✅): The Verification Test
-  - If the verifier fires and you cannot tell **which** number is wrong → you did not know your data well enough
-  - If the draft reads plausibly and you accept it without checking `small_groups` → the tool made you faster and worse
-  - The pipeline makes your judgment **visible** — to yourself first
+  - Jemal's audit rule, built in: the verifier traces every digit back to a row, so the model cannot "claim it has completed a task" with fabricated evidence
+  - If the verifier fires and you cannot tell **which** number is wrong → you did not know your data well enough (Khine's "skill to check it")
+  - If the draft reads plausibly and you accept it without checking `small_groups` → the tool made you faster and worse (Seong su's atrophy, one paragraph at a time)
 
 =====
 
@@ -804,6 +800,6 @@ Anthropic Free Online Courses (Recommended)
   - Built a 3-tab **auto-drafting** app: CSV → profile → figure (with override) → narrative → number verification → `report.md`; export stays disabled while any number is unverifiable
 
 - card(orange, 🗣️): Discussion
-  - Week 6 review: Hulk won again, but Huy's "Research Director" model and Jaewhoon's meta-critique challenge the frame; this week's forum turns to **authorship and accountability**; **Midterm due this Friday, 23 Oct 24:00** — screened in Week 8
+  - Week 6 review: Hulk won again (8/10), but the class wrote its reading rule — Khine's "the deeper the dependence, the deeper the reading", Minh's delegate-by-task, Jemal's audit-the-delegate; this week's forum turns to **authorship and accountability**; **Midterm due this Friday, 23 Oct 24:00** — screened in Week 8
 
 **This Friday, 23 October, 24:00:** spec + working prototype + your 3–5 minute recorded video pitch, by email. **Next week** we watch them together and review each other's feasibility. Record early — you can always re-record. Good luck!

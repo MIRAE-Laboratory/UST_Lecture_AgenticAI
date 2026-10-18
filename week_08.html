@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI - Week UST_Lecture_AgenticAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<!-- Mermaid.js -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+  :root {
+    --bg-main: #f8fafc;
+    --text-main: #1e293b;
+    --accent: #0f4c81;
+    --card-blue: #eff6ff;
+    --border-blue: #bfdbfe;
+    --card-green: #f0fdf4;
+    --border-green: #bbf7d0;
+    --card-orange: #fff7ed;
+    --border-orange: #fed7aa;
+    --card-pink: #fdf2f8;
+    --border-pink: #fbcfe8;
+    --card-purple: #faf5ff;
+    --border-purple: #e9d5ff;
+    --card-yellow: #fefce8;
+    --border-yellow: #fef08a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: var(--text-main);
+    overflow: hidden; /* Hide scrollbars, use custom navigation */
+    font-size: 1.8rem;
+  }
+  .presentation {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    width: 100vw;
+  }
+  .presentation::-webkit-scrollbar { display: none; }
+  .slide {
+    scroll-snap-align: start;
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 60px 80px; /* Top/Bottom 60px, Left/Right 80px for margins */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-content {
+    background: var(--bg-main);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    font-size: 1rem; /* 1.5x of original */
+  }
+  .slide-title {
+    font-size: 2rem; /* 1.5x of original */
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    border-bottom: 5px solid var(--accent);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: 1rem; /* 1.5x of original */
+    color: #64748b;    
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  /* Title Slide Variations */
+  .title-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  }
+  .title-slide .slide-title { font-size: 2.5rem; border: none; margin-bottom: 1.5rem; color: var(--accent); }
+  .title-slide .slide-subtitle { font-size: 1.5rem; font-weight: 600; color: #334155; }
+  
+  /* Title Emphasis Variations */
+  .title-emphasis-slide .slide-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+  .title-emphasis-slide .slide-title {
+    font-size: 3rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-emphasis-slide .slide-subtitle {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+  
+  /* Layouts */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased min-width to prevent 4 columns on wide screens */
+    gap: 1.5rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+  .card-header { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.4rem; }
+  .card-header .icon { font-size: 1.3rem; margin-right: 0.5rem; }
+  .card-body ul { list-style-type: none; padding-left: 0; }
+  .card-body li { margin-bottom: 0.5rem; position: relative; padding-left: 1.2rem; line-height: 1.4; font-size: 0.95rem; }
+  .card-body li::before { content: "•"; color: #94a3b8; font-weight: bold; position: absolute; left: 0; top: 0; }
+  .plain-bullets li { position: relative; padding-left: 1.2rem; list-style-type: none; }
+  .plain-bullets li::before { content: "•"; color: var(--accent); font-weight: bold; position: absolute; left: 0; top: 0; }
+  
+  .slide-text {
+    font-size: 1.6rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+  
+  .card-blue { background: var(--card-blue); border-color: var(--border-blue); color: #1e3a8a; }
+  .card-green { background: var(--card-green); border-color: var(--border-green); color: #14532d; }
+  .card-orange { background: var(--card-orange); border-color: var(--border-orange); color: #7c2d12; }
+  .card-pink { background: var(--card-pink); border-color: var(--border-pink); color: #831843; }
+  .card-purple { background: var(--card-purple); border-color: var(--border-purple); color: #4c1d95; }
+  .card-yellow { background: var(--card-yellow); border-color: var(--border-yellow); color: #713f12; }
+  
+  .highlight-quote {
+    background: #f8fafc;
+    border-left: 5px solid var(--accent);
+    padding: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0.5rem 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .image-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    margin: 0.5rem 0;
+  }
+  .img-icon { font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.5; }
+  .image-container {
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .slide-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .slide-img:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Modal Overlay */
+  .image-modal {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .image-modal.active {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    z-index: 9999;
+  }
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .image-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: #94a3b8;
+  }
+  .img-caption {
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+  .mermaid-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+  }
+  .mermaid-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .mermaid-group .mermaid-container {
+    margin: 0;
+    flex: 1;
+    min-height: auto;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Consolas', monospace;
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  .mermaid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .reference-link {
+    font-size: 0.9rem;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  .inline-code {
+    background: #e2e8f0;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .styled-table th { background: #334155; color: white; text-align: left; padding: 1rem; }
+  .styled-table td { padding: 1rem; background: white; border-bottom: 1px solid #f1f5f9; }
+  .styled-table tr:hover td { background: #f8fafc; }
+  
+  .flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .flow-step {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #cbd5e1;
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin: 0 1rem;
+  }
+  
+  .slide-number {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .plain-bullets {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+  .plain-bullets li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Fixed Layout Elements */
+  .global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: #0f172a;
+    color: #94a3b8;
+    z-index: 2000;
+    border-bottom: 1px solid #1e293b;
+  }
+  .header-logo { color: white; margin-right: 1.5rem; letter-spacing: -0.5px; font-size: 0.75rem; }
+  .header-sep { color: #334155; margin: 0 1rem; }
+  .header-subtitle { font-size: 0.75rem; }
+
+  .side-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* 2/3 of 50px approx */
+    height: 70px; /* 2/3 of 100px approx */
+    background: rgba(30, 41, 59, 0.4);
+    border: none;
+    color: white;
+    font-size: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: background 0.2s, width 0.2s;
+    border-radius: 6px;
+  }
+  .side-nav-btn:hover { background: rgba(37, 99, 235, 0.8); width: 45px; }
+  .prev-side { left: 10px; }
+  .next-side { right: 10px; }
+
+  /* Navigation Bar (Fixed Bottom) */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    height: 50px;
+    z-index: 2000;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .nav-main-btn {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px;
+    margin-right: 20px;
+  }
+  .btn-nav {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .btn-nav:hover {
+    background: #1e293b;
+    color: white;
+  }
+  .page-input-wrapper {
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    margin: 0 8px;
+    font-family: monospace;
+  }
+  .page-input {
+    background: transparent;
+    border: 1px solid #334155;
+    color: white;
+    width: 32px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    padding: 1px;
+    margin-right: 4px;
+  }
+  .section-links {
+    display: flex;
+    gap: 16px;
+    border-left: 1px solid #1e293b;
+    padding-left: 20px;
+  }
+  .nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <header class="global-header">
+    <span class="header-logo">Mid-term Evaluation: Proposal</span>
+    <span class="header-sep">|</span>
+    <span class="header-subtitle">Video Pitch Screening &amp; Peer Review — Assessing Feasibility</span>
+  </header>
+
+  <button class="side-nav-btn prev-side" id="prevSideBtn" title="Previous Slide">◀</button>
+  <button class="side-nav-btn next-side" id="nextSideBtn" title="Next Slide">▶</button>
+
+  <div class="presentation" id="presentation">
+    <section class="slide title-slide" id="slide-1">
+      <div class="slide-content">
+        <h1 class="slide-title">Mid-term Evaluation: Proposal</h1>
+        <p class="slide-subtitle">Video Pitch Screening & Peer Review — Assessing the Feasibility of Your Colleagues' Agentic AI Systems</p>
+        <div class="highlight-quote">Week 8 of Phase 2: Workflow Automation & Design (Weeks 5-8)</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title">Contents</h2>
+        <p class="slide-subtitle">A different kind of session — your work is the lecture today</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> 1. Lecture (short)</div>
+            <div class="card-body">
+              <ul>
+                <li>What a proposal of an Agentic AI system has to show</li>
+                <li>The four criteria, and how a reviewer reads a 3–5 minute pitch</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎬</span> 2. Screening</div>
+            <div class="card-body">
+              <ul>
+                <li>The merged video pitches, played in class</li>
+                <li>Everyone scores every project while watching</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> 3. Peer Review</div>
+            <div class="card-body">
+              <ul>
+                <li>Feasibility discussion: can this be built, and would anyone use it?</li>
+                <li>Written feedback to each author, then the Phase 3 preview</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="flow-container">
+          <div class="flow-step">Lecture (15 min)</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Screening (60–70 min)</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Peer Review & Discussion (30 min)</div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">Phase 3 preview</div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="slide-title">Phase 2 Complete — <strong>From Literacy to a Built Proposal</strong></h2>
+        <p class="slide-subtitle">Eight weeks in, you have designed, specified, and recorded a working system</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧱</span> What You Have Built</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 5: the <strong>5-question specification</strong> (Problem, Users, Features, Interaction Flow, Success Criteria) and a Streamlit UI</li>
+                <li>Week 6: <strong>data intake</strong> — PDFs to structured metadata, scored against hand labels</li>
+                <li>Week 7: <strong>data output</strong> — numbers from code, sentences from the model, every digit verified</li>
+                <li>Midterm: all of it, pointed at <strong>your own research problem</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> What Today Tests</div>
+            <div class="card-body">
+              <ul>
+                <li>Not whether the code is pretty — whether the <strong>proposal</strong> is sound</li>
+                <li>Does a real researcher have this problem? Would the app survive contact with real data?</li>
+                <li>Where does the human stay in control, and is that visible on screen?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🔁</span> Why Peer Review</div>
+            <div class="card-body">
+              <ul>
+                <li>Week 1: you argued AI is an assistant when a human can <strong>explain, verify and take responsibility</strong></li>
+                <li>Today you apply that test to a colleague's system — and receive it on your own</li>
+                <li>Reviewing is a research skill: the same questions you will face from a journal or a funding panel</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title">Proposal of an Agentic AI System — <strong>What Must Be On Screen</strong></h2>
+        <p class="slide-subtitle">The reviewer has 3–5 minutes; make each of these impossible to miss</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">❓</span> The Problem and the User</div>
+            <div class="card-body">
+              <ul>
+                <li>A specific task a specific researcher does today, and what it costs them (time, errors, tedium)</li>
+                <li>Not "a chatbot for chemistry" — "the two hours I spend reconciling corrosion rates across papers with different test conditions"</li>
+                <li>Who clicks the buttons: you alone, your lab, your field?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔀</span> The Interaction Flow</div>
+            <div class="card-body">
+              <ul>
+                <li>Human does X → AI does Y → human <strong>reviews</strong> → … — the flow from your spec, shown live</li>
+                <li>Which steps are Green (autonomous), Yellow (AI proposes, human approves), Red (human only)?</li>
+                <li>The Week 4 <code class="inline-code">CONFIRM_REQUIRED</code> idea: where is the checkpoint in <strong>your</strong> app?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🧪</span> Real Data and Failure States</div>
+            <div class="card-body">
+              <ul>
+                <li>The app running on data from your research, not placeholder text</li>
+                <li>What happens when input is unusable, the model declines, or a number cannot be verified?</li>
+                <li>Honest limits: what the human still has to check after the app finishes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"Delegating execution to AI should never mean abdicating our intellectual ownership and ethical responsibility." — Minh Le Tran, Week 4 forum. A proposal shows where that ownership lives in the interface.</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title">Evaluation Criteria — <strong>Four Dimensions, 0–3 Each</strong> (max 12)</h2>
+        <p class="slide-subtitle">The same rubric for instructor grading and your peer review</p>
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Criterion</th>
+              <th>0</th>
+              <th>1</th>
+              <th>2</th>
+              <th>3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Creativity</strong></td>
+              <td>Generic chatbot wrapper</td>
+              <td>Known pattern applied as-is</td>
+              <td>Known pattern adapted to the research problem</td>
+              <td>A new idea or combination that others would want to copy</td>
+            </tr>
+            <tr>
+              <td><strong>Usefulness</strong></td>
+              <td>Does not address a real research task</td>
+              <td>Addresses a task, but no one would use it in practice</td>
+              <td>Would save real time or errors in the author's own work</td>
+              <td>Would be useful to other researchers in the field too</td>
+            </tr>
+            <tr>
+              <td><strong>Concreteness</strong></td>
+              <td>Spec and prototype do not match; app does not run</td>
+              <td>App runs on dummy data only</td>
+              <td>App runs on real data; human control points are visible</td>
+              <td>Real data, failure states handled, verification built into the flow</td>
+            </tr>
+            <tr>
+              <td><strong>Presentation</strong></td>
+              <td>Video missing or app not shown running</td>
+              <td>App shown, design decisions not explained</td>
+              <td>Clear problem, demo, and design rationale within 3–5 min</td>
+              <td>Also honest about limitations and what the human still has to check</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="highlight-quote">Score what you <strong>saw</strong>, not what you assume was built. If the video does not show it, it does not count.</div>
+        <a href="https://github.com/MIRAE-Laboratory/UST_Lecture_AgenticAI/blob/main/Mid-term_Project_Notice.md" target="_blank" class="reference-link">📚 Mid-term Project — Submission Notice (GitHub)</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title">How a Reviewer <strong>Reads a 3–5 Minute Pitch</strong></h2>
+        <p class="slide-subtitle">A protocol so that ten pitches get the same attention as the first</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">⏱️</span> Minute 0–1 — The Problem</div>
+            <div class="card-body">
+              <ul>
+                <li>Can you restate the problem in one sentence after the first minute? If not, note it under Presentation</li>
+                <li>Is it the author's own problem (Usefulness 2) or a field-wide one (Usefulness 3)?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">⏱️</span> Minute 1–4 — The Demo</div>
+            <div class="card-body">
+              <ul>
+                <li>Watch the <strong>hands</strong>, not the slides: real data in, what comes out, where the human intervenes</li>
+                <li>Look for one failure state handled on screen — that is the Concreteness 2 → 3 step</li>
+                <li>Is anything new here, or a known pattern reused? (Creativity)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">⏱️</span> Minute 4–5 — The Decisions</div>
+            <div class="card-body">
+              <ul>
+                <li>Why these tools, this flow, this checkpoint? A reason per decision = Presentation 2</li>
+                <li>Do they name what the human must still check afterwards? That is Presentation 3</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">✍️</span> While Watching</div>
+            <div class="card-body">
+              <ul>
+                <li>Fill the score sheet <strong>during</strong> the pitch, not after the next one starts</li>
+                <li>Write one sentence of feedback the author can act on: a question you would ask as their PI</li>
+                <li>Do not score your own pitch; do not confer until the screening block ends</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title">Part 2 — <strong>Screening</strong></h2>
+        <p class="slide-subtitle">The merged video, played in submission order</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🎬</span> Format</div>
+            <div class="card-body">
+              <ul>
+                <li>Pitches are merged into one video and screened in class; the specifications (and code where permitted) are in the course <strong>GitHub repository</strong></li>
+                <li>3–5 minutes each, roughly 60–70 minutes in total, with a short pause after every third pitch</li>
+                <li>Nothing runs live today, so nothing can break live — the recording is the demo</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">📝</span> Your Job During Screening</div>
+            <div class="card-body">
+              <ul>
+                <li>One score sheet per project: four criteria, 0–3 each, plus one actionable comment</li>
+                <li>Flag any project whose <strong>feasibility</strong> you doubt — we discuss those first in Part 3</li>
+                <li>Note one idea from a colleague you would <strong>borrow</strong> for your own final project</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🤝</span> Ground Rules</div>
+            <div class="card-body">
+              <ul>
+                <li>Feedback addresses the <strong>system</strong>, not the person; be specific ("the checkpoint before export is missing"), not global ("not useful")</li>
+                <li>Everything shared today stays in the class: no re-posting of videos or code</li>
+                <li>Authors listen first and answer questions after the discussion block</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-8">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 2: <strong>Video Pitch Screening</strong></h1>
+        <p class="slide-subtitle">3–5 minutes each — score as you watch</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-9">
+      <div class="slide-content">
+        <h2 class="slide-title">📋 <strong>Score Sheet</strong> — One Per Project</h2>
+        <p class="slide-subtitle">Copy this for every pitch (paper or the shared form)</p>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">📝</span> Fields</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Project / author</strong>:</li>
+                <li><strong>Creativity (0–3)</strong>: ___  — what is new or well-adapted here?</li>
+                <li><strong>Usefulness (0–3)</strong>: ___  — who would actually use it, and how often?</li>
+                <li><strong>Concreteness (0–3)</strong>: ___  — real data? failure state shown? human control points visible?</li>
+                <li><strong>Presentation (0–3)</strong>: ___  — problem clear in one minute? decisions explained? limits named?</li>
+                <li><strong>Feasibility flag</strong> (yes / no): can this be completed as a final project in 7 weeks with the resources the author has?</li>
+                <li><strong>One question I would ask as their PI</strong>:</li>
+                <li><strong>One idea I would borrow</strong>:</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-10">
+      <div class="slide-content">
+        <h2 class="slide-title">The <strong>Feasibility</strong> Question</h2>
+        <p class="slide-subtitle">Today's discussion topic — assessing what your colleagues can realistically build</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔬</span> Technical Feasibility</div>
+            <div class="card-body">
+              <ul>
+                <li>Does the model actually have to do what the pitch claims, or is there a deterministic path (code, a database API) for part of it? (Week 7: numbers from code)</li>
+                <li>Is the data available, and in a format the pipeline can ingest? (Week 6: PDF traps data)</li>
+                <li>How often will it hallucinate on this task, and does the design <strong>catch</strong> it?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">👤</span> Human Feasibility</div>
+            <div class="card-body">
+              <ul>
+                <li>Will the intended user tolerate the checkpoints, or click through them? (Week 5: verification must not feel like extra work)</li>
+                <li>Does using the app require a skill the user may lose by using it? (Week 6 forum: "the deeper the dependence, the deeper the reading")</li>
+                <li>Who is accountable when it is wrong — is that person visible in the flow?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">📅</span> Project Feasibility</div>
+            <div class="card-body">
+              <ul>
+                <li>Seven weeks remain until the final showcase. What is the <strong>minimum</strong> version that proves the idea?</li>
+                <li>Which Phase 3 topic does it need most: workflow design (Week 9), evaluation (Week 10), self-correction (Week 11), or memory/RAG (Week 12)?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide title-slide" id="slide-11">
+      <div class="slide-content">
+        <h1 class="slide-title">Part 3: <strong>Peer Review & Discussion</strong></h1>
+        <p class="slide-subtitle">Assessing the feasibility of your colleagues' systems</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-12">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Live Discussion</strong> — Feasibility Round</h2>
+        <p class="slide-subtitle">30 minutes — flagged projects first, then open floor</p>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="card-header"><span class="icon">💡</span> Protocol</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Round 1 (10 min)</strong>: projects with two or more feasibility flags. One reviewer states the doubt in one sentence; the author answers in one minute; the class votes: feasible as proposed / feasible if narrowed / rethink</li>
+                <li><strong>Round 2 (10 min)</strong>: the three highest-scored projects. What made them concrete? Name the single design choice others should copy</li>
+                <li><strong>Round 3 (10 min)</strong>: pairs. Exchange score sheets with the author of the project you reviewed most critically. Each author rewrites their Success Criteria in one sentence based on the feedback</li>
+                <li>Hand in all score sheets at the end — the instructor grade uses the same rubric, and your reviews feed into the author's feedback</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-13">
+      <div class="slide-content">
+        <h2 class="slide-title">Feedback That the Author Can <strong>Use</strong></h2>
+        <p class="slide-subtitle">The Week 1 accountability test, turned outward</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">✅</span> Say This</div>
+            <div class="card-body">
+              <ul>
+                <li>"Your checkpoint comes after export; move it before" — a location and an action</li>
+                <li>"The demo used synthetic rows; show one real dataset and its failure case" — a concrete next step</li>
+                <li>"The problem statement is a field-wide one; say so, that is Usefulness 3" — credit where earned</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">❌</span> Not This</div>
+            <div class="card-body">
+              <ul>
+                <li>"Interesting but not practical" — nothing to act on</li>
+                <li>"Just add RAG" — a tool without a reason</li>
+                <li>Scores without a comment — the number alone does not teach anything</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎯</span> The Test</div>
+            <div class="card-body">
+              <ul>
+                <li>Would you accept this comment from a reviewer on your own paper?</li>
+                <li>Could the author do something about it <strong>this week</strong>?</li>
+                <li>Does it address the system, the data, or the flow — never the person</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-14">
+      <div class="slide-content">
+        <h2 class="slide-title">Phase 3 — <strong>Management & Reliability</strong> (Weeks 9–12)</h2>
+        <p class="slide-subtitle">From a working proposal to a system you can trust</p>
+        <div class="mermaid-container">
+          <div class="mermaid">graph LR
+            subgraph "Phase 2: Building ✅"
+            W5["Week 5<br>🖥️ Human-AI Interaction"]
+            W6["Week 6<br>📥 Data Input"]
+            W7["Week 7<br>📤 Data Output"]
+            W8["Week 8<br>🎯 Mid-term Proposal"]
+            end
+            subgraph "Phase 3: Management & Reliability"
+            W9["Week 9<br>🧭 Task & Workflow Design"]
+            W10["Week 10<br>📏 Evaluating Agent Output"]
+            W11["Week 11<br>🔁 Self-feedback Loop"]
+            W12["Week 12<br>🧠 Memory & RAG"]
+            end
+            W5 --> W6 --> W7 --> W8 --> W9 --> W10 --> W11 --> W12
+            style W5 fill:#e1f5fe,stroke:#0288d1
+            style W6 fill:#e1f5fe,stroke:#0288d1
+            style W7 fill:#e1f5fe,stroke:#0288d1
+            style W8 fill:#e1f5fe,stroke:#0288d1
+            style W9 fill:#e8f5e9,stroke:#388e3c
+            style W10 fill:#e8f5e9,stroke:#388e3c
+            style W11 fill:#e8f5e9,stroke:#388e3c
+            style W12 fill:#e8f5e9,stroke:#388e3c</div>
+        </div>
+        <div class="highlight-quote">"Phase 2 asked: can you build it? Phase 3 asks: can you make it reliable — a workflow that survives vague requests, an evaluation that catches bad output, an agent that fixes its own errors, and a memory that remembers the right things."</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-15">
+      <div class="slide-content">
+        <h2 class="slide-title">🗣️ <strong>Week 8 Discussion Questions</strong> (UST LMS)</h2>
+        <p class="slide-subtitle">Post your response on the forum this week</p>
+        <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
+        <p class="slide-text">1. <strong>Peer feedback, received.</strong> Summarize the feedback you got today in three bullets. Which one changes your plan for the final project, and which one do you (respectfully) reject, and why?</p>
+        <p class="slide-text">2. <strong>Peer feedback, given.</strong> Which colleague's project did you rate highest on <strong>Concreteness</strong>, and what exactly did they show on screen that earned it? What would it take for yours to match?</p>
+        <p class="slide-text">3. <strong>Feasibility.</strong> Based on today's discussion, write the <strong>minimum version</strong> of your final project in five lines: problem, one input, one output, one human checkpoint, one failure state handled. This becomes your Phase 3 starting point.</p>
+        <p class="slide-text">4. Looking at the Phase 3 topics (workflow design, evaluation, self-correction, memory), which one does your project need most urgently, and what currently breaks because you do not have it?</p>
+      </div>
+    </section>
+    <section class="slide" id="slide-16">
+      <div class="slide-content">
+        <h2 class="slide-title">Want to Learn More?</h2>
+        <p class="slide-text">Mid-term</p>
+        <a href="https://github.com/MIRAE-Laboratory/UST_Lecture_AgenticAI/blob/main/Mid-term_Project_Notice.md" target="_blank" class="reference-link">📚 Mid-term Project — Submission Notice & Rubric (GitHub)</a>
+        <a href="https://github.com/MIRAE-Laboratory/UST_Lecture_AgenticAI" target="_blank" class="reference-link">📚 Course repository — specifications of submitted projects</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Reviewing and Proposing</p>
+        <a href="https://pair.withgoogle.com/guidebook" target="_blank" class="reference-link">📚 Google PAIR — People + AI Guidebook</a>
+        <a href="https://www.microsoft.com/en-us/haxtoolkit/" target="_blank" class="reference-link">📚 Microsoft HAX Toolkit — Human-AI Interaction Guidelines</a>
+        <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" class="reference-link">📚 Anthropic — Building Effective Agents</a>
+        <p class="slide-text">&nbsp;</p>
+        <p class="slide-text">Looking Ahead to Phase 3</p>
+        <a href="https://www.anthropic.com/engineering/writing-tools-for-agents" target="_blank" class="reference-link">📚 Anthropic — Writing Effective Tools for AI Agents</a>
+        <a href="https://developers.openai.com/api/docs/guides/evals" target="_blank" class="reference-link">📚 OpenAI — Evals guide</a>
+      </div>
+    </section>
+    <section class="slide" id="slide-17">
+      <div class="slide-content">
+        <h2 class="slide-title">Wrap-Up of <strong>Week 8</strong></h2>
+        <p class="slide-subtitle">Three things to remember</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📖</span> Proposal</div>
+            <div class="card-body">
+              <ul>
+                <li>A proposal of an Agentic AI system shows a <strong>real problem</strong>, a <strong>visible interaction flow</strong> with human checkpoints, <strong>real data</strong>, and its <strong>failure states</strong> — in 3–5 minutes</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🎬</span> Screening & Review</div>
+            <div class="card-body">
+              <ul>
+                <li>Four criteria, 0–3 each; score what you saw; one actionable comment per project; feasibility flags drive the discussion</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🗣️</span> Discussion</div>
+            <div class="card-body">
+              <ul>
+                <li>Feasibility is technical, human, and project-level at once; the best feedback names a location and an action; your minimum final-project version goes on the forum this week</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="slide-text"><strong>Phase 2 complete!</strong> Next week begins Phase 3: Management & Reliability — starting with <strong>Design of Task and Workflow</strong>: turning a vague request into a flow that survives contact with reality.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="image-modal" class="image-modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-main-btn">Main</a>
+      <div class="nav-controls">
+        <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
+        <div class="page-input-wrapper">
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">17</span>
+        </div>
+        <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
+      </div>
+      <div class="section-links">
+        <a class="nav-link" onclick="goToSlide(1)">Intro</a>
+        <a class="nav-link" onclick="goToSlide(3)">Lecture</a>
+        <a class="nav-link" onclick="goToSlide(8)">Screening</a>
+        <a class="nav-link" onclick="goToSlide(11)">Peer Review</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const pres = document.getElementById('presentation');
+    const pageInput = document.getElementById('pageInput');
+    const totalSlides = 17;
+    let currentSlide = 1;
+
+    // Modal logic
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    let modalScale = 1;
+    let isDragging = false;
+    let lastX, lastY;
+    let translateX = 0, translateY = 0;
+    let moved = false;
+    const DRAG_THRESHOLD = 5;
+
+    function applyTransform() {
+      modalImg.style.transform = `scale(${modalScale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    function openModal(src) {
+      modal.classList.add('active');
+      modalImg.src = src;
+      document.body.style.overflow = 'hidden';
+      // Reset state
+      modalScale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+
+    // Zoom Logic
+    modal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomSpeed = 0.1;
+      if (e.deltaY < 0) {
+        modalScale = Math.min(modalScale + zoomSpeed, 5);
+      } else {
+        modalScale = Math.max(modalScale - zoomSpeed, 0.5);
+      }
+      applyTransform();
+    }, { passive: false });
+
+    // Pan (Drag) Logic
+    modal.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      moved = false;
+      modalImg.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = (e.clientX - lastX) / modalScale;
+      const deltaY = (e.clientY - lastY) / modalScale;
+      
+      if (Math.abs(e.clientX - lastX) > DRAG_THRESHOLD || Math.abs(e.clientY - lastY) > DRAG_THRESHOLD) {
+        moved = true;
+      }
+      
+      translateX += deltaX;
+      translateY += deltaY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      modalImg.style.cursor = 'zoom-out';
+      
+      // If no significant movement, treat as a click to close
+      if (!moved) {
+        closeModal();
+      }
+    });
+
+    function updateUrlHash(page) {
+      history.replaceState(null, null, '#slide-' + page);
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        const targetOffset = (n - 1) * window.innerWidth;
+        pres.scrollTo({ left: targetOffset, behavior: 'smooth' });
+        pageInput.value = n;
+        updateUrlHash(n);
+      }
+    }
+
+    function goNext() {
+      if(currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+    function goPrev() {
+      if(currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    let scrollTimeout;
+    pres.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const newSlide = Math.round(pres.scrollLeft / window.innerWidth) + 1;
+        if(newSlide !== currentSlide && newSlide >= 1 && newSlide <= totalSlides) {
+           currentSlide = newSlide;
+           pageInput.value = currentSlide;
+           updateUrlHash(currentSlide);
+        }
+      }, 50);
+    });
+
+    pageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = parseInt(e.target.value);
+        if (!isNaN(val)) goToSlide(val);
+        e.target.blur();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    document.getElementById('prevBtn').addEventListener('click', goPrev);
+    document.getElementById('nextSideBtn').addEventListener('click', goNext);
+    document.getElementById('prevSideBtn').addEventListener('click', goPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if(e.target === pageInput) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        goPrev();
+      } else if (e.key === 'ArrowUp') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: -100, behavior: 'smooth'});
+      } else if (e.key === 'ArrowDown') {
+        const currentContent = document.querySelectorAll('.slide-content')[currentSlide - 1];
+        if (currentContent) currentContent.scrollBy({top: 100, behavior: 'smooth'});
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#slide-')) {
+         const pageNum = parseInt(hash.replace('#slide-', ''));
+         if(!isNaN(pageNum)) {
+           setTimeout(() => goToSlide(pageNum), 100);
+         }
+      }
+    });
+  </script>
+</body>
+</html>
