@@ -24,7 +24,7 @@
 
 - card(orange, 🗣️): Peer Review
   - Same four criteria as the instructor's grade, 0–3 each
-  - Feedback on feasibility goes back to each author
+  - Scoring form on **UST LMS**; feedback goes back to each author
 
 > 📚 [Mid-term Project — Submission Notice (GitHub)](https://github.com/MIRAE-Laboratory/UST_Lecture_AgenticAI/blob/main/Mid-term_Project_Notice.md)
 
@@ -61,21 +61,16 @@
 
 =====
 
-## Slide: Peer Review Sheet
+## Slide: Peer Review
 - type: card-single
-- title: 📋 **Peer Review** — One Sheet Per Project
-- subtitle: Fill it in while the pitch plays
+- title: 🗣️ **Peer Review** — on UST LMS
+- subtitle: No paper sheet — the scoring form is on the LMS
 
-- card(yellow, 📝): Fields
-  - **Project / author**:
-  - **Creativity (0–3)**: ___
-  - **Usefulness (0–3)**: ___
-  - **Concreteness (0–3)**: ___
-  - **Presentation (0–3)**: ___
-  - **Feasibility**: can this be completed as a final project by Week 16? (yes / if narrowed / no)
-  - **One comment the author can act on**:
-
-=====
+- card(yellow, 📝): How It Works
+  - A **scoring form** for every project is posted on **UST LMS** (Class → Mid-term Peer Review)
+  - Score each colleague's pitch on the four criteria, 0–3 each, while or right after watching
+  - Add **one comment the author can act on** — a location and an action, not a verdict
+  - Do not score your own project; submit the form by the end of the session
 
 ## Slide: Self-Check
 - type: card-single
