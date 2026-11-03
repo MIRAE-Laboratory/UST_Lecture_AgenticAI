@@ -588,96 +588,149 @@ print(graph.get_graph().draw_ascii())        # the flow, drawn from the code
 
 =====
 
-## Slide: Week 7 Discussion Recap
+## Slide: Week 7 Discussion Review — The Question
 - type: cards
-- title: Week 7 — **"Who is Responsible for a Flawed AI Hypothesis?"**
-- subtitle: 14 responses analyzed — a near-universal consensus, with one twist
+- title: Week 7 Review — **Who Is Responsible for a Flawed AI Hypothesis?**
+- subtitle: Authorship & Ethics — three AI agents answered, and all three blamed the human
 
-- card(green, 📊): The Vote Count
-  - **All three (1+2+3 combined)**: Huy, Waad, Nazhiefah, DongYun, Minh — **5 votes**
-  - **Hulk only (3)**: Namcheol, Gyeongsu, Han, Hyunwoo — **4 votes**
-  - **Captain America only (2)**: Yadanar, Ly, Seher — **3 votes**
-  - **Captain + Hulk (2,3)**: Irfan — **1 vote**
-  - **Iron Man only (1)**: Tan — **1 vote**
+- card(orange, 🦸): Iron Man — "You Don't Sue the Hammer"
+  - The human holding the tablet is **entirely on the hook**
+  - Authorship rules and ethics committees are "sand in the gears of actual progress"
+  - A bad theory is a bug: **debug the parameters, patch the dataset, reboot**
 
-- card(blue, 🤝): The Universal Consensus
-  - Almost everyone says: **the human is fully accountable, period**
-  - "AI cannot bear moral or scientific accountability" appears in nearly every response
-  - Even Iron Man supporters don't excuse the human — they just emphasize speed
+- card(blue, 🛡️): Captain America — "A Machine Cannot Bear Accountability"
+  - Moral and scientific responsibility cannot be carried by an algorithm
+  - Outsourcing critical thinking surrenders the **discipline and integrity** that make discovery meaningful
+  - Every claim you sign should reflect **your own honest labor**
 
-- card(red, 🔥): The Real Disagreement
-  - The split is NOT about *who* is responsible
-  - The split is about *how* to manage AI to fulfill that responsibility
-  - This is a much more productive disagreement
+- card(green, 🧪): Hulk — "Verify Every Single Variable"
+  - Treating an algorithm as an independent author is "a recipe for catastrophic failure"
+  - Hallucinations can **contaminate the data** if nobody is watching
+  - Double-check the math, verify every variable, keep strict human oversight
 
 =====
 
-## Slide: Theme 1
+## Slide: Week 7 Discussion Review — Your Votes
 - type: cards
-- title: Theme 1 — **The Real Disagreement is HOW, Not WHO**
-- subtitle: Three management philosophies emerge
+- title: How Did You Vote?
+- subtitle: 8 responses — and Iron Man, a lone voice in Week 2, became the most-cited agent
 
-- card(blue, 🚀): The Velocity Camp (Iron Man side)
-  - **Tan**: "Define problem, select data, choose model — the researcher is in control at every step"
-  - **Huy**: "AI provides the velocity, but the human provides the vector"
-  - Position: embrace speed, but never abdicate decisions
+- card(green, 📊): The Count
+  - **Iron Man (1)** — Khine Wai Zin ("with one correction"), Minh
+  - **Iron Man + Hulk (1+3)** — Najwa, Rustam, Firman
+  - **Hulk (3)** — Qasim
+  - **Captain America (2)** — Seongsu
+  - **Captain America + Hulk (2+3)** — Azzahra
+  - Iron Man appears in **5 of 8** responses; in Week 2 he had exactly one supporter
 
-- card(orange, 🛡️): The Integrity Camp (Captain America side)
-  - **Yadanar**: "Relying on AI without careful judgment weakens scientific integrity"
-  - **Ly**: "If results are wrong, we don't blame the software — we check our model"
-  - **Seher**: "Use multiple AI systems to cross-check, but final judgment must be human"
-  - Position: keep deep engagement to maintain accountability
-
-- card(red, 🔬): The Verification Camp (Hulk side)
-  - **Hyunwoo**: "A flawed hypothesis can result in severe hardware damage"
-  - **Gyeongsu**: "AI hallucinated fake research papers in my coding work"
-  - **Han**: "Researchers must never blindly trust AI; must personally verify every result"
-  - Position: build active verification systems around the AI
-
-- highlight-quote: "The real question isn't 'is the AI responsible?' (no), but 'what does taking responsibility actually look like in practice?'"
+- card(purple, 💡): What Changed Since Week 2
+  - Week 2 asked how much of an AI answer you may *believe*. Week 7 asked who *pays* when it is wrong — and nobody hesitated: **the human**
+  - Captain America, who got **zero** votes in Week 2, got two this time
+  - The Iron Man votes are not "move fast and break things". Read them: every one of them **adds a verification step** Iron Man himself never mentioned
+  - You are no longer arguing philosophy. Three of you cited **your own midterm projects** as evidence
 
 =====
 
-## Slide: Theme 2
+## Slide: Week 7 Theme 1 — Who Is Settled
 - type: cards
-- title: Theme 2 — **The Tool Metaphors**
-- subtitle: How students framed the AI's role
+- title: Theme 1 — **"Who" Is Settled. The Question Is "Where".**
+- subtitle: Unanimous on accountability — and that unanimity changed the question
 
-- card(blue, 🔨): "AI is a Tool" — Most Common Frame
-  - **DongYun**: "AI is merely a tool, like a hammer"
-  - **Tan**: "AI is fundamentally a tool without intent or accountability"
-  - **Minh**: "We do not credit the power drill for the architecture"
-  - The hammer/drill metaphor is intuitive but limited — tools don't *suggest* what to build
+- card(blue, ✅): Nobody Disputed the Answer
+  - "Responsibility for a flawed AI hypothesis belongs to the researcher **who acts on it**; on that, all three positions agree" (Khine Wai Zin)
+  - "All three perspectives agree on one thing: the human is accountable" (Seongsu)
+  - Qasim, Azzahra, Rustam, Minh, Firman — the same sentence in eight different voices
 
-- card(orange, ⚛️): "AI is a High-Power Instrument" — Namcheol's Reframe
-  - "A nuclear engineer doesn't blame the reactor if a control rod is miscalibrated"
-  - But the engineer DOES need active containment, monitoring, documentation
-  - This metaphor better captures the *operational risk* dimension
+- card(orange, 🔀): So the Question Moved
+  - "The real question is **how much we can delegate** to AI" (Seongsu)
+  - Khine's corollary: because accountability is already assigned, "we don't need extra layers of authorship rules or ethics review" — the answer is "**verification built into the tool itself**"
+  - Najwa rejected "a **false binary**" between trusting the human and engineering the tool
 
-- card(green, 🧭): "Velocity vs Vector" — Huy's New Frame
-  - AI provides the **velocity** (speed of generating ideas)
-  - Human provides the **vector** (direction and validation)
-  - Captures both the productivity gain AND the irreplaceable human role
+- highlight-quote: "Move fast on drafting, stop at the point where a mistake becomes expensive. That's where the human signs their name." — Khine Wai Zin
 
 =====
 
-## Slide: Theme 3
+## Slide: Week 7 Theme 2 — Build the Brake Into the Tool
 - type: cards
-- title: Theme 3 — **Real Engineering Stakes**
-- subtitle: Why this isn't an abstract debate
+- title: Theme 2 — **Build the Brake Into the Tool**
+- subtitle: Three of you answered an ethics question with an architecture — and pointed at your midterm
 
-- card(red, ⚠️): Concrete Failures Students Have Seen or Worry About
-  - **Gyeongsu**: AI fabricated fake paper citations — would have been "deeply embarrassing" if used in a presentation
-  - **Hyunwoo**: "A flawed hypothesis regarding system dynamics can result in severe hardware damage"
-  - **Minh**: Motor winding design — "AI-generated hypothesis is merely a high-probability suggestion that must undergo empirical validation"
-  - **Waad**: "Dangerous trend where the ease of a single button press erodes critical thinking in younger generations"
+- card(green, 🧪): Khine Wai Zin — The Lab Gate
+  - "Drop 'just reboot'": in experimental materials science "a bad hypothesis costs **weeks of samples and test time that can't be undone**"
+  - Her midterm agent screens current-density data, but "**nothing moves to the lab** until I review and approve the result"
+  - The approval sits exactly where an error stops being cheap
 
-- card(blue, 🔍): The Pattern
-  - These aren't theoretical concerns — students are encountering them in their own work
-  - The verification step isn't a luxury; it's how you avoid catastrophic failure
-  - Engineering domains (robotics, motors, hardware) have **physical consequences** for AI errors
+- card(blue, 🛰️): Rustam — PilotLab
+  - "AI tools should also have **built-in safeguards** to reduce errors"
+  - In his PilotLab project, AI generates and analyzes hypotheses, while researchers **verify the evidence before conducting experiments**
+  - "AI should accelerate scientific discovery, not replace human critical thinking and accountability"
 
-- highlight-quote: "AI changes how ideas are generated. It does not change who is responsible for them." — Huy
+- card(purple, 🏛️): Najwa — The Executive Auditor
+  - Treat AI-driven research as "an **architectural engineering problem**", with proactive guardrails built into the pipeline itself
+  - The researcher becomes an **executive auditor** who evaluates the high-level logic and the interpretation of results
+  - Accountability with Hulk; method with Iron Man
+
+- highlight-quote: "Two of these three are describing today's lecture: a human node placed before the irreversible step. They built it before we named it."
+
+=====
+
+## Slide: Week 7 Debate — Feedback or Messenger
+- type: cards
+- title: Debate Point — **Is a Flawed Hypothesis a Bug, or a Failure to Understand?**
+- subtitle: Minh and Seongsu agree on who is responsible — and disagree on what responsibility *is*
+
+- card(orange, 🔁): Minh — "A Direct Feedback Loop"
+  - "Our core value lies in high-level vision, problem framing, and conceptual drafting"; AI is "a drafting engine, not an autonomous thinker"
+  - A flawed hypothesis "is **not an ethical dilemma** to deliberate over, but a direct feedback loop indicating an issue in our prompts, parameters, or data pipeline"
+  - Responsibility = "treat errors as system feedback, and **rapidly iterate and calibrate**"
+
+- card(blue, 📣): Seongsu — "Merely a Messenger"
+  - "To be accountable is to **understand a hypothesis well enough to explain why you chose it**"
+  - "If you cannot explain why a hypothesis is sound or what makes it novel, you are not a researcher; you are merely a **messenger**"
+  - Azzahra, independently: "make sure we **understand every part** of our research before we trust it"
+
+- card(pink, ⚖️): Where They Collide
+  - Minh iterates "until the output aligns with scientific rigor". **Aligned by whose test?** If the test is "it now looks right to me", iteration converges on what you already believed
+  - Seongsu's test answers that: the criterion is *your explanation*, written down. But can an explanation be checked by a flow — or only by a person?
+  - Today's lecture sides with both: iterate fast, but only against an **acceptance criterion you wrote before the run**
+
+- highlight-quote: "Those who accept AI's plausible-sounding hypotheses without question are living in an illusion, settling for results that anyone could produce." — Seongsu
+
+=====
+
+## Slide: Week 7 Theme 3 — Verify What Is Expensive
+- type: cards
+- title: Theme 3 — **Verify What Is Expensive** — and Let the Machine Check You Too
+- subtitle: Firman pushed back on Hulk from both sides
+
+- card(orange, 🏗️): The Cautious Orchestrator
+  - With vibe-coding, "anyone can easily build any full-stack application from their imagination in seconds" — and agents "hallucinate convincingly", producing "a lot of **garbage-out**"
+  - So humans must act as "**cautious orchestrators** who carefully design and execute the building blocks of a project from the very beginning"
+  - That is the decomposition table from today's lecture, in one phrase
+
+- card(green, 🎯): Not *Every* Variable
+  - Hulk demands verifying every single variable. Firman: verify the **high-risk variables — "perhaps not every single variable"**
+  - Khine drew the same line in time rather than in variables: stop where the mistake becomes expensive
+  - Over-verification has a cost too: a gate on every step trains you to click "approve" without reading (today's "Do Not Over-Gate")
+
+- card(purple, 🔄): The Twist
+  - "Some shocking discoveries, such as human-made cybersecurity flaws, are now being found by **autonomous agents without direct human oversight**"
+  - "While humans are ultimately responsible, **AI can still independently uncover errors that humans miss**"
+  - Verification does not only run one way. Week 11 builds the version where one model checks another — and checks *you*
+
+=====
+
+## Slide: Week 7 Activity — Where Does Your Name Go
+- type: card-single
+- title: 🗣️ **Live Discussion** — Where Does Your Name Go?
+- subtitle: 10 minutes — apply Khine's rule to your own midterm project
+
+- card(yellow, 💡): Exercise
+  - Draw your midterm app as a flow: one box per step, from input to the final artefact
+  - Mark every step whose mistake is **irreversible or expensive** — a lab run, a submitted figure, a sent email, a deleted file
+  - Put a **human node** immediately before the first such step. That is where you sign your name (Khine, Rustam)
+  - For that node, write the **acceptance criterion** you will check — one sentence. If you cannot write it, Seongsu's question applies: can you explain *why* you would approve?
+  - Then Firman's challenge: is there a step where an AI check would catch more of **your** errors than you would catch of its?
 
 =====
 
@@ -686,20 +739,20 @@ print(graph.get_graph().draw_ascii())        # the flow, drawn from the code
 - title: How This Connects to **Today's Practice**
 - subtitle: A flow makes accountability MECHANICAL, not just philosophical
 
-- card(blue, 🧭): The Router Is Where Your Accountability Lives
-  - Every branch in `route()` is a decision **you** made and wrote down
-  - Huy's "velocity vs vector": the nodes are the velocity, the router is the vector
-  - When the flow produces something wrong, `trace.jsonl` says exactly which of your criteria let it through
+- card(blue, 🧭): Khine's Signature Is a Node in the Graph
+  - "Stop at the point where a mistake becomes expensive" = a **human node placed immediately before the irreversible step**
+  - Rustam's PilotLab gate ("verify the evidence before conducting experiments") is the same node in a different lab
+  - Every other branch in `route()` is also a decision **you** made and wrote down — that is Najwa's "executive auditor" with a paper trail: `trace.jsonl`
 
-- card(orange, 📏): Acceptance Criteria Are Accountability, Written Early
-  - The verification camp's discipline (Han, Hyunwoo, Gyeongsu) is just "define done before you run"
-  - A criterion you can check is a promise you can keep; an adjective is not
-  - Namcheol's reactor analogy lands here: containment is designed **in advance**, not diagnosed afterwards
+- card(orange, 📏): Acceptance Criteria Make Minh's Feedback Loop Converge
+  - Minh wants errors treated as system feedback and iterated away. That only works against a **criterion written before the run**
+  - Without one, "aligned with scientific rigor" quietly becomes "looks right to me", and the loop converges on your prior
+  - Seongsu's test supplies the criterion: if you can write down *why* an output is acceptable, a router can check it; if you cannot, no amount of iteration will
 
 - card(green, 🚪): The Give-Up Path Is an Ethical Feature
+  - Firman's "garbage-out" is what a flow without an exit produces: a fluent, confident, unsupported hypothesis
   - A flow that reports "0 papers survived screening" is more honest than one that writes a fluent summary of nothing
-  - Tan's "AI has no intent or accountability" is exactly why the system must be able to say *I could not do this*
-  - You built that node today
+  - Every one of you said the human is accountable. The give-up node is how the system **hands the decision back** instead of making it for you
 
 =====
 
@@ -734,7 +787,8 @@ print(graph.get_graph().draw_ascii())        # the flow, drawn from the code
 
 1. **Ambiguity vs. Clarity — why do agents fail when human instructions are vague?** Bring the sentence from today's Vagueness Audit and the decomposition your partner produced. How many guesses did one sentence require? Was the failure a limit of the *model*, or a gap in your *specification*? Where is the line?
 2. Today you wrote acceptance criteria before prompts, and a router that branches only on conditions you can check. **Which step of your own research could you NOT write an acceptance criterion for?** Is that because the criterion is hard to express, or because you have not yet decided what "good" means — and what does that imply about delegating it to an agent?
-3. Several classmates (Huy, Namcheol, Minh) reframed the accountability debate using metaphors — "velocity vs vector", "high-power instrument", "power drill". After building a flow with an explicit give-up path, **which metaphor best captures how YOU work with AI?** Or propose a better one.
+3. **Minh or Seongsu?** Minh treats a flawed hypothesis as "a direct feedback loop" — iterate and calibrate. Seongsu says that if you cannot explain why a hypothesis is sound, "you are merely a messenger". Take one AI-assisted result from your midterm project: could you **explain why you accepted it** without referring to the fact that the AI produced it? Write the explanation as an acceptance criterion — and say whether a flow could check it, or only you.
+4. **Where does your name go?** Post the flow you drew in class with the human node marked (Khine's rule: "stop at the point where a mistake becomes expensive"). Then answer Firman's twist: is there a step where an AI check would catch **your** mistakes better than you catch its?
 
 =====
 
@@ -771,6 +825,6 @@ Anthropic Free Online Courses
   - Built the same literature-triage flow twice — plain Python and **LangGraph** — then broke it on purpose and watched each guard fire
 
 - card(orange, 🗣️): Discussion
-  - Week 7 review: universal consensus that humans are accountable; the disagreement is HOW (velocity / integrity / verification camps). Today reframes it: vagueness is not tolerated by a flow, it is **revealed** by it
+  - Week 7 review: all 8 of you made the human accountable, and the question moved from **who** to **where** — Khine's "stop where a mistake becomes expensive", Rustam's PilotLab gate, Minh's feedback loop vs Seongsu's "messenger". Today turns each of those into a node, a criterion, or an exit. And vagueness is not tolerated by a flow — it is **revealed** by it
 
 **Next week:** How do you know the output is any good? **Evaluation of agent output** — metrics, rubrics, and who gets to judge.
