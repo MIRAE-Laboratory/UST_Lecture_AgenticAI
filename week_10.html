@@ -1426,45 +1426,41 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
     <section class="slide title-slide" id="slide-26">
       <div class="slide-content">
         <h1 class="slide-title">Part 3: <strong>Discussion</strong></h1>
-        <p class="slide-subtitle">Ambiguity vs Clarity — Why Vague Instructions Break Agents</p>
+        <p class="slide-subtitle">Week 9 Review (Ambiguity vs. Clarity) · The Consensus Dilemma</p>
       </div>
     </section>
     <section class="slide" id="slide-27">
       <div class="slide-content">
-        <h2 class="slide-title">Week 9 — <strong>Why Do Agents Fail at Vague Tasks?</strong></h2>
-        <p class="slide-subtitle">12 responses analyzed — a Hulk-Captain America coalition emerges</p>
+        <h2 class="slide-title">Week 9 Review — <strong>Why Do Agents Fail When Instructions Are Vague?</strong></h2>
+        <p class="slide-subtitle">Ambiguity vs. Clarity — three AI agents, three different culprits</p>
         <div class="cards-grid">
-          <div class="card card-green">
-            <div class="card-header"><span class="icon">📊</span> The Vote Distribution</div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🦸</span> Iron Man — "Blame the Napkin Sketch"</div>
             <div class="card-body">
               <ul>
-                <li><strong>Cap + Hulk (2,3)</strong>: Waad, Manuella, Margareth, Minh — <strong>4 votes</strong> (largest)</li>
-                <li><strong>Hulk only (3)</strong>: DongYun, Yadanar, Han — <strong>3 votes</strong></li>
-                <li><strong>Iron Man only (1)</strong>: Tan — <strong>1 vote</strong></li>
-                <li><strong>Iron Man + Hulk (1,3)</strong>: Irfan — <strong>1 vote</strong></li>
-                <li><strong>Iron Man + Cap (1,2)</strong>: Jaewhoon — <strong>1 vote</strong></li>
-                <li><strong>Captain America only (2)</strong>: Ly — <strong>1 vote</strong></li>
-                <li><strong>None</strong>: Huy — <strong>1 vote</strong> (rejects all three frames)</li>
+                <li>Agents fail because "human communication is an uncalibrated, chaotic mess"</li>
+                <li>You can't hand an assembly line "a coffee-stained napkin sketch" and expect a toleranced part</li>
+                <li>Fix: an <strong>auto-compiling middle layer</strong> that turns human guesswork into executable blueprints</li>
               </ul>
             </div>
           </div>
           <div class="card card-blue">
-            <div class="card-header"><span class="icon">🤝</span> The Coalition's Position</div>
+            <div class="card-header"><span class="icon">🛡️</span> Captain America — "Clarity Starts With You"</div>
             <div class="card-body">
               <ul>
-                <li>Humans must specify clearly <strong>AND</strong> verify outputs</li>
-                <li>Pure Iron Man (only engineering) has 1 lonely vote (Tan)</li>
-                <li>The class converges on: <strong>clarity is a human responsibility, but the system must support it</strong></li>
+                <li>Accountability and clarity "must always originate with the human being at the helm"</li>
+                <li>Letting a machine fill in the blanks of our unfinished thoughts <strong>surrenders intellectual integrity</strong></li>
+                <li>Define your intentions with exact precision, and bear the full weight of the orders you give</li>
               </ul>
             </div>
           </div>
-          <div class="card card-red">
-            <div class="card-header"><span class="icon">🔥</span> Three Solution Schools Within the Coalition</div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🧪</span> Hulk — "The Blanks Are Where It Breaks"</div>
             <div class="card-body">
               <ul>
-                <li><strong>Design school</strong>: build better interfaces (Irfan, Tan)</li>
-                <li><strong>Demand school</strong>: humans must be precise (Ly, Waad, Manuella)</li>
-                <li><strong>Tradeoff school</strong>: explicit about flexibility ↔ uncertainty (Margareth, Minh)</li>
+                <li>Without strict boundaries, models "fill in the blanks themselves" — the point where hallucinations and data leaks begin</li>
+                <li>Define parameters with "excruciating precision" and keep multi-layered human oversight</li>
+                <li>"Double-check what the agent <strong>thinks</strong> we want <strong>before it acts</strong>"</li>
               </ul>
             </div>
           </div>
@@ -1473,172 +1469,237 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
     </section>
     <section class="slide" id="slide-28">
       <div class="slide-content">
-        <h2 class="slide-title">Theme 1 — <strong>The Flexibility-Uncertainty Tradeoff</strong></h2>
-        <p class="slide-subtitle">Margareth's framing — and why "design vs demand" is incomplete</p>
+        <h2 class="slide-title">How Did You Vote?</h2>
+        <p class="slide-subtitle">8 responses — the most evenly split vote of the semester</p>
         <div class="cards-grid">
-          <div class="card card-blue">
-            <div class="card-header"><span class="icon">⚖️</span> Margareth's Sharp Insight</div>
-            <div class="card-body">
-              <ul>
-                <li>"More ambiguity allows greater flexibility BUT increases uncertainty"</li>
-                <li>"More clarity requires more human effort and reduces the system to <strong>conventional programming</strong>"</li>
-                <li>There's no free lunch — every step toward clarity is a step away from flexibility</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-orange">
-            <div class="card-header"><span class="icon">🚧</span> Adding the Translation Layer Doesn't Solve It</div>
-            <div class="card-body">
-              <ul>
-                <li>"Introducing a 'middle layer' to translate vague instructions does not remove ambiguity but <strong>shifts it</strong> into another potentially equally complex problem"</li>
-                <li>Iron Man's middleware fix relocates the problem; doesn't dissolve it</li>
-              </ul>
-            </div>
-          </div>
           <div class="card card-green">
-            <div class="card-header"><span class="icon">🎯</span> The Real Question</div>
+            <div class="card-header"><span class="icon">📊</span> The Count</div>
             <div class="card-body">
               <ul>
-                <li>Not "should we design for ambiguity OR demand clarity?"</li>
-                <li>But: <strong>how much flexibility am I willing to trade for how much certainty?</strong></li>
-                <li>This is a per-task design choice, not a universal answer</li>
+                <li><strong>All three</strong> — Jeonghyeon, Azzahra, and Najwa (who led with Iron Man + Hulk, then wove in Captain America)</li>
+                <li><strong>Captain America (2)</strong> — Nurul, Seongsu</li>
+                <li><strong>Iron Man + Hulk (1+3)</strong> — Rustam, Batool</li>
+                <li><strong>Hulk (3)</strong> — Minh</li>
+                <li>Every agent appears in <strong>5–6 of 8</strong> responses. Nobody chose Iron Man alone</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">💡</span> What Changed Since Week 7</div>
+            <div class="card-body">
+              <ul>
+                <li>In Week 7 you agreed on <strong>who</strong> is accountable. This time you agreed on <strong>where the fix lives</strong>: in both the human <em>and</em> the system</li>
+                <li>The new idea of the week came from four of you independently: <strong>the agent should ask</strong></li>
+                <li>And Rustam did the full Week 9 homework in public — the vagueness audit, an acceptance criterion, his flow with the human node — then ended with a question for this week</li>
               </ul>
             </div>
           </div>
         </div>
-        <div class="highlight-quote">"More clarity reduces the system to something closer to conventional programming." — Margareth</div>
       </div>
     </section>
     <section class="slide" id="slide-29">
       <div class="slide-content">
-        <h2 class="slide-title">Theme 2 — <strong>Two Deepest Critiques: Huy & Minh</strong></h2>
-        <p class="slide-subtitle">Beyond all three personas</p>
-        <div class="cards-grid">
-          <div class="card card-purple">
-            <div class="card-header"><span class="icon">💎</span> Huy — "Metacognitive Clarity"</div>
-            <div class="card-body">
-              <ul>
-                <li>All three personas assume the human KNOWS what they want</li>
-                <li>At the research frontier: <strong>often you don't fully know yet</strong></li>
-                <li>The real skill: "knowing how well you currently understand what you want to find out"</li>
-                <li>Be honest about that gap <strong>before</strong> deploying autonomy</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-red">
-            <div class="card-header"><span class="icon">⚠️</span> Minh — "Independence Threshold" + "Alignment Drift"</div>
-            <div class="card-body">
-              <ul>
-                <li>At what point do we transition AI from instruction-follower → autonomous decision-maker?</li>
-                <li>Granting AI independence to resolve vagueness → <strong>Alignment Drift</strong></li>
-                <li>System optimizes for "likely path" that violates implicit human ethics or physical constraints</li>
-                <li>"Right goal through wrong and potentially catastrophic logic"</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-blue">
-            <div class="card-header"><span class="icon">🔗</span> The Common Thread</div>
-            <div class="card-body">
-              <ul>
-                <li>Both Huy and Minh point to a problem the personas miss</li>
-                <li>Personas frame it as communication — they frame it as <strong>agency boundaries</strong></li>
-                <li>The deeper question: how much should the AI fill in for us, ever?</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="highlight-quote">"An agent might achieve the right goal through the wrong logic, simply because we failed to define the boundaries of its autonomy." — Minh</div>
-      </div>
-    </section>
-    <section class="slide" id="slide-30">
-      <div class="slide-content">
-        <h2 class="slide-title">Theme 3 — <strong>What Vague Prompts Actually Look Like</strong></h2>
-        <p class="slide-subtitle">Yadanar's concrete examples make the abstract real</p>
-        <div class="cards-grid">
-          <div class="card card-red">
-            <div class="card-header"><span class="icon">📊</span> "Analyze this dataset" — Yadanar's Example</div>
-            <div class="card-body">
-              <ul>
-                <li>Doesn't say what kind of analysis you want</li>
-                <li>Model picks "wrong patterns or even makes stuff up"</li>
-                <li>Vivid case of guessing under ambiguity</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-orange">
-            <div class="card-header"><span class="icon">💻</span> "Improve this code"</div>
-            <div class="card-body">
-              <ul>
-                <li>Could change speed, readability, structure</li>
-                <li>"But not necessarily what you intended"</li>
-                <li>Each interpretation is plausible — and most are wrong for YOU</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-blue">
-            <div class="card-header"><span class="icon">🔬</span> Why These Examples Land</div>
-            <div class="card-body">
-              <ul>
-                <li>These are commands students actually type every day</li>
-                <li>Each one is <strong>one short sentence</strong> — none feel "vague" subjectively</li>
-                <li>But each contains 3-5 hidden parameters the model has to guess</li>
-                <li><strong>Awareness of these hidden parameters = metacognitive clarity in practice</strong></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="highlight-quote">"AI doesn't truly understand intent — it just fills gaps based on probability." — Yadanar</div>
-      </div>
-    </section>
-    <section class="slide" id="slide-31">
-      <div class="slide-content">
-        <h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
-        <p class="slide-subtitle">Jaewhoon's "feedback loop" hits the lecture's core idea</p>
+        <h2 class="slide-title">Theme 1 — <strong>Let the Agent Ask</strong></h2>
+        <p class="slide-subtitle">Four of you, independently, moved the burden from "perfect prompt" to "good question"</p>
         <div class="cards-grid">
           <div class="card card-blue">
-            <div class="card-header"><span class="icon">🔁</span> Jaewhoon — "The Feedback Loop is Key"</div>
+            <div class="card-header"><span class="icon">🙋</span> The Idea, Four Times</div>
             <div class="card-body">
               <ul>
-                <li>"When a user provides specific feedback on an unsatisfactory output, the AI incorporates that learning"</li>
-                <li>"Simple rejection doesn't help — clear, constructive criticism leads to better iterations"</li>
-                <li><strong>This is exactly what today's iterative loop is</strong></li>
+                <li>"A good agent should <strong>ask clarifying questions, explain its assumptions, and request confirmation</strong> before taking actions" (Nurul)</li>
+                <li>"Build an <strong>active, iterative clarification loop</strong> into the agent's workflow … the agent halts and proactively asks targeted questions whenever it detects missing parameters" (Minh)</li>
+                <li>"It is <strong>unrealistic to expect people to give perfect instructions</strong> every time. AI should … ask questions instead of making assumptions" (Batool)</li>
+                <li>"A well-designed AI agent should <strong>recognize uncertainty and ask clarification questions</strong> before acting" (Rustam)</li>
               </ul>
             </div>
           </div>
           <div class="card card-green">
-            <div class="card-header"><span class="icon">🎯</span> The Rubric IS the Constructive Feedback</div>
+            <div class="card-header"><span class="icon">🔧</span> Why This Is a Design Decision, Not a Wish</div>
             <div class="card-body">
               <ul>
-                <li>"Score on completeness, specificity, structure..." — that's what Jaewhoon means by constructive criticism</li>
-                <li>The judge produces structured feedback the model can actually use</li>
-                <li>This is Irfan's "design for ambiguity" — operationalized in code</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card card-purple">
-            <div class="card-header"><span class="icon">💎</span> Connecting Huy's Critique</div>
-            <div class="card-body">
-              <ul>
-                <li>Writing the rubric = forcing metacognitive clarity</li>
-                <li>If you can't write a rubric, you don't yet know what "good" means to you</li>
-                <li>The system doesn't replace this — it <strong>surfaces</strong> the gap</li>
+                <li>Minh's phrasing is exact: the solution "is not to demand flawless prompt engineering from day one"</li>
+                <li>Asking is a <strong>node</strong> you add to the flow: detect a missing parameter → stop → ask → resume (Week 9)</li>
+                <li>It is also an interface: Week 5's "designing for failure" — "I don't have enough information" is a success state</li>
               </ul>
             </div>
           </div>
           <div class="card card-orange">
-            <div class="card-header"><span class="icon">⚖️</span> Connecting Margareth's Tradeoff</div>
+            <div class="card-header"><span class="icon">🔍</span> Azzahra's Addition — Check the Plan, Not Only the Result</div>
             <div class="card-body">
               <ul>
-                <li>More criteria in the rubric = more clarity, less flexibility</li>
-                <li>Self-evolving loop pushes for the score ceiling — but at the cost of generation freedom</li>
-                <li>Choose the rubric depth that matches the certainty you need</li>
+                <li>"Even with good instructions, AI can still misunderstand them, so humans need to … <strong>check what the agent plans to do before it acts</strong>"</li>
+                <li>Reviewing a plan is cheaper than reviewing a result — and it catches the misreading before it costs anything</li>
+                <li>Hulk said the same in his own words: double-check what the agent <em>thinks</em> we want</li>
               </ul>
             </div>
           </div>
         </div>
       </div>
     </section>
+    <section class="slide" id="slide-30">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 2 — <strong>One Sentence, Many Meanings</strong></h2>
+        <p class="slide-subtitle">Ambiguity is not missing words — it is several reasonable readings at once</p>
+        <div class="cards-grid">
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🏙️</span> Nurul — "Improve This Neighborhood"</div>
+            <div class="card-body">
+              <ul>
+                <li>"The same request can have <strong>several meanings</strong>. The agent may choose an interpretation that seems reasonable but does not match the user's actual goal"</li>
+                <li>In urban planning, "improve this neighborhood" could mean <strong>green spaces, reducing traffic, or affordable housing</strong></li>
+                <li>"Without clear priorities and constraints, an agent could suggest a plan that <strong>overlooks residents' needs</strong>"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🔬</span> Rustam — Eight Guesses in One Sentence</div>
+            <div class="card-body">
+              <ul>
+                <li>His real instruction: <em>"Analyze the performance of Ni-based SOEC electrodes and identify the optimal composition for CO₂ electrolysis."</em></li>
+                <li>It required <strong>about eight guesses</strong>: electrode composition, operating temperature, performance indicators, stability requirements, the definition of "optimal" …</li>
+                <li>The most expensive guess: selecting a material on <strong>initial current density</strong> without considering <strong>long-term stability</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🎯</span> The Common Pattern</div>
+            <div class="card-body">
+              <ul>
+                <li>Each sentence looked complete to the person who wrote it</li>
+                <li>The dangerous reading is never absurd — it is <strong>plausible and wrong for you</strong></li>
+                <li>Rustam's verdict: "primarily a <strong>specification gap</strong> on the researcher's part" — and still, the agent should have asked</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-31">
+      <div class="slide-content">
+        <h2 class="slide-title">Debate Point — <strong>Who Owns Clarity: the Person or the System?</strong></h2>
+        <p class="slide-subtitle">Seongsu and Batool start from opposite ends — and meet in the middle</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">🧭</span> Seongsu — "A Team Without a Coach"</div>
+            <div class="card-body">
+              <ul>
+                <li>"We should <strong>never expect AI to lead us</strong> when our own direction is vague"</li>
+                <li>"Even with endless knowledge and countless automated factories on standby, nothing operates until the user decides what to create and how"</li>
+                <li>The deeper worry: "As AI continues to advance, many people are <strong>losing the ability to think and decide</strong> for themselves"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🛠️</span> Batool — "Perfect Instructions Are Unrealistic"</div>
+            <div class="card-body">
+              <ul>
+                <li>Nobody writes a perfect brief every time, so the <strong>system</strong> must recognize unclear information</li>
+                <li>Iron Man is right that better systems improve AI performance; Hulk is right that supervision is still needed</li>
+                <li>"Combine AI efficiency with human judgment"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">⚖️</span> Where They Meet — and the Catch</div>
+            <div class="card-body">
+              <ul>
+                <li>The agent's job is to <strong>detect</strong> the ambiguity and ask. The human's job is to <strong>answer</strong></li>
+                <li>The catch is Seongsu's: a clarifying question only helps if you <strong>have</strong> an answer. "What does <em>optimal</em> mean?" is useless to someone who has not decided</li>
+                <li>Jeonghyeon's version: "we cannot expect AI to fully understand our intentions without providing enough information" — and double-checking "is always necessary"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"It is like a pro football team without a coach: talent alone rarely leads to victory." — Seongsu</div>
+      </div>
+    </section>
     <section class="slide" id="slide-32">
+      <div class="slide-content">
+        <h2 class="slide-title">Theme 3 — <strong>Rustam's Dilemma: Do Acceptance Criteria Kill Discovery?</strong></h2>
+        <p class="slide-subtitle">The question he left for this week — and it lands squarely on today's lecture</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📏</span> His Criterion Has Two Halves</div>
+            <div class="card-body">
+              <ul>
+                <li>An AI material recommendation must be supported by <strong>(a)</strong> reliable literature, <strong>(b)</strong> comparable experimental conditions, <strong>(c)</strong> verified performance data, <strong>(d)</strong> a scientifically reasonable explanation</li>
+                <li>"An automated workflow can verify references and numerical values, but evaluating the <strong>underlying scientific mechanism</strong> requires human expertise"</li>
+                <li>And he admits the limit: whether a composition is "scientifically promising" cannot be reduced to a checklist — "we have not yet established clear standards for evaluating novel results"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🔁</span> AI Checks the Human, Too</div>
+            <div class="card-body">
+              <ul>
+                <li>Before his human node, AI catches "<strong>inconsistent units, missing data, and calculation errors</strong> — more systematically than manual checking"</li>
+                <li>His flow: Literature & extraction → AI data verification → preliminary analysis → <strong>HUMAN NODE</strong> → electrode fabrication & high-temperature testing</li>
+                <li>"AI should enforce data verification, while humans remain accountable for scientific interpretation"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">🧨</span> The Dilemma</div>
+            <div class="card-body">
+              <ul>
+                <li>"Unexpected (anomalous) results sometimes lead to the <strong>most important breakthroughs</strong>"</li>
+                <li>"If we define strict acceptance criteria before an AI agent starts working, could we unintentionally prevent it from identifying something <strong>scientifically valuable but unexpected</strong>?"</li>
+                <li>He points at Navier–Stokes — a problem open for generations, and recent news of AI-assisted progress on it. The things that matter most are often the ones no rubric anticipated</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-quote">"How should we balance predefined criteria with the flexibility needed for scientific discovery?" — Rustam</div>
+      </div>
+    </section>
+    <section class="slide" id="slide-33">
+      <div class="slide-content">
+        <h2 class="slide-title">How This Connects to <strong>Today's Practice</strong></h2>
+        <p class="slide-subtitle">Rubrics, judges and loops are where your Week 9 answers become code</p>
+        <div class="cards-grid">
+          <div class="card card-blue">
+            <div class="card-header"><span class="icon">📋</span> Rustam's (a)–(d) Is a Rubric — With Two Columns</div>
+            <div class="card-body">
+              <ul>
+                <li>Literature, conditions and performance data are <strong>judge-checkable</strong>: an LLM judge or plain code can score them</li>
+                <li>"A scientifically reasonable explanation" is <strong>human-judged</strong>: route it, do not score it</li>
+                <li>Today's rubric works best when you know which column each criterion belongs to</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-green">
+            <div class="card-header"><span class="icon">🙋</span> Minh's Clarification Loop = the "Aware" Strategy</div>
+            <div class="card-body">
+              <ul>
+                <li>Answering the agent's questions <em>before</em> generation is exactly what putting the rubric in the prompt does</li>
+                <li>Naive vs aware is the measured cost of <strong>not</strong> answering those questions up front</li>
+                <li>Nurul's "explain its assumptions" applies to the judge too: demand a <strong>reason</strong> with every score</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-pink">
+            <div class="card-header"><span class="icon">📈</span> Rustam's Dilemma vs the Self-Evolving Loop</div>
+            <div class="card-body">
+              <ul>
+                <li>The self-evolving loop pushes toward the score ceiling — which means pushing toward what the rubric <strong>anticipated</strong></li>
+                <li>Optimize hard enough against a fixed rubric and you optimize <em>away</em> from the anomaly (Goodhart's law)</li>
+                <li>Today's answer is structural: a rubric that <strong>scores</strong> the expected and <strong>flags</strong> the unexpected to a human</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card card-orange">
+            <div class="card-header"><span class="icon">🧭</span> Seongsu's Coach Writes the Rubric</div>
+            <div class="card-body">
+              <ul>
+                <li>A judge can only apply criteria someone decided on</li>
+                <li>If you cannot write the criterion, the clarifying question has no answer — and no loop will converge</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide" id="slide-34">
       <div class="slide-content">
         <h2 class="slide-title">Activity — <strong>Write a Rubric for Your Research</strong></h2>
         <p class="slide-subtitle">10 minutes in pairs</p>
@@ -1673,18 +1734,29 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
               </ul>
             </div>
           </div>
+          <div class="card card-purple">
+            <div class="card-header"><span class="icon">🧨</span> Then Answer Rustam</div>
+            <div class="card-body">
+              <ul>
+                <li>Mark each criterion <strong>J</strong> (a judge can score it) or <strong>H</strong> (only a human can)</li>
+                <li>Add one criterion that is <strong>not scored at all</strong>: "Anything surprising? Describe it." Anything written there goes to a human, whatever the total score</li>
+                <li>Ask your partner: which result would your rubric have <strong>rejected</strong> that you would actually have wanted to see?</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-33">
+    <section class="slide" id="slide-35">
       <div class="slide-content">
         <h2 class="slide-title">🗣️ <strong>Week 10 Discussion Questions</strong> (UST LMS)</h2>
         <div class="highlight-quote">Visit: <strong>UST LMS → Class → Discussion</strong></div>
-        <p class="slide-text">1. Today you saw three strategies (naive, refine, aware) plus two loop modes (threshold, self-evolving). <strong>Which combination gave the biggest improvement on your hometown task?</strong> Connect your finding to Jaewhoon's claim that "the feedback loop is key."</p>
-        <p class="slide-text">2. Margareth argued that more clarity reduces the system "to something closer to conventional programming." After writing a strict rubric today, <strong>did your final output feel more constrained — and was that good or bad?</strong> Where would you draw the line between flexibility and reliability for your own research?</p>
+        <p class="slide-text">1. <strong>The Consensus Dilemma — which is more persuasive: 1,000 AI agents or 10 human experts?</strong> Today you ran several models through the same judge. When they agreed, did that make the answer more likely to be <strong>right</strong>, or only more likely to be <strong>the same</strong>? What would make agreement among models count as evidence — and what would make ten humans' agreement worth more?</p>
+        <p class="slide-text">2. Today you saw three strategies (naive, refine, aware) plus two loop modes (threshold, self-evolving). <strong>Which combination gave the biggest improvement on your hometown task?</strong> Connect it to Minh's clarification loop: how much of the gain came simply from answering the questions before generation?</p>
+        <p class="slide-text">3. <strong>Answer Rustam's dilemma.</strong> He asked whether strict acceptance criteria could stop an agent from noticing something "scientifically valuable but unexpected". Post the rubric from today's activity with its J/H labels and its unscored "anything surprising?" field. Would it have caught the most surprising result of your own research so far?</p>
       </div>
     </section>
-    <section class="slide" id="slide-34">
+    <section class="slide" id="slide-36">
       <div class="slide-content">
         <h2 class="slide-title">Want to Learn More?</h2>
         <p class="slide-text">LLM Evaluation</p>
@@ -1702,7 +1774,7 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
         <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" class="reference-link">🎓 Introduction to Model Context Protocol</a>
       </div>
     </section>
-    <section class="slide" id="slide-35">
+    <section class="slide" id="slide-37">
       <div class="slide-content">
         <h2 class="slide-title">Wrap-Up of <strong>Week 10</strong></h2>
         <div class="cards-grid">
@@ -1726,7 +1798,7 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
             <div class="card-header"><span class="icon">🗣️</span> Discussion</div>
             <div class="card-body">
               <ul>
-                <li>Week 9 review (12 responses): Cap+Hulk coalition wins; Margareth's flexibility-uncertainty tradeoff; Huy's metacognitive clarity + Minh's Independence Threshold/Alignment Drift; Jaewhoon's "feedback loop is key" = exactly today's iterative practice</li>
+                <li>Week 9 review (8 responses): the most even vote of the semester; four of you independently said <strong>the agent should ask</strong> (Nurul, Minh, Batool, Rustam); Seongsu's "team without a coach" vs Batool's "perfect instructions are unrealistic"; and Rustam's dilemma — do acceptance criteria kill discovery? — answered today with a rubric that scores the expected and flags the unexpected</li>
               </ul>
             </div>
           </div>
@@ -1748,7 +1820,7 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
       <div class="nav-controls">
         <button class="btn-nav" id="prevBtn" title="Previous Slide">◀</button>
         <div class="page-input-wrapper">
-          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">35</span>
+          <input type="text" id="pageInput" class="page-input" value="1"> / <span id="totalPages">37</span>
         </div>
         <button class="btn-nav" id="nextBtn" title="Next Slide">▶</button>
       </div>
@@ -1764,7 +1836,7 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
   <script>
     const pres = document.getElementById('presentation');
     const pageInput = document.getElementById('pageInput');
-    const totalSlides = 35;
+    const totalSlides = 37;
     let currentSlide = 1;
 
     // Modal logic

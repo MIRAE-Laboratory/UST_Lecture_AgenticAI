@@ -735,134 +735,167 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
 ## Slide: Discussion
 - type: title
 - title: Part 3: **Discussion**
-- subtitle: Ambiguity vs Clarity — Why Vague Instructions Break Agents
+- subtitle: Week 9 Review (Ambiguity vs. Clarity) · The Consensus Dilemma
 
 =====
 
-## Slide: Week 9 Discussion Recap
+## Slide: Week 9 Discussion Review — The Question
 - type: cards
-- title: Week 9 — **Why Do Agents Fail at Vague Tasks?**
-- subtitle: 12 responses analyzed — a Hulk-Captain America coalition emerges
+- title: Week 9 Review — **Why Do Agents Fail When Instructions Are Vague?**
+- subtitle: Ambiguity vs. Clarity — three AI agents, three different culprits
 
-- card(green, 📊): The Vote Distribution
-  - **Cap + Hulk (2,3)**: Waad, Manuella, Margareth, Minh — **4 votes** (largest)
-  - **Hulk only (3)**: DongYun, Yadanar, Han — **3 votes**
-  - **Iron Man only (1)**: Tan — **1 vote**
-  - **Iron Man + Hulk (1,3)**: Irfan — **1 vote**
-  - **Iron Man + Cap (1,2)**: Jaewhoon — **1 vote**
-  - **Captain America only (2)**: Ly — **1 vote**
-  - **None**: Huy — **1 vote** (rejects all three frames)
+- card(orange, 🦸): Iron Man — "Blame the Napkin Sketch"
+  - Agents fail because "human communication is an uncalibrated, chaotic mess"
+  - You can't hand an assembly line "a coffee-stained napkin sketch" and expect a toleranced part
+  - Fix: an **auto-compiling middle layer** that turns human guesswork into executable blueprints
 
-- card(blue, 🤝): The Coalition's Position
-  - Humans must specify clearly **AND** verify outputs
-  - Pure Iron Man (only engineering) has 1 lonely vote (Tan)
-  - The class converges on: **clarity is a human responsibility, but the system must support it**
+- card(blue, 🛡️): Captain America — "Clarity Starts With You"
+  - Accountability and clarity "must always originate with the human being at the helm"
+  - Letting a machine fill in the blanks of our unfinished thoughts **surrenders intellectual integrity**
+  - Define your intentions with exact precision, and bear the full weight of the orders you give
 
-- card(red, 🔥): Three Solution Schools Within the Coalition
-  - **Design school**: build better interfaces (Irfan, Tan)
-  - **Demand school**: humans must be precise (Ly, Waad, Manuella)
-  - **Tradeoff school**: explicit about flexibility ↔ uncertainty (Margareth, Minh)
+- card(green, 🧪): Hulk — "The Blanks Are Where It Breaks"
+  - Without strict boundaries, models "fill in the blanks themselves" — the point where hallucinations and data leaks begin
+  - Define parameters with "excruciating precision" and keep multi-layered human oversight
+  - "Double-check what the agent **thinks** we want **before it acts**"
 
 =====
 
-## Slide: Theme 1
+## Slide: Week 9 Discussion Review — Your Votes
 - type: cards
-- title: Theme 1 — **The Flexibility-Uncertainty Tradeoff**
-- subtitle: Margareth's framing — and why "design vs demand" is incomplete
+- title: How Did You Vote?
+- subtitle: 8 responses — the most evenly split vote of the semester
 
-- card(blue, ⚖️): Margareth's Sharp Insight
-  - "More ambiguity allows greater flexibility BUT increases uncertainty"
-  - "More clarity requires more human effort and reduces the system to **conventional programming**"
-  - There's no free lunch — every step toward clarity is a step away from flexibility
+- card(green, 📊): The Count
+  - **All three** — Jeonghyeon, Azzahra, and Najwa (who led with Iron Man + Hulk, then wove in Captain America)
+  - **Captain America (2)** — Nurul, Seongsu
+  - **Iron Man + Hulk (1+3)** — Rustam, Batool
+  - **Hulk (3)** — Minh
+  - Every agent appears in **5–6 of 8** responses. Nobody chose Iron Man alone
 
-- card(orange, 🚧): Adding the Translation Layer Doesn't Solve It
-  - "Introducing a 'middle layer' to translate vague instructions does not remove ambiguity but **shifts it** into another potentially equally complex problem"
-  - Iron Man's middleware fix relocates the problem; doesn't dissolve it
-
-- card(green, 🎯): The Real Question
-  - Not "should we design for ambiguity OR demand clarity?"
-  - But: **how much flexibility am I willing to trade for how much certainty?**
-  - This is a per-task design choice, not a universal answer
-
-- highlight-quote: "More clarity reduces the system to something closer to conventional programming." — Margareth
+- card(purple, 💡): What Changed Since Week 7
+  - In Week 7 you agreed on **who** is accountable. This time you agreed on **where the fix lives**: in both the human *and* the system
+  - The new idea of the week came from four of you independently: **the agent should ask**
+  - And Rustam did the full Week 9 homework in public — the vagueness audit, an acceptance criterion, his flow with the human node — then ended with a question for this week
 
 =====
 
-## Slide: Theme 2
+## Slide: Week 9 Theme 1 — Let the Agent Ask
 - type: cards
-- title: Theme 2 — **Two Deepest Critiques: Huy & Minh**
-- subtitle: Beyond all three personas
+- title: Theme 1 — **Let the Agent Ask**
+- subtitle: Four of you, independently, moved the burden from "perfect prompt" to "good question"
 
-- card(purple, 💎): Huy — "Metacognitive Clarity"
-  - All three personas assume the human KNOWS what they want
-  - At the research frontier: **often you don't fully know yet**
-  - The real skill: "knowing how well you currently understand what you want to find out"
-  - Be honest about that gap **before** deploying autonomy
+- card(blue, 🙋): The Idea, Four Times
+  - "A good agent should **ask clarifying questions, explain its assumptions, and request confirmation** before taking actions" (Nurul)
+  - "Build an **active, iterative clarification loop** into the agent's workflow … the agent halts and proactively asks targeted questions whenever it detects missing parameters" (Minh)
+  - "It is **unrealistic to expect people to give perfect instructions** every time. AI should … ask questions instead of making assumptions" (Batool)
+  - "A well-designed AI agent should **recognize uncertainty and ask clarification questions** before acting" (Rustam)
 
-- card(red, ⚠️): Minh — "Independence Threshold" + "Alignment Drift"
-  - At what point do we transition AI from instruction-follower → autonomous decision-maker?
-  - Granting AI independence to resolve vagueness → **Alignment Drift**
-  - System optimizes for "likely path" that violates implicit human ethics or physical constraints
-  - "Right goal through wrong and potentially catastrophic logic"
+- card(green, 🔧): Why This Is a Design Decision, Not a Wish
+  - Minh's phrasing is exact: the solution "is not to demand flawless prompt engineering from day one"
+  - Asking is a **node** you add to the flow: detect a missing parameter → stop → ask → resume (Week 9)
+  - It is also an interface: Week 5's "designing for failure" — "I don't have enough information" is a success state
 
-- card(blue, 🔗): The Common Thread
-  - Both Huy and Minh point to a problem the personas miss
-  - Personas frame it as communication — they frame it as **agency boundaries**
-  - The deeper question: how much should the AI fill in for us, ever?
-
-- highlight-quote: "An agent might achieve the right goal through the wrong logic, simply because we failed to define the boundaries of its autonomy." — Minh
+- card(orange, 🔍): Azzahra's Addition — Check the Plan, Not Only the Result
+  - "Even with good instructions, AI can still misunderstand them, so humans need to … **check what the agent plans to do before it acts**"
+  - Reviewing a plan is cheaper than reviewing a result — and it catches the misreading before it costs anything
+  - Hulk said the same in his own words: double-check what the agent *thinks* we want
 
 =====
 
-## Slide: Theme 3
+## Slide: Week 9 Theme 2 — One Sentence, Many Meanings
 - type: cards
-- title: Theme 3 — **What Vague Prompts Actually Look Like**
-- subtitle: Yadanar's concrete examples make the abstract real
+- title: Theme 2 — **One Sentence, Many Meanings**
+- subtitle: Ambiguity is not missing words — it is several reasonable readings at once
 
-- card(red, 📊): "Analyze this dataset" — Yadanar's Example
-  - Doesn't say what kind of analysis you want
-  - Model picks "wrong patterns or even makes stuff up"
-  - Vivid case of guessing under ambiguity
+- card(green, 🏙️): Nurul — "Improve This Neighborhood"
+  - "The same request can have **several meanings**. The agent may choose an interpretation that seems reasonable but does not match the user's actual goal"
+  - In urban planning, "improve this neighborhood" could mean **green spaces, reducing traffic, or affordable housing**
+  - "Without clear priorities and constraints, an agent could suggest a plan that **overlooks residents' needs**"
 
-- card(orange, 💻): "Improve this code"
-  - Could change speed, readability, structure
-  - "But not necessarily what you intended"
-  - Each interpretation is plausible — and most are wrong for YOU
+- card(blue, 🔬): Rustam — Eight Guesses in One Sentence
+  - His real instruction: *"Analyze the performance of Ni-based SOEC electrodes and identify the optimal composition for CO₂ electrolysis."*
+  - It required **about eight guesses**: electrode composition, operating temperature, performance indicators, stability requirements, the definition of "optimal" …
+  - The most expensive guess: selecting a material on **initial current density** without considering **long-term stability**
 
-- card(blue, 🔬): Why These Examples Land
-  - These are commands students actually type every day
-  - Each one is **one short sentence** — none feel "vague" subjectively
-  - But each contains 3-5 hidden parameters the model has to guess
-  - **Awareness of these hidden parameters = metacognitive clarity in practice**
+- card(orange, 🎯): The Common Pattern
+  - Each sentence looked complete to the person who wrote it
+  - The dangerous reading is never absurd — it is **plausible and wrong for you**
+  - Rustam's verdict: "primarily a **specification gap** on the researcher's part" — and still, the agent should have asked
 
-- highlight-quote: "AI doesn't truly understand intent — it just fills gaps based on probability." — Yadanar
+=====
+
+## Slide: Week 9 Debate — Who Owns Clarity
+- type: cards
+- title: Debate Point — **Who Owns Clarity: the Person or the System?**
+- subtitle: Seongsu and Batool start from opposite ends — and meet in the middle
+
+- card(blue, 🧭): Seongsu — "A Team Without a Coach"
+  - "We should **never expect AI to lead us** when our own direction is vague"
+  - "Even with endless knowledge and countless automated factories on standby, nothing operates until the user decides what to create and how"
+  - The deeper worry: "As AI continues to advance, many people are **losing the ability to think and decide** for themselves"
+
+- card(orange, 🛠️): Batool — "Perfect Instructions Are Unrealistic"
+  - Nobody writes a perfect brief every time, so the **system** must recognize unclear information
+  - Iron Man is right that better systems improve AI performance; Hulk is right that supervision is still needed
+  - "Combine AI efficiency with human judgment"
+
+- card(pink, ⚖️): Where They Meet — and the Catch
+  - The agent's job is to **detect** the ambiguity and ask. The human's job is to **answer**
+  - The catch is Seongsu's: a clarifying question only helps if you **have** an answer. "What does *optimal* mean?" is useless to someone who has not decided
+  - Jeonghyeon's version: "we cannot expect AI to fully understand our intentions without providing enough information" — and double-checking "is always necessary"
+
+- highlight-quote: "It is like a pro football team without a coach: talent alone rarely leads to victory." — Seongsu
+
+=====
+
+## Slide: Week 9 Theme 3 — Do Criteria Kill Discovery
+- type: cards
+- title: Theme 3 — **Rustam's Dilemma: Do Acceptance Criteria Kill Discovery?**
+- subtitle: The question he left for this week — and it lands squarely on today's lecture
+
+- card(blue, 📏): His Criterion Has Two Halves
+  - An AI material recommendation must be supported by **(a)** reliable literature, **(b)** comparable experimental conditions, **(c)** verified performance data, **(d)** a scientifically reasonable explanation
+  - "An automated workflow can verify references and numerical values, but evaluating the **underlying scientific mechanism** requires human expertise"
+  - And he admits the limit: whether a composition is "scientifically promising" cannot be reduced to a checklist — "we have not yet established clear standards for evaluating novel results"
+
+- card(green, 🔁): AI Checks the Human, Too
+  - Before his human node, AI catches "**inconsistent units, missing data, and calculation errors** — more systematically than manual checking"
+  - His flow: Literature & extraction → AI data verification → preliminary analysis → **HUMAN NODE** → electrode fabrication & high-temperature testing
+  - "AI should enforce data verification, while humans remain accountable for scientific interpretation"
+
+- card(pink, 🧨): The Dilemma
+  - "Unexpected (anomalous) results sometimes lead to the **most important breakthroughs**"
+  - "If we define strict acceptance criteria before an AI agent starts working, could we unintentionally prevent it from identifying something **scientifically valuable but unexpected**?"
+  - He points at Navier–Stokes — a problem open for generations, and recent news of AI-assisted progress on it. The things that matter most are often the ones no rubric anticipated
+
+- highlight-quote: "How should we balance predefined criteria with the flexibility needed for scientific discovery?" — Rustam
 
 =====
 
 ## Slide: Connection to Today
 - type: cards
 - title: How This Connects to **Today's Practice**
-- subtitle: Jaewhoon's "feedback loop" hits the lecture's core idea
+- subtitle: Rubrics, judges and loops are where your Week 9 answers become code
 
-- card(blue, 🔁): Jaewhoon — "The Feedback Loop is Key"
-  - "When a user provides specific feedback on an unsatisfactory output, the AI incorporates that learning"
-  - "Simple rejection doesn't help — clear, constructive criticism leads to better iterations"
-  - **This is exactly what today's iterative loop is**
+- card(blue, 📋): Rustam's (a)–(d) Is a Rubric — With Two Columns
+  - Literature, conditions and performance data are **judge-checkable**: an LLM judge or plain code can score them
+  - "A scientifically reasonable explanation" is **human-judged**: route it, do not score it
+  - Today's rubric works best when you know which column each criterion belongs to
 
-- card(green, 🎯): The Rubric IS the Constructive Feedback
-  - "Score on completeness, specificity, structure..." — that's what Jaewhoon means by constructive criticism
-  - The judge produces structured feedback the model can actually use
-  - This is Irfan's "design for ambiguity" — operationalized in code
+- card(green, 🙋): Minh's Clarification Loop = the "Aware" Strategy
+  - Answering the agent's questions *before* generation is exactly what putting the rubric in the prompt does
+  - Naive vs aware is the measured cost of **not** answering those questions up front
+  - Nurul's "explain its assumptions" applies to the judge too: demand a **reason** with every score
 
-- card(purple, 💎): Connecting Huy's Critique
-  - Writing the rubric = forcing metacognitive clarity
-  - If you can't write a rubric, you don't yet know what "good" means to you
-  - The system doesn't replace this — it **surfaces** the gap
+- card(pink, 📈): Rustam's Dilemma vs the Self-Evolving Loop
+  - The self-evolving loop pushes toward the score ceiling — which means pushing toward what the rubric **anticipated**
+  - Optimize hard enough against a fixed rubric and you optimize *away* from the anomaly (Goodhart's law)
+  - Today's answer is structural: a rubric that **scores** the expected and **flags** the unexpected to a human
 
-- card(orange, ⚖️): Connecting Margareth's Tradeoff
-  - More criteria in the rubric = more clarity, less flexibility
-  - Self-evolving loop pushes for the score ceiling — but at the cost of generation freedom
-  - Choose the rubric depth that matches the certainty you need
+- card(orange, 🧭): Seongsu's Coach Writes the Rubric
+  - A judge can only apply criteria someone decided on
+  - If you cannot write the criterion, the clarifying question has no answer — and no loop will converge
 
 =====
 
@@ -886,6 +919,11 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
   - Can they guess what kind of output it's evaluating?
   - If yes → your rubric is specific enough
 
+- card(purple, 🧨): Then Answer Rustam
+  - Mark each criterion **J** (a judge can score it) or **H** (only a human can)
+  - Add one criterion that is **not scored at all**: "Anything surprising? Describe it." Anything written there goes to a human, whatever the total score
+  - Ask your partner: which result would your rubric have **rejected** that you would actually have wanted to see?
+
 =====
 
 ## Slide: Discussion Questions
@@ -894,8 +932,9 @@ if st.button("⚖️ Compare Models", disabled=not candidate_models):
 
 > Visit: **UST LMS → Class → Discussion**
 
-1. Today you saw three strategies (naive, refine, aware) plus two loop modes (threshold, self-evolving). **Which combination gave the biggest improvement on your hometown task?** Connect your finding to Jaewhoon's claim that "the feedback loop is key."
-2. Margareth argued that more clarity reduces the system "to something closer to conventional programming." After writing a strict rubric today, **did your final output feel more constrained — and was that good or bad?** Where would you draw the line between flexibility and reliability for your own research?
+1. **The Consensus Dilemma — which is more persuasive: 1,000 AI agents or 10 human experts?** Today you ran several models through the same judge. When they agreed, did that make the answer more likely to be **right**, or only more likely to be **the same**? What would make agreement among models count as evidence — and what would make ten humans' agreement worth more?
+2. Today you saw three strategies (naive, refine, aware) plus two loop modes (threshold, self-evolving). **Which combination gave the biggest improvement on your hometown task?** Connect it to Minh's clarification loop: how much of the gain came simply from answering the questions before generation?
+3. **Answer Rustam's dilemma.** He asked whether strict acceptance criteria could stop an agent from noticing something "scientifically valuable but unexpected". Post the rubric from today's activity with its J/H labels and its unscored "anything surprising?" field. Would it have caught the most surprising result of your own research so far?
 
 =====
 
@@ -932,6 +971,6 @@ Anthropic Free Online Courses
   - Built a **Hometown Introduction Evaluator**: 5-criterion rubric, 3 strategies, LLM judge, multi-model comparison, and TWO iterative loops — threshold-based (good enough) and self-evolving (push to ceiling, refine from best, patience-based stopping)
 
 - card(orange, 🗣️): Discussion
-  - Week 9 review (12 responses): Cap+Hulk coalition wins; Margareth's flexibility-uncertainty tradeoff; Huy's metacognitive clarity + Minh's Independence Threshold/Alignment Drift; Jaewhoon's "feedback loop is key" = exactly today's iterative practice
+  - Week 9 review (8 responses): the most even vote of the semester; four of you independently said **the agent should ask** (Nurul, Minh, Batool, Rustam); Seongsu's "team without a coach" vs Batool's "perfect instructions are unrealistic"; and Rustam's dilemma — do acceptance criteria kill discovery? — answered today with a rubric that scores the expected and flags the unexpected
 
 **Next week:** Agents that judge and repair their own work — the **self-feedback loop**.
